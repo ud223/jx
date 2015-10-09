@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>瑜伽去</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/yj.global.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="/js/jquery-mobile.js"></script>
+    <script type="text/javascript" src="/js/tools/wx.js"></script>
+</head>
+
+<body ontouchstart="">
+<!-- $.waiting()（START） -->
+<div class="rotatedivwrapper">
+    <div class="rotatediv"></div>
+    <div class="msg"></div>
+</div>
+<!-- $.waiting()（END） -->
+<!-- $.waiting()（END） -->
+<?php echo $this->layout()->content; ?>
+<!--<div class="clear-20"></div>-->
+<!--<div style="text-align: center; z-index: 1000000; background:#FFF; color:#333;padding:20px; position:fixed; bottom:0; left:0; right:0">-->
+<!--    网络备案号：粤ICP备15073557号-->
+<!--</div>-->
+<script type="text/javascript" src="/js/yj.global.js"></script>
+<script type="text/javascript">
+    var appid = "wx4f812fb76adfa3ff";
+
+    $(document).ready(function() {
+        if (validEnvironment() == 0 && page_type != 3) {
+            location.href = "/about";
+        }
+
+        if (page_type == 1) {
+            userLogin();
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<style>
+    body {
+        padding-bottom:70px;
+    }
+</style>
+<script src="<?php echo $this->jsPath("tools/String.js"); ?>"></script>
+<script src="<?php echo $this->jsPath("action/index/index.js"); ?>"></script>
+<script src="<?php echo $this->jsPath("api/teacher.js"); ?>"></script>
+<script src="<?php echo $this->jsPath("entity/teacher.js"); ?>"></script>
+<script src="<?php echo $this->jsPath("delegate/index/index.js"); ?>"></script>
+<script src="<?php echo $this->jsPath("controller/index/index.js"); ?>"></script>
+<div class="tcfilter-fix">
+    <div class="nothing-btn loc-bt">
+        <i class="ico"></i>
+    </div>
+    <div class="nothing-btn sort-bt">
+        <i class="ico"></i>
+    </div>
+    <div class="switcher">
+        <div class="nothing-btn comok lt selected cd_hottap" hottap="/">
+            <div class="wp">
+                <span class="txt">老师</span>
+                <span class="l"></span>
+            </div>
+        </div>
+        <div class="nothing-btn comok rt cd_hottap" hottap="/course">
+            <div class="wp">
+                <span class="txt">课程</span>
+                <span class="l"></span>
+            </div>
+        </div>
+        <div class="comok-sp"></div>
+    </div>
+
+    <div class="tcfilter-sort">
+        <div class="wp">
+            <p class="p1">请选择排序方式</p>
+            <div>
+                <button class="itmbtn selected" sort="teacher_score" type="button">评分高</button>
+                <button class="itmbtn" sort="teacher_count" type="button">授课多</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tcfilter-filter">
+        <div class="wp">
+            <p class="p1">选择区</p>
+            <div>
+                <?php foreach ($this->region as $r):?>
+                    <button class="itmbtn" type="button" id="<?php echo $r->id?>"><?php echo $r->name ?></button>
+                <?php endforeach;?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-fix">
+    <div class="menu-fix-itm cd_hottap selected" hottap="/">预约老师</div>
+    <div id="to-me" class="menu-fix-itm">我</div>
+</div>
+
+<div class="tcfilter-container">
+
+</div>
+
+<!--<div class="list-end-loadmore">-->
+<!--    <span>正在加载更多，请稍候 ...</span>-->
+<!--</div>-->
+<div id="teacher-item" style="display: none">
+    <div class="teacher-itm">
+        <div class="pad-15">
+            <div class="user-intro cd_hottap" hottap="">
+                <div class="li">
+                    <img class="user-intro-img" src="img/user01.jpg" />
+                </div>
+                <div class="li">
+                    <div class="user-intro-txt"><span class="teacher-name"></span><span class="teacher-score"> · <span class="this-teacher-score"></span>分</span></div>
+                    <div class="user-intro-skill"></div>
+                </div>
+                <div class="user-intro-tag">
+                    <span class="t1">￥<span class="price"></span></span>
+                    <span class="t2">每小时</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <img src="" class="teacher-img-big cd_hottap" hottap="" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var page_type = 0;
+</script>

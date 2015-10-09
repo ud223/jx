@@ -1,0 +1,133 @@
+<style>
+    .itm {
+        padding:20px;
+    }
+    .itm:hover {
+        background:#F0F0F0;
+    }
+    label.xs {
+        color:#aaa;
+        font-size:smaller;
+        margin-left:5px;
+    }
+    .child-itm {
+        border-left: 1px dotted #aaa;
+        margin-top:10px;
+        padding-left:30px;
+    }
+    .table-bordered>thead>tr>td,
+    .table-bordered>thead>tr>th {
+        border-bottom-width: 1px;
+    }
+    .mbtable>thead>tr>td,
+    .table>thead>tr>th {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -o-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -ms-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -moz-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -webkit-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+    }
+    .mblk {
+        padding: 15px;
+        border-bottom: 1px solid #E4E4E4;
+    }
+    .wb {
+        background: #FFF;
+    }
+</style>
+
+<h1 class="page-title"><?php echo $this->title ?></h1>
+<div class="btb">
+    <a id="clear-cache" class="btn btn-success" href="<?php echo $this->url(array(), 'manage-category-create') ?>">新建瑜伽分类</a>
+</div>
+<div class="row">
+    <table class="table table-bordered table-hover wb mbtable table-striped">
+        <thead>
+        <tr>
+            <th>瑜伽名称</th>
+            <th>详细</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($this->paginator):?>
+            <?php foreach ($this->paginator as $p): ?>
+                <tr>
+                    <td><?php echo $p->name ?></td>
+                    <td>
+                        <a href="/manage/category/save/<?php echo $p->id ?>">查看<span class="glyphicon glyphicon-link"></span></a>
+                    </td>
+                    <td>
+                        <div><a href="javascript:void(0)" class="remove-list">删除</a><input type="hidden" class="tmp" value="<?php echo $p->id ?>"/></div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else:?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        <?php endif;?>
+        </tbody>
+    </table>
+    <nav class="clearfix">
+        <ul class="pagination pull-right">
+            <?php
+            $current_page_no = $this->paginator->getCurrentPageNumber();
+            $page_count = $this->paginator->count();
+
+            if ($current_page_no == 1) {
+                $pre_page = 1;
+            }
+            else {
+                if ($current_page_no == 1) {
+                    $pre_page = 1;
+                }
+                else {
+                    $pre_page = $current_page_no - 1;
+                }
+            }
+
+            if($page_count == 1) {
+                $next_page = 1;
+            }
+            else {
+                if ($current_page_no == $page_count) {
+                    $next_page = $current_page_no;
+                }
+                else {
+                    $next_page = $current_page_no + 1;
+                }
+            }
+            ?>
+            <li>
+                <a href="/manage/category/list/<?php echo $pre_page ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <?php for ($i = 0; $i < $page_count; $i++) { ?>
+                <?php
+                $page_index = $i + 1;
+                $cls = "";
+                if ($current_page_no == $page_index) {
+                    $cls = 'active';
+                }
+                ?>
+                <li class="<?php echo $cls ?>"><a href="/manage/category/list/<?php echo $page_index ?>" ><?php echo $page_index ?></a></li>
+            <?php } ?>
+            <li>
+                <a href="/manage/category/list/<?php echo $next_page ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script type="text/javascript">
+    $('.remove-list').click(function() {
+        removeObject($(this).parent(), '<?php echo $this->url(array(), 'manage-category-remove') ?>');
+    });
+</script>

@@ -1,0 +1,167 @@
+<style>
+    .itm {
+        padding:20px;
+    }
+    .itm:hover {
+        background:#F0F0F0;
+    }
+    label.xs {
+        color:#aaa;
+        font-size:smaller;
+        margin-left:5px;
+    }
+    .child-itm {
+        border-left: 1px dotted #aaa;
+        margin-top:10px;
+        padding-left:30px;
+    }
+    .table-bordered>thead>tr>td,
+    .table-bordered>thead>tr>th {
+        border-bottom-width: 1px;
+    }
+    .mbtable>thead>tr>td,
+    .table>thead>tr>th {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -o-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -ms-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -moz-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+        background: -webkit-linear-gradient(top, rgb(255, 255, 255), rgb(240, 240, 240) 100%);
+    }
+    .mblk {
+        padding: 15px;
+        border-bottom: 1px solid #E4E4E4;
+    }
+    .wb {
+        background: #FFF;
+    }
+</style>
+
+<h1 class="page-title"><?php echo $this->title ?></h1>
+<div class="row">
+    <table class="table table-bordered table-hover wb mbtable table-striped">
+        <thead>
+        <tr>
+            <th>客户姓名</th>
+            <th>预约时间</th>
+            <th>老师姓名</th>
+            <th>小时数</th>
+            <th>订单金额</th>
+            <th>订单状态</th>
+            <th>用户评分</th>
+            <th>老师评分</th>
+<!--            <th>详细</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($this->paginator):?>
+            <?php foreach ($this->paginator as $p): ?>
+                <tr>
+                    <td><?php echo $p->customer->name ?></td>
+                    <td><?php echo $p->rundate ?></td>
+                    <td><?php echo $p->teacher->name ?></td>
+                    <td><?php echo $p->hour ?></td>
+                    <td><?php echo $p->amount ?></td>
+                    <td><?php
+                            switch($p->$state) {
+                                case 1: {
+                                    echo "下单"; break;
+                                }
+                                case 2: {
+                                    echo "已接单"; break;
+                                }
+                                case 3: {
+                                    echo "授课中"; break;
+                                }
+                                case 4: {
+                                    echo "等待评分"; break;
+                                }
+                                case 5: {
+                                    echo "完成"; break;
+                                }
+                            }
+
+                        ?></td>
+                    <td><?php echo $p->user_score ?></td>
+                    <td><?php echo $p->teacher_score ?></td>
+<!--                    <td>-->
+<!--                        <a href="/manage/teacher/save/--><?php //echo $p->id ?><!--" target="_blank">查看<span class="glyphicon glyphicon-link"></span></a>-->
+<!--                    </td>-->
+                </tr>
+            <?php endforeach; ?>
+        <?php else:?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+<!--                <td></td>-->
+            </tr>
+        <?php endif;?>
+        </tbody>
+    </table>
+    <nav class="clearfix">
+        <ul class="pagination pull-right">
+            <?php
+            $current_page_no = $this->paginator->getCurrentPageNumber();
+            $page_count = $this->paginator->count();
+
+            if ($current_page_no == 1) {
+                $pre_page = 1;
+            }
+            else {
+                if ($current_page_no == 1) {
+                    $pre_page = 1;
+                }
+                else {
+                    $pre_page = $current_page_no - 1;
+                }
+            }
+
+            if($page_count == 1) {
+                $next_page = 1;
+            }
+            else {
+                if ($current_page_no == $page_count) {
+                    $next_page = $current_page_no;
+                }
+                else {
+                    $next_page = $current_page_no + 1;
+                }
+            }
+            ?>
+            <li>
+                <a href="/manage/order/list/<?php echo $pre_page ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <?php for ($i = 0; $i < $page_count; $i++) { ?>
+                <?php
+                $page_index = $i + 1;
+                $cls = "";
+                if ($current_page_no == $page_index) {
+                    $cls = 'active';
+                }
+                ?>
+                <li class="<?php echo $cls ?>"><a href="/manage/order/list/<?php echo $page_index ?>" ><?php echo $page_index ?></a></li>
+            <?php } ?>
+            <li>
+                <a href="/manage/order/list/<?php echo $next_page ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script type="text/javascript">
+//    $('.remove-list').click(function() {
+//        removeObject($(this).parent(), '<?php //echo $this->url(array(), 'manage-teacher-remove') ?>//');
+//    });
+</script>
