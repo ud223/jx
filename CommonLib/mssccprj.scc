@@ -1,0 +1,9 @@
+SCC = This is a Source Code Control file
+
+[CommonLibrary.csproj]
+SCC_Aux_Path = "F:\VSSDatabase\CommonFunctionLib"
+SCC_Project_Name = "$/CommonLibrary", EAAAAAAA
+
+[CommonLib.csproj]
+SCC_Aux_Path = "S:\BackUp"
+SCC_Project_Name = "$/Apex EIP.root/Apex EIP/CommonLib", XRBAAAAA

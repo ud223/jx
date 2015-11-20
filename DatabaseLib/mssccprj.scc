@@ -1,0 +1,9 @@
+SCC = This is a Source Code Control file
+
+[DatabaseLibrary.csproj]
+SCC_Aux_Path = "F:\VSSDatabase\CommonFunctionLib"
+SCC_Project_Name = "$/DatabaseLibrary", KAAAAAAA
+
+[DatabaseOptLib.csproj]
+SCC_Aux_Path = "S:\BackUp"
+SCC_Project_Name = "$/Apex EIP.root/Apex EIP/DatabaseLib", GTBAAAAA
