@@ -1,0 +1,123 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<form action="/manage/usertype/save" method="post">
+    <div class="main-body-relative relative">
+        <div class="cko-wp">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs mytabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ts-info" aria-controls="ts-info" role="tab" data-toggle="tab">角色信息</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tab-kiki-ct">
+                <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>@ViewData["title"].ToString()</span>
+                            <button class="downbtn-normal down"></button>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">角色名称</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="UserTypeText" name="UserTypeText" value="@if (ViewData["usertype"] != null) {
+                                            var usertype = ViewData["usertype"] as System.Collections.Hashtable;
+
+                                            @usertype["UserTypeText"].ToString();
+                                        }" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">角色类型</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            <input id="isSys_text" name="isSys_text" type="text" class="form-control dropdown-text" value="@if (ViewData["usertype"] != null) {
+                                                var usertype = ViewData["usertype"] as System.Collections.Hashtable;
+                                                if (usertype["isSys"].ToString() == "1")
+                                                {
+                                                    string value ="系统用户";
+
+                                                    @value;
+                                                }
+                                                else
+                                                {
+                                                    string value ="非系统用户";
+
+                                                    @value;
+                                                }
+                                            }" readonly="readonly" aria-label="...">
+                                            <input id="isSys" name="isSys" type="hidden" value="@if (ViewData["usertype"] != null) {
+                                            var usertype = ViewData["usertype"] as System.Collections.Hashtable;
+
+                                            @usertype["isSys"].ToString();
+                                        }" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择类型<span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="javascript:void(0)" class="dropdown-item" val="1">系统角色</a></li>
+                                                    <li><a href="javascript:void(0)" class="dropdown-item" val="2">非系统角色</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bt-btn-bar">
+                        <input type="hidden" id="UserTypeID" name="UserTypeID" value="@if (ViewData["usertype"] != null) {
+                                            var usertype = ViewData["usertype"] as System.Collections.Hashtable;
+
+                                            @usertype["UserTypeID"].ToString();
+                                        }">
+                        <button type="submit" class="btn btn-success glyphicons glyphicons-disk-saved" style="height:40px">保存修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- /container -->
+<script type="text/javascript">
+        //<span class=""></span>
+        $(document).ready(function () {
+            $(".nano").nanoScroller();
+            $.readjustWidth();
+            $(window).resize(function () {
+                $.readjustWidth();
+            });
+            $(".fix-tb-ct-b2").scroll(function (e) {
+                var slt = $(".fix-tb-ct-b2").scrollLeft();
+                $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+            });
+            $('.mytabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+
+            $('#datepicker01').datetimepicker({
+                minView: 2,
+                startView: 3,
+                weekStart: 1,
+                format: 'yyyy/mm/dd',
+                autoclose: true
+            });
+            $('#datepicker02').datetimepicker({
+                minView: 2,
+                language: 'en',
+                format: 'yyyy/mm/dd'
+            });
+            $('#datepicker03').datetimepicker({
+                minView: 2,
+                language: 'en',
+                format: 'yyyy/mm/dd',
+                todayBtn: 'linked',
+                initialDate: new Date('2010/1/1')
+            });
+        });
+</script>

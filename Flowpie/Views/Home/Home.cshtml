@@ -1,0 +1,285 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+
+@section JsScript {
+    
+    
+}
+<script type="text/javascript">
+		// 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
+		var imgs_json = [{
+		    url: '/statics/jx/img/home/t2.jpg', link: '#'
+		}, {
+		    url: '/statics/jx/img/home/t1.jpg', link: '#'
+		}, {
+		    url: '/statics/jx/img/home/t3.jpg', link: '#'
+		}];
+</script>
+
+<!--此段为滑动多图的html部分，写死在这里-->
+<div id="cd_mentor_img_slider" class="swipe">
+    <div class="swipe-wrap">
+        <!--<div class="figure"></div>-->
+    </div>
+    <!-- 放置索引标签的地方 -->
+    <div class="gl">
+        <!--<div class="pgitm"></div>-->
+    </div>
+</div>
+
+<!--底部menu-->
+<div class="menu-fix">
+    <div class="menu-fix-itm home cd_hottap selected" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
+    <div class="menu-fix-itm ceshi cd_hottap" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
+    <div class="menu-fix-itm me cd_hottap" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
+</div>
+<style>
+    .weitt {
+        padding:8px 15px;
+        color:#172530;
+        background:#ebebeb;
+        font-size:14px;
+    }
+    .weicts4 {
+        display:table;
+        width:100%;
+        border-collapse:collapse;
+        background:#FFF;
+    }
+    .weicts4 .vtd {
+        display:table-cell;
+        border:1px solid #e0e0e0;
+        width:50%;
+    }
+    .weicts4 .vtr .vtd:nth-child(odd) {
+        border-left:none;
+    }
+    .weicts4 .vtr .vtd:nth-child(even) {
+        border-right:none;
+    }
+    .vtd:active {
+        font-weight:bold;
+    }
+    .weicts4 .vtd .wp {
+        padding:15px 70px 15px 15px;
+        position:relative;
+    }
+    .weicts4 .vtr {
+        display:table-row;
+    }
+    .weicts4 .ib5ico {
+        width:50px;
+        height:50px;
+        position:absolute;
+        right:15px;
+        top:50%;
+        margin-top:-25px;
+    }
+    .weicts4 .tt1 {
+        color:#eb8a15;
+        font-size:16px;
+        margin-bottom:10px;
+    }
+    .weicts4 .tt2 {
+        color:#9b9b9b;
+        font-size:12px;
+    }
+    .abcipt {
+        padding:15px 15px 15px 100px;
+        background:#FFF;
+        line-height:24px;
+    }
+    .abcipt .iico2 {
+        width:70px;
+        height:70px;
+        position:absolute;
+        left:15px;
+        top:15px;
+    }
+    .abcipt .tt1 {
+        font-size:18px;
+        color:#f18812;
+        margin-bottom:0;
+    }
+    .abcipt .tt2 {
+        font-size:14px;
+        color:#3a3a3a;
+        margin-bottom:0;
+    }
+    .abcipt .tt3, .abcipt .tt4 {
+        color:#909090;
+        font-size:12px;
+    }
+</style>
+<div class="weitt">
+    e资讯
+</div>
+<div class="weicts4">
+    <div class="vtr">
+        <div class="vtd" onclick="location.href='/exam/menu'">
+            <img src="~/statics/jx/img/home/i1.jpg" class="ib5ico" />
+            <div class="wp">
+                <div class="tt1">驾考宝典</div>
+                <div class="tt2">轻松学理论</div>
+            </div>
+        </div>
+        <div class="vtd" onclick="location.href='/statics/jx/html/pg02coupon300.html'">
+            <img src="~/statics/jx/img/home/i2.jpg" class="ib5ico" />
+            <div class="wp">
+                <div class="tt1" style="color:#53099a">E-SALE</div>
+                <div class="tt2">领300元学车券</div>
+            </div>
+        </div>
+    </div>
+    <div class="vtr">
+        <div class="vtd" onclick="location.href = '/statics/jx/html/pg01coupon98.html'">
+            <img src="~/statics/jx/img/home/i3.jpg" class="ib5ico" />
+            <div class="wp">
+                <div class="tt1" style="color:#ee5f00">体验学车</div>
+                <div class="tt2">获98元体验券</div>
+            </div>
+        </div>
+        <div class="vtd" onclick="location.href = '/statics/jx/html/pg06-sdjxwx.html'">
+            <img src="~/statics/jx/img/home/i4.jpg" class="ib5ico" />
+            <div class="wp">
+                <div class="tt1" style="color:#0365a6">深大驾校</div>
+                <div class="tt2">参活动赢免费学车</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weitt">
+    关于平台
+</div>
+<div class="abcipt cd_hottap" hottap="/statics/jx/html/pg05-aboutus.html">
+    <img src="/statics/jx/img/home/t5.jpg" class="iico2" />
+    <p class="tt1">云e驾</p>
+    <p class="tt2">汇集专业正规驾校的第三方互联网平台</p>
+    <div class="tt3">一人一车教练，微信下单随时随地约教练</div>
+    <div class="tt4">打造互联网学车新模式，我的学车我做主</div>
+</div>
+<div class="bbttiu">
+    <div class="wp">
+        <div class="ltxline"></div>
+        <div class="rtxline"></div>
+        <div>五星驾校</div>
+        <div class="ssbnt">口碑、快捷、省时、省钱</div>
+        <a href="#" class="ssbnal">查看更多</a>
+    </div>
+</div>
+
+<div class="tcfilter-container">
+    <div class="zhscitm" hottap="/school/detail/1">
+        <div class="tp cd_hottap" style="background-image:url(/statics/jx/img/home/p0.jpg);" hottap="/school/detail/1"></div>
+        <div class="btp cd_hottap" hottap="/school/detail/1">
+            <div class="tt">
+                <span>深大驾校</span>
+                <span class="mostars-c">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </span>
+            </div>
+            <div class="area">
+                <span class="itm"><i class="fa fa-trophy"></i>&nbsp;&nbsp;C1手动, C2自动</span>
+                <span class="itm dist"><i class="fa fa-map-marker"></i>&nbsp;&nbsp;南山 深大校内</span>
+            </div>
+            <div class="stt">十九年传奇品牌，服务深大学子，计时班折扣价3800元</div>
+        </div>
+        <a href="/student/enter" class="fullbtn">立刻报名</a>
+    </div>
+    @*<div class="zhscitm cd_hottap" hottap="p05_jiaxiao.html">
+            <div class="tp" style="background-image: url(img/photocase/np02.jpg);"></div>
+            <div class="btp">
+                <div class="tt">
+                    <span>科大驾校</span>
+                    <span class="mostars-c">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                        <i class="fa fa-star-o"></i>
+                    </span>
+                </div>
+                <div class="area">
+                    <span class="itm"><i class="fa fa-trophy"></i>&nbsp;&nbsp;C1手动, C2自动</span>
+                    <span class="itm dist"><i class="fa fa-map-marker"></i>&nbsp;&nbsp;南山 深大校内</span>
+                </div>
+                <div class="stt">二十年传奇品牌，服务深大学子， 校庆期间报名学员一律88折</div>
+            </div>
+        </div>*@
+</div>
+
+<div class="list-end-loadmore">
+
+    <span>更多驾校即将推出，敬请期待</span>
+
+</div>
+<div class="bt-distance"></div>
+<script type="text/javascript">
+	$('document').ready(function() {
+		if (imgs_json.length) {
+			// 根据imgs_json的长度和内容循环加载图片
+			$.each(imgs_json, function() {
+				var new_img = $('<div>').addClass('figure');
+				new_img.css('background-image', 'url(' + this.url + ')');
+
+				/*
+					* 9月26日更新：
+					* 新增了可链接的情况，插入一个a标签
+					*/
+				if(this.link) {
+					var new_link = $('<a>').addClass('sw-inner-link');
+					new_link.attr('href', this.link);
+					new_img.append(new_link);
+				}
+
+				$('#cd_mentor_img_slider .swipe-wrap').append(new_img);
+
+
+			});
+			// 初始化swipe
+			var slider = Swipe(document.getElementById('cd_mentor_img_slider'), {
+				startSlide: 0,
+				speed: 400,
+				auto: false,
+				continuous: false,
+				disableScroll: false,
+				stopPropagation: false,
+				callback: function(index, elem) {},
+				transitionEnd: function(index, elem) {
+					$('.gl .pgitm.selected').removeClass('selected');
+					$('.gl .pgitm[index="' + index + '"]').addClass('selected');
+				}
+			});
+			// 初始化pager
+			var n = slider.getNumSlides();
+			for (var i = 0; i < n; i++) {
+				var new_pager = $('<div>').addClass('pgitm').attr('index', i);
+				if(i === 0) {
+					new_pager.addClass('selected');
+				}
+				$('.swipe .gl').append(new_pager);
+			}
+
+		    // 每隔10秒自动滑动
+			setInterval(function () {
+			    var c = slider.getPos();
+			    if (c >= n - 1) {
+			        slider.slide(0, 200);
+			    } else {
+			        slider.next();
+			    }
+			}, 7000);
+		}
+
+		
+	});
+</script>

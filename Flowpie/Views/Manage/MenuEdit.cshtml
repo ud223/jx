@@ -1,0 +1,183 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<form action="/manage/menu/save" method="post">
+    <div class="main-body-relative relative">
+        <div class="cko-wp">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs mytabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ts-info" aria-controls="ts-info" role="tab" data-toggle="tab">菜单信息</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tab-kiki-ct">
+                <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>@ViewData["title"].ToString()</span>
+                            <button class="downbtn-normal down"></button>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">菜单文本</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="MenuText" name="MenuText" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["MenuText"].ToString();
+                                        }" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">菜单URI</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="Url" name="Url" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["Url"].ToString();
+                                        }" maxlength="200" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">上级菜单</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            <input id="top_menus" name="top_menus" type="text" class="form-control dropdown-text" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            foreach (var tmp_menu in ViewData["top_menus"] as List<System.Collections.Hashtable>)
+                                            {
+                                                if (tmp_menu["MenuID"].ToString() == menu["ParentID"].ToString())
+                                                {
+                                                    @tmp_menu["MenuText"].ToString();
+
+                                                    break;
+                                                }
+                                            }
+                                        }" readonly="readonly" aria-label="...">
+                                            <input id="ParentID" name="ParentID" type="hidden" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["ParentID"].ToString();
+                                        }" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择菜单 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    @foreach (var menu in ViewData["top_menus"] as List<System.Collections.Hashtable>)
+                                                    {
+                                                        <li><a href="javascript:void(0)" class="dropdown-item" val="@menu["MenuID"].ToString()">@menu["MenuText"].ToString()</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">菜单层级</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            <input id="level_text" name="level_text" type="text" class="form-control dropdown-text" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["Level"].ToString();
+                                        }" readonly="readonly" aria-label="...">
+                                            <input id="Level" name="Level" type="hidden" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["Level"].ToString();
+                                        }" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择层级 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="javascript:void(0)" class="dropdown-item" val="1">1</a></li>
+                                                    <li><a href="javascript:void(0)" class="dropdown-item" val="2">2</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">排序索引</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            <input id="index_text" name="index_text" type="text" class="form-control dropdown-text"  value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["Index"].ToString();
+                                        }" readonly="readonly" aria-label="...">
+                                            <input id="index" name="Index" type="hidden" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["Index"].ToString();
+                                        }" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择索引 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    @for (int i = 1; i < 16; i++)
+                                                    {
+                                                        <li><a href="javascript:void(0)" class="dropdown-item" val="@i">@i</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bt-btn-bar">
+                        <input type="hidden" id="MenuID" name="MenuID" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["MenuID"].ToString();
+                                        }">
+                        <button type="submit" class="btn btn-success glyphicons glyphicons-disk-saved" style="height:40px">保存修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <!-- /container -->
+    <script type="text/javascript">
+        //<span class=""></span>
+        $(document).ready(function () {
+            $(".nano").nanoScroller();
+            $.readjustWidth();
+            $(window).resize(function () {
+                $.readjustWidth();
+            });
+            $(".fix-tb-ct-b2").scroll(function (e) {
+                var slt = $(".fix-tb-ct-b2").scrollLeft();
+                $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+            });
+            $('.mytabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+
+            //$('#datepicker01').datetimepicker({
+            //    minView: 2,
+            //    startView: 3,
+            //    weekStart: 1,
+            //    format: 'yyyy/mm/dd',
+            //    autoclose: true
+            //});
+            //$('#datepicker02').datetimepicker({
+            //    minView: 2,
+            //    language: 'en',
+            //    format: 'yyyy/mm/dd'
+            //});
+            //$('#datepicker03').datetimepicker({
+            //    minView: 2,
+            //    language: 'en',
+            //    format: 'yyyy/mm/dd',
+            //    todayBtn: 'linked',
+            //    initialDate: new Date('2010/1/1')
+            //});
+        });
+    </script>

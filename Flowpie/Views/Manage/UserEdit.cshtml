@@ -1,0 +1,197 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<form action="/manage/user/save" method="post">
+    <div class="main-body-relative relative">
+        <div class="cko-wp">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs mytabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ts-info" aria-controls="ts-info" role="tab" data-toggle="tab">菜单信息</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tab-kiki-ct">
+                <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>@ViewData["title"].ToString()</span>
+                            <button class="downbtn-normal down"></button>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">用户名</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="Name" name="Name" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["Name"].ToString();
+                                        }" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">用户密码</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="Password" name="Password" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["PassStr"].ToString();
+                                        }" maxlength="200" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">头像链接</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="HeadPic" name="HeadPic" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["HeadPic"].ToString();
+                                        }" maxlength="200" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">电子邮箱</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="Email" name="Email" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["Email"].ToString();
+                                        }" maxlength="200" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">联系电话</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="Phone" name="Phone" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["Phone"].ToString();
+                                        }" maxlength="200" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">所属部门</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            <input id="Dept_text" name="Dept_text" type="text" class="form-control dropdown-text" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            foreach (var tmp_depts in ViewData["depts"] as List<System.Collections.Hashtable>)
+                                            {
+                                                if (tmp_depts["DeptID"].ToString() == user["DeptID"].ToString())
+                                                {
+                                                    @tmp_depts["DeptText"].ToString();
+
+                                                    break;
+                                                }
+                                            }
+                                        }" readonly="readonly" aria-label="...">
+                                            <input id="DeptID" name="DeptID" type="hidden" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["DeptID"].ToString();
+                                        }" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择部门 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    @foreach (var tmp_depts in ViewData["depts"] as List<System.Collections.Hashtable>)
+                                                    {
+                                                        <li><a href="javascript:void(0)" class="dropdown-item" val="@tmp_depts["DeptID"].ToString()">@tmp_depts["DeptText"].ToString()</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">用户类型</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            <input id="UserTypeID_text" name="UserTypeID_text" type="text" class="form-control dropdown-text" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            foreach (var tmp_user_type in ViewData["user_type"] as List<System.Collections.Hashtable>)
+                                            {
+                                                if (tmp_user_type["UserTypeID"].ToString() == user["UserTypeID"].ToString())
+                                                {
+                                                    @tmp_user_type["UserTypeText"].ToString();
+
+                                                    break;
+                                                }
+                                            }
+                                        }" readonly="readonly" aria-label="...">
+                                            <input id="UserTypeID" name="UserTypeID" type="hidden" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["UserTypeID"].ToString();
+                                        }" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择类型 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    @foreach (var user_type in ViewData["user_type"] as List<System.Collections.Hashtable>)
+                                                    {
+                                                        <li><a href="javascript:void(0)" class="dropdown-item" val="@user_type["UserTypeID"].ToString()">@user_type["UserTypeText"].ToString()</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bt-btn-bar">
+                        <input type="hidden" id="UserID" name="UserID" value="@if (ViewData["user"] != null) {
+                                            var user = ViewData["user"] as System.Collections.Hashtable;
+
+                                            @user["UserID"].ToString();
+                                        }">
+                        <button type="submit" class="btn btn-success glyphicons glyphicons-disk-saved" style="height:40px">保存修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- /container -->
+<script type="text/javascript">
+        //<span class=""></span>
+        $(document).ready(function () {
+            $(".nano").nanoScroller();
+            $.readjustWidth();
+            $(window).resize(function () {
+                $.readjustWidth();
+            });
+            $(".fix-tb-ct-b2").scroll(function (e) {
+                var slt = $(".fix-tb-ct-b2").scrollLeft();
+                $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+            });
+            $('.mytabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+
+            $('#datepicker01').datetimepicker({
+                minView: 2,
+                startView: 3,
+                weekStart: 1,
+                format: 'yyyy/mm/dd',
+                autoclose: true
+            });
+            $('#datepicker02').datetimepicker({
+                minView: 2,
+                language: 'en',
+                format: 'yyyy/mm/dd'
+            });
+            $('#datepicker03').datetimepicker({
+                minView: 2,
+                language: 'en',
+                format: 'yyyy/mm/dd',
+                todayBtn: 'linked',
+                initialDate: new Date('2010/1/1')
+            });
+        });
+</script>

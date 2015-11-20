@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+<form action="/manage/use/coupon/save" method="post">
+    <div class="main-body-relative relative">
+        <div class="cko-wp">
+            <div class="opl-table">
+                <div class="tt">
+                    <span>@ViewData["title"].ToString()</span>
+                    <button class="downbtn-normal down"></button>
+                </div>
+                <div class="ct clearfix">
+                    <div class="inner-table">
+                        <div class="row">
+                            <div class="cell col1">优惠卷核销码</div>
+                            <div class="cell col2">
+                                <input type="text" id="Password" name="Password" value="" maxlength="200" style="width:100%" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bt-btn-bar">
+                <button type="submit" class="btn btn-success glyphicons glyphicons-disk-saved" style="height:40px">确认核销</button>
+            </div>
+        </div>
+    </div>
+</form>

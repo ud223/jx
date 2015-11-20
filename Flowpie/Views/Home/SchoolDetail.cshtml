@@ -1,0 +1,623 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+<script type="text/javascript">
+	// 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
+	var imgs_json = [{
+	    url: '/jx/img/home/p0.jpg'
+	}, {
+	    url: '/jx/img/home/p1.jpg'
+	}, {
+        url: '/jx/img/home/p2.jpg'
+	},
+    {
+	    url: '/jx/img/photocase/tpp03.jpg'
+	}];
+</script>
+
+<!--此段为滑动多图的html部分，写死在这里-->
+<div class="jiaxiao-bk">
+    <!--此处切换红心的样式，前后端一起实现-->
+    @*<i class="fa fa-heart-o ltheart"></i>*@
+    <div id="cd_mentor_img_slider" class="swipe">
+        <div class="swipe-wrap">
+            <!--<div class="figure"></div>-->
+        </div>
+        <!-- 放置索引标签的地方 -->
+        <div class="gl">
+            <!--<div class="pgitm"></div>-->
+        </div>
+    </div>
+</div>
+
+<div class="mentor-intro-blk">
+    <img src="/jx/img/photocase/sdjx-logo.png" class="usrimg" />
+    <div class="user-tt">
+        <!--有认证就有 has_cert这个class-->
+        <!--未认证就没有 has_cert这个class， 并且没有下方class="cert"的span-->
+        <div class="nm has_cert">
+            深大驾校
+            <span class="cert">五星驾校</span>
+        </div>
+        <div>
+            <span class="mostars-c" style="float:none;">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-half-o"></i>
+                <i>（4.8）</i>
+            </span>
+        </div>
+    </div>
+    <div class="user3-desc">
+        <div>
+            <div class="user3-desc-itm">驾照类型：<span class="dt">C1手动, C2自动</span></div>
+            <div class="user3-desc-itm">授课区域：<span class="dt">南山，深大校内</span></div>
+            <div class="user3-desc-itm">校龄：<span class="dt">19年</span></div>
+        </div>
+    </div>
+
+    <div class="sch-det-blk" id="fix-sch-det-blk">
+        <div class="sch-det-blk-itm selected" rel="cd-blkx1"><i class="fa fa-clone"></i> 驾校详情</div>
+        <div class="sch-det-blk-itm mid" rel="cd-blkx2"><i class="fa fa-lightbulb-o"></i> 报名&amp;费用</div>
+        <div class="sch-det-blk-itm" rel="cd-blkx3"><i class="fa fa-calendar-check-o"></i> 约练</div>
+    </div>
+
+</div>
+<div class="dipu1-d">
+    <div class="cd-bigblk jxbigblk selected" name="cd-blkx1">
+        <div class="dipu2">
+            <div class="dipu3">驾校简介</div>
+            <div class="detailddlx">
+                <div style="padding:15px 0"><img src="/jx/img/home/jx104.jpg" width="100%" /></div>
+                <div style="padding:0 0 15px 0;"><img src="/jx/img/home/jx105.jpg" width="100%"/></div>
+                <p style="font-weight:bold;">1.综合班简介：</p>
+                <div style="margin-bottom:15px;">深大驾校成立于1996年，是深圳市内唯一在高校设有驾校训练场地一体化的驾驶培训学校，至今服务深大师生已19年，兢兢业业，勇于创新，服务了一届又一届的深大人。如今，饱含着历史沉淀的深大驾校与“云e驾”互联网品牌强强合作，通过微信端链接学员与教练，颠覆传统驾校学车模式，提升驾考体验，运用互联网技术，实现一人一车一教练，微信下单随时随地预约练车，解决学员预约教练难的难题，减少学员学车的时间和费用成本，推出新型学车模式，专业的互联网技术团队、优质的服务团队、良好的练车环境，打造新型品牌互联网学车平台引领者，做最牛学车驾考联军。</div>
+                <p style="font-weight:bold;">2.深大驾校简介：</p>
+                <div style="margin-bottom:15px;">深大驾校驾培自一九九六年因汽检专业、中英文秘书专业必修课需求而建立，一直以来以严谨的学风，良好的师资、规范的管理文明于深圳市驾驶培训行业。深大驾校业务80%面对深大师生，20%面对社会人士，拥有35台多全新捷达教练车；建有15000㎡的桩练场、9选6训练场，450㎡宽敞明亮的办公场所、教室、模拟式；同时拥有一批富有教学经验的教练员，十九年来培养数万深圳大学及周边区域技术过硬的驾驶员。深大驾培除有优越的条件，环境优美闻名于全国高校，足不出户，上课学车两不误，无需走出校门即可训练驾驶技术并获得驾照。深大驾校06年度被驾培协会、平安保险评为《驾培行业安全生产单位》；07年度被特区报社、驾培协会评为《道路安全驾校》；08、09、10、11年连续获深圳驾培行业质量信誉最高级别AAA驾校；同时2009-2015年连获两届副会长单位。</div>
+                <div style="margin-bottom:15px;">
+                    <div style="background:#FFF;border:1px solid #E2E2E2;padding:10px;font-size:12px;">
+                        <div>报名咨询热线和地址：</div>
+                        <div>1.南区报名点</div>
+                        <div>深圳大学南区学生宿舍（秋瑟）三栋一楼</div>
+                        <div>QQ: 2664077689</div>
+                        <div>电话:0755-86535381</div>
+                        <div>2.小西南报名点</div>
+                        <div>深圳大学西南区小西南餐厅一楼</div>
+                        <div>QQ: 2765244307</div>
+                        <div>电话:0755-26538053</div>
+                        <div>3.凌霄斋报名点</div>
+                        <div>深圳大学凌霄斋一楼118号</div>
+                        <div>QQ: 2764125478</div>
+                        <div>电话:0755-26537473</div>
+                        <div>4.科苑南报名点</div>
+                        <div>深圳市南山区粤海街道高新南十一道熙湾俊庭南栋103-2</div>
+                        <div>QQ: 3228901910</div>
+                        <div>电话:0755-26061212</div>
+                        <div>5.总部报名点</div>
+                        <div>深圳大学北门高尔夫球练习场背后深大驾校总部</div>
+                        <div>QQ: 2239139505</div>
+                        <div>电话:0755-26534013</div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="detailddlx-open" alt="收起">展开</div>
+        </div>
+        <div class="dipu2 nbb">
+            <div class="dipu3">荣誉证书</div>
+            <div class="dipu49n">
+                <img src="/jx/img/home/paib.jpg" class="niimg" />
+            </div>
+        </div>
+    </div>
+    <div class="cd-bigblk jxbigblk" name="cd-blkx2">
+        <div class="dipu2">
+            <div class="dipu3">报名须知</div>
+            <div class="nviei-s3">
+
+                <strong>一、 计时班学车流程如下：（所有考试需要学员自主网上约考） </strong>
+                <div>1、通过深大营业厅报名，并交费；</div>
+                <div>2、加入深大驾校计时班微信群；</div>
+                <div>3、自行前往照相馆拍照和医院进行驾照考试体检；</div>
+                <div>4、提交学车所需要的资料；</div>
+                <div>5、驾校通知上科目一的培训课并录指纹；</div>
+                <div>6、进入云e驾微信公众平台，通过云e驾新型学车模式，做科目一试题；</div>
+                <div>7、网上自行预约排队考科目一；</div>
+                <div>8、进入深大驾校微信公众平台，通过云e驾新型学车模式，预约教练学车，准备科目二自主约考；</div>
+                <div>9、科目二考试通过后，韶关2天1夜长训路考；</div>
+                <div>10、预约教练学车，准备科目三自主约考；</div>
+                <div>11、科目三自主约考（路考）通过后，继续用深大驾校-云e驾，做安全文明（科目四）模拟题；</div>
+                <div>12、安全文明（科目四）考试通过后，就可以领取驾驶证。</div>
+                <strong>二、报名说明：</strong>
+                <div>1、线下报名：基本费用为3800元（涵盖科目一70元注册费、培训费、400元长途费、驾校训练场地费与服务运营费，不包含社会考场费用）</div>
+                <div>2.打开“云e驾”微信，注册，直接预约学车即可</div>
+                <div>3.计时收费分3个档次：</div>
+                <div style="font-size:12px;color:#F80;">a.周一-周五；b.周六日时间；c.法定节假日</div>
+                <table style="width:100%;color:#999;margin-bottom:10px;">
+                    <tr>
+                        <td colspan="2">云e驾-计时收费标准</td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%;">
+                            时间范围
+                        </td>
+                        <td>
+                            价格（元/小时）
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            周一——周五 
+                        </td>
+                        <td>
+                            98元/小时
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            周六、周日
+                        </td>
+                        <td>
+                            128元/小时
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            法定节假日
+                        </td>
+                        <td>
+                            168元/小时
+                        </td>
+                    </tr>
+                </table>
+                <strong>三、报名提交资料：</strong>
+                <div>1.身份证复印件：2份（旧版复印正面，新版复印正反两面）</div>
+                <div>2.相片和《数码照相回执》：须在已与深圳市公安局联网的照相馆采集机动车驾驶证数码专用照片并打印回执</div>
+                <div>3.12张小一寸彩色白底免冠、免制服正面大头相（1寸相片规格：32mm×22mm、校正视力者须戴眼镜）</div>
+                <div style="color:#F80;">附加资料： </div>
+                <div>1.非深户：有效居住证复印件两份 </div>
+                <div>2.港澳：身份证、回乡证复印件各两份、临时住宿登记表原件一份 </div>
+                <div>3.现役军人（含武警）：军官证复印件、团级以上单位出具的申请人现实际驻地的住址证明、团级以上医疗机构的出具的身体检查结果 </div>
+                <div>深大驾校始终致力于提高服务质量、廉洁教学、最大限度保护学员利益。但是，任何法律制度下都可能无法保证绝对的廉洁，教练员以任何名义向学员收取、索要钱物的行为都是欺骗行为，也是违反本校制度的。所以，只有全体学员的共同参与、监督、配合，才能创造廉洁、和谐的学车环境。</div>
+
+                <div style="padding:15px 0;">
+                    <div style="margin-bottom:10px;padding-left:20px;border-left:4px solid #E2E2E2;color:#F80;">手动挡和自动挡哪个好</div>
+                    <div>如果纯粹由经济角度考虑,或者你是一个赛车爱好者,喜欢开快车,而且在乡村环境的话,那非手动变速器莫属。</div>
+                    <div>如果你是一位斯文儒雅的绅士或淑女,喜欢尽享行云流水般的轻松驾驶。那么,尽可以挑选一部如意的自动挡车,去细细品味那份舒适和从容。</div>
+                </div>
+
+            </div>
+
+
+                                <div class="dipu3">
+                                    报名价格如下：
+                                </div>
+                                <!--<div style="padding-top:4px;">
+            <span class="paizc selected">C1手动: 3800 <i class="fa fa-check-circle"></i></span>
+            <span class="paizc">C2自动: 4200 <i class="fa fa-check-circle"></i></span>
+        </div>
+        <div style="padding-top:15px;">
+            <a href="p13_baoming.html" class="fullbtn">立刻报名</a>
+        </div>-->
+
+                                <a href="/student/enter" style="background:#F80;border-radius:4px;display:block;padding:10px;text-align:center;color:#FFF !important;margin-top:10px;line-height:32px;">3800元 立刻报名</a>
+
+                                <!--<div class="wtradio">
+            <input type="radio" id="rad01" value="1" name="LicenseType" name="clients" />
+            <label for="rad01"></label>
+        </div>
+        <label class="wtcheckboxlabel p0901-p1" for="rad01">C1手动: 3800</label>
+
+        <div class="wtradio">
+            <input type="radio" id="rad02" value="2" name="LicenseType" name="clients" />
+            <label for="rad02"></label>
+        </div>
+        <label class="wtcheckboxlabel p0901-p1" for="rad02">C2自动: 4200</label>
+        -->
+
+                                <div class="clear-15"></div>
+                            </div>
+        <div class="clear-30"></div>
+    </div>
+
+    <div class="jxbigblk cd-bigblk" name="cd-blkx3">
+            <div class="dipu3-att">
+                <div class="dipu3">约练（选择时间和场次）</div>
+                <div class="dipu4 time-dfrm">
+                    <div class="wp">
+                        <!--<div class="cvr"></div>-->
+                        <div class="time-day-select">
+                            <div class="table">
+                                <div class="td selected">11月16日</div>
+                                <div class="td">11月17日</div>
+                                <div class="td">11月18日</div>
+                                <div class="td">11月19日</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="time-tb">
+                        <div class="ttd" val="6">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">8:00 - 9:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">1人</span></div>
+                                <div>可预约：<span class="val">9人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="7">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">9:00 - 10:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">2人</span></div>
+                                <div>可预约：<span class="val">23人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="8">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">10:00 - 11:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">14人</span></div>
+                                <div>可预约：<span class="val">4人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd unclickable" val="9">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">11:00 - 12:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">5人</span></div>
+                                <div>可预约：<span class="val">7人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="10">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">12:00 - 13:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">13人</span></div>
+                                <div>可预约：<span class="val">6人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="11">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">13:00 - 14:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">11人</span></div>
+                                <div>可预约：<span class="val">7人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">14:00 - 15:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">5人</span></div>
+                                <div>可预约：<span class="val">16人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">15:00 - 16:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">5人</span></div>
+                                <div>可预约：<span class="val">13人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">16:00 - 17:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">9人</span></div>
+                                <div>可预约：<span class="val">11人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">17:00 - 18:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">7人</span></div>
+                                <div>可预约：<span class="val">13人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd unclickable" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">18:00 - 19:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">2人</span></div>
+                                <div>可预约：<span class="val">18人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">19:00 - 20:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">6人</span></div>
+                                <div>可预约：<span class="val">14人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">20:00 - 21:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">4人</span></div>
+                                <div>可预约：<span class="val">12人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ttd" val="12">
+                            <div class="cowl cowl1">
+                                <div>
+                                    <span>时间：</span><span class="val">21:00 - 22:00</span>
+                                </div>
+                                <div>
+                                    <span>价格：</span><span class="val">￥98</span>
+                                </div>
+                            </div>
+                            <div class="cowl cowl2">
+                                <div>已预约：<span class="val">5人</span></div>
+                                <div>可预约：<span class="val">13人</span></div>
+                                <div class="fullbook">已约满</div>
+                            </div>
+                            <div class="cowl cks">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="jbxc-tip">
+                若希望<strong>结伴学车</strong>，可以每人购买一小时然后一起去训练场找教练说明情况。
+            </div>
+        </div>
+
+        @*<a href="p10-1_zhifuqueren.html" class="btidiom" id="wxpaybtn">
+            <i class="fa fa-weixin"></i> 支付350元 <span class="sce">（8月15日 19:00-20:00, 21:00-22:00）</span>
+        </a>*@
+
+    <a href="/student/enter" class="btidiom up">
+        <i class="fa fa-angle-right"></i> 立即报名去
+    </a>
+<!--
+    作者：vincedotnet@hotmail.com
+    时间：2015-09-17
+    描述：这部分是用于悬浮在头顶的另一个副本
+-->
+<div class="sch-det-blk" id="top-sch-det-blk">
+    <div class="sch-det-blk-itm selected" rel="cd-blkx1"><i class="fa fa-clone"></i> 驾校详情</div>
+    <div class="sch-det-blk-itm mid" rel="cd-blkx2"><i class="fa fa-lightbulb-o"></i> 报名&amp;费用</div>
+    <div class="sch-det-blk-itm" rel="cd-blkx3"><i class="fa fa-calendar-check-o"></i> 约练</div>
+</div>
+
+<div class="clear-15"></div>
+<a href="/home" class="fullbtn normal">返回首页</a>
+<div class="bt-distance"></div>
+<script type="text/javascript">
+	$('document').ready(function(e) {
+		if (imgs_json.length) {
+			// 根据imgs_json的长度和内容循环加载图片
+			$.each(imgs_json, function() {
+				var new_img = $('<div>').addClass('figure');
+				new_img.css('background-image', 'url(' + this.url + ')');
+				$('#cd_mentor_img_slider .swipe-wrap').append(new_img);
+			});
+			// 初始化swipe
+			var slider = Swipe(document.getElementById('cd_mentor_img_slider'), {
+				startSlide: 0,
+				speed: 400,
+				auto: false,
+				continuous: false,
+				disableScroll: false,
+				stopPropagation: false,
+				callback: function(index, elem) {},
+				transitionEnd: function(index, elem) {
+					$('.gl .pgitm.selected').removeClass('selected');
+					$('.gl .pgitm[index="' + index + '"]').addClass('selected');
+				}
+			});
+			// 初始化pager
+			var n = slider.getNumSlides();
+			for (var i = 0; i < n; i++) {
+				var new_pager = $('<div>').addClass('pgitm').attr('index', i);
+				if (i === 0) {
+					new_pager.addClass('selected');
+				}
+				$('.swipe .gl').append(new_pager);
+			}
+		}
+		// 切换头部按钮的悬浮与否
+		var fcs = function() {
+			var ft = $('#fix-sch-det-blk').offset().top;
+			var st = $(window).scrollTop();
+			if (st > ft) {
+				$('#top-sch-det-blk').show();
+				$('#fix-sch-det-blk').css('visibility', 'hidden');
+			} else {
+				$('#top-sch-det-blk').hide();
+				$('#fix-sch-det-blk').css('visibility', 'visible');
+			}
+		};
+		$(window).on('touchend', function() {
+			fcs();
+		});
+		$(window).on('scroll', function() {
+			fcs();
+		});
+		$(window).on('touchmove', function() {
+			fcs();
+		});
+		$('.sch-det-blk-itm').tapA(function() {
+
+			var $this = $(this);
+			var name = $this.attr('rel');
+			$('.sch-det-blk-itm.selected').removeClass('selected');
+			$('.sch-det-blk-itm[rel="' + name + '"]').addClass('selected');
+			$.each($('.cd-bigblk'), function() {
+
+				if ($(this).attr('name') != name) {
+
+					$(this).removeClass('selected');
+
+				} else {
+
+					$(this).addClass('selected');
+
+				}
+
+			});
+
+			if ($('.sch-det-blk-itm[rel="cd-blkx3"]').hasClass('selected')) {
+			    $('#wxpaybtn').removeClass('down').addClass('up');
+			} else {
+			    $('#wxpaybtn').addClass('down').removeClass('up');
+			}
+		});
+		$('.detailddlx-open').tapA(function() {
+			$(this).closest('.cd-bigblk').find('.detailddlx').toggleClass('open');
+			var txt = $(this).text();
+			$(this).text($(this).attr('alt'));
+			$(this).attr('alt', txt);
+		});
+		if ($('.detailddlx').outerHeight() < 300) {
+			$('.detailddlx-open').hide();
+		}
+
+		$('.time-tb .ttd').click(function () {
+		    var $this = $(this).closest('.ttd');
+		    if ($this.hasClass('unclickable')) {
+		        return;
+		    }
+		    $.alertbox({ msg: '抱歉，你你现在还未通过科目一，还不具备约教上路资格，因此无法约教。' })
+		});
+	});
+</script>

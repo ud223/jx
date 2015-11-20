@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+
+<div class="menu-fix">
+    <div class="menu-fix-itm home cd_hottap" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
+    <div class="menu-fix-itm ceshi cd_hottap selected" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
+    <div class="menu-fix-itm me cd_hottap" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
+</div>
+
+
+<a href="#" class="kmp01">
+    <i class="fa fa-crosshairs"></i> 科目一考规
+</a>
+
+<div class="kmbtb">
+    <div class="tr trtop">
+        <div class="td dt1" onclick="location.href='/exam/sequence'">
+            <i class="fa fa-refresh"></i>
+            <div class="tx1">训练习题</div>
+            <div class="tx2">@ViewData["exam_id"].ToString() / @ViewData["count"].ToString()</div>
+        </div>
+        <div class="td dt2" onclick="location.href='/exam/simulate'">
+            <i class="fa fa-graduation-cap"></i>
+            <div class="tx1">模拟测试</div>
+            <div class="tx2">@CommonLib.Common.ConfigReader.Read("Jointesting") 次 @CommonLib.Common.ConfigReader.Read("Passscore", BaseLib.SystemType.Web) 分以上方可报考</div>
+        </div>
+    </div>
+    <div class="tr trbottom">
+        <div class="td dt3" onclick="location.href='/jx/html/pg03articlelist.html'">
+            <i class="fa fa-database"></i>
+            <div class="tx1">学习资料</div>
+            <div class="tx2">各类考前学习资料</div>
+        </div>
+        <div class="td dt4" onclick="location.href='/my/exam'">
+            <i class="fa fa-user"></i>
+            <div class="tx1">我的测试</div>
+            <div class="tx2">模拟考试概况</div>
+        </div>
+    </div>
+</div>
+
+<a class="fullbtn normal" href="/home">返回首页</a>
+<div class="bt-distance"></div>
+
+<!--<div class="list-end-loadmore">
+
+    <span>正在加载更多，请稍候 ...</span>
+
+</div>-->

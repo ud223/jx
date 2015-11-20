@@ -1,0 +1,167 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "角色管理";
+}
+<div class="main-body-relative fix">
+    <div class="fix-wxp">
+        <div class="fix-wxp-toolbar clearfix">
+            <div class="fix-wxp-toolbar-wp">
+                <span class="fix-wxp-toolbar-txt">角色列表</span>
+            </div>
+            <div class="fix-wxp-toolbar-blist">
+                @*<div class="fix-query-input">
+                        <span class="fix-in-search-ico glyphicons glyphicons-search"></span>
+                        <input class="fix-in-search" placeholder="请输入关键字" type="text" />
+                    </div>
+                    <div class="fix-query-box">
+                        <span>高级查询</span>
+                        <span class="halflings halflings-menu-down"></span>
+                    </div>
+                    @*<div class="fix-3d-box">
+                        <span>每页显示</span>
+                        <select>
+                            <option>15</option>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                        <span>条</span>
+                    </div>*@
+            </div>
+            <div class="fix-wxp-toolbar-blist rt">
+
+                <div class="dropdown fix-more-box">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="halflings halflings-option-vertical"></i></a>
+                    <ul class="dropdown-menu fix-more-box-menu l1x">
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-eye-open"></span> &nbsp; 查看</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-duplicate"></span> &nbsp; 合并</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-refresh"></span> &nbsp; 刷新列表</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-open-file"></span> &nbsp; 导出</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="filetypes filetypes-xls unvisibility"></span> &nbsp; 导出Excel</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-print"></span> &nbsp; 打印单据</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-fullscreen"></span> &nbsp; 全屏</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="fix-options-box">
+                    <span class="halflings halflings-trash"></span>
+                    <span>删除选中</span>
+                </div>
+                <div class="fix-options-box">
+                    <span class="halflings halflings-plus"></span>
+                    <a href="/manage/usertype/add"><span>新建</span></a>
+                </div>
+
+            </div>
+        </div>
+        <div class="fix-tb">
+            <div class="fix-tb-ct-b1">
+                <div class="fix-tb-header">
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                <input type="checkbox" />
+                            </div>
+                        </div>*@
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            编号
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            角色名称
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            编辑
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            删除
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fix-tb-ct-b2">
+                <div class="fix-tb-body">
+                    @foreach (var usertype in ViewData["usertypes"] as List<System.Collections.Hashtable>)
+                    {
+                        <div class="fix-tb-body-row">
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td">
+                                        <input type="checkbox" value="" />
+                                    </div>
+                                </div>*@
+                            <div class="fix-tb-body-cell">
+                                <div class="td">@usertype["UserTypeID"].ToString()</div>
+                            </div>
+                            <div class="fix-tb-body-cell wider">
+                                <div class="td">@usertype["UserTypeText"].ToString()</div>
+                            </div>
+                            <div class="fix-tb-body-cell">
+                                <div class="td"><a href="/manage/usertype/edit/@usertype["UserTypeID"].ToString()">编辑</a></div>
+                            </div>
+                            <div class="fix-tb-body-cell">
+                                <div class="td"><a class="item-delete" onclick="return confirm('确定删除?');" href="/manage/usertype/delete/@usertype["UserTypeID"].ToString()/1">删除</a></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="fix-tb-ct-pager">
+                <div class="fw1">
+                    <span class="s1">共</span>
+                    <span class="s2">3</span>
+                    <span class="s3">条记录</span>
+
+
+                    <span class="s4 halflings halflings-step-backward"></span>
+                    <span class="s5 halflings halflings-backward"></span>
+                    <input type="text" class="s6" value="5" />
+                    <span class="s7">/</span>
+                    <span class="s8">7</span>
+                    <span class="s9 halflings halflings-forward"></span>
+                    <span class="s10 halflings halflings-step-forward"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".nano").nanoScroller();
+		$.readjustWidth();
+		$(window).resize(function(){
+			$.readjustWidth();
+        });
+
+		$(".fix-tb-ct-b2").scroll(function(e) {
+            var slt = $(".fix-tb-ct-b2").scrollLeft();
+			$(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+        });
+    });
+</script>

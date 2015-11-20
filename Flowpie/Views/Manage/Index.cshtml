@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "驾校后台管理";
+}
+
+
+<div class="main-body-relative relative">
+
+</div>
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".nano").nanoScroller();
+		$.readjustWidth();
+		$(window).resize(function() {
+			$.readjustWidth();
+		});
+		$(".fix-tb-ct-b2").scroll(function(e) {
+			var slt = $(".fix-tb-ct-b2").scrollLeft();
+			$(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+		});
+		$('.mytabs a').click(function(e) {
+			e.preventDefault()
+			$(this).tab('show')
+		})
+	});
+</script>

@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@ViewBag.Title</title>
+    <!-- Bootstrap -->
+    @Styles.Render("~/statics/jx/css/all")
+    @Scripts.Render("~/statics/jx/js/all")
+</head>
+<body ontouchstart="">
+    <!-- $.waiting()（START） -->
+    <div class="rotatedivwrapper">
+        <div class="rotatediv"></div>
+        <div class="msg"></div>
+    </div>
+    <!-- $.waiting()（END） -->
+    @RenderBody()
+    
+    <script type="text/javascript">
+		$('document').ready(function() {
+		    //if (validEnvironment() == 0 && page_type != 3) {
+		    //    location.href = "/about";
+		    //}
+
+		    //if (page_type == 1) {
+		        //userLogin();
+		    //}
+
+		});
+        
+        @RenderSection("JsScript", required: false)
+    </script>
+</body>
+
+</html>

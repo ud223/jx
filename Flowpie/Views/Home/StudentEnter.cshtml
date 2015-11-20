@@ -1,0 +1,177 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<span class="p14-t01 tc">
+    报名学校： 深大驾校
+</span>
+<form id="student-submit" action="/student/enter/save" method="post">
+<div class="blackrowgall">
+    <div class="row gjvalid" valid="require" validmsg="请填写您的姓名">
+        <span class="tt">姓名</span>
+        <input placeholder="请填写真实姓名" type="text" id="Name" name="Name" class="holder" />
+    </div>
+    <div class="row actbtn cd-slideoutbtn gjvalid" valid="mobile" validmsg="请填写正确的手机号码" rel="#pp-change-tel">
+        <span class="tt">手机</span>
+        <div class="holder arr">
+            <span id="student_phone"></span>
+            <span>点击设置</span>
+            <i class="icoin fa fa-angle-right"></i>
+        </div>
+        <input type="hidden" id="Phone" name="Phone" value="">
+    </div>
+    <div class="row actbtn">
+        <span class="tt">性别</span>
+        <div class="holder">
+            <span>
+                <input type="radio" id="p14-male" name="Sex" value="1" /><label for="p14-male">男</label>
+                &nbsp;&nbsp;
+                <input type="radio" id="p14-female" name="Sex" value="2" /><label for="p14-female">女</label>
+            </span>
+        </div>
+    </div>
+    <!--生日由身份证生成-->
+    <input id="Birthday" name="Birthday" type="hidden" />
+    <div class="row gjvalid" valid="id" validmsg="请填写正确身份证号码">
+        <span class="tt">身份证号码</span>
+        <input placeholder="填写正确身份证号码" id="Code" name="Code" value="" type="text" class="holder" />
+    </div>
+    <div class="row gjvalid" valid="require" validmsg="请填写身份证所在地">
+        <span class="tt">身份证所在地</span>
+        <input placeholder="身份证所在地（城市）" id="Place" name="Place" value="" type="text" class="holder" />
+    </div>
+    <div class="row">
+        <span class="tt">驾照类型</span>
+        <div class="holder">
+            <select id="LicenseTypeID" name="LicenseTypeID" class="">
+                <option value="1">C1手动</option>
+                <option value="2">C2自动</option>
+            </select>
+        </div>
+    </div>
+    <div class="row gjvalid" valid="email" validmsg="请填写正确邮箱">
+        <span class="tt">邮箱</span>
+        <input placeholder="请填写常用邮箱" id="Email" name="Email" value="" type="text" class="holder" />
+    </div>
+    <div class="row gjvalid" valid="number" validmsg="请填写正确QQ号">
+        <span class="tt">QQ</span>
+        <input placeholder="请填写QQ" id="Qq" name="Qq" value="" type="text" class="holder" />
+    </div>
+</div>
+
+
+<div class="clear-15"></div>
+<span class="fullbtn submit">确认提交</span>
+<div class="bt-distance"></div>
+
+<div class="slidepopup cd-slidepopup" id="pp-change-tel">
+    <div class="tt">请输入您的号码<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
+    <div class="blackrowgall">
+        <div class="row">
+            <input id="send_no" placeholder="请填写手机号码" type="tel" maxlength="11" value="" class="fulltxtinput">
+            <button id="sendvalcodbt" type="button" class="sendvalcodbt">发送验证码</button>
+        </div>
+        <div class="row">
+            <input id="val_code" placeholder="验证码" type="tel" maxlength="11" class="fulltxtinput">
+        </div>
+    </div>
+    <div class="clear-15"></div>
+    <div id="validate_code" type="button" class="fullbtn">
+        确认
+    </div>
+</div>
+<input type="hidden" id="rand_code">
+</form>
+<script type="text/javascript">
+    $('document').ready(function () {
+        
+
+
+	    var licenseType = localStorage.getItem('licenseType');
+
+	    $('#LicenseType').val(licenseType);
+
+	    $('.submit').tapA(function () {
+	        var code = $('#Code').val();
+
+	        var birthday = getBirthByCode(code);
+	        $("#Birthday").val(birthday);
+            
+	        var validResult = $.gjvalidator();
+	        console.log(validResult.msg);
+	        if (validResult.result) {
+	            $('#student-submit').submit();
+	        } else {
+	            $.toastMsg(validResult.msg);
+	        }
+	        
+	    })
+
+	    $('#sendvalcodbt').tapA(function () {
+	        var mobile_no = $('#send_no').val();
+
+	        if (!mobile_no || mobile_no.length != 11) {
+	            alert("请输入正确的手机号码!");
+
+	            return;
+	        }
+
+	        var params = {
+	            url: "/api/tools/sendsms",
+	            data: { 'mobile': mobile_no },
+	            successFun: successFun,
+	            errorFun: errorFun
+	        }
+
+	        ajaxTo(params);
+
+	        //is_count = true;
+	        countDown(this);
+	    })
+
+	    $('#validate_code').tapA(function () {
+	        var code = $("#rand_code").val();
+
+	        var tmp_code = $("#val_code").val();
+
+	        if (!tmp_code) {
+	            alert('请先验证验证码!');
+
+	            return;
+	        }
+	        if (code != tmp_code) {
+	            if (code.indexOf(tmp_code) == -1) {
+	                alert("验证码不正确!");
+
+	                return;
+	            }
+	        }
+	        
+	        var mobile_no = $('#send_no').val();
+
+	        $('#student_phone').html(mobile_no);
+	        $('#Phone').val(mobile_no);
+            //验证成功后清空缓存
+	        $("#rand_code").val('');
+
+	        closePopup($("#pp-change-tel").find('.cd-slidepopupback'));
+	    })
+	});
+
+	function successFun(data) {
+	    var code = $("#rand_code").val();
+	    //alert(data.data);
+	    if (!code)
+	        code = data.data;
+        else
+	        code = code + "|" + data.data;
+
+	    $("#rand_code").val(code);
+	}
+
+	function errorFun(data) {
+	    alert(data.message);
+	}
+</script>

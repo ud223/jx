@@ -1,0 +1,245 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+    <!--底部menu-->
+    <div class="menu-fix">
+        <div class="menu-fix-itm home cd_hottap" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
+        <div class="menu-fix-itm ceshi cd_hottap" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
+        <div class="menu-fix-itm me cd_hottap selected" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
+    </div>
+
+    @*<div class="p10-head-warning" id="didntsettel">
+        您还没有填写基本信息，前往设置
+    </div>*@
+    <div class="p10-t02">
+        @*<i class="fa fa-camera"></i>*@
+        <img src="@if (ViewData["data"] != null) {
+            var item = ViewData["data"] as System.Collections.Hashtable;
+
+            @item["HeadPic"].ToString();
+        }" class="usrgmi" />
+<div class="p10-t03">@if (ViewData["data"] != null)
+{
+    var item = ViewData["data"] as System.Collections.Hashtable;
+
+    @item["NickName"].ToString();
+}</div>
+    </div>
+
+
+    <div class="blackrowgall unclickable nmt">
+        @*<div class="row height">
+            <span class="tt blue">当前学车进度</span>
+            <a href="#" class="kejindu-all">查看全部进度</a>
+        </div>*@
+        <div class="row">
+            <div class="p10-cnitb" style="display:none">
+                <div class="tr">
+                    <div class="td">报名驾校：</div>
+                    <div class="td"><a href="/school/detail/1" style="text-decoration: underline;color:#3987D5;">深大驾校</a></div>
+                </div>
+            </div>
+            <a href="/exam/menu" class="fullbtn">科目一考题</a>
+            @*<div class="kejindu-dabk doing">
+                <div class="kejindu-tt">科目二 <i class="fa fa-play-circle mwoi-label">学习中</i></div>
+                <div class="kejindu-bieio">
+                    <div class="kejindu-tb">
+                        <div class="kejindu-td col1">1. 倒车入库</div>
+                        <div class="kejindu-td col2">
+                            <div>
+                                <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i>
+                            </div>
+                            <div>
+                                已完成4次训练
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kejindu-tb">
+                        <div class="kejindu-td col1">2. 出库，入库</div>
+                        <div class="kejindu-td col2">
+                            <div>
+                                <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i>
+                            </div>
+                            <div>
+                                已完成5次训练
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kejindu-tb">
+                        <div class="kejindu-td col1">3. 上坡起步</div>
+                        <div class="kejindu-td col2">
+                            <div>
+                                暂未训练
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    
+                        作者：
+                        时间：2015-09-19
+                        描述：下方3个按钮，代表了考前集训的不同阶段，后面2个span只是状态显示，无法点击<br />
+                        理论上同一时刻只能出现一个，请酌情切换显示。
+                    
+                    <a href="p10_yuejiao.html" class="fullbtn jixun yj">约教</a>
+                    <a href="p09-1_jixunshenqing.html" class="fullbtn jixun lightgray">考前集训报名</a>
+                    <span class="fullbtn jixun waiting">考前集训报名已提交，正在分配教练</span>
+                    <span class="fullbtn jixun bookinged">已预约考前集训，日期：2015.12.15</span>
+                </div>
+            </div>*@
+
+        </div>
+    </div>
+
+    <!--
+        作者：
+        时间：2015-09-19
+        描述：此处“报名驾校”按钮和前面的“当前进度”以及下方的“约教练”部分互斥，
+        只有没有报名的用户才出现此按钮，且不出现“当前进度部分”和“约教练”
+        反之则互斥展示
+    -->
+    <div class="clear-15"></div>
+    @*<a href="p13_baoming.html" class="fullbtn">报名驾校</a>*@
+
+    <!--此处若没有钱，则隐藏-->
+    @*<div class="blackrowgall unclickable">
+        <div class="row actbtn">
+            <span class="tt">账户余额</span>
+            <div class="holder">
+                <span>0元</span>
+            </div>
+        </div>
+    </div>*@
+
+    @*<div class="blackrowgall">
+        <div class="row actbtn cd-slideoutbtn" rel="#pp-change-name">
+            <span class="tt">真实姓名</span>
+            <div class="holder arr">
+                <span>@if (ViewData["data"] != null)
+                {
+                    var user = ViewData["data"] as System.Collections.Hashtable;
+
+                    @user["Name"].ToString();
+                }</span>
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+        <div class="row actbtn cd-slideoutbtn" id="pp-change-tel-btn" rel="#pp-change-tel">
+            <span class="tt">手机</span>
+            <div class="holder arr">
+                <span>@if (ViewData["data"] != null)
+                {
+                    var user = ViewData["data"] as System.Collections.Hashtable;
+
+                    @user["Phone"].ToString();
+                }</span>
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+        <div class="row actbtn cd-slideoutbtn" rel="#pp-change-id">
+            <span class="tt">身份证号</span>
+            <div class="holder arr">
+                <span>@if (ViewData["data"] != null)
+                {
+                    var user = ViewData["data"] as System.Collections.Hashtable;
+
+                    @user["Code"].ToString();
+                }</span>
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="blackrowgall">
+        @*<div class="row actbtn cd_hottap height" hottap="p17_order.html">
+            <span class="tt">我的订单</span>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+        <div class="row actbtn cd_hottap height" hottap="p18_jilu.html">
+            <span class="tt">我的学车记录</span>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+        <div class="row actbtn cd_hottap height" hottap="p09_jindu.html">
+            <span class="tt">我的学车进度</span>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>*@
+        <div class="row actbtn cd_hottap height" hottap="/my/coupon">
+            <span class="tt">优惠券</span>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+        <div class="row actbtn cd_hottap height" hottap="/my/message">
+            <span class="tt">我的消息</span>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+    </div>
+
+
+    @*<div class="clear-15"></div>
+    <a href="p19_tousu.html" class="fullbtn normal">投诉和建议</a>
+
+    <div class="bt-distance"></div>
+
+    <div class="slidepopup cd-slidepopup" id="pp-change-name">
+        <div class="tt">更改真实姓名<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
+        <div class="blackrowgall">
+            <div class="row">
+                <input placeholder="请填写" type="text" maxlength="11" value="张三丰" class="fulltxtinput" />
+            </div>
+        </div>
+        <div class="clear-15"></div>
+        <div class="fullbtn">
+            确认
+        </div>
+    </div>
+
+    <div class="slidepopup cd-slidepopup" id="pp-change-tel">
+        <div class="tt">请输入您的号码<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
+        <div class="blackrowgall">
+            <div class="row">
+                <input placeholder="请填写手机号码" type="tel" maxlength="11" value="18923833647" class="fulltxtinput" />
+                <button class="sendvalcodbt">发送验证码</button>
+            </div>
+            <div class="row">
+                <input placeholder="验证码" type="tel" maxlength="11" class="fulltxtinput" />
+            </div>
+        </div>
+        <div class="clear-15"></div>
+        <div class="fullbtn">
+            确认
+        </div>
+    </div>
+
+    <div class="slidepopup cd-slidepopup" id="pp-change-id">
+        <div class="tt">更改身份证号码<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
+        <div class="blackrowgall">
+            <div class="row">
+                <input placeholder="请填写身份证号码" type="text" value="" class="fulltxtinput" />
+            </div>
+        </div>
+        <div class="clear-15"></div>
+        <div class="fullbtn">
+            确认
+        </div>*@
+    </div>
+<div class="bt-distance"></div>
+    <script type="text/javascript">
+			$('document').ready(function() {
+				$('#didntsettel').tapA(function(){
+					$('#pp-change-tel-btn').tapA();
+				});
+			});
+    </script>

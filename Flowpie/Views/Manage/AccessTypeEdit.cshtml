@@ -1,0 +1,89 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<form action="/manage/accesstype/save" method="post">
+    <div class="main-body-relative relative">
+        <div class="cko-wp">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs mytabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ts-info" aria-controls="ts-info" role="tab" data-toggle="tab">访问类型信息</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tab-kiki-ct">
+                <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>@ViewData["title"].ToString()</span>
+                            <button class="downbtn-normal down"></button>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">访问类型</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="AccessTypeText" name="AccessTypeText" value="@if (ViewData["accesstype"] != null) {
+                                            var accesstype = ViewData["accesstype"] as System.Collections.Hashtable;
+
+                                            @accesstype["AccessTypeText"].ToString();
+                                        }" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bt-btn-bar">
+                        <input type="hidden" id="AccessTypeID" name="AccessTypeID" value="@if (ViewData["accesstype"] != null) {
+                                            var accesstype = ViewData["accesstype"] as System.Collections.Hashtable;
+
+                                            @accesstype["AccessTypeID"].ToString();
+                                        }">
+                        <button type="submit" class="btn btn-success glyphicons glyphicons-disk-saved" style="height:40px">保存修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- /container -->
+<script type="text/javascript">
+        //<span class=""></span>
+        $(document).ready(function () {
+            $(".nano").nanoScroller();
+            $.readjustWidth();
+            $(window).resize(function () {
+                $.readjustWidth();
+            });
+            $(".fix-tb-ct-b2").scroll(function (e) {
+                var slt = $(".fix-tb-ct-b2").scrollLeft();
+                $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+            });
+            $('.mytabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+
+            $('#datepicker01').datetimepicker({
+                minView: 2,
+                startView: 3,
+                weekStart: 1,
+                format: 'yyyy/mm/dd',
+                autoclose: true
+            });
+            $('#datepicker02').datetimepicker({
+                minView: 2,
+                language: 'en',
+                format: 'yyyy/mm/dd'
+            });
+            $('#datepicker03').datetimepicker({
+                minView: 2,
+                language: 'en',
+                format: 'yyyy/mm/dd',
+                todayBtn: 'linked',
+                initialDate: new Date('2010/1/1')
+            });
+        });
+</script>

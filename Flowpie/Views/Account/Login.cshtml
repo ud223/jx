@@ -1,0 +1,253 @@
+﻿@*@{
+    Layout = "~/Views/Shared/_LoginPartial.cshtml";
+}
+@{
+    ViewBag.Title = "Login";
+}
+<!-- BEGIN LOGIN -->
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    <form class="form-vertical login-form" action="index.html">
+        <h3 class="form-title">登录您的帐号管理主界面</h3>
+        <div class="alert alert-error hide">
+            <button class="close" data-dismiss="alert"></button>
+            <span>Enter any username and password.</span>
+        </div>
+        <div class="control-group">
+            <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+            <label class="control-label visible-ie8 visible-ie9">用户名</label>
+            <div class="controls">
+                <div class="input-icon left">
+                    <i class="icon-user"></i>
+                    <input class="m-wrap placeholder-no-fix" type="text" placeholder="用户名" name="username" />
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label visible-ie8 visible-ie9">密码</label>
+            <div class="controls">
+                <div class="input-icon left">
+                    <i class="icon-lock"></i>
+                    <input class="m-wrap placeholder-no-fix" type="password" placeholder="密码" name="password" />
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <label class="checkbox">
+                <input type="checkbox" name="remember" value="1" /> Remember me
+            </label>
+            <button type="submit" class="btn green pull-right">
+                登录 <i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        </div>
+        <div class="forget-password">
+            <h4>忘记自己密码 ?</h4>
+            <p>
+                请点击 <a href="javascript:;" class="" id="forget-password">这里</a>
+                来初始化登录密码.
+            </p>
+        </div>
+    </form>
+    <!-- END LOGIN FORM -->
+    <!-- BEGIN FORGOT PASSWORD FORM -->
+    <form class="form-vertical forget-form" action="index.html">
+        <h3 class="">忘记密码 ?</h3>
+        <p>请输入您的注册电子邮箱来初始化您的密码.</p>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-icon left">
+                    <i class="icon-envelope"></i>
+                    <input class="m-wrap placeholder-no-fix" type="text" placeholder="注册电子邮箱" name="email" />
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" id="back-btn" class="btn">
+                <i class="m-icon-swapleft"></i> 返回登录
+            </button>
+            <button type="submit" class="btn green pull-right">
+                提交申请 <i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        </div>
+    </form>
+    <!-- END FORGOT PASSWORD FORM -->
+</div>
+<!-- END LOGIN -->*@
+
+@model Flowpie.Models.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<style>
+    .sign-up-now {
+        display: block;
+        padding: 10px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        -ms-border-radius: 6px;
+        -o-border-radius: 6px;
+        border-radius: 6px;
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 rgba(255, 255, 255, 0.5);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 rgba(255, 255, 255, 0.5);
+        -ms-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 rgba(255, 255, 255, 0.5);
+        -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 rgba(255, 255, 255, 0.5);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(14, 41, 57, 0.1);
+        color: #455b67;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        color: #999;
+    }
+
+        .sign-up-now:hover {
+            color: #333;
+        }
+
+    .sign-in-now {
+        height: 42px;
+        width: 100%;
+    }
+
+    .sign-txt {
+        border: 1px solid #aaa !important;
+        border-radius: 4px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        height: 42px !important;
+        line-height: 42px !important;
+        padding: 0 15px !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1) !important;
+        background: #FBFBFB !important;
+        outline: none;
+        font-weight: bold;
+    }
+
+        .sign-txt:focus,
+        .sign-txt:hover {
+            background: #FFF !important;
+        }
+
+        .sign-txt:focus {
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2) !important;
+        }
+
+    .sign-ttx {
+        text-shadow: 0 1px 1px rgba(255, 255, 255, .75);
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        margin-top: 50px;
+    }
+
+        .sign-ttx .xxtt {
+            font-family: georgia;
+        }
+
+        .sign-ttx .xxtt2 {
+            font-weight: lighter;
+            color: #aaa;
+            font-size: 14px;
+            text-align: center;
+        }
+
+    .sign-bbct {
+        margin: auto;
+        width: 320px;
+    }
+
+        .sign-bbct .miwio9 {
+            box-shadow: 0 0 0 1px rgba(14, 41, 57, 0.12), 0 2px 5px rgba(14, 41, 57, 0.44), inset 0 -1px 2px rgba(14, 41, 57, 0.15);
+            background: linear-gradient(#fff, #f2f6f9);
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+            .sign-bbct .miwio9 .ct {
+                padding: 20px 20px 30px 20px;
+            }
+
+        .sign-bbct .px001 {
+            text-align: center;
+        }
+
+        .sign-bbct .px002 {
+            font-size: 14px;
+            font-family: Gotham A;
+            display: inline-block;
+            padding-bottom: 8px;
+            padding-top: 5px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0,0,0,.05);
+            font-weight: 500;
+        }
+
+        .sign-bbct .px003 {
+            margin-bottom: 15px;
+        }
+
+    .sign-remember-me-txt {
+        margin-left: 5px;
+        font-size: 12px;
+        float: left;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    #sign-remember-me {
+        float: left;
+        margin-top: 2px;
+        cursor: pointer;
+    }
+</style>
+<div>
+    <div class="sign-ttx">
+        <div class="xxtt"><img src="/img/plogo.png" width="100" /></div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="sign-bbct">
+            <div class="miwio9">
+                <div class="ct">
+                    <div class="px001">
+                        <span class="px002">Welcome!</span>
+                    </div>
+                    <div class="px003">
+                        <input type="text" id="name" name="name" class="sign-txt" placeholder="用户名" />
+                        @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "input", @placeholder = "用户名" } })
+                        @Html.ValidationMessageFor(model => model.UserName)*@
+                    </div>
+                    <div class="px003">
+                        <input type="password" id="password" name="password" class="sign-txt" placeholder="密码" />
+                        @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "input", @placeholder = "密码" } })
+                        @Html.ValidationMessageFor(model => model.Password)*@
+                    </div>
+                    @*<div class="px003 clearfix">
+                            <input type="checkbox" id="sign-remember-me" checked="checked" /><label class="sign-remember-me-txt" for="sign-remember-me">30天内自动登录</label>
+                        </div>*@
+                    <div>
+                        <button type="submit" class="btn btn-primary sign-in-now">登录</button>
+                    </div>
+                </div>
+            </div>
+
+            @*<a href="#" class="sign-up-now">
+                    忘记密码？现在找回
+                </a>*@
+        </div>
+    }
+</div>
+
+
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function(){
+
+	});
+</script>

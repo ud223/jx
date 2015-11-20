@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<style>
+    .bhie {
+        text-align:center;
+        padding:30px 15px;
+        font-size:25px;
+    }
+</style>
+<div class="main-body-relative relative">
+    @{
+        int result = Int32.Parse(ViewData["data"].ToString());
+        switch (result)
+        {
+            case -1:
+                <div class="bhie error">
+                    抱歉，该验证码无效
+                </div>
+                break;
+            case 0:
+                <div class="bhie error">
+                    该验证码已经使用过，无法重复使用
+                </div>
+                break;
+            case 1:
+                <div class="bhie error">
+                    成功使用该优惠券，请在收款时等额抵款
+                </div>
+                break;
+            default:
+                break;
+        }
+    }
+    <div style="text-align:center;">
+        <a href="/manage/use/coupon" class="btn btn-primary">返回</a>
+    </div>
+</div>

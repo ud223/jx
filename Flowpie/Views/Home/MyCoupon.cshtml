@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+<!--页面标题部分  #f6ba48  -->
+<div class="tnav">
+    <!-- 标准的返回箭头 -->
+    <a class="fa fa-angle-left" href="/my/index"></a>
+    <span>我的优惠券</span>
+</div>
+<!--  推着下方往下的占位块  -->
+<div class="clear-65"></div>
+
+<!--
+    时间：2015-09-27
+    描述：内容区间（START）
+-->
+
+<div class="jiluitms">
+    @foreach (var item in ViewData["data"] as List<System.Collections.Hashtable>)
+    {
+        if (item["IsUse"].ToString() == "0")
+        {
+            <div class="jiluitm bb un-use-300q">
+                <div class="msg">@item["CouponText"].ToString()</div>
+                <div class="time"><span class="wmp">可使用</span></div>
+                <div class="jxqmio"><sup>￥</sup> <span>@item["Amount"].ToString()</span> <sub>元</sub></div>
+                <span>@item["Password"].ToString()</span>
+            </div>
+        }
+        else
+        {
+            <div class="jiluitm bb is-use">
+                <div class="msg">@item["CouponText"].ToString()</div>
+                <div class="time"><span class="wmp">已使用</span></div>
+                <div class="jxqmio"><sup>￥</sup> <span>@item["Amount"].ToString()</span> <sub>元</sub></div>
+                <span>@item["Password"].ToString()</span>
+            </div>
+        }
+    }
+    <style>
+        .aidi {
+            background:#d2ffda;
+        }
+    </style>
+    <div class="jiluitm bb aidi">
+        <div class="msg">98元学车体验券</div>
+        <div class="time"><span class="wmp">可使用</span></div>
+        <div class="jxqmio"><sup>￥</sup> <span>98</span> <sub>元</sub></div>
+    </div>
+    @*<div class="jiluitm bb aidi">
+        <div class="msg">98元学车体验券</div>
+        <div class="time"><span class="wmp">可使用</span></div>
+        <div class="jxqmio"><sup>￥</sup> <span>98</span> <sub>元</sub></div>
+    </div>
+    <div class="jiluitm bb trid">
+        <div class="msg">300元学车券</div>
+        <div class="time"><span class="wmp">可使用</span></div>
+        <div class="expired">11月18日 至 12月18日 有效</div>
+        <div class="jxqmio"><sup>￥</sup> <span>300</span> <sub>元</sub></div>
+    </div>*@
+    <!--<div class="jiluitm bb disabled">
+
+        <div class="msg">迎五一大优惠</div>
+
+        <div class="time"><span class="wmp">已使用</span></div>
+
+        <div class="jxqmio"><sup>￥</sup> <span>500</span> <sub>元</sub></div>
+
+        <button class="w-btn rubit">作废</button>
+
+    </div>-->
+</div>
+<div class="clear-15"></div>
+<a class="fullbtn normal" href="/my/index">返回</a>
+<div class="bt-distance"></div>
+<script>
+			$('document').ready(function() {
+				$('.aidi').click(function(){
+					$.alertbox({msg: '本优惠券可在科目二，科目三约考时直接在线抵扣现金98元'});
+				});
+				$('.un-use-300q').click(function () {
+				    $.alertbox({ msg: '本优惠券可在报名深大驾校时直接抵扣现金300元' });
+				});
+				$('.is-use').click(function () {
+				    $.alertbox({ msg: '本代金券已经被使用' });
+				});
+			});
+</script>

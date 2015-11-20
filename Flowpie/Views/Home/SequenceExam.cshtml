@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<!--习题插入的div，id最好不要弄错-->
+<div id="cd-xiti"></div>
+<div class="clear-20"></div>
+<a style="margin:30px 0 50px 0" onclick="return confirm('确定要退出训练？');" href="/exam/menu" class="fullbtn normal">退出训练</a>
+<div class="bt-distance"></div>
+<script>
+    // 临时使用的测试数据(可以删除)， 服务端返回值请按此格式
+    var testing = [];//Html.Raw(ViewData["exams"].ToString())
+
+    function sequenceLog(id) {
+        var user_id = localStorage.getItem('user_id');
+
+        var params = {
+            url: "/api/Exam/ExamRecord",
+            data: { 'StudentID': user_id, 'ExamID': id }
+        }
+
+        ajaxTo(params);
+    }
+
+    function errorLog(id) {
+        var user_id = localStorage.getItem('user_id');
+
+        var params = {
+            url: "/api/Exam/ErrorRecord",
+            data: { 'StudentID': user_id, 'ExamID': id, 'OptTypeID': 2 }
+        }
+
+        ajaxTo(params);
+    }
+
+    
+
+    $('document').ready(function () {
+        // 初始化
+        var index = '@ViewData["index"].ToString()';
+
+        getExam(index);
+    });
+</script>

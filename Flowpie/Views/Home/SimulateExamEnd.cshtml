@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<div class="km-timeoutblk">
+    时间到
+</div>
+
+<div class="km-kaoshijg success">
+    <div class="ct">
+        <i class="kaoshijieguo fa fa-smile-o"></i>
+        <div class="txt">恭喜！通过本次模拟测试</div>
+        <div class="txt2">本次得分 <span class="score"></span></div>
+    </div>
+</div>
+
+<div class="km-kaoshijg fail">
+    <div class="ct">
+        <i class="kaoshijieguo fa fa-frown-o"></i>
+        <div class="txt">遗憾，未能通过本次模拟测试</div>
+        <div class="txt2">本次得分 <span class="score"></span></div>
+    </div>
+</div>
+<div class="clear-15"></div>
+<a href="/exam/simulate" class="km-regtesting fullbtn"><i class="fa fa-refresh"></i> 再测一次</a>
+<div class="kmbtb">
+    <div class="tr trtop">
+        <div class="td dt1" onclick="location.href='/exam/sequence'">
+            <i class="fa fa-refresh"></i>
+            <div class="tx1">训练习题</div>
+            <div class="tx2">@ViewData["exam_id"].ToString() / @ViewData["count"].ToString()</div>
+        </div>
+        <div class="td dt2" onclick="location.href='/exam/simulate'">
+            <i class="fa fa-graduation-cap"></i>
+            <div class="tx1">模拟测试</div>
+            <div class="tx2">@CommonLib.Common.ConfigReader.Read("Jointesting") 次 @CommonLib.Common.ConfigReader.Read("Passscore") 分以上方可报考</div>
+        </div>
+    </div>
+    <div class="tr trbottom">
+        <div class="td dt3" onclick="location.href='/jx/html/pg03articlelist.html'">
+            <i class="fa fa-database"></i>
+            <div class="tx1">学习资料</div>
+            <div class="tx2">各类考前学习资料</div>
+        </div>
+        <div class="td dt4" onclick="location.href='/my/exam'">
+            <i class="fa fa-user"></i>
+            <div class="tx1">我的测试</div>
+            <div class="tx2">模拟考试概况</div>
+        </div>
+    </div>
+</div>
+<div class="bt-distance"></div>
+<script type="text/javascript">
+	$('document').ready(function() {
+		// 合格分数线
+	    var PASSSCORE = "@CommonLib.Common.ConfigReader.Read("Passscore")";
+		var correct = getQueryStringByName('correct');
+		$('.km-kaoshijg .score').html(correct);
+		var total = getQueryStringByName('total');
+		var timeout = getQueryStringByName('timeout');
+		if(timeout) {
+			$('.km-timeoutblk').slideDown(500);
+		}
+		if(correct >= PASSSCORE) {
+			// 合格
+			$('.km-kaoshijg.success').show();
+		} else {
+			// 不合格
+			$('.km-kaoshijg.fail').show();
+		}
+	});
+</script>

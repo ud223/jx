@@ -1,0 +1,112 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = @ViewData["title"].ToString();
+}
+<!-- $.waiting()（START） -->
+<div class="rotatedivwrapper">
+    <div class="rotatediv"></div>
+    <div class="msg"></div>
+</div>
+<!-- $.waiting()（END） -->
+<div class="km-mnkszhong"></div>
+<div style="padding:0 15px;margin-top:10px;">
+    <a id="exittesting" href="javascript:void(0)" style="display:inline-block;padding:5px 10px;font-size:12px;border-radius:5px;background:#ccc;color:#fff;text-align: center;"><i class="fa fa-power-off"></i> 终止测试</a>
+</div>
+<div class="km-mnks-time">
+    <i class="fa fa-clock-o"></i> &nbsp; <span class="timeval"></span>
+</div>
+<!--习题插入的div，id最好不要弄错-->
+<div id="cd-xiti"></div>
+
+<div class="bt-distance"></div>
+<script type="text/javascript">
+    var exam_id = '@ViewData["exam_id"].ToString()';
+	// 临时使用的测试数据(可以删除)， 服务端返回值请按此格式
+    var testing = [@Html.Raw(ViewData["exams"].ToString())];
+		// 一个临时方法(可以删除)，和testing联用，获取下一个数据项用于测试
+	var getNext = function() {
+		var next = 0;
+		if ($('body').data('current_testing') >= 0) {
+			next = $('body').data('current_testing') + 1;
+			if (next >= testing.length) {
+				// 从头循环
+				next = 0;
+			}
+		}
+		$('body').data('current_testing', next);
+		return next;
+	};
+	var getFormatTimeStr = function(t) {
+		var hour = parseInt(t / 3600);
+		if (hour < 10) {
+			hour = "0" + hour;
+		}
+		var miniute = parseInt((t % 3600) / 60);
+		if (miniute < 10) {
+			miniute = "0" + miniute;
+		}
+		var second = parseInt((t % 3600) % 60);
+		if (second < 10) {
+			second = "0" + second;
+		}
+		return hour + ":" + miniute + ":" + second;
+	};
+	$('document').ready(function() {
+	    // 初始化
+	    var EXAMTYPE = 2; // 模拟考试
+	    initTesting(EXAMTYPE);
+		// 头部时间倒计时
+		var TOTALTIME = @CommonLib.Common.ConfigReader.Read("Examtime") * 60;
+        var timecontainer = $('.km-mnks-time .timeval');
+            timecontainer.text(getFormatTimeStr(TOTALTIME));
+            var starttime = new Date();
+		$('body').data('starttime', starttime);
+            var sid = setInterval(function() {
+                var currenttime = new Date();
+                var dist = parseInt(currenttime - $('body').data('starttime'));
+                if (dist) {
+                    dist = dist / 1000;
+                }
+                if (dist >= TOTALTIME) {
+                    // 时间到
+                    // 交卷并且在返回的时候跳转
+                    // 跳转的url里面带上正确题目的数字和题目总数用于下一页的展示
+                    $.waiting('时间到');
+                    clearInterval($('body').data('sid'));
+                    var score = $('#cd-mnks-score').val();
+                    location.href = '/exam/simulate/end?correct=' + score + '&&timeout=1';//'t05_monikaoshijieshu.html?correct=' + score + '&&total=100&&timeout=1';+ exam_id
+                }
+                var resttime = TOTALTIME - dist + 1;
+			$('.km-mnks-time .timeval').text(getFormatTimeStr(resttime));
+            }, 1000);
+            $('body').data('sid', sid);
+
+		$('#exittesting').click(function(){
+                if(!confirm('是否确定退出测试？')) {
+                    return false;
+                }
+
+                location.href = '/exam/menu';
+            });
+        });
+
+	function sequenceLog(id) {
+	    var params = {
+	        url: "/api/Exam/TestRecord",
+	        data: { 'StudentID': '', 'SimulateExamID': exam_id }
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function errorLog(id) {
+	    var params = {
+	        url: "/api/Exam/ErrorRecord",
+	        data: { 'StudentID': '', 'ExamID': id, 'OptTypeID': 1 }
+	    }
+
+	    ajaxTo(params);
+	}
+</script>
