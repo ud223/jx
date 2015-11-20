@@ -16,17 +16,18 @@
     </div>*@
     <div class="p10-t02">
         @*<i class="fa fa-camera"></i>*@
-        <img src="@if (ViewData["data"] != null) {
-            var item = ViewData["data"] as System.Collections.Hashtable;
 
-            @item["HeadPic"].ToString();
-        }" class="usrgmi" />
-<div class="p10-t03">@if (ViewData["data"] != null)
-{
-    var item = ViewData["data"] as System.Collections.Hashtable;
-
-    @item["NickName"].ToString();
-}</div>
+        @{ 
+            string headPic = "";
+            string nickName = "";
+            if(ViewData["data"] != null)
+            {
+                headPic = (ViewData["data"] as System.Collections.Hashtable)["HeadPic"].ToString();
+                nickName = (ViewData["data"] as System.Collections.Hashtable)["NickName"].ToString();
+            }
+        }
+        <img src="@headPic" class="usrgmi" />
+        <div class="p10-t03">@nickName</div>
     </div>
 
 
