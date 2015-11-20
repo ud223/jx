@@ -17,6 +17,15 @@
         <div class="msg"></div>
     </div>
     <!-- $.waiting()（END） -->
+
+    <!--底部menu（START）-->
+    <div class="menu-fix">
+        <div class="menu-fix-itm home cd_hottap" id="menu_fix_home" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
+        <div class="menu-fix-itm ceshi cd_hottap" id="menu_fix_ceshi" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
+        <div class="menu-fix-itm me cd_hottap" id="menu_fix_me" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
+    </div>
+    <!--底部menu（END）-->
+
     @RenderBody()
     
     <script type="text/javascript">
@@ -31,7 +40,7 @@
 
 		});
         
-        @RenderSection("JsScript", required: false)
+        @RenderSection("LastScript", required: false)
     </script>
 </body>
 

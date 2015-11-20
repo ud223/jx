@@ -6,10 +6,7 @@
     ViewBag.Title = ViewData["title"];
 }
 
-@section JsScript {
-    
-    
-}
+
 <script type="text/javascript">
 		// 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
 		var imgs_json = [{
@@ -32,12 +29,6 @@
     </div>
 </div>
 
-<!--底部menu-->
-<div class="menu-fix">
-    <div class="menu-fix-itm home cd_hottap selected" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
-    <div class="menu-fix-itm ceshi cd_hottap" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
-    <div class="menu-fix-itm me cd_hottap" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
-</div>
 <style>
     .weitt {
         padding:8px 15px;
@@ -281,5 +272,10 @@
 		}
 
 		
+	});
+
+
+	$('document').ready(function () {
+	    $("#menu_fix_home").addClass('selected');
 	});
 </script>

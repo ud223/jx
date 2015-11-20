@@ -4,16 +4,9 @@
 @{
     ViewBag.Title = ViewData["title"];
 }
-    <!--底部menu-->
-    <div class="menu-fix">
-        <div class="menu-fix-itm home cd_hottap" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
-        <div class="menu-fix-itm ceshi cd_hottap" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
-        <div class="menu-fix-itm me cd_hottap selected" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
-    </div>
+    
 
-    @*<div class="p10-head-warning" id="didntsettel">
-        您还没有填写基本信息，前往设置
-    </div>*@
+    
     <div class="p10-t02">
         @*<i class="fa fa-camera"></i>*@
 
@@ -237,10 +230,17 @@
         </div>*@
     </div>
 <div class="bt-distance"></div>
-    <script type="text/javascript">
-			$('document').ready(function() {
-				$('#didntsettel').tapA(function(){
-					$('#pp-change-tel-btn').tapA();
-				});
-			});
-    </script>
+
+
+<script type="text/javascript">
+	$('document').ready(function() {
+		$('#didntsettel').tapA(function(){
+			$('#pp-change-tel-btn').tapA();
+		});
+	});
+
+	$('document').ready(function () {
+	    $("#menu_fix_me").addClass('selected');
+	});
+
+</script>

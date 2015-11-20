@@ -5,12 +5,6 @@
     ViewBag.Title = @ViewData["title"].ToString();
 }
 
-<div class="menu-fix">
-    <div class="menu-fix-itm home cd_hottap" hottap="/home"><i class="ico"></i><span class="ctxt">云e驾</span></div>
-    <div class="menu-fix-itm ceshi cd_hottap selected" hottap="/exam/menu"><i class="ico"></i><span class="ctxt">驾考宝典</span></div>
-    <div class="menu-fix-itm me cd_hottap" hottap="/my/index"><i class="ico"></i><span class="ctxt">个人中心</span></div>
-</div>
-
 
 <a href="#" class="kmp01">
     <i class="fa fa-crosshairs"></i> 科目一考规
@@ -45,6 +39,12 @@
 
 <a class="fullbtn normal" href="/home">返回首页</a>
 <div class="bt-distance"></div>
+
+<script>
+    $('document').ready(function () {
+        $("#menu_fix_ceshi").addClass('selected');
+    });
+</script>
 
 <!--<div class="list-end-loadmore">
 
