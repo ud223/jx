@@ -4,6 +4,10 @@
 @{
     ViewBag.Title = ViewData["title"];
 }
+
+@*返回菜单*@
+@Html.Partial("BackBanner", new List<string> { "我的消息", CommonLib.Web.WebTool.CDN("/my/index") })
+
 <div class="p16-xeet">
     找到1条记录
 </div>
@@ -17,8 +21,6 @@
     </div>
 </div>
 
-<div class="clear-15"></div>
-<div class="fullbtn normal cd_hottap" hottap="/my/index">返回</div>
 <div class="bt-distance"></div>
 
 <script>

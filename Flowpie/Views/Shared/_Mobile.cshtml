@@ -7,8 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>@ViewBag.Title</title>
     <!-- Bootstrap -->
-    @Styles.Render("~/statics/jx/css/all")
-    @Scripts.Render("~/statics/jx/js/all")
+    @if (CommonLib.Common.ConfigReader.Read("CurrentEnv") == "prod")
+    {
+        string cdnDomain = CommonLib.Common.ConfigReader.Read("CdnDomain");
+        // 生产环境，出现cdn域名
+        @Styles.RenderFormat("<link href=\"" + cdnDomain + "{0}\" type=\"text/css\" rel=\"stylesheet\"/>", "~/statics/jx/css/all")
+        @Scripts.RenderFormat("<script type=\"text/javascript\" src=\"" + cdnDomain + "{0}\"></script>", "~/statics/jx/js/all")
+    }
+    else
+    {
+        // 开发环境，不出现cdn域名
+        @Styles.Render("~/statics/jx/css/all")
+        @Scripts.Render("~/statics/jx/js/all")
+    }
+
+    
 </head>
 <body ontouchstart="">
     <!-- $.waiting()（START） -->

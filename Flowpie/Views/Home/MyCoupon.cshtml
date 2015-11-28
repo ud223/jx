@@ -4,14 +4,10 @@
 @{
     ViewBag.Title = ViewData["title"];
 }
-<!--页面标题部分  #f6ba48  -->
-<div class="tnav">
-    <!-- 标准的返回箭头 -->
-    <a class="fa fa-angle-left" href="/my/index"></a>
-    <span>我的优惠券</span>
-</div>
-<!--  推着下方往下的占位块  -->
-<div class="clear-65"></div>
+
+@*返回菜单*@
+@Html.Partial("BackBanner", new List<string> { "我的优惠券", CommonLib.Web.WebTool.CDN("/my/index") })
+
 
 <!--
     时间：2015-09-27
@@ -73,8 +69,6 @@
 
     </div>-->
 </div>
-<div class="clear-15"></div>
-<a class="fullbtn normal" href="/my/index">返回</a>
 <div class="bt-distance"></div>
 <script>
 			$('document').ready(function() {

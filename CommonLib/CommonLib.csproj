@@ -90,6 +90,7 @@
     <Compile Include="RawSerializer.cs" />
     <Compile Include="TypeIO.cs" />
     <Compile Include="Web\ClientInformations.cs" />
+    <Compile Include="Web\WebTool.cs" />
     <Compile Include="Web\ConfigReader.cs" />
     <Compile Include="Web\IJSONHelper.cs" />
     <Compile Include="Web\JSONFormLoadHelper.cs" />

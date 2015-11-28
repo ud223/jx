@@ -4,33 +4,35 @@
 @{
     ViewBag.Title = ViewData["title"];
 }
-<div class="blackrowgall unclickable nmt km-ksls">
-    <div class="row height">
-        <span class="tt">我的模拟测试成绩</span>
-    </div>
-    
-    @*@foreach (var item in ViewData["data"] as List<System.Collections.Hashtable>)
-    {
-        if (Int32.Parse(item["Score"].ToString()) < Int32.Parse(CommonLib.Common.ConfigReader.Read("Passscore")))
+
+@*返回菜单*@
+@Html.Partial("BackBanner", new List<string> { "我的模拟测试成绩", CommonLib.Web.WebTool.CDN("/exam/menu") })
+
+@*<div class="blackrowgall unclickable nmt km-ksls">
+
+
+    @foreach (var item in ViewData["data"] as List<System.Collections.Hashtable>)
         {
-            <div class="row fail">
-                <span class="tt">@item["CreateAt"]</span>
-                <div class="holder">
-                    <span>@item["Score"].ToString()分 <i class="fa fa-times-circle"></i></span>
+            if (Int32.Parse(item["Score"].ToString()) < Int32.Parse(CommonLib.Common.ConfigReader.Read("Passscore")))
+            {
+                <div class="row fail">
+                    <span class="tt">@item["CreateAt"]</span>
+                    <div class="holder">
+                        <span>@item["Score"].ToString()分 <i class="fa fa-times-circle"></i></span>
+                    </div>
                 </div>
-            </div>
-        }
-        else
-        {
-            <div class="row success">
-                <span class="tt">@item["CreateAt"]</span>
-                <div class="holder">
-                    <span>@item["Score"].ToString()分 <i class="fa fa-check-circle"></i></span>
+            }
+            else
+            {
+                <div class="row success">
+                    <span class="tt">@item["CreateAt"]</span>
+                    <div class="holder">
+                        <span>@item["Score"].ToString()分 <i class="fa fa-check-circle"></i></span>
+                    </div>
                 </div>
-            </div>
+            }
         }
-    }*@
-</div>
+    </div>*@
 
 <div class="km-ppt1">
     <div class="km-ppt2">@ViewData["ok_count"]<span class="km-ppt3">次</span></div>
@@ -64,8 +66,6 @@
 </div>
 
 
-<div class="clear-15"></div>
-<a class="fullbtn normal" href="/exam/menu">返回</a>
 
 <div class="bt-distance"></div>
 <script type="text/javascript">

@@ -581,6 +581,7 @@ p:after {
 	color: #FFF;
 }
 .menu-fix {
+    display:none;
 	position: fixed;
 	left: 0;
 	bottom: 0;
@@ -591,6 +592,9 @@ p:after {
 	box-shadow: 0 0 5px rgba(0, 0, 0, .1);
 	background: #FFF;
 	overflow: hidden;
+}
+.HOMEMENU .menu-fix {
+    display:block;
 }
 .menu-fix-itm {
 	height: 100%;
@@ -3241,4 +3245,19 @@ p:after {
     background:#CCC;
     height:1px;
     margin:10px 0;
+}
+.eibackto {
+    z-index:2;
+    display:block;
+    position:absolute;
+    left:0;
+    top:0;
+    background:rgba(0,0,0,.1);
+    color:#FFF;
+    width:40px;
+    text-shadow:0 1px 3px rgba(0,0,0,.3);
+    height:40px;
+    line-height:40px;
+    text-align:center;
+    font-size:18px;
 }

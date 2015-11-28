@@ -1,0 +1,17 @@
+﻿@*头部返回菜单栏，传送2个参数：标题文字、返回链接地址*@
+
+@model List<string>
+
+
+@{ 
+    string title = Model[0];
+    string url = Model[1];
+}
+<!--页面标题部分  #f6ba48  -->
+<div class="tnav">
+    <!-- 标准的返回箭头 -->
+    <a class="fa fa-angle-left" href="@url"></a>
+    <span class="txt">@title</span>
+</div>
+<!--  推着下方往下的占位块  -->
+<div class="clear-65"></div>

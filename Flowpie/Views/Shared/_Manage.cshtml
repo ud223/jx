@@ -7,9 +7,25 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    @Styles.Render("~/statics/admin/css/all");
-    @Scripts.Render("~/statics/admin/js/all");
+    @*@Styles.Render("~/statics/admin/css/all");
+    @Scripts.Render("~/statics/admin/js/all");*@
+    @if (CommonLib.Common.ConfigReader.Read("CurrentEnv") == "prod")
+    {
+        string cdnDomain = CommonLib.Common.ConfigReader.Read("CdnDomain");
+        // 生产环境，出现cdn域名
+        string stylesUrl = cdnDomain + Styles.Url("~/statics/admin/css/all");
+        string scriptsUrl = cdnDomain + Scripts.Url("~/statics/admin/js/all");
 
+        <link href="@stylesUrl" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="@scriptsUrl"></script>
+        
+    }
+    else
+    {
+        // 开发环境，不出现cdn域名
+        @Styles.Render("~/statics/admin/css/all")
+        @Scripts.Render("~/statics/admin/js/all")
+    }
     <link rel="icon" href="/favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

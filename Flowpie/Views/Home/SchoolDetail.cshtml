@@ -7,19 +7,20 @@
 <script type="text/javascript">
 	// 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
 	var imgs_json = [{
-	    url: '/jx/img/home/p0.jpg'
+	    url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/p0.jpg")'
+    }, {
+        url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/p1.jpg")'
 	}, {
-	    url: '/jx/img/home/p1.jpg'
+	    url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/p2.jpg")'
 	}, {
-        url: '/jx/img/home/p2.jpg'
-	},
-    {
-	    url: '/jx/img/photocase/tpp03.jpg'
+        url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/photocase/tpp03.jpg")'
 	}];
 </script>
 
 <!--此段为滑动多图的html部分，写死在这里-->
 <div class="jiaxiao-bk">
+    <a href="/home" class="fa fa-chevron-left eibackto">
+    </a>
     <!--此处切换红心的样式，前后端一起实现-->
     @*<i class="fa fa-heart-o ltheart"></i>*@
     <div id="cd_mentor_img_slider" class="swipe">
@@ -34,7 +35,7 @@
 </div>
 
 <div class="mentor-intro-blk">
-    <img src="/jx/img/photocase/sdjx-logo.png" class="usrimg" />
+    <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/photocase/sdjx-logo.png")" class="usrimg" />
     <div class="user-tt">
         <!--有认证就有 has_cert这个class-->
         <!--未认证就没有 has_cert这个class， 并且没有下方class="cert"的span-->
@@ -73,8 +74,8 @@
         <div class="dipu2">
             <div class="dipu3">驾校简介</div>
             <div class="detailddlx">
-                <div style="padding:15px 0"><img src="/jx/img/home/jx104.jpg" width="100%" /></div>
-                <div style="padding:0 0 15px 0;"><img src="/jx/img/home/jx105.jpg" width="100%"/></div>
+                <div style="padding:15px 0"><img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/jx104.jpg")" width="100%" /></div>
+                <div style="padding:0 0 15px 0;"><img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/jx105.jpg")" width="100%"/></div>
                 <p style="font-weight:bold;">1.综合班简介：</p>
                 <div style="margin-bottom:15px;">深大驾校成立于1996年，是深圳市内唯一在高校设有驾校训练场地一体化的驾驶培训学校，至今服务深大师生已19年，兢兢业业，勇于创新，服务了一届又一届的深大人。如今，饱含着历史沉淀的深大驾校与“云e驾”互联网品牌强强合作，通过微信端链接学员与教练，颠覆传统驾校学车模式，提升驾考体验，运用互联网技术，实现一人一车一教练，微信下单随时随地预约练车，解决学员预约教练难的难题，减少学员学车的时间和费用成本，推出新型学车模式，专业的互联网技术团队、优质的服务团队、良好的练车环境，打造新型品牌互联网学车平台引领者，做最牛学车驾考联军。</div>
                 <p style="font-weight:bold;">2.深大驾校简介：</p>
@@ -111,7 +112,7 @@
         <div class="dipu2 nbb">
             <div class="dipu3">荣誉证书</div>
             <div class="dipu49n">
-                <img src="/jx/img/home/paib.jpg" class="niimg" />
+                <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/paib.jpg")" class="niimg" />
             </div>
         </div>
     </div>
@@ -233,10 +234,15 @@
                         <!--<div class="cvr"></div>-->
                         <div class="time-day-select">
                             <div class="table">
-                                <div class="td selected">11月16日</div>
-                                <div class="td">11月17日</div>
-                                <div class="td">11月18日</div>
-                                <div class="td">11月19日</div>
+                                <div class="td selected">11月29日</div>
+                                <div class="td">11月30日</div>
+                                <div class="td">12月1日</div>
+                                <div class="td">12月2日</div>
+
+                                @for(int i = 0;i<3;i++)
+                                {
+
+                                }
                             </div>
                         </div>
                     </div>
@@ -247,7 +253,7 @@
                                     <span>时间：</span><span class="val">8:00 - 9:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -265,7 +271,7 @@
                                     <span>时间：</span><span class="val">9:00 - 10:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -283,7 +289,7 @@
                                     <span>时间：</span><span class="val">10:00 - 11:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -301,7 +307,7 @@
                                     <span>时间：</span><span class="val">11:00 - 12:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -319,7 +325,7 @@
                                     <span>时间：</span><span class="val">12:00 - 13:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -337,7 +343,7 @@
                                     <span>时间：</span><span class="val">13:00 - 14:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -355,7 +361,7 @@
                                     <span>时间：</span><span class="val">14:00 - 15:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -373,7 +379,7 @@
                                     <span>时间：</span><span class="val">15:00 - 16:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -391,7 +397,7 @@
                                     <span>时间：</span><span class="val">16:00 - 17:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -409,7 +415,7 @@
                                     <span>时间：</span><span class="val">17:00 - 18:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -427,7 +433,7 @@
                                     <span>时间：</span><span class="val">18:00 - 19:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -445,7 +451,7 @@
                                     <span>时间：</span><span class="val">19:00 - 20:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -463,7 +469,7 @@
                                     <span>时间：</span><span class="val">20:00 - 21:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -481,7 +487,7 @@
                                     <span>时间：</span><span class="val">21:00 - 22:00</span>
                                 </div>
                                 <div>
-                                    <span>价格：</span><span class="val">￥98</span>
+                                    <span>价格：</span><span class="val" style="font-size:12px;">C1 ￥98 C2 ￥118</span>
                                 </div>
                             </div>
                             <div class="cowl cowl2">
@@ -519,8 +525,6 @@
     <div class="sch-det-blk-itm" rel="cd-blkx3"><i class="fa fa-calendar-check-o"></i> 约练</div>
 </div>
 
-<div class="clear-15"></div>
-<a href="/home" class="fullbtn normal">返回首页</a>
 <div class="bt-distance"></div>
 <script type="text/javascript">
 	$('document').ready(function(e) {

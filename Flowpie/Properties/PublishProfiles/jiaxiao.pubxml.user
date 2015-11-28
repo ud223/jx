@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/AccountLib.dll">
-      <publishTime>11/21/2015 11:18:43</publishTime>
+      <publishTime>11/28/2015 14:52:58</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>11/05/2015 23:10:12</publishTime>
@@ -19,13 +19,13 @@
       <publishTime>11/11/2015 14:04:15</publishTime>
     </File>
     <File Include="bin/CacheLib.dll">
-      <publishTime>11/21/2015 11:18:42</publishTime>
+      <publishTime>11/28/2015 14:52:57</publishTime>
     </File>
     <File Include="bin/CommonLib.dll">
-      <publishTime>11/21/2015 11:18:42</publishTime>
+      <publishTime>11/28/2015 14:52:57</publishTime>
     </File>
     <File Include="bin/DatabaseLib.dll">
-      <publishTime>11/21/2015 11:18:42</publishTime>
+      <publishTime>11/28/2015 14:52:57</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>11/05/2015 23:08:14</publishTime>
@@ -34,10 +34,10 @@
       <publishTime>11/05/2015 23:08:23</publishTime>
     </File>
     <File Include="bin/Flowpie.dll">
-      <publishTime>11/21/2015 11:18:44</publishTime>
+      <publishTime>11/28/2015 14:52:59</publishTime>
     </File>
     <File Include="bin/JxLib.dll">
-      <publishTime>11/21/2015 11:18:43</publishTime>
+      <publishTime>11/28/2015 14:52:58</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>11/05/2015 23:10:03</publishTime>
@@ -88,7 +88,7 @@
       <publishTime>11/05/2015 23:10:03</publishTime>
     </File>
     <File Include="bin/ProjectLib.dll">
-      <publishTime>11/21/2015 11:18:42</publishTime>
+      <publishTime>11/28/2015 14:52:57</publishTime>
     </File>
     <File Include="bin/RouteDebugger.dll">
       <publishTime>11/05/2015 23:09:53</publishTime>
@@ -124,7 +124,7 @@
       <publishTime>11/05/2015 23:07:47</publishTime>
     </File>
     <File Include="bin/SystemConfigureLib.dll">
-      <publishTime>11/21/2015 11:18:43</publishTime>
+      <publishTime>11/28/2015 14:52:58</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>11/05/2015 23:09:58</publishTime>
@@ -4495,7 +4495,7 @@
       <publishTime>11/05/2015 23:05:22</publishTime>
     </File>
     <File Include="statics/jx/css/global.css">
-      <publishTime>11/21/2015 13:40:31</publishTime>
+      <publishTime>11/28/2015 11:59:52</publishTime>
     </File>
     <File Include="statics/jx/fonts/fontawesome-webfont.eot">
       <publishTime>11/05/2015 23:05:23</publishTime>
@@ -4522,7 +4522,7 @@
       <publishTime>11/20/2015 10:33:15</publishTime>
     </File>
     <File Include="statics/jx/html/pg03articlelist.html">
-      <publishTime>11/20/2015 10:33:30</publishTime>
+      <publishTime>11/28/2015 10:49:54</publishTime>
     </File>
     <File Include="statics/jx/html/pg04-01.html">
       <publishTime>11/20/2015 10:34:01</publishTime>
@@ -4531,7 +4531,7 @@
       <publishTime>11/20/2015 10:34:50</publishTime>
     </File>
     <File Include="statics/jx/html/pg05-aboutus.html">
-      <publishTime>11/20/2015 10:35:08</publishTime>
+      <publishTime>11/28/2015 14:21:56</publishTime>
     </File>
     <File Include="statics/jx/html/pg06-sdjxwx.html">
       <publishTime>11/20/2015 10:36:08</publishTime>
@@ -8413,7 +8413,7 @@
       <publishTime>11/12/2015 00:29:06</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>11/15/2015 12:40:56</publishTime>
+      <publishTime>11/28/2015 08:33:00</publishTime>
     </File>
     <File Include="Views/Account/Manage.cshtml">
       <publishTime>11/12/2015 00:29:06</publishTime>
@@ -8437,34 +8437,34 @@
       <publishTime>11/18/2015 18:53:51</publishTime>
     </File>
     <File Include="Views/Home/ExamMenu.cshtml">
-      <publishTime>11/21/2015 00:29:43</publishTime>
+      <publishTime>11/28/2015 11:15:29</publishTime>
     </File>
     <File Include="Views/Home/Home.cshtml">
-      <publishTime>11/21/2015 00:29:54</publishTime>
+      <publishTime>11/28/2015 11:14:49</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>11/18/2015 18:53:41</publishTime>
+      <publishTime>11/25/2015 00:39:27</publishTime>
     </File>
     <File Include="Views/Home/MessageDetail.cshtml">
-      <publishTime>11/18/2015 18:53:38</publishTime>
+      <publishTime>11/28/2015 11:47:31</publishTime>
     </File>
     <File Include="Views/Home/MyCoupon.cshtml">
-      <publishTime>11/18/2015 18:53:35</publishTime>
+      <publishTime>11/28/2015 11:45:59</publishTime>
     </File>
     <File Include="Views/Home/MyExam.cshtml">
-      <publishTime>11/20/2015 16:53:05</publishTime>
+      <publishTime>11/28/2015 11:43:07</publishTime>
     </File>
     <File Include="Views/Home/MyIndex.cshtml">
-      <publishTime>11/21/2015 00:29:58</publishTime>
+      <publishTime>11/28/2015 11:15:33</publishTime>
     </File>
     <File Include="Views/Home/MyMessage.cshtml">
-      <publishTime>11/18/2015 18:53:25</publishTime>
+      <publishTime>11/28/2015 11:42:20</publishTime>
     </File>
     <File Include="Views/Home/RegUser.cshtml">
       <publishTime>11/18/2015 18:53:22</publishTime>
     </File>
     <File Include="Views/Home/SchoolDetail.cshtml">
-      <publishTime>11/18/2015 18:53:19</publishTime>
+      <publishTime>11/28/2015 14:14:26</publishTime>
     </File>
     <File Include="Views/Home/SchoolList.cshtml">
       <publishTime>11/18/2015 18:53:15</publishTime>
@@ -8473,7 +8473,7 @@
       <publishTime>11/20/2015 16:44:28</publishTime>
     </File>
     <File Include="Views/Home/SimulateExam.cshtml">
-      <publishTime>11/20/2015 16:53:22</publishTime>
+      <publishTime>11/28/2015 11:44:34</publishTime>
     </File>
     <File Include="Views/Home/SimulateExamEnd.cshtml">
       <publishTime>11/20/2015 16:53:45</publishTime>
@@ -8550,6 +8550,9 @@
     <File Include="Views/Manage/UserTypeList.cshtml">
       <publishTime>11/15/2015 11:21:23</publishTime>
     </File>
+    <File Include="Views/Shared/BackBanner.cshtml">
+      <publishTime>11/28/2015 11:39:01</publishTime>
+    </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>11/12/2015 00:29:05</publishTime>
     </File>
@@ -8560,13 +8563,13 @@
       <publishTime>11/21/2015 00:08:06</publishTime>
     </File>
     <File Include="Views/Shared/_Login.cshtml">
-      <publishTime>11/18/2015 22:05:48</publishTime>
+      <publishTime>11/28/2015 11:25:24</publishTime>
     </File>
     <File Include="Views/Shared/_Manage.cshtml">
-      <publishTime>11/20/2015 02:11:00</publishTime>
+      <publishTime>11/28/2015 08:01:23</publishTime>
     </File>
     <File Include="Views/Shared/_Mobile.cshtml">
-      <publishTime>11/21/2015 11:41:20</publishTime>
+      <publishTime>11/28/2015 11:14:44</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>11/12/2015 23:21:36</publishTime>
@@ -8575,7 +8578,7 @@
       <publishTime>11/12/2015 00:29:05</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/21/2015 11:18:46</publishTime>
+      <publishTime>11/28/2015 14:53:01</publishTime>
     </File>
   </ItemGroup>
 </Project>

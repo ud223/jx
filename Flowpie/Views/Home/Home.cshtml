@@ -10,11 +10,11 @@
 <script type="text/javascript">
 		// 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
 		var imgs_json = [{
-		    url: '/statics/jx/img/home/t2.jpg', link: '#'
+		    url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/t2.jpg")', link: '#'
 		}, {
-		    url: '/statics/jx/img/home/t1.jpg', link: '#'
+		    url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/t1.jpg")', link: '#'
 		}, {
-		    url: '/statics/jx/img/home/t3.jpg', link: '#'
+		    url: '@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/t3.jpg")', link: '#'
 		}];
 </script>
 
@@ -113,14 +113,14 @@
 <div class="weicts4">
     <div class="vtr">
         <div class="vtd" onclick="location.href='/exam/menu'">
-            <img src="~/statics/jx/img/home/i1.jpg" class="ib5ico" />
+            <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/i1.jpg")" class="ib5ico" />
             <div class="wp">
                 <div class="tt1">驾考宝典</div>
                 <div class="tt2">轻松学理论</div>
             </div>
         </div>
         <div class="vtd" onclick="location.href='/statics/jx/html/pg02coupon300.html'">
-            <img src="~/statics/jx/img/home/i2.jpg" class="ib5ico" />
+            <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/i2.jpg")" class="ib5ico" />
             <div class="wp">
                 <div class="tt1" style="color:#53099a">E-SALE</div>
                 <div class="tt2">领300元学车券</div>
@@ -129,14 +129,14 @@
     </div>
     <div class="vtr">
         <div class="vtd" onclick="location.href = '/statics/jx/html/pg01coupon98.html'">
-            <img src="~/statics/jx/img/home/i3.jpg" class="ib5ico" />
+            <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/i3.jpg")" class="ib5ico" />
             <div class="wp">
                 <div class="tt1" style="color:#ee5f00">体验学车</div>
                 <div class="tt2">获98元体验券</div>
             </div>
         </div>
         <div class="vtd" onclick="location.href = '/statics/jx/html/pg06-sdjxwx.html'">
-            <img src="~/statics/jx/img/home/i4.jpg" class="ib5ico" />
+            <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/i4.jpg")" class="ib5ico" />
             <div class="wp">
                 <div class="tt1" style="color:#0365a6">深大驾校</div>
                 <div class="tt2">参活动赢免费学车</div>
@@ -148,7 +148,7 @@
     关于平台
 </div>
 <div class="abcipt cd_hottap" hottap="/statics/jx/html/pg05-aboutus.html">
-    <img src="/statics/jx/img/home/t5.jpg" class="iico2" />
+    <img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/t5.jpg")" class="iico2" />
     <p class="tt1">云e驾</p>
     <p class="tt2">汇集专业正规驾校的第三方互联网平台</p>
     <div class="tt3">一人一车教练，微信下单随时随地约教练</div>
@@ -166,7 +166,7 @@
 
 <div class="tcfilter-container">
     <div class="zhscitm" hottap="/school/detail/1">
-        <div class="tp cd_hottap" style="background-image:url(/statics/jx/img/home/p0.jpg);" hottap="/school/detail/1"></div>
+        <div class="tp cd_hottap" style="background-image:url(@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/p0.jpg"));" hottap="/school/detail/1"></div>
         <div class="btp cd_hottap" hottap="/school/detail/1">
             <div class="tt">
                 <span>深大驾校</span>
@@ -276,6 +276,7 @@
 
 
 	$('document').ready(function () {
+	    $('body').addClass('HOMEMENU');
 	    $("#menu_fix_home").addClass('selected');
 	});
 </script>
