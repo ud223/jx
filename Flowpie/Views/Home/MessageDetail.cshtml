@@ -5,7 +5,7 @@
     ViewBag.Title = ViewData["title"];
 }
 @*返回菜单*@
-@Html.Partial("BackBanner", new List<string> { "消息正文", CommonLib.Web.WebTool.CDN("/my/message") })
+@Html.Partial("BackBanner", new List<string> { "消息正文", "/my/message" })
 
 
 <div class="p21-x01">
