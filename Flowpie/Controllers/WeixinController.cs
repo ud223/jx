@@ -378,26 +378,87 @@ namespace Flowpie.Controllers
         //创建微信菜单JSON字符串
         public string GetWXMenuStr()
         {
-            string weixin1 = "";
-            weixin1 += "{\n";
-            weixin1 += "\"button\":[\n";
-            weixin1 += "{\n";
-            // weixin1 += "\"type\":\"click\",\n";
-            //第一个菜单
-            weixin1 += "\"type\":\"view\",\n";
-            weixin1 += "\"key\":\"rselfmenu_0_0\",\n";
-            weixin1 += "\"name\":\"云e驾\",\n";
-            weixin1 += "\"url\":\"http://wx.yune-jia.com\"\n";
-            weixin1 += "},\n";
-            //第二个菜单
-            weixin1 += "{\n";
-            weixin1 += "\"type\":\"view\",\n";
-            weixin1 += "\"key\":\"rselfmenu_0_1\",\n";
-            weixin1 += "\"name\":\"关于我们\",\n";
-            weixin1 += "\"url\":\"http://wx.yune-jia.com/jx/html/pg05-aboutus.html\"\n";
-            weixin1 += "}]\n";
+            System.Text.StringBuilder sb = new StringBuilder();
+            sb.AppendLine("{");
+            sb.AppendLine("\"button\":");
+            sb.AppendLine("[");
+            // button
+            sb.AppendLine("{");
+            sb.AppendLine("\"type\":\"view\",");
+            sb.AppendLine("\"name\":\"业务介绍\",");
+            sb.AppendLine("\"url\":\"http://viewer.maka.im/k/SZG5XXO8?DSCKID=c1df4bd8-3bee-48a9-b73f-c3004f253028&DSTIMESTAMP=1448006801088\"");
+            sb.AppendLine("},");
+            sb.AppendLine("{");
+            sb.AppendLine("\"type\":\"view\",");
+            sb.AppendLine("\"name\":\"我要报名\",");
+            sb.AppendLine("\"url\":\"http://wx.yune-jia.com\"");
+            sb.AppendLine("},");
+            sb.AppendLine("{");
+            sb.AppendLine("\"name\":\"我要报名\",");
+            sb.AppendLine("\"sub_button\":[");
+            // sub button
+            sb.AppendLine("{");
+            sb.AppendLine("\"type\":\"view\",");
+            sb.AppendLine("\"name\":\"关于我们\",");
+            sb.AppendLine("\"url\":\"http://wx.yune-jia.com/statics/jx/html/pg05-aboutus.html\"");
+            sb.AppendLine("},");
+            sb.AppendLine("{");
+            sb.AppendLine("\"type\":\"view\",");
+            sb.AppendLine("\"name\":\"微信交流群\",");
+            sb.AppendLine("\"url\":\"http://wx.yune-jia.com/statics/jx/html/pg07-qun.html\"");
+            sb.AppendLine("}");
+            sb.AppendLine("]");
+            sb.AppendLine("}");
+            sb.AppendLine("]");
+            sb.AppendLine("}");
 
-            weixin1 += "}\n";
+            string weixin1 = sb.ToString();
+
+
+
+
+
+            //string weixin1 = "";
+            //weixin1 += "{\n";
+            //weixin1 += "\"button\":[\n";
+            //weixin1 += "{\n";
+            //// weixin1 += "\"type\":\"click\",\n";
+            ////第一个菜单
+            //weixin1 += "\"type\":\"view\",\n";
+            //weixin1 += "\"key\":\"rselfmenu_0_0\",\n";
+            //weixin1 += "\"name\":\"业务介绍\",\n";
+            //weixin1 += "\"url\":\"http://viewer.maka.im/k/SZG5XXO8?DSCKID=c1df4bd8-3bee-48a9-b73f-c3004f253028&DSTIMESTAMP=1448006801088\"\n";
+            //weixin1 += "},\n";
+            ////第二个菜单
+            //weixin1 += "{\n";
+            //weixin1 += "\"type\":\"view\",\n";
+            //weixin1 += "\"key\":\"rselfmenu_0_1\",\n";
+            //weixin1 += "\"name\":\"我要报名\",\n";
+            //weixin1 += "\"url\":\"http://wx.yune-jia.com\"\n";
+            //weixin1 += "},\n";
+            ////第三个菜单
+            //weixin1 += "{\n";
+            //weixin1 += "\"name\":\"品牌介绍\",\n";
+            //weixin1 += "\"sub_button\":";
+            //weixin1 += "[{\n";
+            //weixin1 += "\"type\":\"view\",\n";
+            //weixin1 += "\"name\":\"微信交流群\",\n";
+            //weixin1 += "\"url\":\"http://wx.yune-jia.com/statics/jx/html/pg07-qun.html\"\n";
+            //weixin1 += "},";
+
+            //weixin1 += "{\n";
+            //weixin1 += "\"type\":\"view\",\n";
+            //    weixin1 += "\"name\":\"微信交流群\",\n";
+            //    weixin1 += "\"url\":\"http://wx.yune-jia.com/statics/jx/html/pg07-qun.html\"\n";
+            //    weixin1 += "}
+
+
+            //weixin1 += "}]";
+            //weixin1 += "}]\n";
+
+            //weixin1 += "}\n";
+
+
             return weixin1;
         }
 

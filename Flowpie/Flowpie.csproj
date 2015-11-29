@@ -237,6 +237,7 @@
     <Content Include="statics\jx\css\global.css" />
     <Content Include="statics\jx\fonts\fontawesome-webfont.svg" />
     <Content Include="statics\jx\html\pg05-aboutus.html" />
+    <Content Include="statics\jx\html\pg07-qun.html" />
     <Content Include="statics\jx\html\pg06-sdjxwx.html" />
     <Content Include="statics\jx\html\pg04-02.html" />
     <Content Include="statics\jx\html\pg04-01.html" />
@@ -318,6 +319,7 @@
     <Content Include="statics\jx\img\photocase\tpp01.jpg" />
     <Content Include="statics\jx\img\photocase\tpp02.jpg" />
     <Content Include="statics\jx\img\photocase\tpp03.jpg" />
+    <Content Include="statics\jx\img\qunqr.jpg" />
     <Content Include="statics\jx\img\user04.jpg" />
     <Content Include="statics\admin\js\ajaxhelper.js" />
     <Content Include="statics\jx\js\global.js" />
