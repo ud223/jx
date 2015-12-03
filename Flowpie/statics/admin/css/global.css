@@ -875,7 +875,7 @@ textarea:focus {
 .downbtn-normal.up {
 	background-position: center -103px;
 }
-.opl-table .downbtn-normal {
+.opl-table .downbtn-normal, .opl-table .btn {
 	position: absolute;
 	right: 0;
 	top: 50%;
@@ -1336,4 +1336,28 @@ textarea:focus {
 }
 .breadcrumb-prev {
     color:#444 !important;
+}
+.bnieitm {
+    border-radius:4px;
+    padding:10px 15px;
+    border:1px solid #E2E2E2;
+    margin-bottom:5px;
+    background:#FBFBFB;
+    color:#ffae2e;
+}
+.bnieitm .mgtxt {
+    display:inline-block;
+    width:200px;
+}
+.bnieitm .dctxt {
+    margin:0 0 0 80px;
+}
+.bnieitm .dctxt.ed {
+    color:#bbb;
+}
+.bnieitm .dctxt:last-child {
+    float:right;
+}
+.bnieitm.dkq {
+    color:#03a9f4;
 }
