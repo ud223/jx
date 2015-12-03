@@ -115,36 +115,55 @@ namespace Flowpie.Controllers
 
         #endregion;
 
-        #region 学院路列表action
+        #region 学员列表action
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentList(int page = 1)
         {
             this.init();
-
             JxLib.StudentController studentController = new JxLib.StudentController();
-
-            List<System.Collections.Hashtable> list = studentController.getAll();
-
+            List<System.Collections.Hashtable> list = studentController.getBySchool();
             ViewData["list"] = list;
-
             ViewData["open_menu"] = "驾校管理";
-
             return View();
         }
+        #endregion;
+
+        #region 学员详细action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult StudentDetail(string studentId)
+        {
+            this.init();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
+            ViewData["item"] = item;
+            ViewData["open_menu"] = "驾校管理";
+            return View();
+        }
+        #endregion;
+
+
+        #region 登记学员action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult MarkStudent(string studentId)
+        {
+            this.init();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
+            ViewData["item"] = item;
+            ViewData["open_menu"] = "登记学员";
+            return View();
+        }
+        #endregion;
+
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentCoupon(string id)
         {
             this.init();
-
             JxLib.StudentController studentController = new JxLib.StudentController();
-
             System.Collections.Hashtable item = studentController.load(id);
-
             ViewData["item"] = item;
-
             ViewData["title"] = "发放优惠卷";
             ViewData["open_menu"] = "驾校管理";
-
             return View();
         }
 
@@ -239,7 +258,6 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        #endregion;
 
 
         //*********************************系统action*********************************************************

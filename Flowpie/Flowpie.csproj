@@ -216,7 +216,7 @@
     <Content Include="statics\admin\css\font.css" />
     <Content Include="statics\admin\css\global.css" />
     <Content Include="statics\admin\css\nanoscroller.css" />
-    <Content Include="statics\admin\css\reset.css" />
+    <Content Include="statics\admin\css\bsreset.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="statics\admin\img\logo.png" />
@@ -1561,6 +1561,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Shared\BackBanner.cshtml" />
+    <Content Include="Views\Manage\StudentDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,200 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "学员详细";
+}
+@{
+    System.Collections.Hashtable obj = ViewData["item"] as System.Collections.Hashtable;
+
+    string studentID = obj["StudentID"].ToString();
+    string name = obj["Name"].ToString();
+    string nickName = obj["NickName"].ToString();
+    string headPic = obj["HeadPic"].ToString();
+    string sex = obj["Sex"].ToString();
+    string birthday = obj["Birthday"].ToString();
+    string code = obj["Code"].ToString();
+    string place = obj["Place"].ToString();
+    string licenseTypeID = obj["LicenseTypeID"].ToString();
+    string phone = obj["Phone"].ToString();
+    string email = obj["Email"].ToString();
+    string qq = obj["Qq"].ToString();
+    string schoolID = obj["SchoolID"].ToString();
+    string isMark = obj["IsMark"].ToString();
+    string createAt = obj["CreateAt"].ToString();
+}
+
+
+<div class="main-body-relative relative">
+    <div class="fix-wxp-toolbar unfix">
+        <div class="fix-wxp-toolbar-wp">
+            <div class="fix-wxp-toolbar-txt">
+                <a href="/manage/studentlist" class="breadcrumb-prev">学员列表</a> 
+                <span class="breadcrumb-prev">/</span> 
+                <span class="breadcrumb-t1">学员信息</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="cko-wp">
+
+        <div class="clear-20"></div>
+
+        <!-- Tab panes -->
+        <div class="tab-content tab-kiki-ct">
+            <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                <div class="opl-table">
+                    <div class="tt">
+                        <span>基本信息</span>
+                        <button class="downbtn-normal down"></button>
+                    </div>
+                    <div class="ct clearfix">
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">真实姓名</div>
+                                <div class="cell col2">@name</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">昵称</div>
+                                <div class="cell col2">@nickName</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">性别</div>
+                                <div class="cell col2">@(sex == "1" ? "男" : "女")</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">生日</div>
+                                <div class="cell col2">@birthday</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">身份证号码</div>
+                                <div class="cell col2">@code</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">所在地</div>
+                                <div class="cell col2">@place</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">驾照类型</div>
+                                <div class="cell col2">@(licenseTypeID == "1"?"C1手动":"C2自动")</div>
+                            </div>
+                        </div>
+
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">电话号码</div>
+                                <div class="cell col2">@phone</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">邮箱</div>
+                                <div class="cell col2">@email</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">QQ</div>
+                                <div class="cell col2">@qq</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">加入时间</div>
+                                <div class="cell col2">@createAt</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">头像</div>
+                                <div class="cell col2"><img src="@headPic" width="60"/></div>
+                            </div>
+                        </div>
+
+                        <div class="clear-15"></div>
+                        @if(isMark == "1")
+                        {
+                            <div class="alert alert-success tc">
+                                已经登记为本驾校学员
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning tc">
+                                <p style="margin-bottom:10px;">已报名，还未登记</p>
+                                <div><button class="btn btn-primary" onclick="markStudent('@studentID')">登记为已报名</button></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="opl-table">
+                    <div class="tt">
+                        <span>代金券&amp;学时券</span>
+                        <button class="downbtn-normal down"></button>
+                    </div>
+                    <div class="ct clearfix">
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">名称</div>
+                                <div class="cell col2">厦门维多利亚客户</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">客户上级单位</div>
+                                <div class="cell col2">中国石油天燃气管道通信电力工程总公司</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">区域</div>
+                                <div class="cell col2">中国大陆</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">客户类别</div>
+                                <div class="cell col2">深圳市南山区高新南七道深圳软件园T3-A3楼 深圳市南山区高新南七道深圳软件园T3-A3楼</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">公司概况</div>
+                                <div class="cell col2">无</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">销售部门</div>
+                                <div class="cell col2">环球国际部门</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">所处行业</div>
+                                <div class="cell col2">金融·互联网</div>
+                            </div>
+                        </div>
+
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">客户编号</div>
+                                <div class="cell col2">0100-5685412541</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">客户来源</div>
+                                <div class="cell col2">客户转介结</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">业务实体</div>
+                                <div class="cell col2">深圳环球国际股份有限公司</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">图片</div>
+                                <div class="cell col2">IMAGE HERE</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bt-btn-bar">
+                    <button class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 编辑信息</button>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+</div>
+
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+	});
+
+	
+</script>

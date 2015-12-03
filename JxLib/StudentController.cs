@@ -11,10 +11,18 @@ namespace JxLib
     {
         public override List<Hashtable> getAll()
         {
-            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID";
+            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID ORDER BY app_students.CreateAt DESC";
 
             return base.getAll();
         }
+
+        public List<Hashtable> getBySchool()
+        {
+            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID WHERE SchoolID = 1 ORDER BY app_students.CreateAt DESC";
+
+            return base.getAll();
+        }
+
         public override Hashtable load(string id)
         {
             this.SqlText = "SELECT * FROM app_students WHERE StudentID = '" + id + "'";
@@ -25,6 +33,13 @@ namespace JxLib
         public Hashtable getUserByOpenId(string openid)
         {
             this.SqlText = "SELECT * FROM app_students WHERE OpenId = '" + openid + "'";
+
+            return base.load("");
+        }
+
+        public Hashtable getUserByStudentId(string studentId)
+        {
+            this.SqlText = "SELECT * FROM app_students WHERE StudentId = '" + studentId + "'";
 
             return base.load("");
         }

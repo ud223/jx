@@ -394,7 +394,7 @@ namespace Flowpie.Controllers
             sb.AppendLine("\"url\":\"http://wx.yune-jia.com\"");
             sb.AppendLine("},");
             sb.AppendLine("{");
-            sb.AppendLine("\"name\":\"我要报名\",");
+            sb.AppendLine("\"name\":\"品牌介绍\",");
             sb.AppendLine("\"sub_button\":[");
             // sub button
             sb.AppendLine("{");

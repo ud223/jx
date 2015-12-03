@@ -6,6 +6,40 @@ body {
 }
 /* Default Controls */
 
+.clear,
+.clear-5,
+.clear-10,
+.clear-15,
+.clear-20,
+.clear-30,
+.clear-50 {
+	clear: both;
+	display: block;
+	font-size: 0;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+.clear-5 {
+	height: 5px;
+}
+.clear-10 {
+	height: 10px;
+}
+.clear-15 {
+	height: 15px;
+}
+.clear-20 {
+	height: 20px;
+}
+.clear-30 {
+	height: 30px;
+}
+.clear-50 {
+	height: 50px;
+}
+
 input[type="text"],
 input[type="search"],
 input[type="password"],
@@ -302,7 +336,7 @@ textarea:focus {
 	position: fixed;
 	left: 0;
 	top: 0;
-	z-index: 1999;
+	z-index: 1020;
 	width: 100%;
 }
 .bell-content {
@@ -1288,3 +1322,18 @@ textarea:focus {
 	background: #03A9f4;
 }
 
+.listoperbtn {
+    padding:2px 5px;
+    display:inline-block;
+    border:1px solid #0094ff;
+    color:#0094ff;
+    text-decoration:none !important;
+    border-radius:2px;
+}
+.listoperbtn.danger {
+    color:rgb(216, 44, 44);
+    border-color:rgb(216, 44, 44);
+}
+.breadcrumb-prev {
+    color:#444 !important;
+}

@@ -87,3 +87,28 @@ $.readjustWidth = function() {
 };
 /* FIX TABLE (END) */
 
+/* MARK STUDENT (START) */
+function markStudentSuccess(data) {
+    if (data.code == "200") {
+        alert("登记成功!");
+
+        location.reload();
+    }
+}
+
+function markStudentFailed(data) {
+    alert(data.message);
+}
+
+function markStudent(id) {
+    if (confirm('确认该学员已经报名缴费？')) {
+        var params = {
+            url: "/api/student/mark",
+            data: { 'StudentID': id },
+            successFun: markStudentSuccess,
+            errorFun: markStudentFailed
+        }
+        ajaxTo(params);
+    }
+}
+/* MARK STUDENT (END) */

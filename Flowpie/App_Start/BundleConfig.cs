@@ -12,7 +12,7 @@ namespace Flowpie
                 "~/statics/admin/css/bootstrap.css",
                 "~/statics/admin/css/font.css",
                 "~/statics/admin/css/nanoscroller.css",
-                "~/statics/admin/css/reset.css",
+                "~/statics/admin/css/bsreset.css",
                 "~/statics/admin/css/global.css"));
 
             //common all js

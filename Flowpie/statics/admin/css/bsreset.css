@@ -231,7 +231,9 @@ a:hover, a:focus {
 .modal-dialog {
 	width:400px;
 }
-
+.modal-dialog * {
+    font-family:'Microsoft Yahei';
+}
 
 .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn {
 	font-size: 14px;
