@@ -55,6 +55,18 @@ $(document).ready(function () {
 	    $(this).parents('.input-group').find('.dropdown-text').val($(this).html());
 	    $(this).parents('.input-group').find('.dropdown-value').val($(this).attr('val'));
 	})
+
+
+
+	$('.fb-switch').click(function () {
+	    var $this = $(this).closest('.fb-switch');
+	    var nowStatus = $this.attr('status');
+	    if (nowStatus === "on") {
+	        $this.attr('status', 'off');
+	    } else {
+	        $this.attr('status', 'on');
+	    }
+	});
 });
 
 

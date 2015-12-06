@@ -1562,6 +1562,10 @@
     </Content>
     <Content Include="Views\Shared\BackBanner.cshtml" />
     <Content Include="Views\Manage\StudentDetail.cshtml" />
+    <Content Include="Views\Manage\SchoolSetting.cshtml" />
+    <Content Include="Views\Manage\CourseEdit.cshtml" />
+    <Content Include="Views\Manage\CoachDispatch.cshtml" />
+    <Content Include="Views\Manage\CoachDispatchCourse.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

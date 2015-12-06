@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "常用设置";
+}
+
+<div class="main-body-relative relative">
+    <div class="fix-wxp-toolbar unfix">
+        <div class="fix-wxp-toolbar-wp">
+            <div class="fix-wxp-toolbar-txt">
+                <span class="breadcrumb-prev">常用设置</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="cko-wp">
+
+        <div class="clear-20"></div>
+
+        <!-- Tab panes -->
+        <div class="tab-content tab-kiki-ct">
+            <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                <div class="opl-table">
+                    <div class="tt">
+                        <span>代金券设置</span>
+
+                    </div>
+                    <div class="ct clearfix">
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">发放代金券</div>
+                                <div class="cell col2">
+                                    <div class="fb-switch" id="sendcouponkey" status="on">
+                                        <div class="dd"></div>
+                                        <div class="txt" for="on">开启</div>
+                                        <div class="txt" for="off">关闭</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1"></div>
+                                <div class="cell col2">
+                                    <span class="diin-txt on selected">* 已开启，新的云e驾用户将收到代金券</span>
+                                    <span class="diin-txt off">* 已关闭，新的云e驾用户将不会收到代金券</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">标题</div>
+                                <div class="cell col2">
+                                    <input class="pc100" type="text"/>
+                                    <label class="cneitp">用户收到优惠券时看到的标题文字（限15字）</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">优惠金额</div>
+                                <div class="cell col2">
+                                    <input class="pc100" type="text" />
+                                    <label class="cneitp">用户收到优惠券的金额（报名时需按金额抵扣）</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">优惠券内容</div>
+                                <div class="cell col2">
+                                    <textarea class="pc100"></textarea>
+                                    <label class="cneitp">优惠券内附带的文字内容，可以向用户介绍课程、驾校特色等信息</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inner-table">
+                            <div class="row">
+                                <div>
+                                    <div class="alert alert-warning">
+                                        发放代金券功能一旦开启，新来的用户将直接获得一张来自我驾校的代金券，用于报名时抵扣现金。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bt-btn-bar">
+                    <button class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 保存</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- /container -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sendcouponkey').click(function () {
+                var $this = $(this).closest('.fb-switch');
+                var status = $this.attr('status');
+                $('.diin-txt').removeClass('selected');
+                if (status === 'on') {
+                    $('.diin-txt.on').addClass('selected');
+                } else {
+                    $('.diin-txt.off').addClass('selected');
+                }
+            })
+        });
+    </script>

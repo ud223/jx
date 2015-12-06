@@ -47,84 +47,74 @@
                 <div class="opl-table">
                     <div class="tt">
                         <span>基本信息</span>
-                        @*<button class="downbtn-normal down"></button>*@
+
                     </div>
                     <div class="ct clearfix">
                         <div class="inner-table">
                             <div class="row">
                                 <div class="cell col1">真实姓名</div>
-                                <div class="cell col2">@name</div>
+                                <div class="cell col2">王莹曦</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">昵称</div>
-                                <div class="cell col2">@nickName</div>
+                                <div class="cell col2">王莹曦</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">性别</div>
-                                <div class="cell col2">@(sex == "1" ? "男" : "女")</div>
+                                <div class="cell col2">男</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">生日</div>
-                                <div class="cell col2">@birthday</div>
+                                <div class="cell col2">1983-05-06</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">身份证号码</div>
-                                <div class="cell col2">@code</div>
+                                <div class="cell col2">420103198305068562</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">所在地</div>
-                                <div class="cell col2">@place</div>
+                                <div class="cell col2">深圳市</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">驾照类型</div>
-                                <div class="cell col2">@(licenseTypeID == "1"?"C1手动":"C2自动")</div>
+                                <div class="cell col2">C1手动</div>
                             </div>
                         </div>
 
                         <div class="inner-table">
                             <div class="row">
                                 <div class="cell col1">电话号码</div>
-                                <div class="cell col2">@phone</div>
+                                <div class="cell col2">18676678657</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">邮箱</div>
-                                <div class="cell col2">@email</div>
+                                <div class="cell col2">274647355@qq.com</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">QQ</div>
-                                <div class="cell col2">@qq</div>
+                                <div class="cell col2">274647355</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">加入时间</div>
-                                <div class="cell col2">@createAt</div>
+                                <div class="cell col2">2015-11-29 00:00:21</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">头像</div>
-                                <div class="cell col2"><img src="@headPic" width="60"/></div>
+                                <div class="cell col2"><img src="http://wx.qlogo.cn/mmopen/3ulFaxlc8WicxrpfjvMVb9mYUTywTChEIXcgvCUDS53m3ibTKBibIq8bbwafvFoBpExUeY0rtOyTBBJTrsPTDNHmYKeYuQbwiaZu/0" width="60"></div>
                             </div>
                         </div>
 
                         <div class="clear-15"></div>
-                        @if(isMark == "1")
-                        {
-                            <div class="alert alert-success tc">
-                                已经登记为本驾校学员
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-warning tc">
-                                <p style="margin-bottom:10px;">已报名，还未登记</p>
-                                <div><button class="btn btn-primary" onclick="markStudent('@studentID')">登记为已报名</button></div>
-                            </div>
-                        }
+                        <div class="alert alert-success tc">
+                            已经登记为本驾校学员
+                        </div>
                     </div>
                 </div>
 
                 <div class="opl-table">
                     <div class="tt">
                         <span>代金券&amp;学时券</span>
-                        <button class="btn btn-primary">发送学时券</button>
+                        <button class="btn btn-primary cornerbtn">发送学时券</button>
                     </div>
                     <div class="ct clearfix">
                         <div class="bnieitm xsq">
@@ -159,7 +149,7 @@
                     <button class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 编辑信息</button>
                 </div>
             </div>
-            
+
         </div>
 
     </div>

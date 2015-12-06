@@ -142,6 +142,55 @@ namespace Flowpie.Controllers
         #endregion;
 
 
+        #region 常用设置action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult SchoolSetting(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 训练场次设置action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CourseEdit(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 分配教练action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachDispatch(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 分配教练至课程action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachDispatchCourse(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 分配教练至集训action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachDispatchTraining(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
+
+
+        #region 驾校信息编辑action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult SchoolEdit(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
+
         #region 登记学员action
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult MarkStudent(string studentId)

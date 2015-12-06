@@ -650,7 +650,6 @@ $.extend({
 	}
 });
 
-
 //-----陆思浙-----------------------
 var countdown = 60;
 var is_count = false;

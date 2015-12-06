@@ -161,7 +161,7 @@ a:hover, a:focus {
 	z-index:2;
 	background:transparent;
 	color:#333;
-	font-weight:bold;
+    font-weight:bold;
 }
 .nav-tabs.text-tabs {
 	padding-left: 20px;
