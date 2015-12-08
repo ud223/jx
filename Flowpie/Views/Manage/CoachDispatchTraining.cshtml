@@ -1,0 +1,293 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "分配教练-课程";
+}
+
+
+<div class="main-body-relative relative">
+    <div class="fix-wxp-toolbar unfix">
+        <div class="fix-wxp-toolbar-wp">
+            <div class="fix-wxp-toolbar-txt">
+                <a href="/manage/coachdispatch" class="breadcrumb-prev">分配教练</a>
+                <span class="breadcrumb-prev">/</span>
+                <span class="breadcrumb-t1">2015年5月11日 集训</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="cko-wp">
+
+        <div class="clear-20"></div>
+
+        <!-- Tab panes -->
+        <div class="tab-content tab-kiki-ct">
+            <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                <div class="opl-table">
+                    <div class="ct clearfix">
+                        <table class="standtb arragcoach">
+                            <tr class="head">
+                                <td class="col1">头像</td>
+                                <td class="col2">学员姓名</td>
+                                <td class="col3">教练</td>
+                                <td class="col4">集训费用</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="~/statics/jx/img/user04.jpg" class="arragcoach_img"/>
+                                </td>
+                                <td>
+                                    <span>张晓明</span>
+                                </td>
+                                <td>
+                                    <span class="wimeity">未选择教练</span>
+                                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">选择教练 <span class="caret"></span></button>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="填写学员集训费用" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="~/statics/jx/img/user04.jpg" class="arragcoach_img" />
+                                </td>
+                                <td>
+                                    <span>张晓明</span>
+                                </td>
+                                <td>
+                                    <span class="wimeity">未选择教练</span>
+                                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">选择教练 <span class="caret"></span></button>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="填写学员集训费用" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="~/statics/jx/img/user04.jpg" class="arragcoach_img" />
+                                </td>
+                                <td>
+                                    <span>张晓明</span>
+                                </td>
+                                <td>
+                                    <span class="wimeity">未选择教练</span>
+                                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">选择教练 <span class="caret"></span></button>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="填写学员集训费用" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="~/statics/jx/img/user04.jpg" class="arragcoach_img" />
+                                </td>
+                                <td>
+                                    <span>张晓明</span>
+                                </td>
+                                <td>
+                                    <span class="wimeity">未选择教练</span>
+                                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">选择教练 <span class="caret"></span></button>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="填写学员集训费用" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="bt-btn-bar">
+                    <button class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 确认并发送账单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">选择教练</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="segehblk">
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni unuse">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <span class="t2">该时段已有安排</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni selected">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                        <div class="bewdatimni">
+                            <div class="wp">
+                                <span>刘春华</span>
+                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">选择</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function() {
+	    $(".nano").nanoScroller();
+	    $.readjustWidth();
+	    $(window).resize(function () {
+	        $.readjustWidth();
+	    });
+
+	    $(".fix-tb-ct-b2").scroll(function (e) {
+	        var slt = $(".fix-tb-ct-b2").scrollLeft();
+	        $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+	    });
+	});
+
+
+</script>

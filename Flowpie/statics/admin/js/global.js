@@ -124,3 +124,38 @@ function markStudent(id) {
     }
 }
 /* MARK STUDENT (END) */
+
+
+
+
+function switchListBox() {
+    var container = $('.switchlistgroup');
+    var leftcontainer = container.find('.colleft');
+    var rightcontainer = container.find('.colright');
+    //var leftitm = container.find('.colleft .list-group-item');
+    //var rightitm = container.find('.colright .list-group-item');
+    var movetoleft = container.find('.movetoleft');
+    var movetoright = container.find('.movetoright');
+
+    var itm = container.find('.list-group-item');
+
+    $('body').on('click', '.list-group-item', function () {
+        $(this).toggleClass('active');
+        container.find('.lighter').removeClass('lighter');
+    });
+    movetoleft.click(function () {
+        var active = rightcontainer.find('.active');
+        container.find('.active').removeClass('active');
+        container.find('.lighter').removeClass('lighter');
+        active.addClass('lighter');
+        leftcontainer.find('.list-group').prepend(active);
+    });
+
+    movetoright.click(function () {
+        var active = leftcontainer.find('.active');
+        container.find('.active').removeClass('active');
+        container.find('.lighter').removeClass('lighter');
+        active.addClass('lighter');
+        rightcontainer.find('.list-group').prepend(active);
+    });
+}

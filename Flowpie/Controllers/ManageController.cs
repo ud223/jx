@@ -182,6 +182,13 @@ namespace Flowpie.Controllers
         }
         #endregion;
 
+        #region 权限设置action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult Permission(string schoolId)
+        {
+            return View();
+        }
+        #endregion;
 
         #region 驾校信息编辑action
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]

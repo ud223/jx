@@ -292,6 +292,10 @@
     <Content Include="statics\jx\img\home\p2.jpg" />
     <Content Include="statics\jx\img\home\sdjx01.jpg" />
     <Content Include="statics\jx\img\home\sdjx02.jpg" />
+    <Content Include="statics\jx\img\home\t6.jpg" />
+    <Content Include="statics\jx\img\home\t7.jpg" />
+    <Content Include="statics\jx\img\home\t8.jpg" />
+    <Content Include="statics\jx\img\home\t9.jpg" />
     <Content Include="statics\jx\img\imgs-bg.jpg" />
     <Content Include="statics\jx\img\loading-64-gray.png" />
     <Content Include="statics\jx\img\loading-bars.svg" />
@@ -1566,6 +1570,8 @@
     <Content Include="Views\Manage\CourseEdit.cshtml" />
     <Content Include="Views\Manage\CoachDispatch.cshtml" />
     <Content Include="Views\Manage\CoachDispatchCourse.cshtml" />
+    <Content Include="Views\Manage\CoachDispatchTraining.cshtml" />
+    <Content Include="Views\Manage\Permission.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

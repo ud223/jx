@@ -186,40 +186,6 @@ $.toastMsg = function(msg, duration) {
 
     });	
 
-	//    $('body').on('tap', '.cd-slidepopupback', function() {
-	//        var $this = $(this);
-	//        var container = $this.closest('.cd-slidepopup');
-	//        container.addClass('hide').removeClass('show');
-	//        $('html').removeClass('html-no-scroll');
-	//    });
-	
-	//    $('body').on('tap', '.cd-slideoutbtn', function() {
-	//        var $this = $(this).closest('.cd-slideoutbtn');
-	//        var target = $($this.attr('rel'));
-	//        if (target.length) {
-	//            target.addClass('show').removeClass('hide');
-	//            $('html').addClass('html-no-scroll');
-	//        }
-    //    });
-
-	
-
-	//$('.rating-star').tapA(function() {
-	//	var $this = $(this).closest('.rating-star');
-	//	var val = parseInt($this.attr('val'));
-	//	var container = $this.closest('.rating-stars');
-	//	var stars = $this.removeClass('empty').siblings('.rating-star');
-	//	$.each(stars, function() {
-	//		if (parseInt($(this).attr('val')) <= val) {
-	//			$(this).removeClass('empty');
-	//		} else {
-	//			$(this).addClass('empty');
-	//		}
-	//	});
-	//	container.find('input[type="hidden"]').val(val);
-	//});
-
-
 	$.getCookie = function(name) {
 		var cookies = document.cookie.split("; ");
 		for (var i = 0; i < cookies.length; ++i) {
@@ -698,7 +664,6 @@ function getBirthByCode(code) {
         else {
             tmpStr = code.substring(6, 14);
             tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6)
-
 
         }
 

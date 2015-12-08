@@ -393,6 +393,7 @@ textarea:focus {
 	border-bottom: none;
 	/*display:none;*/
 }
+
 .list-group-item.selected .awp {
 	background: #03a9f4 !important;
 }
@@ -1681,4 +1682,124 @@ a.bnieitm:visited {
     right:10px;
     top:50%;
     margin-top:-1px;
+}
+.segehblk .bewdatimni {
+}
+.segehblk .bewdatimni .wp {
+    height:50px;
+    line-height:50px;
+    padding:0 0 0 50px;
+    text-align:left;
+    position:relative;
+}
+.segehblk span {
+    display:block;
+}
+.segehblk .usrimg {
+    position:absolute;
+    left:10px;
+    top:50%;
+    margin-top:-15px;
+    width:30px;
+    height:30px;
+    display:inline-block;
+}
+.segehblk .bewdatimni.unuse .wp {
+    line-height:16px;
+    padding-top:9px;
+    background:#eee;
+    box-shadow:none;
+    cursor:default;
+    opacity:.75;
+}
+.segehblk .bewdatimni.unuse .wp .t2 {
+    font-size:12px;
+    color:#bbb;
+}
+
+.standtb {
+    width:100%;
+}
+.standtb td {
+    padding:5px;
+}
+.standtb .head td {
+    background:#FBFBFB;
+    color:#333;
+    font-size:14px;
+    font-weight:bold;
+    border-bottom:2px solid #aaa;
+    text-align:center;
+}
+.standtb td {
+    border:1px solid #E2E2E2;
+    text-align:center;
+}
+
+
+
+
+.arragcoach_img {
+    width:50px;
+    height:50px;
+
+}
+.arragcoach .col1 {
+    width:10%;
+}
+.arragcoach .col2 {
+    width:10%;
+}
+.arragcoach .wimeity {
+    margin-right:10px;
+}
+
+.list-group.bs {
+    border:1px solid #EEE;
+    border-radius:4px;
+}
+.list-group.bs .list-group-item {
+    padding:10px 15px;
+    display:block;
+    border-bottom:1px solid #EEE;
+}
+.list-group.bs .list-group-item:last-child {
+    border-bottom:none;
+}
+
+.switchlistgroup {
+    width:100%;
+}
+.switchlistgroup .colleft, .switchlistgroup .colright {
+    width:40%;
+}
+.switchlistgroup .colmiddle {
+    width:20%;
+    vertical-align:middle;
+    text-align:center;
+}
+.switchlistgroup .list-group.bs {
+    height:250px;
+    overflow-y:auto;
+}
+.switchlistgroup .sidett {
+    height:30px;
+    line-height:30px;
+    margin-bottom:10px;
+    font-weight:bold;
+    font-size:16px;
+    color:#03a9f4;
+}
+
+.switchlistgroup .list-group.bs .list-group-item:last-child {
+    border-bottom:1px solid #EEE;
+}
+.switchlistgroup .btnrow {
+    text-align:center;
+    padding:15px 0;
+    border-top:1px solid #EEE;
+}
+.switchlistgroup .lighter {
+    background:#FFFBF2;
+    font-weight:bold;
 }
