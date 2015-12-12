@@ -94,7 +94,7 @@
 		// z-index不需要那么高（2015.8.24 by wyx）
 //		this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
 		// 设为1000即可
-		this.zIndex = 1000;
+		this.zIndex = 1050;
 		this.icons = {
 			leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
 			rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'glyphicon-arrow-right' : 'icon-arrow-right')

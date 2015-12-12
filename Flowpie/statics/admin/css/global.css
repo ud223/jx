@@ -138,6 +138,12 @@ textarea:focus {
 .padbottom20px {
 	padding-bottom: 20px;
 }
+.padtop10px {
+	padding-top: 10px;
+}
+.padbottom10px {
+	padding-bottom: 10px;
+}
 .tc {
 	text-align: center;
 }
@@ -603,6 +609,9 @@ textarea:focus {
 	height: 50px;
 	line-height: 50px;
 }
+.fix-wxp-toolbar-wp {
+    padding-left:15px;
+}
 .fix-in-search-ico {
 	width: 24px;
 	line-height: 24px;
@@ -616,7 +625,7 @@ textarea:focus {
 	font-size: 16px;
 }
 .fix-wxp-toolbar-txt {
-	padding: 0 20px;
+	padding: 0 20px 0 0;
 }
 .fix-tb {
 	position: absolute;
@@ -879,6 +888,11 @@ textarea:focus {
 	position: relative;
 	font-weight: bold;
 }
+.opl-table .tt:after {
+    display:block;
+    content:' ';
+    clear:both;
+}
 .downbtn-normal {
 	width: 40px;
 	height: 40px;
@@ -898,10 +912,8 @@ textarea:focus {
 }
 
 .opl-table .downbtn-normal, .opl-table .cornerbtn {
-    position: absolute;
-	margin-top: -25px;
-	top: 50%;
-	right: 0;
+    float:right;
+    margin:0 0 0 10px;
 }
 .opl-table .downbtn-normal:hover {
 	background-position: center -53px;
@@ -1367,6 +1379,14 @@ textarea:focus {
     color:rgb(216, 44, 44);
     border-color:rgb(216, 44, 44);
 }
+.listoperbtn.no {
+    border-color:transparent;
+    color:#999;
+}
+.listoperbtn.no:hover {
+    border-color:transparent;
+    color:#333;
+}
 .breadcrumb-prev {
     color:#444 !important;
 }
@@ -1409,6 +1429,9 @@ a.bnieitm:visited {
 .bnieitm.dkq {
     color:#03a9f4;
 }
+
+
+
 /* SWITCH BTN (START) */
 .fb-switch {
     background:#20c12d;
@@ -1723,6 +1746,18 @@ a.bnieitm:visited {
 .standtb td {
     padding:5px;
 }
+.hourstandtb td {
+    padding:15px 5px;
+    text-align:center;
+    cursor:pointer;
+}
+.hourstandtb td:hover {
+    background:#F0F0F0;
+}
+.hourstandtb td.selected {
+    background:#03a9f4 !important;
+    color:#FFF !important;
+}
 .standtb .head td {
     background:#FBFBFB;
     color:#333;
@@ -1736,9 +1771,35 @@ a.bnieitm:visited {
     text-align:center;
 }
 
+.yuwmei {
+    margin:15px 0;
+    background:#fbfbfb;
+    padding:15px;
+    position:relative;
+}
+.yuwmei .btbar {
+    text-align:center;
+    padding-top:15px;
+}
+.yuwmei .ieot {
+    padding-bottom:10px;
+    text-align:right;
+}
 
+.sibnusr {
+    width:40px;
+    height:40px;
+}
 
-
+.font12px {
+	font-size: 12px;
+}
+.red {
+    color:#f85943;
+}
+.green {
+    color:#20c12d;
+}
 .arragcoach_img {
     width:50px;
     height:50px;

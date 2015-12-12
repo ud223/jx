@@ -128,6 +128,38 @@ namespace Flowpie.Controllers
         }
         #endregion;
 
+        #region 教练列表action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachList(int page = 1)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 教练详细action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachDetail(int page = 1)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 教练申请action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachApply(int page = 1)
+        {
+            return View();
+        }
+        #endregion;
+
+        #region 教练利用率action
+        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult CoachUsage(int page = 1)
+        {
+            return View();
+        }
+        #endregion;
+
         #region 学员详细action
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentDetail(string studentId)

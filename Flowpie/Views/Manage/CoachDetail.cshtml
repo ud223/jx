@@ -1,0 +1,205 @@
+﻿@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "教练详细";
+}
+
+<div class="main-body-relative relative">
+    <div class="fix-wxp-toolbar unfix">
+        <div class="fix-wxp-toolbar-wp">
+            <div class="fix-wxp-toolbar-txt">
+                <a href="/manage/coachlist" class="breadcrumb-prev">教练列表</a> 
+                <span class="breadcrumb-prev">/</span> 
+                <span class="breadcrumb-t1">王莹曦</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="cko-wp">
+
+        <div class="clear-20"></div>
+
+        <!-- Tab panes -->
+        <div class="tab-content tab-kiki-ct">
+            <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                <div class="opl-table">
+                    <div class="tt">
+                        <span>基本信息</span>
+                        <button class="btn btn-primary cornerbtn btn-sm" data-toggle="modal" data-target="#myModal">编辑基本信息</button>
+                        <a class="btn btn-success cornerbtn btn-sm" href="/manage/coachusage">利用状况</a>
+                    </div>
+                    <div class="ct clearfix">
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">真实姓名</div>
+                                <div class="cell col2">王莹曦（4.9分）</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">电话号码</div>
+                                <div class="cell col2">18676678657</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">生日</div>
+                                <div class="cell col2">1989/3/5</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">教学年份</div>
+                                <div class="cell col2">2004</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell col1">身份证号码</div>
+                                <div class="cell col2">420103198305068562</div>
+                            </div>
+                        </div>
+
+                        <div class="inner-table">
+                            <div class="row">
+                                <div class="cell col1">头像</div>
+                                <div class="cell col2">
+                                    <img src="http://wx.qlogo.cn/mmopen/3ulFaxlc8WicxrpfjvMVb9mYUTywTChEIXcgvCUDS53m3ibTKBibIq8bbwafvFoBpExUeY0rtOyTBBJTrsPTDNHmYKeYuQbwiaZu/0" width="60">
+                                    <div class="padtop10px">
+                                        <a href="#" class="btn btn-default btn-sm">修改头像</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="opl-table">
+                    <div class="tt">
+                        <span>授课情况</span>
+                    </div>
+                    <div class="ct clearfix">
+                        <table class="standtb">
+                            <tr class="head">
+                                <td>时间</td>
+                                <td>学员头像</td>
+                                <td>学员姓名</td>
+                                <td>状态</td>
+                                <td>评分</td>
+                                <td>评价内容</td>
+                            </tr>
+                            <tr>
+                                <td>2015/4/5 14:00 - 15:00</td>
+                                <td><img class="sibnusr" src="~/statics/jx/img/user04.jpg" /></td>
+                                <td>王静</td>
+                                <td>等待上课</td>
+                                <td> - </td>
+                                <td> - </td>
+                            </tr>
+                            <tr>
+                                <td>2015/4/3 16:00 - 18:00</td>
+                                <td><img class="sibnusr" src="~/statics/jx/img/user04.jpg" /></td>
+                                <td>陈康</td>
+                                <td>未评价</td>
+                                <td> - </td>
+                                <td> - </td>
+                            </tr>
+                            <tr>
+                                <td>2015/4/1 11:00 - 15:00</td>
+                                <td><img class="sibnusr" src="~/statics/jx/img/user04.jpg" /></td>
+                                <td>张龙</td>
+                                <td>已经评价</td>
+                                <td><div class="green">4分</div><div class="font12px">（专业：5，时间控制：3，态度：4）</div></td>
+                                <td>教练不错，教得很耐心，只是部分内容不是很熟练，希望教练下节课可以着重让我们训练一下。</td>
+                            </tr>
+
+                        </table>
+
+
+
+
+                    </div>
+                </div>
+                <div class="bt-btn-bar">
+                    @*
+                    冻结和解冻二则互斥出现
+                    *@
+                    <button class="btn btn-danger"><span class="halflings halflings-ban-circle"></span> 冻结该教练</button>
+                    <button class="btn btn-default"><span class="halflings halflings-ok-circle"></span> 解冻该教练</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">编辑基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>真实姓名</label>
+                    <input type="text" class="form-control" placeholder="填写教练真实姓名">
+                </div>
+                <div class="form-group">
+                    <label>电话号码</label>
+                    <input type="text" class="form-control" placeholder="填写教练电话号码">
+                </div>
+                <div class="form-group">
+                    <label>生日</label>
+                    <input type="text" class="form-control" id="datepicker01" placeholder="1980/01/01">
+                </div>
+
+
+                <div class="form-group">
+                    <label>教学年份</label>
+                    <select class="form-control">
+                        <option>选择教学年份</option>
+                        <option>1990</option>
+                        <option>1989</option>
+                        <option>1988</option>
+                        <option>1987</option>
+                        <option>1986</option>
+                        <option>1985</option>
+                        <option>1984</option>
+                        <option>1983</option>
+                        <option>1982</option>
+                        <option>1981</option>
+                        <option>1980</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>身份证号码</label>
+                    <input type="text" class="form-control" placeholder="身份证号码">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function() {
+	    $('#datepicker01').datetimepicker({
+	        minView: 2,
+	        startView: 4,
+	        weekStart: 1,
+	        format: 'yyyy/mm/dd',
+	        autoclose: true
+	    });
+
+	});
+
+	
+</script>

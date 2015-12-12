@@ -10,6 +10,7 @@ namespace Flowpie
             //common all css
             bundles.Add(new StyleBundle("~/statics/admin/css/all").Include(
                 "~/statics/admin/css/bootstrap.css",
+                "~/statics/admin/css/bootstrap-datetimepicker.css",
                 "~/statics/admin/css/font.css",
                 "~/statics/admin/css/nanoscroller.css",
                 "~/statics/admin/css/bsreset.css",
@@ -19,6 +20,7 @@ namespace Flowpie
             bundles.Add(new ScriptBundle("~/statics/admin/js/all").Include(
                 "~/statics/admin/js/jquery-1.11.1.min.js",
                 "~/statics/admin/js/bootstrap.min.js",
+                "~/statics/admin/js/bootstrap-datetimepicker.js",
                 "~/statics/admin/js/nanoscroller.js",
                 "~/statics/admin/js/ajaxhelper.js",
                 "~/statics/admin/js/global.js"));
