@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace Flowpie.Models
 {
@@ -10,11 +11,10 @@ namespace Flowpie.Models
         private string userID;
         private string password;
 
+        public Models.User user;
+
         public MyIdentity(string currentUserID, string currentPassword)
         {
-            // 
-            // TODO: 在此处添加构造函数逻辑 
-            // 
             userID = currentUserID;
             password = currentPassword;
         }
@@ -41,6 +41,55 @@ namespace Flowpie.Models
             }
             else
             {
+                #region 独立加入的用户信息及权限信息
+                System.Collections.Hashtable ht = new System.Collections.Hashtable();
+
+                foreach (DataColumn dc in ds.Tables[0].Columns)
+                {
+                    string key = dc.ColumnName;
+                    string value = CommonLib.Common.Validate.IsNullString(ds.Tables[0].Rows[0][dc.ColumnName]);
+
+                    ht.Add(key, value);
+                }
+
+                user = new User();
+
+                user.UserID = ht["UserID"].ToString();
+                user.Name = ht["Name"].ToString();
+                user.HeadPic = ht["HeadPic"].ToString();
+                user.Email = ht["Email"].ToString();
+                user.Phone = ht["Phone"].ToString();
+                user.UserTypeID = ht["UserTypeID"].ToString();
+                user.UserTypeText = ht["UserTypeText"].ToString();
+                user.SchoolID = ht["SchoolID"].ToString();
+                user.SchoolText = ht["SchoolText"].ToString();
+
+                SystemConfigureLib.PermissionController permissionController = new SystemConfigureLib.PermissionController();
+
+                List<System.Collections.Hashtable> list =  permissionController.getPermissionByUserID(user.UserTypeID);
+
+                user.Permissions = new List<Permission>();
+
+                foreach (System.Collections.Hashtable item in list)
+                {
+                    Permission permission = new Permission();
+
+                    permission.PermissionID = item["PermissionID"].ToString();
+                    permission.MenuID = item["MenuID"].ToString();
+                    permission.UserTypeID = item["UserTypeID"].ToString();
+                    permission.IsAdd = item["IsAdd"].ToString();
+                    permission.IsModify = item["IsModify"].ToString();
+                    permission.IsDelete = item["IsDelete"].ToString();
+                    permission.SelectType = item["SelectType"].ToString();
+
+                    user.Permissions.Add(permission);
+                }
+
+                //缓存用户数据
+                this.storeUserData();
+
+                #endregion;
+
                 this._sAuthenticationType = ds.Tables[0].Rows[0]["UserTypeText"].ToString();
 
                 return true;
@@ -89,6 +138,18 @@ namespace Flowpie.Models
                 // TODO:   添加 MyIdentity.AuthenticationType getter 实现 
                 return this._sAuthenticationType;
             }
+        }
+
+        private void storeUserData()
+        {
+            CacheLib.Cache cache = new CacheLib.Cache();
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string key = "usr_";
+
+            key = cache.Add(key, this.user);
+
+            cookie.AddCookie("user_key", key);
         }
 
         #endregion

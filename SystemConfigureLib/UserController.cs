@@ -170,7 +170,7 @@ namespace SystemConfigureLib
 
             data["Password"] = CommonLib.Common.Function.toMD5String(strValue);
 
-            this.SqlText = "INSERT INTO sy_users(Name, Password, PassStr, HeadPic, Email, Phone, DeptID, UserTypeID, CreateAt, ModifyAt) VALUES('@Name@', '@Password@', '@PassStr@', '@HeadPic@', '@Email@', '@Phone@', @DeptID@, @UserTypeID@, '@CreateAt@', '@ModifyAt@'); SELECT UserID FROM sy_users ORDER BY UserID DESC LIMIT 0, 1";
+            this.SqlText = "INSERT INTO sy_users(Name, Password, PassStr, HeadPic, Email, Phone, SchoolID, UserTypeID, CreateAt, ModifyAt) VALUES('@Name@', '@Password@', '@PassStr@', '@HeadPic@', '@Email@', '@Phone@', @SchoolID@, @UserTypeID@, '@CreateAt@', '@ModifyAt@'); SELECT UserID FROM sy_users ORDER BY UserID DESC LIMIT 0, 1";
 
             return base.add(data);
         }
@@ -221,7 +221,7 @@ namespace SystemConfigureLib
 
             data["Password"] = CommonLib.Common.Function.toMD5String(strValue);
 
-            this.SqlText = "UPDATE sy_users SET Name = '@Name@', Password = '@Password@', PassStr = '@PassStr@', HeadPic = '@HeadPic@', Email = '@Email@', Phone = '@Phone@', DeptID = @DeptID@, UserTypeID = @UserTypeID@, ModifyAt = '@ModifyAt@' WHERE UserID = @UserID@";
+            this.SqlText = "UPDATE sy_users SET Name = '@Name@', Password = '@Password@', PassStr = '@PassStr@', HeadPic = '@HeadPic@', Email = '@Email@', Phone = '@Phone@', SchoolID = @SchoolID@, UserTypeID = @UserTypeID@, ModifyAt = '@ModifyAt@' WHERE UserID = @UserID@";
 
             base.save(data);
         }

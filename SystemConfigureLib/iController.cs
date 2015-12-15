@@ -99,6 +99,44 @@ namespace SystemConfigureLib
             }
         }
 
+        public virtual System.Collections.Hashtable loadStructure()
+        {
+            DatabaseLib.DatabaseFactory dataFactory = new DatabaseLib.DatabaseFactory();
+            DatabaseLib.IDatabase dataClient = dataFactory.CreateClient(BaseLib.SystemType.Web);
+
+            string strSql = this.SqlText;
+
+            dataClient.SqlText = strSql;
+
+            DataSet ds = dataClient.Query();
+
+            this.Message = dataClient.Message;
+            this.Result = dataClient.Result;
+
+            if (this.Result)
+            {
+                if (ds == null)
+                    return null;
+
+                System.Collections.Hashtable item = new System.Collections.Hashtable();
+
+                foreach (DataColumn dc in ds.Tables[0].Columns)
+                {
+                    string key = dc.ColumnName;
+                    string value = "";
+
+                    item.Add(key, value);
+                }
+
+                return item;
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// 新增
         /// </summary>
@@ -196,7 +234,7 @@ namespace SystemConfigureLib
                     foreach (DataColumn dc in ds.Tables[0].Columns)
                     {
                         string key = dc.ColumnName;
-                        string value = row[dc.ColumnName].ToString();
+                        string value = CommonLib.Common.Validate.IsNullString(row[dc.ColumnName]);
 
                         ht.Add(key, value);
                     }

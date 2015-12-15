@@ -149,6 +149,8 @@ function switchListBox() {
         container.find('.lighter').removeClass('lighter');
         active.addClass('lighter');
         leftcontainer.find('.list-group').prepend(active);
+
+        active.find(".config").hide();
     });
 
     movetoright.click(function () {
@@ -157,5 +159,7 @@ function switchListBox() {
         container.find('.lighter').removeClass('lighter');
         active.addClass('lighter');
         rightcontainer.find('.list-group').prepend(active);
+
+        active.find(".config").show();
     });
 }

@@ -72,33 +72,33 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="cell col1">所属部门</div>
+                                    <div class="cell col1">所属驾校</div>
                                     <div class="cell col2">
                                         <div class="input-group">
-                                            <input id="Dept_text" name="Dept_text" type="text" class="form-control dropdown-text" value="@if (ViewData["user"] != null) {
+                                            <input id="School_text" name="School_text" type="text" class="form-control dropdown-text" value="@if (ViewData["user"] != null) {
                                             var user = ViewData["user"] as System.Collections.Hashtable;
 
-                                            foreach (var tmp_depts in ViewData["depts"] as List<System.Collections.Hashtable>)
+                                            foreach (var tmp_school in ViewData["schools"] as List<System.Collections.Hashtable>)
                                             {
-                                                if (tmp_depts["DeptID"].ToString() == user["DeptID"].ToString())
+                                                if (tmp_school["SchoolID"].ToString() == user["SchoolID"].ToString())
                                                 {
-                                                    @tmp_depts["DeptText"].ToString();
+                                                    @tmp_school["SchoolText"].ToString();
 
                                                     break;
                                                 }
                                             }
                                         }" readonly="readonly" aria-label="...">
-                                            <input id="DeptID" name="DeptID" type="hidden" value="@if (ViewData["user"] != null) {
+                                            <input id="SchoolID" name="SchoolID" type="hidden" value="@if (ViewData["user"] != null) {
                                             var user = ViewData["user"] as System.Collections.Hashtable;
 
-                                            @user["DeptID"].ToString();
+                                            @user["SchoolID"].ToString();
                                         }" class="dropdown-value" />
                                             <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择部门 <span class="caret"></span></button>
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择驾校<span class="caret"></span></button>
                                                 <ul class="dropdown-menu dropdown-menu-right">
-                                                    @foreach (var tmp_depts in ViewData["depts"] as List<System.Collections.Hashtable>)
+                                                    @foreach (var tmp_school in ViewData["schools"] as List<System.Collections.Hashtable>)
                                                     {
-                                                        <li><a href="javascript:void(0)" class="dropdown-item" val="@tmp_depts["DeptID"].ToString()">@tmp_depts["DeptText"].ToString()</a></li>
+                                                        <li><a href="javascript:void(0)" class="dropdown-item" val="@tmp_school["SchoolID"].ToString()">@tmp_school["SchoolText"].ToString()</a></li>
                                                     }
                                                 </ul>
                                             </div>

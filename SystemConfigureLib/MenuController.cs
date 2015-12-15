@@ -20,6 +20,13 @@ namespace SystemConfigureLib
             return base.getAll();
         }
 
+        public List<System.Collections.Hashtable> getEnableMenus()
+        {
+            this.SqlText = "SELECT * FROM sy_menus where isenable = 1 ORDER BY ParentIndex, `Index`";
+
+            return base.getAll();
+        }
+
         /// <summary>
         /// 获取顶级菜单
         /// </summary>

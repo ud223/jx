@@ -58,7 +58,7 @@ namespace Flowpie.Controllers
 
                 if (CommonLib.Common.Validate.IsNullString(returnUrl) == "")
                 {
-                    return RedirectToRoute("manage-index");
+                    return Redirect("/manage/index");
                 }
                 else
                 {

@@ -11,6 +11,26 @@ namespace Flowpie.Controllers
 {
     public class ManageController : Controller
     {
+        private Models.User _userData;
+
+        private Models.User UserData
+        {
+            get
+            {
+                if (this._userData == null)
+                {
+                    CacheLib.Cache cache = new CacheLib.Cache();
+                    CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+                    string key = cookie.GetCookie("user_key");
+
+                    this._userData = cache.Get<Models.User>(key);
+                }
+
+                return this._userData;
+            }
+        }
+
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]//这里配置角色切忌不能有多余的空格
         public ActionResult Index()
         {
@@ -132,6 +152,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachList(int page = 1)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -140,6 +162,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDetail(int page = 1)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -148,6 +172,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachApply(int page = 1)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -156,6 +182,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachUsage(int page = 1)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -165,19 +193,24 @@ namespace Flowpie.Controllers
         public ActionResult StudentDetail(string studentId)
         {
             this.init();
+
             JxLib.StudentController studentController = new JxLib.StudentController();
+
             System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
+
             ViewData["item"] = item;
             ViewData["open_menu"] = "驾校管理";
+
             return View();
         }
         #endregion;
-
 
         #region 常用设置action
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult SchoolSetting(string schoolId)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -186,6 +219,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CourseEdit(string schoolId)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -194,6 +229,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDispatch(string schoolId)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -202,6 +239,8 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDispatchCourse(string schoolId)
         {
+            this.init();
+
             return View();
         }
         #endregion;
@@ -210,24 +249,77 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDispatchTraining(string schoolId)
         {
-            return View();
-        }
-        #endregion;
+            this.init();
 
-        #region 权限设置action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
-        public ActionResult Permission(string schoolId)
-        {
             return View();
         }
         #endregion;
 
         #region 驾校信息编辑action
+        public ActionResult SchoolList()
+        {
+            this.init();
+
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
+
+            List<Hashtable> list = schoolController.getAll();
+
+            ViewData["list"] = list;
+
+            return View();
+        }
+
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult SchoolEdit(string schoolId)
         {
+            this.init();
+
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
+
+            if (schoolId == null || schoolId == "")
+                schoolId = "0";
+
+            if (this.UserData.SchoolID != "0")
+                schoolId = this.UserData.SchoolID;
+
+            Hashtable item = null;
+
+            if (schoolId == "0")
+                item = schoolController.loadStructure();
+            else
+                schoolController.load(schoolId);
+
+            ViewData["item"] = item;
+
             return View();
         }
+
+        [HttpPost]
+        public ActionResult SchoolSave()
+        {
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            string strParam = Request.Form.ToString();
+
+            System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            string school_id = CommonLib.Common.Validate.IsNullString(Request.Params["SchoolID"]);
+
+            if (school_id == "")
+            {
+                school_id = schoolController.add(data);
+
+                return Redirect("/manage/schooledit");
+            }
+            else
+            {
+                schoolController.save(data);
+
+                return Redirect("/manage/schooledit?id=" + school_id);
+            }
+        }
+
         #endregion;
 
         #region 登记学员action
@@ -242,6 +334,8 @@ namespace Flowpie.Controllers
             return View();
         }
         #endregion;
+
+        #region 优惠卷
 
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentCoupon(string id)
@@ -310,6 +404,7 @@ namespace Flowpie.Controllers
 
             return Redirect("/manage/coupon/result/"+ item["CouponID"].ToString());
         }
+
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CouponResult(string id)
         {
@@ -346,7 +441,7 @@ namespace Flowpie.Controllers
             return View();
         }
 
-
+        #endregion;
 
         //*********************************系统action*********************************************************
 
@@ -378,7 +473,7 @@ namespace Flowpie.Controllers
         {
             SystemConfigureLib.UserController userController = new SystemConfigureLib.UserController();
             SystemConfigureLib.UserTypeController userTypeController = new SystemConfigureLib.UserTypeController();
-            SystemConfigureLib.DeptController deptController = new SystemConfigureLib.DeptController();
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
 
             this.init();
 
@@ -400,9 +495,9 @@ namespace Flowpie.Controllers
 
             ViewData["open_menu"] = "系统管理";
 
-            List<System.Collections.Hashtable> depts = deptController.getAll();
+            List<System.Collections.Hashtable> schools = schoolController.getAll();
 
-            ViewData["depts"] = depts;
+            ViewData["schools"] = schools;
 
             List<System.Collections.Hashtable> userType = userTypeController.getAll();
 
@@ -419,7 +514,7 @@ namespace Flowpie.Controllers
             DatabaseLib.Tools tools = new DatabaseLib.Tools();
 
             string strParam = Request.Form.ToString();
-
+            
             System.Collections.Hashtable data = tools.paramToData(strParam);
 
             string user_id = CommonLib.Common.Validate.IsNullString(Request.Params["UserID"]);
@@ -751,6 +846,11 @@ namespace Flowpie.Controllers
         {
             this.init();
 
+            SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
+
+            List<System.Collections.Hashtable> menus = menuController.getEnableMenus();
+
+            ViewData["list"] = menus;
             ViewData["open_menu"] = "系统管理";
 
             return View();
@@ -837,6 +937,22 @@ namespace Flowpie.Controllers
 
         }
 
+        public ActionResult Permission(string menuid)
+        {
+            this.init();
+
+            SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
+            SystemConfigureLib.PermissionController permissionController = new SystemConfigureLib.PermissionController();
+
+            Hashtable menu = menuController.load(menuid);
+
+            ViewData["item"] = menu;
+            ViewData["list1"] = permissionController.getUserTypeNotInConfig(menuid);
+            ViewData["list2"] = permissionController.getPermissionByMenuID(menuid);
+
+            return View();
+        }
+
         #endregion;
 
         #region 共用方法
@@ -856,9 +972,21 @@ namespace Flowpie.Controllers
         {
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
 
-            List<System.Collections.Hashtable> menu = menuController.getAll();
+            List<System.Collections.Hashtable> tmp_menu = menuController.getEnableMenus();
+            List<System.Collections.Hashtable> menus = new List<Hashtable>();
 
-            ViewData["menus"] = menu;
+            foreach (System.Collections.Hashtable item in tmp_menu)
+            {
+                foreach (Models.Permission permission in this.UserData.Permissions)
+                {
+                    if (permission.MenuID == item["MenuID"].ToString())
+                    {
+                        menus.Add(item);
+                    }
+                }
+            }
+
+            ViewData["menus"] = menus;
         }
 
         #endregion;

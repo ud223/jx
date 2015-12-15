@@ -122,7 +122,7 @@
                     </div>
                     <div class="fix-tb-header-cell">
                         <div class="th">
-                            编辑
+                            操作
                         </div>
                     </div>
                     <div class="fix-tb-header-cell">
@@ -134,7 +134,7 @@
             </div>
             <div class="fix-tb-ct-b2">
                 <div class="fix-tb-body">
-                    @foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
+                    @foreach (var menu in ViewData["list"] as List<System.Collections.Hashtable>)
                     {
                         <div class="fix-tb-body-row">
                             @*<div class="fix-tb-body-cell">
@@ -167,7 +167,10 @@
                                 <div class="td">@menu["ModifyAt"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td"><a href="/manage/menu/edit/@menu["MenuID"].ToString()">编辑</a></div>
+                                <div class="td">
+                                    <a class="listoperbtn" href="/manage/menu/edit/@menu["MenuID"]">编辑</a>
+                                    <a style="color:#10D07D" href="/manage/permission?menuid=@menu["MenuID"]">配置</a>
+                                </div>
                             </div>
                             <div class="fix-tb-body-cell">
                                 <div class="td"><a class="item-delete" onclick="return confirm('确定删除?');" href="/manage/menu/delete/@menu["MenuID"].ToString()/1">删除</a></div>

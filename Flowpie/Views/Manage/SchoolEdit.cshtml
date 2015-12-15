@@ -4,225 +4,228 @@
 @{
     ViewBag.Title = "驾校信息管理";
 }
+<form action="/manage/SchoolSave" method="post">
+    <div class="main-body-relative relative">
+        <div class="fix-wxp-toolbar unfix">
+            <div class="fix-wxp-toolbar-wp">
+                <div class="fix-wxp-toolbar-txt">
+                    <span class="breadcrumb-prev">驾校信息管理</span>
+                </div>
+            </div>
+        </div>
+        <div class="cko-wp">
+            <div class="clear-20"></div>
+            <!-- Tab panes -->
+            <div class="tab-content tab-kiki-ct">
+                <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>基本信息编辑</span>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">文字描述</div>
+                                    <div class="cell col2">
+                                        <textarea id="Description" name="Description" class="pc100" placeholder="出现在列表页下方的简介部分">@(((System.Collections.Hashtable)ViewData["item"])["Description"])</textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">报名费用</div>
+                                    <div class="cell col2">
+                                        <input id="Price" name="Price" class="pc100" type="text" value="@(((System.Collections.Hashtable)ViewData["item"])["Price"])" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">授课区域</div>
+                                    <div class="cell col2">
+                                        <input id="Region" name="Region" class="pc100" type="text" value="@(((System.Collections.Hashtable)ViewData["item"])["Region"])" />
+                                        <label class="cneitp">写明显的片区，例如：南山，深大</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">建校年份</div>
+                                    <div class="cell col2">
+                                        <select id="CreateYear" name="CreateYear" class="pc100">
+                                            <option>2022</option>
+                                            <option>2021</option>
+                                            <option>2020</option>
+                                            <option>2019</option>
+                                            <option>2018</option>
+                                            <option>2017</option>
+                                            <option>2016</option>
+                                            <option>2015</option>
+                                            <option>2014</option>
+                                            <option>2013</option>
+                                            <option>2012</option>
+                                            <option>2011</option>
+                                            <option>2010</option>
+                                            <option>2009</option>
+                                            <option>2008</option>
+                                            <option>2007</option>
+                                            <option>2006</option>
+                                            <option>2005</option>
+                                            <option>2004</option>
+                                            <option>2003</option>
+                                            <option>2002</option>
+                                            <option>2001</option>
+                                            <option>2000</option>
+                                            <option>1999</option>
+                                            <option>1998</option>
+                                            <option>1997</option>
+                                            <option>1996</option>
+                                            <option>1995</option>
+                                            <option>1994</option>
+                                            <option>1993</option>
+                                            <option>1992</option>
+                                            <option>1991</option>
+                                            <option>1990</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                        <div class="cell col1">驾照类型</div>
+                                        <div class="cell col2">
+                                            <div style="float:left;margin-right:20px;">
+                                                <input id="licentypec1" type="checkbox" style="float:left;"/>
+                                                <label for="licentypec1" class="cneitp" style="float:left;margin:0;padding:0;margin-left:5px;">C1手动</label>
+                                            </div>
+                                            <div style="float:left;">
+                                                <input id="licentypec2" type="checkbox" style="float:left;"/>
+                                                <label for="licentypec2" class="cneitp" style="float:left;margin:0;padding:0;margin-left:5px;">C2自动</label>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                <div class="row">
+                                    <div class="cell col1">图标</div>
+                                    <div class="cell col2">
+                                        <input type="file" value="点击上传图标" />
+                                    </div>
+                                </div>
+                            </div>
 
-<div class="main-body-relative relative">
-    <div class="fix-wxp-toolbar unfix">
-        <div class="fix-wxp-toolbar-wp">
-            <div class="fix-wxp-toolbar-txt">
-                <span class="breadcrumb-prev">驾校信息管理</span>
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">驾校名称</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="SchoolText" name="SchoolText" value="@(((System.Collections.Hashtable)ViewData["item"])["SchoolText"])" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">驾校代码</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="SchoolCode" name="SchoolCode" value="@(((System.Collections.Hashtable)ViewData["item"])["SchoolCode"])" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1">驾校前缀</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="Pix" name="Pix" value="@(((System.Collections.Hashtable)ViewData["item"])["Pix"])" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell col1"></div>
+                                    <div class="cell col2"><div class="cneitp">* “驾校名称”和“驾校代码”一经设定不可更改</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>驾校详情</span>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">详细介绍</div>
+                                    <div class="cell col2">
+                                        <textarea id="Remark" name="Remark" class="pc100" placeholder="暂时手动填充富文本">@(((System.Collections.Hashtable)ViewData["item"])["Remark"])</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inner-block">
+                                <div class="col1">
+                                    上传图片
+                                </div>
+                                <div class="col2">
+                                    <div>
+                                        <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/np01.jpg);">
+                                            <div class="opera">
+                                                <i class="halflings halflings-remove"></i>
+                                                <i class="halflings halflings-chevron-left lcilt"></i>
+                                                <i class="halflings halflings-chevron-right lcirt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/np02.jpg);">
+                                            <div class="opera">
+                                                <i class="halflings halflings-remove"></i>
+                                                <i class="halflings halflings-chevron-left lcilt"></i>
+                                                <i class="halflings halflings-chevron-right lcirt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/np01.jpg);">
+                                            <div class="opera">
+                                                <i class="halflings halflings-remove"></i>
+                                                <i class="halflings halflings-chevron-left lcilt"></i>
+                                                <i class="halflings halflings-chevron-right lcirt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/tpp01.jpg);">
+                                            <div class="opera">
+                                                <i class="halflings halflings-remove"></i>
+                                                <i class="halflings halflings-chevron-left lcilt"></i>
+                                                <i class="halflings halflings-chevron-right lcirt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/tpp02.jpg);">
+                                            <div class="opera">
+                                                <i class="halflings halflings-remove"></i>
+                                                <i class="halflings halflings-chevron-left lcilt"></i>
+                                                <i class="halflings halflings-chevron-right lcirt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/tpp03.jpg);">
+                                            <div class="opera">
+                                                <i class="halflings halflings-remove"></i>
+                                                <i class="halflings halflings-chevron-left lcilt"></i>
+                                                <i class="halflings halflings-chevron-right lcirt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="imgitmblk add">+</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bt-btn-bar">
+                        <input type="hidden" id="SchoolID" name="SchoolID" value="@(((System.Collections.Hashtable)ViewData["item"])["SchoolID"])" />
+                        <button type="submit" class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 保存</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
-    <div class="cko-wp">
-
-        <div class="clear-20"></div>
-
-        <!-- Tab panes -->
-        <div class="tab-content tab-kiki-ct">
-            <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
-                <div class="opl-table">
-                    <div class="tt">
-                        <span>基本信息编辑</span>
-
-                    </div>
-                    <div class="ct clearfix">
-                        <div class="inner-table">
-                            <div class="row">
-                                <div class="cell col1">文字描述</div>
-                                <div class="cell col2">
-                                    <textarea class="pc100" placeholder="出现在列表页下方的简介部分"></textarea>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="cell col1">报名费用</div>
-                                <div class="cell col2">
-                                    <input class="pc100" type="text" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="cell col1">授课区域</div>
-                                <div class="cell col2">
-                                    <input class="pc100" type="text" />
-                                    <label class="cneitp">写明显的片区，例如：南山，深大</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="cell col1">建校年份</div>
-                                <div class="cell col2">
-                                    <select class="pc100">
-                                        <option>2015</option>
-                                        <option>2014</option>
-                                        <option>2013</option>
-                                        <option>2012</option>
-                                        <option>2011</option>
-                                        <option>2010</option>
-                                        <option>2009</option>
-                                        <option>2008</option>
-                                        <option>2007</option>
-                                        <option>2006</option>
-                                        <option>2005</option>
-                                        <option>2004</option>
-                                        <option>2003</option>
-                                        <option>2002</option>
-                                        <option>2001</option>
-                                        <option>2000</option>
-                                        <option>1999</option>
-                                        <option>1998</option>
-                                        <option>1997</option>
-                                        <option>1996</option>
-                                        <option>1995</option>
-                                        <option>1994</option>
-                                        <option>1993</option>
-                                        <option>1992</option>
-                                        <option>1991</option>
-                                        <option>1990</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @*<div class="row">
-                                <div class="cell col1">驾照类型</div>
-                                <div class="cell col2">
-                                    <div style="float:left;margin-right:20px;">
-                                        <input id="licentypec1" type="checkbox" style="float:left;"/>
-                                        <label for="licentypec1" class="cneitp" style="float:left;margin:0;padding:0;margin-left:5px;">C1手动</label>
-                                    </div>
-                                    <div style="float:left;">
-                                        <input id="licentypec2" type="checkbox" style="float:left;"/>
-                                        <label for="licentypec2" class="cneitp" style="float:left;margin:0;padding:0;margin-left:5px;">C2自动</label>
-                                    </div>
-                                </div>
-                            </div>*@
-                            <div class="row">
-                                <div class="cell col1">图标</div>
-                                <div class="cell col2">
-                                    <input type="file" value="点击上传图标"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="inner-table">
-                            
-                            <div class="row">
-                                <div class="cell col1">驾校名称</div>
-                                <div class="cell col2">
-                                    <span>深大驾校</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="cell col1">驾校代码</div>
-                                <div class="cell col2">
-                                    <span>sd</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="cell col1"></div>
-                                <div class="cell col2"><div class="cneitp">* “驾校名称”和“驾校代码”一经设定不可更改</div></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="opl-table">
-                    <div class="tt">
-                        <span>驾校详情</span>
-
-                    </div>
-                    <div class="ct clearfix">
-                        <div class="inner-table">
-                            <div class="row">
-                                <div class="cell col1">详细介绍</div>
-                                <div class="cell col2">
-                                    <textarea class="pc100" placeholder="暂时手动填充富文本"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="inner-block">
-                            <div class="col1">
-                                上传图片
-                            </div>
-                            <div class="col2">
-                                <div>
-                                    <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/np01.jpg);">
-                                        <div class="opera">
-                                            <i class="halflings halflings-remove"></i>
-                                            <i class="halflings halflings-chevron-left lcilt"></i>
-                                            <i class="halflings halflings-chevron-right lcirt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/np02.jpg);">
-                                        <div class="opera">
-                                            <i class="halflings halflings-remove"></i>
-                                            <i class="halflings halflings-chevron-left lcilt"></i>
-                                            <i class="halflings halflings-chevron-right lcirt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/np01.jpg);">
-                                        <div class="opera">
-                                            <i class="halflings halflings-remove"></i>
-                                            <i class="halflings halflings-chevron-left lcilt"></i>
-                                            <i class="halflings halflings-chevron-right lcirt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/tpp01.jpg);">
-                                        <div class="opera">
-                                            <i class="halflings halflings-remove"></i>
-                                            <i class="halflings halflings-chevron-left lcilt"></i>
-                                            <i class="halflings halflings-chevron-right lcirt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/tpp02.jpg);">
-                                        <div class="opera">
-                                            <i class="halflings halflings-remove"></i>
-                                            <i class="halflings halflings-chevron-left lcilt"></i>
-                                            <i class="halflings halflings-chevron-right lcirt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="imgitmblk img" style="background-image:url(/statics/jx/img/photocase/tpp03.jpg);">
-                                        <div class="opera">
-                                            <i class="halflings halflings-remove"></i>
-                                            <i class="halflings halflings-chevron-left lcilt"></i>
-                                            <i class="halflings halflings-chevron-right lcirt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="imgitmblk add">+</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bt-btn-bar">
-                    <button class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 保存</button>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- /container -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('body').on('click', '.lcilt, .lcirt', function () {
-            var container = $(this).closest('.imgitmblk');
-            var target;
-            if ($(this).hasClass('lcilt')) {
-                // 向前
-                target = container.prev('.imgitmblk.img');
-                if (target.length) {
-                    target.insertAfter(container);
+</form>
+    <!-- /container -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').on('click', '.lcilt, .lcirt', function () {
+                var container = $(this).closest('.imgitmblk');
+                var target;
+                if ($(this).hasClass('lcilt')) {
+                    // 向前
+                    target = container.prev('.imgitmblk.img');
+                    if (target.length) {
+                        target.insertAfter(container);
+                    }
+                } else {
+                    // 向后
+                    target = container.next('.imgitmblk.img');
+                    if (target.length) {
+                        target.insertBefore(container);
+                    }
                 }
-            } else {
-                // 向后
-                target = container.next('.imgitmblk.img');
-                if (target.length) {
-                    target.insertBefore(container);
-                }
-            }
+            });
         });
-    });
-</script>
+    </script>

@@ -4,30 +4,33 @@
 @{
     ViewBag.Title = "角色权限设置";
 }
-
+<style>
+    div.list-group-item.active,
+    div.list-group-item.active:hover,
+    div.list-group-item.active:focus {
+      z-index: 2;
+      color: #ffffff;
+      background-color: #428bca;
+      border-color: #428bca;
+    }
+</style>
 <div class="main-body-relative relative">
     <div class="fix-wxp-toolbar unfix">
         <div class="fix-wxp-toolbar-wp">
             <div class="fix-wxp-toolbar-txt">
-                <span class="breadcrumb-prev">角色权限设置</span> 
+                <span class="breadcrumb-prev">角色权限设置</span>
             </div>
         </div>
     </div>
-
-
     <div class="cko-wp">
-
         <div class="clear-20"></div>
-
         <!-- Tab panes -->
         <div class="tab-content tab-kiki-ct">
             <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
                 <div class="opl-table">
                     <div class="tt">
-                        <span>模块名称</span>
-                        <select style="margin-left:10px;">
-                            <option>请选择访问类型</option>
-                        </select>
+                        <span>模块名称:@(((System.Collections.Hashtable)ViewData["item"])["MenuText"])</span>
+
                     </div>
                     <div class="ct clearfix">
                         <table class="switchlistgroup">
@@ -35,12 +38,24 @@
                                 <td class="sidecol colleft">
                                     <div class="sidett">角色</div>
                                     <div class="list-group bs">
-                                        <a href="#" class="list-group-item">LEFT ITEM 901</a>
-                                        <a href="#" class="list-group-item">LEFT ITEM 902</a>
-                                        <a href="#" class="list-group-item">LEFT ITEM 903</a>
-                                        <a href="#" class="list-group-item">LEFT ITEM 904</a>
-                                        <a href="#" class="list-group-item">LEFT ITEM 905</a>
-                                        <a href="#" class="list-group-item">LEFT ITEM 906</a>
+                                    @foreach (var item in ViewData["list1"] as List<System.Collections.Hashtable>)
+                                    {
+                                        <div class="list-group-item" userTypeId="@item["UserTypeID"]">
+                                            <a href="#">@item["UserTypeText"]</a>
+                                            <div class="config" style="display:none">
+                                                <input class="isAdd" type="checkbox" /><span>新增</span>
+                                                <input class="isModify" type="checkbox" /><span>编辑</span>
+                                                <input class="isDelete" type="checkbox" /><span>删除</span>     
+                                                <span>访问类型:</span>
+                                                <select class="selectType" style="margin-left:10px;">
+                                                    <option value="1">无限制</option>
+                                                    <option value="2">本部门及下属</option>
+                                                    <option value="3">本部门</option>
+                                                    <option value="4">本人</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
                                     </div>
                                 </td>
                                 <td class="colmiddle">
@@ -53,16 +68,77 @@
                                 </td>
                                 <td class="sidecol colright">
                                     <div class="sidett">权限</div>
-                                    <div class="list-group bs switchlistgroup">
-                                        <a href="#" class="list-group-item">RIGHT ITEM 801</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 802</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 803</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 804</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 805</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 806</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 807</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 808</a>
-                                        <a href="#" class="list-group-item">RIGHT ITEM 809</a>
+                                    <div class="list-group bs switchlistgroup permissionlist">
+                                    @foreach (var item in ViewData["list2"] as List<System.Collections.Hashtable>)
+                                    {
+                                        <div class="list-group-item" userTypeId="@item["UserTypeID"]">
+                                            <a href="#">@item["UserTypeText"]</a>
+                                            <div class="config" >
+                                                @if (item["IsAdd"].ToString() == "1")
+                                                {          
+                                                    <input class="isAdd" type="checkbox"  checked= "checked" />
+                                                }
+                                                else
+                                                {
+                                                    <input class="isAdd" type="checkbox" />
+                                                }<span>新增</span>
+                                                @if (item["IsModify"].ToString() == "1")
+                                                {
+                                                    <input class="IsModify" type="checkbox" checked="checked" />
+                                                }
+                                                else
+                                                {
+                                                    <input class="IsModify" type="checkbox" />
+                                                }<span>编辑</span>
+                                                @if (item["IsDelete"].ToString() == "1")
+                                                {
+                                                    <input class="isDelete" type="checkbox" checked="checked" />
+                                                }
+                                                else
+                                                {
+                                                    <input class="isDelete" type="checkbox" />
+                                                }<span>删除</span>     
+                                                <span>访问类型:</span>
+                                                
+                                                    @if (item["SelectType"].ToString() == "1")
+                                                    {
+                                                        <select class="selectType" style="margin-left:10px;">
+                                                            <option value="1" selected="selected">无限制</option>
+                                                            <option value="2">本部门及下属</option>
+                                                            <option value="3">本部门</option>
+                                                            <option value="4">本人</option>
+                                                        </select>
+                                                    }
+                                                    else if (item["SelectType"].ToString() == "2")
+                                                    {
+                                                        <select class="selectType" style="margin-left:10px;">
+                                                            <option value="1">无限制</option>
+                                                            <option value="2" selected="selected">本部门及下属</option>
+                                                            <option value="3">本部门</option>
+                                                            <option value="4">本人</option>
+                                                        </select>
+                                                    }
+                                                    else if (item["SelectType"].ToString() == "3")
+                                                    {
+                                                        <select class="selectType" style="margin-left:10px;">
+                                                            <option value="1">无限制</option>
+                                                            <option value="2">本部门及下属</option>
+                                                            <option value="3" selected="selected">本部门</option>
+                                                            <option value="4">本人</option>
+                                                        </select>
+                                                    }
+                                                    else if (item["SelectType"].ToString() == "4")
+                                                    {
+                                                        <select class="selectType" style="margin-left:10px;">
+                                                            <option value="1">无限制</option>
+                                                            <option value="2">本部门及下属</option>
+                                                            <option value="3">本部门</option>
+                                                            <option value="4" selected="selected">本人</option>
+                                                        </select>
+                                                    }
+                                            </div>
+                                        </div>
+                                    }
                                     </div>
                                 </td>
                             </tr>
@@ -84,9 +160,108 @@
 
 <!-- /container -->
 <script type="text/javascript">
+    var menuid = '@(((System.Collections.Hashtable)ViewData["item"])["MenuID"])';
+
 	$(document).ready(function() {
 	    switchListBox();
+
+	    $(".btn-primary").click(function () {
+	        savePermission();
+	    })
+
+	    $(".isAdd").click(function () {
+	        if ($(this).is(":checked")) {
+	            $(this).prop("checked", true);
+	        } else {
+	            $(this).prop("checked", false);
+	        }
+	    })
 	});
 
+	function permissionAdd(node) {
+	    var userTypeId = $(node).attr("userTypeId");
+
+	    var isAdd = 0;
+
+	    if ($(node).find(".isAdd").prop("checked")) {
+	        isAdd = 1;
+	    }
+
+	    var isModify = 0;
+	    //alert($(node).find(".isModify").is("checked"))
+	    if ($(node).find(".isModify").prop("checked")) {
+	        isModify = 1;
+	    }
+
+	    var isDelete = 0;
+
+	    if ($(node).find(".isDelete").prop("checked")) {
+	        isDelete = 1;
+	    }
+
+	    var selectType = $(node).find(".selectType").val();
+
+	    var data = { 'MenuID': menuid, 'UserTypeID': userTypeId, 'IsAdd': isAdd, 'IsModify': isModify, 'IsDelete': isDelete, 'SelectType': selectType };
+
+	    //alert(JSON.stringify(data));
+	    //return;
+
+	    var params = {
+	        url: '/api/permission/PermissionAdd',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function permissionDel() {
+	    var data = { 'MenuID': menuid };
+
+	    var params = {
+	        url: '/api/permission/PermissionDelete',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    alert(data.message);
+	    var opertion = {
+	        msg: data.message,
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+
+	    //if (data.code == "200") {
+	        
+	    //}
+	}
+
+	function error() {
+	    var opertion = {
+	        msg: "保存菜单权限配置失败!!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+	}
 	
+	function savePermission() {
+	    var permission_list = $(".permissionlist").find(".list-group-item");
+	    
+	    if (permission_list.length == 0) {
+	        permissionDel();
+	    }
+	    else {
+	        $.each(permission_list, function () {
+	            permissionAdd(this);
+	        })
+	    }  
+	}
 </script>

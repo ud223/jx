@@ -23,15 +23,16 @@ function ajaxTo(params) {
 
         return;
     }
-
+    console.log(option.url);
     $.ajax({
         data: option.data,
         url: option.url,
         type: option.type,
         dataType: option.dataType,
+        crossDomain: true,
         success: function (result) {
             var data = eval('(' + result + ')');
-            //alert(JSON.stringify(data));
+            //alert(JSON.stringify(result));
             if (data.code == '200') {
                 if (option.successFun) {
                     option.successFun(data);
@@ -42,6 +43,40 @@ function ajaxTo(params) {
                     option.errorFun(data);
                 }
             }
+        },
+        error: function () {
+            alert("数据访问错误, 请重新尝试!");
+        }
+    });
+}
+
+function ajaxApi(params) {
+    var option = {
+        url: false,
+        data: false,
+        type: 'post',
+        dataType: 'json',
+        successFun: false,
+        errorFun: false,
+        param: false
+    }
+
+    $.extend(option, params);
+
+    if (!option.url) {
+        alert('url没有设置!');
+
+        return;
+    }
+
+    $.ajax({
+        data: option.data,
+        url: option.url,
+        type: option.type,
+        dataType: option.dataType,
+        crossDomain: true,
+        success: function (data) {
+            option.successFun(data, option.param);
         },
         error: function () {
             alert("数据访问错误, 请重新尝试!");

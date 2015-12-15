@@ -185,6 +185,7 @@
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\WeixinController.cs" />
@@ -205,8 +206,10 @@
     <Compile Include="Models\MyIdentity.cs" />
     <Compile Include="Models\MyPrincipal.cs" />
     <Compile Include="Models\OpenId.cs" />
+    <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

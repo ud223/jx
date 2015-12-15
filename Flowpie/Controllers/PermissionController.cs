@@ -32,9 +32,16 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable data = tools.paramToData(context.Request.Form);
 
+            Hashtable permission = permissionController.getPermissionByMenuIDAndUserTypeID(data["MenuID"].ToString(), data["UserTypeID"].ToString());
+
+            if (permission != null)
+            {
+                permissionController.delete(permission["PermissionID"].ToString());
+            }
+
             string permission_id = permissionController.add(data);
 
-            if (permission_id == null || permission_id == "")
+            if (permissionController.Result)
             {
                 result.code = "200";
                 result.message = "添加成功!";
@@ -42,7 +49,33 @@ namespace Flowpie.Controllers
             else
             {
                 result.code = "0";
-                result.message = "该快递单已经添加!";
+                result.message = permissionController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        public string PermissionDelete()
+        {
+            SystemConfigureLib.PermissionController permissionController = new SystemConfigureLib.PermissionController();
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            System.Collections.Hashtable data = tools.paramToData(context.Request.Form);
+
+            permissionController.deleteByMenuID(data["MenuID"].ToString());
+
+            if (permissionController.Result)
+            {
+                result.code = "200";
+                result.message = "添加成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = permissionController.Message;
             }
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");

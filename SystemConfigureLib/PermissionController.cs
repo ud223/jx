@@ -29,6 +29,20 @@ namespace SystemConfigureLib
             return base.Query(this.SqlText);
         }
 
+        public Hashtable getPermissionByMenuIDAndUserTypeID(string menuid, string userTypeId)
+        {
+            this.SqlText = "select * from sy_permission where MenuID =" + menuid + " and UserTypeID = "+ userTypeId;
+
+            return this.load("");
+        }
+
+        public List<Hashtable> getPermissionByUserID(string userTypeId)
+        {
+            this.SqlText = "select * from sy_permission where UserTypeID = " + userTypeId;
+
+            return base.Query(this.SqlText);
+        }
+
         public override string add(Hashtable data)
         {
             this.SqlText = "insert into sy_permission(MenuID, UserTypeID, IsAdd, IsModify, IsDelete, SelectType, CreateAt, ModifyAt) values(@MenuID@, @UserTypeID@, @IsAdd@, @IsModify@, @IsDelete@, @SelectType@, '@CreateAt@', '@ModifyAt@'); select permissionid from sy_permission order by permissionid desc limit 1";
@@ -48,6 +62,13 @@ namespace SystemConfigureLib
             this.SqlText = "delete from sy_permission where permissionid=";
 
             base.delete(id);
+        }
+
+        public void deleteByMenuID(string menuid)
+        {
+            this.SqlText = "delete from sy_permission where MenuID=";
+
+            base.delete(menuid);
         }
     }
 }

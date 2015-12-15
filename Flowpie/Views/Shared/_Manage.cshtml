@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     @*@Styles.Render("~/statics/admin/css/all");
-    @Scripts.Render("~/statics/admin/js/all");*@
+        @Scripts.Render("~/statics/admin/js/all");*@
     @if (CommonLib.Common.ConfigReader.Read("CurrentEnv") == "prod")
     {
         string cdnDomain = CommonLib.Common.ConfigReader.Read("CdnDomain");
@@ -18,7 +18,7 @@
 
         <link href="@stylesUrl" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="@scriptsUrl"></script>
-        
+
     }
     else
     {
@@ -58,33 +58,32 @@
                         <input type="search" class="emboss" placeholder="请输入关键词"/>
                     </div>-->
                     @*<a href="javascript:void(0)" class="nav-itm navigator-menu-itm pull-left full-ico selected">我的工作</a>
-                    <a href="javascript:void(0)" class="nav-itm navigator-menu-itm pull-left full-ico">日常办公</a>
-                    <a href="javascript:void(0)" class="nav-itm navigator-menu-itm pull-left full-ico">系统管理</a>*@
+                        <a href="javascript:void(0)" class="nav-itm navigator-menu-itm pull-left full-ico">日常办公</a>
+                        <a href="javascript:void(0)" class="nav-itm navigator-menu-itm pull-left full-ico">系统管理</a>*@
                 </div>
                 <div class="col pull-right">
                     @*<a href="#" class="nav-itm pull-right full-ico">
-                        <span class="halflings halflings-log-out"></span>
-                    </a>*@
+                            <span class="halflings halflings-log-out"></span>
+                        </a>*@
                     <!--<span class="spliter pull-right"></span>
                     <a href="#" class="nav-itm halflings halflings-glyph-bell pull-right full-ico"><span class="bell-content">6</span></a>-->
-
                     @*<span class="spliter pull-right"></span>
-                    <div class="nav-itm-wp pull-right">
-                        <a class="nav-itm dropdown-toggle" href="#" data-toggle="dropdown"> 你好，admin <i class="halflings halflings-menu-hamburger"></i> </a>
-                        <ul class="dropdown-menu fix-more-box-menu">
-                            <li>
-                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-list-alt"></span> &nbsp; 个人信息</a>
-                            </li>
-                            <li>
-                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-glyph-bell"></span> &nbsp; 消息</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-off"></span> &nbsp; 安全退出</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <span class="spliter pull-right"></span>*@
+                        <div class="nav-itm-wp pull-right">
+                            <a class="nav-itm dropdown-toggle" href="#" data-toggle="dropdown"> 你好，admin <i class="halflings halflings-menu-hamburger"></i> </a>
+                            <ul class="dropdown-menu fix-more-box-menu">
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-list-alt"></span> &nbsp; 个人信息</a>
+                                </li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-glyph-bell"></span> &nbsp; 消息</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-off"></span> &nbsp; 安全退出</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <span class="spliter pull-right"></span>*@
                 </div>
             </div>
         </div>
@@ -93,13 +92,22 @@
     <div class="side-bar-fix">
         <div class="side-hide">
         </div>
-        <a href="/manage/student/list" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">学员列表</a>
-        <a href="/manage/use/coupon" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">核销优惠券</a>
-        <a href="/manage/schoolsetting" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">常用设置</a>
-        <a href="/manage/schooledit" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">驾校信息管理</a>
-        <a href="/manage/courseedit" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">训练场次设置</a>
-        <a href="/manage/coachdispatch" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">分配教练</a>
-        <a href="/manage/permission" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">角色权限设置</a>
+        @*<a href="/manage/student/list" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">学员列表</a>
+            <a href="/manage/use/coupon" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">核销优惠券</a>
+            <a href="/manage/schoolsetting" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">常用设置</a>
+            <a href="/manage/schooledit" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">驾校信息管理</a>
+            <a href="/manage/courseedit" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">训练场次设置</a>
+            <a href="/manage/coachdispatch" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">分配教练</a>
+            <a href="/manage/permission" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">角色权限设置</a>*@
+        @foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
+        {
+            if (menu["Url"].ToString() == "")
+            {
+                continue;
+            }
+
+            <a href="@menu["Url"]" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">@menu["MenuText"]</a>
+        }
         <div class="bfwh" style="display:none !important;">
             <a style="border-bottom:1px solid #E2E2E2;display:inline-block;padding:20px;text-align:center;" href="/manage/student/list">
                 学员列表
@@ -108,40 +116,40 @@
                 核销优惠券
             </a>
             @*<div class="nano">
-                <div class="nano-content">
-                    <div class="list-group">
-                        @foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
-                        {
-                            if (@menu["Level"].ToString() == "1")
+                    <div class="nano-content">
+                        <div class="list-group">
+                            @foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
                             {
-                                string css = "";
-
-                                if (ViewData["open_menu"] != null)
+                                if (@menu["Level"].ToString() == "1")
                                 {
-                                    css = "open";
-                                }
+                                    string css = "";
 
-                                <div class="list-group-item-primary @css" id="@menu["MenuID"].ToString()">
-                                    <a href="#" class="awp">
-                                        <span>@menu["MenuText"].ToString()</span>
-                                    </a>
-                                    <button class="arr"></button>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="list-group-item-ddl" id="@menu["MenuID"].ToString()" rel="@menu["ParentID"].ToString()">
-                                    <div class="list-group-item">
-                                        <a href="@menu["Url"].ToString()" class="awp">
+                                    if (ViewData["open_menu"] != null)
+                                    {
+                                        css = "open";
+                                    }
+
+                                    <div class="list-group-item-primary @css" id="@menu["MenuID"].ToString()">
+                                        <a href="#" class="awp">
                                             <span>@menu["MenuText"].ToString()</span>
                                         </a>
+                                        <button class="arr"></button>
                                     </div>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="list-group-item-ddl" id="@menu["MenuID"].ToString()" rel="@menu["ParentID"].ToString()">
+                                        <div class="list-group-item">
+                                            <a href="@menu["Url"].ToString()" class="awp">
+                                                <span>@menu["MenuText"].ToString()</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
         </div>
     </div>
     @RenderBody()

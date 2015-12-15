@@ -54,6 +54,7 @@
     <Compile Include="ExamController.cs" />
     <Compile Include="ExamTypeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchoolController.cs" />
     <Compile Include="StudentController.cs" />
     <Compile Include="UserExamController.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
