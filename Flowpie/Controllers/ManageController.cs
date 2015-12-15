@@ -989,6 +989,14 @@ namespace Flowpie.Controllers
             ViewData["menus"] = menus;
         }
 
+        /// <summary>
+        /// 用户权限是否能查看该页面
+        /// </summary>
+        private void checkUser()
+        {
+
+        }
+
         #endregion;
     }
 }
