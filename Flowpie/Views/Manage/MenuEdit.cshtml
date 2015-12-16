@@ -42,6 +42,16 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="cell col1">模块访问页面物理名称</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="AccessFile" name="AccessFile" value="@if (ViewData["menu"] != null) {
+                                            var menu = ViewData["menu"] as System.Collections.Hashtable;
+
+                                            @menu["AccessFile"].ToString();
+                                        }" maxlength="200" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="cell col1">上级菜单</div>
                                     <div class="cell col2">
                                         <div class="input-group">

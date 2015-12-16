@@ -8,6 +8,10 @@ namespace Flowpie.Models
     public class Permission
     {
         public string PermissionID { get; set; }
+        /// <summary>
+        /// 权限菜单的页面名称集合
+        /// </summary>
+        public string AccessFile { get; set; }
         public string MenuID { get; set; }
         public string UserTypeID { get; set; }
         public string IsAdd { get; set; }

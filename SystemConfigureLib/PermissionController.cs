@@ -31,28 +31,28 @@ namespace SystemConfigureLib
 
         public Hashtable getPermissionByMenuIDAndUserTypeID(string menuid, string userTypeId)
         {
-            this.SqlText = "select * from sy_permission where MenuID =" + menuid + " and UserTypeID = "+ userTypeId;
+            this.SqlText = "select * from sy_permission left join sy_menus on sy_permission.MenuID = sy_menus.MenuID where MenuID =" + menuid + " and UserTypeID = "+ userTypeId;
 
             return this.load("");
         }
 
         public List<Hashtable> getPermissionByUserID(string userTypeId)
         {
-            this.SqlText = "select * from sy_permission where UserTypeID = " + userTypeId;
+            this.SqlText = "select sy_permission.*, AccessFile from sy_permission left join sy_menus on sy_permission.MenuID = sy_menus.MenuID where UserTypeID = " + userTypeId;
 
             return base.Query(this.SqlText);
         }
 
         public override string add(Hashtable data)
         {
-            this.SqlText = "insert into sy_permission(MenuID, UserTypeID, IsAdd, IsModify, IsDelete, SelectType, CreateAt, ModifyAt) values(@MenuID@, @UserTypeID@, @IsAdd@, @IsModify@, @IsDelete@, @SelectType@, '@CreateAt@', '@ModifyAt@'); select permissionid from sy_permission order by permissionid desc limit 1";
+            this.SqlText = "insert into sy_permission(MenuID, UserTypeID, IsAdd, IsModify, IsDelete, IsView, SelectType, CreateAt, ModifyAt) values(@MenuID@, @UserTypeID@, @IsAdd@, @IsModify@, @IsDelete@, @IsView@, @SelectType@, '@CreateAt@', '@ModifyAt@'); select permissionid from sy_permission order by permissionid desc limit 1";
 
             return base.add(data);
         }
 
         public override void save(Hashtable data)
         {
-            this.SqlText = "update sy_permission set IsAdd=@IsAdd@, IsModify=@IsModify@, IsDelete= @IsDelete@, SelectType=@SelectType@ where permissionid = @permissionid@";
+            this.SqlText = "update sy_permission set IsAdd=@IsAdd@, IsModify=@IsModify@, IsDelete=@IsDelete@, IsView=@IsView@, SelectType=@SelectType@ where permissionid = @permissionid@";
 
             base.save(data);
         }

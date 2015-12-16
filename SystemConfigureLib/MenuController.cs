@@ -86,7 +86,7 @@ namespace SystemConfigureLib
         /// <returns>返回新增菜单ID</returns>
         public override string add(System.Collections.Hashtable data)
         {
-            this.SqlText = "INSERT INTO sy_menus(MenuText, Url, Level, ParentID, `Index`, CreateAt, ModifyAt) VALUES('@MenuText@', '@Url@', @Level@, @ParentID@, @Index@, '@CreateAt@', '@ModifyAt@'); SELECT MenuID FROM sy_menus ORDER BY MenuID DESC LIMIT 0, 1";
+            this.SqlText = "INSERT INTO sy_menus(MenuText, Url, AccessFile, Level, ParentID, `Index`, CreateAt, ModifyAt) VALUES('@MenuText@', '@Url@', '@AccessFile@', @Level@, @ParentID@, @Index@, '@CreateAt@', '@ModifyAt@'); SELECT MenuID FROM sy_menus ORDER BY MenuID DESC LIMIT 0, 1";
 
             return base.add(data);
         }
@@ -98,7 +98,7 @@ namespace SystemConfigureLib
         /// <param name="menu_data"></param>
         public override void save(System.Collections.Hashtable data)
         {
-            this.SqlText = "UPDATE sy_menus SET MenuText = '@MenuText@', Url = '@Url@', Level = @Level@, ParentID = @ParentID@, `Index` = @Index@, ModifyAt = '@ModifyAt@' WHERE MenuID = @MenuID@";
+            this.SqlText = "UPDATE sy_menus SET MenuText = '@MenuText@', Url = '@Url@', AccessFile = '@AccessFile@',  Level = @Level@, ParentID = @ParentID@, `Index` = @Index@, ModifyAt = '@ModifyAt@' WHERE MenuID = @MenuID@";
 
             base.save(data);
         }
