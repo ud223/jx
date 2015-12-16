@@ -256,8 +256,25 @@ namespace Flowpie.Controllers
         }
         #endregion;
 
+        #region 教练列表action
+        //        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        public ActionResult PermissionForbidden(int page = 1)
+        {
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
+
+            return View();
+        }
+        #endregion;
+
+
+
         #region 常用设置action
-  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult SchoolSetting(string schoolId)
         {
             if (!this.init())

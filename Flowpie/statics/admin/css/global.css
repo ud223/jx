@@ -1864,3 +1864,19 @@ a.bnieitm:visited {
     background:#FFFBF2;
     font-weight:bold;
 }
+.resultbld {
+    padding:100px 50px;text-align:center;
+}
+.resultbld .t1 {
+    padding-bottom:20px;
+}
+.resultbld .t2 {
+    font-size:72px;
+    color:#ccc;
+    text-shadow:0 1px 0 rgba(255,255,255,.85);
+}
+.resultbld .t3 {
+    font-size:20px;
+    color:#b00;
+    margin-bottom:15px;
+}

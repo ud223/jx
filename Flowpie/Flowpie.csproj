@@ -1579,6 +1579,7 @@
     <Content Include="Views\Manage\CoachDetail.cshtml" />
     <Content Include="Views\Manage\CoachApply.cshtml" />
     <Content Include="Views\Manage\CoachUsage.cshtml" />
+    <Content Include="Views\Manage\PermmissionForbidden.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
