@@ -31,20 +31,30 @@ namespace Flowpie.Controllers
             }
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]//这里配置角色切忌不能有多余的空格
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]//这里配置角色切忌不能有多余的空格
         public ActionResult Index()
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         //*********************************业务后台action*******************************************************
 
         #region 考试类型管理action
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+   //     [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult ExamTypeList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             JxLib.ExamTypeController examtypeController = new JxLib.ExamTypeController();
 
@@ -57,12 +67,17 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+     //   [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult ExamTypeEdit(string id = null)
         {
             JxLib.ExamTypeController examtypeController = new JxLib.ExamTypeController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -118,7 +133,12 @@ namespace Flowpie.Controllers
         {
             JxLib.ExamTypeController examtypeController = new JxLib.ExamTypeController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -136,10 +156,16 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 学员列表action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
+
             JxLib.StudentController studentController = new JxLib.StudentController();
             List<System.Collections.Hashtable> list = studentController.getBySchool();
             ViewData["list"] = list;
@@ -149,50 +175,75 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 教练列表action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+//        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 教练详细action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDetail(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 教练申请action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachApply(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 教练利用率action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachUsage(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 学员详细action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentDetail(string studentId)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             JxLib.StudentController studentController = new JxLib.StudentController();
 
@@ -206,27 +257,37 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 常用设置action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult SchoolSetting(string schoolId)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 训练场次设置action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CourseEdit(string schoolId)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 分配教练action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDispatch(string schoolId)
         {
             this.init();
@@ -236,17 +297,22 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 分配教练至课程action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDispatchCourse(string schoolId)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             return View();
         }
         #endregion;
 
         #region 分配教练至集训action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachDispatchTraining(string schoolId)
         {
             this.init();
@@ -258,7 +324,12 @@ namespace Flowpie.Controllers
         #region 驾校信息编辑action
         public ActionResult SchoolList()
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             JxLib.SchoolController schoolController = new JxLib.SchoolController();
 
@@ -269,10 +340,15 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult SchoolEdit(string schoolId)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             JxLib.SchoolController schoolController = new JxLib.SchoolController();
 
@@ -323,10 +399,15 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 登记学员action
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+   //     [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult MarkStudent(string studentId)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
             JxLib.StudentController studentController = new JxLib.StudentController();
             System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
             ViewData["item"] = item;
@@ -340,7 +421,12 @@ namespace Flowpie.Controllers
         [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentCoupon(string id)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
             JxLib.StudentController studentController = new JxLib.StudentController();
             System.Collections.Hashtable item = studentController.load(id);
             ViewData["item"] = item;
@@ -373,10 +459,15 @@ namespace Flowpie.Controllers
 
             return RedirectToRoute("manage-student-list");
         }
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult UseCoupon()
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             ViewData["title"] = "使用优惠卷";
             ViewData["open_menu"] = "驾校管理";
@@ -410,7 +501,12 @@ namespace Flowpie.Controllers
         {
             JxLib.CouponController couponController = new JxLib.CouponController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -447,10 +543,15 @@ namespace Flowpie.Controllers
 
         #region 管理员action
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+    //    [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult UserList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             SystemConfigureLib.UserController userController = new SystemConfigureLib.UserController();
             SystemConfigureLib.UserTypeController userTypeController = new SystemConfigureLib.UserTypeController();
@@ -468,14 +569,19 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult UserEdit(string id = null)
         {
             SystemConfigureLib.UserController userController = new SystemConfigureLib.UserController();
             SystemConfigureLib.UserTypeController userTypeController = new SystemConfigureLib.UserTypeController();
             JxLib.SchoolController schoolController = new JxLib.SchoolController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -506,7 +612,7 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+   //     [Flowpie.Models.MyAuth(Roles = "系统用户")]
         [HttpPost]
         public ActionResult UserSave()
         {
@@ -536,12 +642,17 @@ namespace Flowpie.Controllers
             return RedirectToRoute("user-add");
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult UserDelete(string id = null, int page = 1)
         {
             SystemConfigureLib.UserController userController = new SystemConfigureLib.UserController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -559,10 +670,15 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 部门action
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult DeptList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             SystemConfigureLib.DeptController deptController = new SystemConfigureLib.DeptController();
 
@@ -574,12 +690,17 @@ namespace Flowpie.Controllers
 
             return View();
         }
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult DeptEdit(string id = null)
         {
             SystemConfigureLib.DeptController deptController = new SystemConfigureLib.DeptController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -635,7 +756,12 @@ namespace Flowpie.Controllers
         {
             SystemConfigureLib.DeptController deptController = new SystemConfigureLib.DeptController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -653,10 +779,15 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 角色action
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+   //     [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult UserTypeList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             SystemConfigureLib.UserTypeController usertypeController = new SystemConfigureLib.UserTypeController();
 
@@ -668,12 +799,17 @@ namespace Flowpie.Controllers
 
             return View();
         }
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult UserTypeEdit(string id = null)
         {
             SystemConfigureLib.UserTypeController usertypeController = new SystemConfigureLib.UserTypeController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -729,7 +865,12 @@ namespace Flowpie.Controllers
         {
             SystemConfigureLib.UserTypeController usertypeController = new SystemConfigureLib.UserTypeController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -747,10 +888,15 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 访问类型action
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult AccessTypeList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             SystemConfigureLib.AccessTypeControllerr accessTypeControllerr = new SystemConfigureLib.AccessTypeControllerr();
 
@@ -762,12 +908,17 @@ namespace Flowpie.Controllers
 
             return View();
         }
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+  //      [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult AccessTypeEdit(string id = null)
         {
             SystemConfigureLib.AccessTypeControllerr accessTypeControllerr = new SystemConfigureLib.AccessTypeControllerr();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -823,7 +974,12 @@ namespace Flowpie.Controllers
         {
             SystemConfigureLib.AccessTypeControllerr accessTypeControllerr = new SystemConfigureLib.AccessTypeControllerr();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -841,10 +997,15 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 菜单action
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+    //    [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult MenuList(int page = 1)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
 
@@ -855,12 +1016,17 @@ namespace Flowpie.Controllers
 
             return View();
         }
-        [Flowpie.Models.MyAuth(Roles = "系统用户")]
+ //       [Flowpie.Models.MyAuth(Roles = "系统用户")]
         public ActionResult MenuEdit(string id = null)
         {
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -893,7 +1059,7 @@ namespace Flowpie.Controllers
         public ActionResult MenuSave()
         {
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
-            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools(); 
 
             string strParam = Request.Form.ToString();
 
@@ -903,6 +1069,11 @@ namespace Flowpie.Controllers
 
             if (menu_id == "")
             {
+                if (!checkUser(1))
+                {
+                    return Redirect("/manage/index");
+                }
+
                 menu_id = menuController.add(menu_data);
 
                 if (menu_id == null)
@@ -912,6 +1083,11 @@ namespace Flowpie.Controllers
             }
             else
             {
+                if (!checkUser(2))
+                {
+                    return Redirect("/manage/index");
+                }
+
                 menuController.save(menu_data);
             }
 
@@ -922,7 +1098,12 @@ namespace Flowpie.Controllers
         {
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
 
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             if (id == null)
             {
@@ -930,16 +1111,25 @@ namespace Flowpie.Controllers
             }
             else
             {
+                if (!checkUser(3))
+                {
+                    return Redirect("/manage/index");
+                }
+
                 menuController.delete(id);
 
                 return RedirectToRoute("menu-list", new { page = page });
             }
-
         }
 
         public ActionResult Permission(string menuid)
         {
-            this.init();
+            if (!this.init())
+            {
+                Response.Redirect("/account/login");
+
+                return null;
+            }
 
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
             SystemConfigureLib.PermissionController permissionController = new SystemConfigureLib.PermissionController();
@@ -960,9 +1150,16 @@ namespace Flowpie.Controllers
         /// <summary>
         /// 初始化后台框架数据通用入口
         /// </summary>
-        private void init()
+        private bool init()
         {
+            if (!checkUser(0))
+            {
+                return false;
+            }
+
             initMenus();
+
+            return true;
         }
 
         /// <summary>
@@ -992,9 +1189,96 @@ namespace Flowpie.Controllers
         /// <summary>
         /// 用户权限是否能查看该页面
         /// </summary>
-        private void checkUser()
+        private bool checkUser(int opt)
         {
+            string fileName = HttpContext.Request.FilePath;
+            System.IO.FileInfo file = new System.IO.FileInfo(fileName);
 
+            if (this.UserData == null)
+            {
+                return false;
+            }
+
+            if (file.Name.ToLower() == "index")
+                return true;
+
+            string[] tmp_url = HttpContext.Request.FilePath.ToLower().Split('/');
+
+            string pageName = "";
+
+            if (tmp_url.Length == 4 || tmp_url.Length == 5)
+            {
+                pageName = tmp_url[2] + tmp_url[3];
+            }
+            else if (tmp_url.Length == 3)
+            {
+                pageName = tmp_url[2];
+            }
+            else
+            {
+                return false;
+            }
+
+            if (pageName.IndexOf("save") > -1)
+            {
+                string tmp_page_name = pageName.Replace("save", "edit");
+
+                foreach (Models.Permission permission in this.UserData.Permissions)
+                {
+                    if (permission.AccessFile.ToLower().IndexOf(pageName) > -1)
+                    {
+                        switch (opt)
+                        {
+                            case 1: {
+                                    if (permission.IsAdd == "1")
+                                    {
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        return false;
+                                    }
+                                }
+                            case 2:
+                                {
+                                    if (permission.IsModify == "1")
+                                    {
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        return false;
+                                    }
+                                }
+                            case 3:
+                                {
+                                    if (permission.IsDelete == "1")
+                                    {
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        return false;
+                                    }
+                                }
+                        }
+
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                foreach (Models.Permission permission in this.UserData.Permissions)
+                {
+                    if (permission.AccessFile.ToLower().IndexOf(pageName) > -1)
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
         }
 
         #endregion;

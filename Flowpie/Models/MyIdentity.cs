@@ -81,6 +81,7 @@ namespace Flowpie.Models
                     permission.IsModify = item["IsModify"].ToString();
                     permission.IsDelete = item["IsDelete"].ToString();
                     permission.SelectType = item["SelectType"].ToString();
+                    permission.AccessFile = item["AccessFile"].ToString();
 
                     user.Permissions.Add(permission);
                 }

@@ -45,7 +45,8 @@
                                             <div class="config" style="display:none">
                                                 <input class="isAdd" type="checkbox" /><span>新增</span>
                                                 <input class="isModify" type="checkbox" /><span>编辑</span>
-                                                <input class="isDelete" type="checkbox" /><span>删除</span>     
+                                                <input class="isDelete" type="checkbox" /><span>删除</span>
+                                                <input class="isView" type="checkbox" /><span>浏览</span>    
                                                 <span>访问类型:</span>
                                                 <select class="selectType" style="margin-left:10px;">
                                                     <option value="1">无限制</option>
@@ -97,7 +98,15 @@
                                                 else
                                                 {
                                                     <input class="isDelete" type="checkbox" />
-                                                }<span>删除</span>     
+                                                }<span>删除</span>
+                                                @if (item["IsDelete"].ToString() == "1")
+                                                {
+                                                    <input class="isView" type="checkbox" checked="checked" />
+                                                }
+                                                else
+                                                {
+                                                    <input class="isView" type="checkbox" />
+                                                }<span>浏览</span>    
                                                 <span>访问类型:</span>
                                                 
                                                     @if (item["SelectType"].ToString() == "1")
@@ -199,9 +208,15 @@
 	        isDelete = 1;
 	    }
 
+	    var isView = 0;
+
+	    if ($(node).find(".isDelete").prop("checked")) {
+	        isView = 1;
+	    }
+
 	    var selectType = $(node).find(".selectType").val();
 
-	    var data = { 'MenuID': menuid, 'UserTypeID': userTypeId, 'IsAdd': isAdd, 'IsModify': isModify, 'IsDelete': isDelete, 'SelectType': selectType };
+	    var data = { 'MenuID': menuid, 'UserTypeID': userTypeId, 'IsAdd': isAdd, 'IsModify': isModify, 'IsDelete': isDelete, 'IsView': isView, 'SelectType': selectType };
 
 	    //alert(JSON.stringify(data));
 	    //return;

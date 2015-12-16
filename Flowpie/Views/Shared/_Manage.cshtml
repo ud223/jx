@@ -99,15 +99,19 @@
             <a href="/manage/courseedit" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">训练场次设置</a>
             <a href="/manage/coachdispatch" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">分配教练</a>
             <a href="/manage/permission" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">角色权限设置</a>*@
-        @foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
+        @if (ViewData["menus"] != null)
         {
-            if (menu["Url"].ToString() == "")
+            foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
             {
-                continue;
-            }
+                if (menu["Url"].ToString() == "")
+                {
+                    continue;
+                }
 
-            <a href="@menu["Url"]" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">@menu["MenuText"]</a>
+                <a href="@menu["Url"]" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">@menu["MenuText"]</a>
+            }
         }
+        
         <div class="bfwh" style="display:none !important;">
             <a style="border-bottom:1px solid #E2E2E2;display:inline-block;padding:20px;text-align:center;" href="/manage/student/list">
                 学员列表
