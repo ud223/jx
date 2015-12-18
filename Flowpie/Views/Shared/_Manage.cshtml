@@ -69,7 +69,7 @@
                     <a href="#" class="nav-itm halflings halflings-glyph-bell pull-right full-ico"><span class="bell-content">6</span></a>*@
                     @*<span class="spliter pull-right"></span>*@
                     <div class="nav-itm-wp pull-right">
-                        <a class="nav-itm dropdown-toggle" href="#" data-toggle="dropdown"> 你好，admin <i class="halflings halflings-menu-hamburger"></i> </a>
+                        <a class="nav-itm dropdown-toggle" href="#" data-toggle="dropdown"> 你好，@ViewData["UserName"] <i class="halflings halflings-menu-hamburger"></i> </a>
                         <ul class="dropdown-menu fix-more-box-menu">
                             @*<li>
                                 <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-list-alt"></span> &nbsp; 个人信息</a>
@@ -79,7 +79,7 @@
                             </li>
                             <li class="divider"></li>*@
                             <li>
-                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-off"></span> &nbsp; 安全退出</a>
+                                <a role="menuitem" tabindex="-1" href="/account/login"><span class="halflings halflings-off"></span> &nbsp; 安全退出</a>
                             </li>
                         </ul>
                     </div>

@@ -31,7 +31,7 @@ namespace SystemConfigureLib
 
         public Hashtable getPermissionByMenuIDAndUserTypeID(string menuid, string userTypeId)
         {
-            this.SqlText = "select * from sy_permission left join sy_menus on sy_permission.MenuID = sy_menus.MenuID where MenuID =" + menuid + " and UserTypeID = "+ userTypeId;
+            this.SqlText = "select * from sy_permission left join sy_menus on sy_permission.MenuID = sy_menus.MenuID where sy_permission.MenuID =" + menuid + " and UserTypeID = "+ userTypeId;
 
             return this.load("");
         }

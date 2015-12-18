@@ -1176,7 +1176,14 @@ namespace Flowpie.Controllers
 
             initMenus();
 
+            initUserData();
+
             return true;
+        }
+
+        private void initUserData()
+        {
+            ViewData["UserName"] = this.UserData.Name;
         }
 
         /// <summary>
@@ -1228,7 +1235,7 @@ namespace Flowpie.Controllers
 
             string pageName = "";
 
-            if (tmp_url.Length == 4 || tmp_url.Length == 5)
+            if (tmp_url.Length == 4 || tmp_url.Length == 5 || tmp_url.Length == 6)
             {
                 pageName = tmp_url[2] + tmp_url[3];
             }

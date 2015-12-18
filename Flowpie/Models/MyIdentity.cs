@@ -64,6 +64,8 @@ namespace Flowpie.Models
                 user.SchoolID = ht["SchoolID"].ToString();
                 user.SchoolText = ht["SchoolText"].ToString();
 
+                this.userID = user.Name;
+
                 SystemConfigureLib.PermissionController permissionController = new SystemConfigureLib.PermissionController();
 
                 List<System.Collections.Hashtable> list =  permissionController.getPermissionByUserID(user.UserTypeID);
