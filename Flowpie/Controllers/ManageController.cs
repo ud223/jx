@@ -1191,13 +1191,18 @@ namespace Flowpie.Controllers
 
             foreach (System.Collections.Hashtable item in tmp_menu)
             {
-                foreach (Models.Permission permission in this.UserData.Permissions)
+                if (item["ParentID"].ToString() == "0")
+                    menus.Add(item);
+                else
                 {
-                    if (permission.MenuID == item["MenuID"].ToString())
+                    foreach (Models.Permission permission in this.UserData.Permissions)
                     {
-                        menus.Add(item);
+                        if (permission.MenuID == item["MenuID"].ToString())
+                        {
+                            menus.Add(item);
+                        }
                     }
-                }
+                }        
             }
 
             ViewData["menus"] = menus;
