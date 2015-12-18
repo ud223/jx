@@ -1,4 +1,16 @@
 $(document).ready(function () {
+    // 重新整理menu的顺序和位置
+    var level1s = $('.list-group-item-primary');
+    $.each(level1s, function () {
+        var $this = $(this);
+        var id = $this.attr('id');
+        var level2s = $('.list-group-item[parent="' + id + '"]');
+        var newWrap = $('<div>').addClass('list-group-item-ddl').attr('rel', id);
+        newWrap.append(level2s);
+        $this.after(newWrap);
+    });
+    $('.bfwh').fadeIn(200);
+
 	// 默认展开
 	$('.list-group-item-primary.open').each(function(){
 		$('.list-group-item-ddl[rel="' + $(this).attr('id') + '"]').show();

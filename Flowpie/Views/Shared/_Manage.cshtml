@@ -107,49 +107,6 @@
             }
         }
         
-        <div class="bfwh" style="display:none !important;">
-            <a style="border-bottom:1px solid #E2E2E2;display:inline-block;padding:20px;text-align:center;" href="/manage/student/list">
-                学员列表
-            </a>
-            <a style="border-bottom:1px solid #E2E2E2;display:inline-block;padding:20px;text-align:center;" href="/manage/student/list">
-                核销优惠券
-            </a>
-            @*<div class="nano">
-                    <div class="nano-content">
-                        <div class="list-group">
-                            @foreach (var menu in ViewData["menus"] as List<System.Collections.Hashtable>)
-                            {
-                                if (@menu["Level"].ToString() == "1")
-                                {
-                                    string css = "";
-
-                                    if (ViewData["open_menu"] != null)
-                                    {
-                                        css = "open";
-                                    }
-
-                                    <div class="list-group-item-primary @css" id="@menu["MenuID"].ToString()">
-                                        <a href="#" class="awp">
-                                            <span>@menu["MenuText"].ToString()</span>
-                                        </a>
-                                        <button class="arr"></button>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="list-group-item-ddl" id="@menu["MenuID"].ToString()" rel="@menu["ParentID"].ToString()">
-                                        <div class="list-group-item">
-                                            <a href="@menu["Url"].ToString()" class="awp">
-                                                <span>@menu["MenuText"].ToString()</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>*@
-        </div>
     </div>
     @RenderBody()
 

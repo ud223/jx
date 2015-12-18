@@ -203,6 +203,7 @@ textarea:focus {
 	left: 0;
 	right: 0;
 	bottom: 50px;
+    display:none;
 }
 .main-body-relative {
 	margin-left: 180px;
@@ -444,6 +445,7 @@ textarea:focus {
 	display: none;
 	/*margin-bottom:10px;*/
 	border-bottom:1px solid #DDD;
+	padding-top:10px;
 	padding-bottom:10px;
 }
 .list-group-item-ddl .awp {
