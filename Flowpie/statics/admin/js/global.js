@@ -3,12 +3,23 @@ $(document).ready(function () {
     var level1s = $('.list-group-item-primary');
     $.each(level1s, function () {
         var $this = $(this);
+        if ($this.hasClass('open')) {
+        }
         var id = $this.attr('id');
         var level2s = $('.list-group-item[parent="' + id + '"]');
         var newWrap = $('<div>').addClass('list-group-item-ddl').attr('rel', id);
         newWrap.append(level2s);
         $this.after(newWrap);
     });
+
+    // 打开选中的menu
+    var menuid = $('#menuid').val();
+    if (menuid) {
+        $("#ltmenu_" + menuid).addClass("selected");
+        var parentid = $("#ltmenu_" + menuid).attr("parent");
+        $("#" + parentid).addClass("open").show();
+    }
+
     $('.bfwh').fadeIn(200);
 
 	// 默认展开

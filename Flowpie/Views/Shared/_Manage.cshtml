@@ -117,7 +117,6 @@
                                         </a>
                                     </div>
                                 }
-                                @*<a href="@menu["Url"]" style="padding:20px 10px;background:#FFF;border-bottom:1px solid #E2E2E2;color:#444 !important;text-align:center;display:block;">@menu["MenuText"]</a>*@
                             }
                         }
                     </div>
@@ -129,25 +128,10 @@
     </div>
     @RenderBody()
 
+    @*保存页面id，用于控制左侧menu列表的选中状态*@
+    <input type="hidden" id="menuid" value="@ViewData["menuid"]" />
     <script type="text/javascript">
         @RenderSection("JsScript", required: false)
-
-        var menuid = '@ViewData["menuid"]';
-
-        $(document).ready(function () {
-            openMenu();
-        });
-        
-        function openMenu() {
-            if (!menuid)
-                return;
-
-            $("#ltmenu_" + menuid).addClass("selected");
-
-            var parentid = $("#ltmenu_" + menuid).attr("parent");
-
-            $("#" + parentid).addClass("open");
-        }
     </script>
 </body>
 </html>
