@@ -111,7 +111,7 @@
                                 }
                                 else
                                 {
-                                    <div class="list-group-item" id="cid-c003" parent="ltmenu_@menu["ParentID"]">
+                                    <div class="list-group-item" id="ltmenu_@menu["MenuID"]" parent="ltmenu_@menu["ParentID"]">
                                         <a href="@menu["Url"]" class="awp">
                                             <span>@menu["MenuText"]</span>
                                         </a>
@@ -129,8 +129,25 @@
     </div>
     @RenderBody()
 
-    <script>
+    <script type="text/javascript">
         @RenderSection("JsScript", required: false)
+
+        var menuid = '@ViewData["menuid"]';
+
+        $(document).ready(function () {
+            openMenu();
+        });
+
+        function openMenu() {
+            if (!menuid)
+                return;
+
+            $("#ltmenu_" + menuid).addClass("selected");
+
+            var parentid = $("#ltmenu_" + menuid).attr("parent");
+
+            $("#" + parentid).addClass("open");
+        }
     </script>
 </body>
 </html>

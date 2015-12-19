@@ -1248,7 +1248,7 @@ namespace Flowpie.Controllers
                 return false;
             }
 
-            if (pageName.IndexOf("save") > -1)
+            if (pageName.IndexOf("save") > -1 || pageName.IndexOf("delete") > -1)
             {
                 string tmp_page_name = pageName.Replace("save", "edit");
 
@@ -1256,43 +1256,46 @@ namespace Flowpie.Controllers
                 {
                     if (permission.AccessFile.ToLower().IndexOf(pageName) > -1)
                     {
+                        bool tmp_result = true;
+
                         switch (opt)
                         {
                             case 1: {
-                                    if (permission.IsAdd == "1")
+                                    if (permission.IsAdd != "1")
                                     {
-                                        return true;
+                                        tmp_result = false;
                                     }
-                                    else
-                                    {
-                                        return false;
-                                    }
+
+                                    break;
                                 }
                             case 2:
                                 {
-                                    if (permission.IsModify == "1")
+                                    if (permission.IsModify != "1")
                                     {
-                                        return true;
+                                        tmp_result = false;
                                     }
-                                    else
-                                    {
-                                        return false;
-                                    }
+
+                                    break;
                                 }
                             case 3:
                                 {
-                                    if (permission.IsDelete == "1")
+                                    if (permission.IsDelete != "1")
                                     {
-                                        return true;
+                                        tmp_result = false;
                                     }
-                                    else
-                                    {
-                                        return false;
-                                    }
+
+                                    break;
                                 }
                         }
 
-                        return true;
+                        if (tmp_result)
+                        {
+                            return tmp_result;
+                        }
+                        else
+                        {
+                            return tmp_result;
+                        }
                     }
                 }
             }
@@ -1302,6 +1305,8 @@ namespace Flowpie.Controllers
                 {
                     if (permission.AccessFile.ToLower().IndexOf(pageName) > -1)
                     {
+                        ViewData["menuid"] = permission.MenuID;
+
                         return true;
                     }
                 }
