@@ -87,5 +87,26 @@ namespace DatabaseLib
 
             return true;
         }
+
+        public string createUpdateSqlText(Hashtable data, string key)
+        {
+            StringBuilder sql = new StringBuilder();
+
+            foreach (System.Collections.DictionaryEntry item in data)
+            {
+                if (key.IndexOf(item.Key.ToString()) > -1)
+                    continue;
+
+                if (sql.Length > 0)
+                    sql.Append(", ");
+
+                sql.Append(item.Key);
+                sql.Append("='");
+                sql.Append(item.Value);
+                sql.Append("' ");
+            }
+
+            return sql.ToString();
+        }
     }
 }

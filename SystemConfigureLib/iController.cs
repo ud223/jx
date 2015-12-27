@@ -17,13 +17,21 @@ namespace SystemConfigureLib
         public string SqlText
         { get { return this._sSqlText; } set { this._sSqlText = value; } }
 
+        private string _SelectType = "1";
+
+        public string SelectType { get { return this._SelectType; } set { this._SelectType = value; } }
+
+        private string _SelectTypeSql = "";
+     
+        public string SelectTypeSql { get { return this._SelectTypeSql; } set { this._SelectTypeSql = value; } }
+
         public virtual List<System.Collections.Hashtable> getAll()
         {
             DatabaseLib.DatabaseFactory dataFactory = new DatabaseLib.DatabaseFactory();
             //获取数据访问操作端
             DatabaseLib.IDatabase dataClient = dataFactory.CreateClient(BaseLib.SystemType.Web);
 
-            dataClient.SqlText = this.SqlText;
+            dataClient.SqlText = this.SqlText.Replace("@SelectType@", this.SelectTypeSql);
 
             DataSet ds = dataClient.Query();
 

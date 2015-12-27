@@ -188,6 +188,7 @@
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
+    <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Controllers\WeixinController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,6 +210,7 @@
     <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\TrainingConfig.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -1580,6 +1582,7 @@
     <Content Include="Views\Manage\CoachApply.cshtml" />
     <Content Include="Views\Manage\CoachUsage.cshtml" />
     <Content Include="Views\Manage\PermmissionForbidden.cshtml" />
+    <Content Include="Views\Manage\StudentApplication.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

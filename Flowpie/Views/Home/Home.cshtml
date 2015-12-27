@@ -186,7 +186,7 @@
             </div>
             <div class="stt">十九年传奇品牌，服务深大学子，计时班折扣价3800元</div>
         </div>
-        <a href="/student/enter" class="fullbtn">立刻报名</a>
+        <a href="/student/enter?schoolid=1" class="fullbtn">立刻报名</a>
     </div>
     @*<div class="zhscitm cd_hottap" hottap="p05_jiaxiao.html">
             <div class="tp" style="background-image: url(img/photocase/np02.jpg);"></div>
@@ -217,6 +217,8 @@
 </div>
 <div class="bt-distance"></div>
 <script type="text/javascript">
+    var school_id = '@ViewData["schooid"]';
+
 	$('document').ready(function() {
 		if (imgs_json.length) {
 			// 根据imgs_json的长度和内容循环加载图片
@@ -235,8 +237,6 @@
 				}
 
 				$('#cd_mentor_img_slider .swipe-wrap').append(new_img);
-
-
 			});
 			// 初始化swipe
 			var slider = Swipe(document.getElementById('cd_mentor_img_slider'), {
@@ -271,9 +271,7 @@
 			        slider.next();
 			    }
 			}, 7000);
-		}
-
-		
+		}	
 	});
 
 

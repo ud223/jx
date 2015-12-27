@@ -31,14 +31,15 @@ namespace Flowpie.Controllers
             }
         }
 
+        private Models.Permission _userPermission;
+        private string _sSelectTypeSql = " and app_schools.SchoolID = @SchoolID@";
+
  //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]//这里配置角色切忌不能有多余的空格
         public ActionResult Index()
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/account/login");
             }
 
             return View();
@@ -51,9 +52,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             JxLib.ExamTypeController examtypeController = new JxLib.ExamTypeController();
@@ -74,9 +73,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -104,6 +101,7 @@ namespace Flowpie.Controllers
         public ActionResult ExamTypeSave()
         {
             JxLib.ExamTypeController examtypeController = new JxLib.ExamTypeController();
+
             DatabaseLib.Tools tools = new DatabaseLib.Tools();
 
             string strParam = Request.Form.ToString();
@@ -135,9 +133,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -155,15 +151,40 @@ namespace Flowpie.Controllers
 
         #endregion;
 
-        #region 学员列表action
+        #region 学员action
+
+        /// <summary>
+        /// 学员申请列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult StudentApplication()
+        {
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            JxLib.ApplicationController applicationController = new JxLib.ApplicationController();
+
+            if (this._userPermission.SelectType != "1")
+            {
+                applicationController.SelectType = this._userPermission.SelectType;
+                applicationController.SelectTypeSql = this._sSelectTypeSql.Replace("@SchoolID@", this.UserData.SchoolID);
+            }
+
+            List<Hashtable> list = applicationController.getAll();
+
+            ViewData["list"] = list;
+            ViewData["open_menu"] = "学员申请列表";
+            return View();
+        }
+
  //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentList(int page = 1)
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             JxLib.StudentController studentController = new JxLib.StudentController();
@@ -172,17 +193,33 @@ namespace Flowpie.Controllers
             ViewData["open_menu"] = "驾校管理";
             return View();
         }
+
+        public ActionResult StudentDetail(string studentId)
+        {
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            JxLib.StudentController studentController = new JxLib.StudentController();
+
+            System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
+
+            ViewData["item"] = item;
+            ViewData["open_menu"] = "驾校管理";
+
+            return View();
+        }
+
         #endregion;
 
         #region 教练列表action
-//        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        //        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachList(int page = 1)
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -195,9 +232,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -210,9 +245,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -225,9 +258,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -236,24 +267,7 @@ namespace Flowpie.Controllers
 
         #region 学员详细action
   //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
-        public ActionResult StudentDetail(string studentId)
-        {
-            if (!this.init())
-            {
-                Response.Redirect("/account/login");
-
-                return null;
-            }
-
-            JxLib.StudentController studentController = new JxLib.StudentController();
-
-            System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
-
-            ViewData["item"] = item;
-            ViewData["open_menu"] = "驾校管理";
-
-            return View();
-        }
+        
         #endregion;
 
         #region 教练列表action
@@ -262,16 +276,12 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
         }
         #endregion;
-
-
 
         #region 常用设置action
         //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
@@ -279,9 +289,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -294,9 +302,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -319,9 +325,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             return View();
@@ -343,9 +347,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             JxLib.SchoolController schoolController = new JxLib.SchoolController();
@@ -362,9 +364,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             JxLib.SchoolController schoolController = new JxLib.SchoolController();
@@ -421,28 +421,27 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
+
             JxLib.StudentController studentController = new JxLib.StudentController();
             System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
+
             ViewData["item"] = item;
             ViewData["open_menu"] = "登记学员";
+
             return View();
         }
         #endregion;
 
         #region 优惠卷
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        //[Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult StudentCoupon(string id)
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
             JxLib.StudentController studentController = new JxLib.StudentController();
             System.Collections.Hashtable item = studentController.load(id);
@@ -481,9 +480,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             ViewData["title"] = "使用优惠卷";
@@ -513,16 +510,14 @@ namespace Flowpie.Controllers
             return Redirect("/manage/coupon/result/"+ item["CouponID"].ToString());
         }
 
-        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
+        //[Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CouponResult(string id)
         {
             JxLib.CouponController couponController = new JxLib.CouponController();
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -565,9 +560,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             SystemConfigureLib.UserController userController = new SystemConfigureLib.UserController();
@@ -595,9 +588,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -666,9 +657,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -692,9 +681,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             SystemConfigureLib.DeptController deptController = new SystemConfigureLib.DeptController();
@@ -714,9 +701,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -775,9 +760,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -801,9 +784,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             SystemConfigureLib.UserTypeController usertypeController = new SystemConfigureLib.UserTypeController();
@@ -823,9 +804,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -884,9 +863,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -910,9 +887,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             SystemConfigureLib.AccessTypeControllerr accessTypeControllerr = new SystemConfigureLib.AccessTypeControllerr();
@@ -932,9 +907,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -993,9 +966,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -1019,9 +990,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
@@ -1040,9 +1009,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -1117,9 +1084,7 @@ namespace Flowpie.Controllers
 
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             if (id == null)
@@ -1143,9 +1108,7 @@ namespace Flowpie.Controllers
         {
             if (!this.init())
             {
-                Response.Redirect("/account/login");
-
-                return null;
+                return Redirect("/manage/PermmissionForbidden");
             }
 
             SystemConfigureLib.MenuController menuController = new SystemConfigureLib.MenuController();
@@ -1258,6 +1221,8 @@ namespace Flowpie.Controllers
                     {
                         bool tmp_result = true;
 
+                        this._userPermission = permission;
+
                         switch (opt)
                         {
                             case 1: {
@@ -1307,6 +1272,8 @@ namespace Flowpie.Controllers
                     {
                         ViewData["menuid"] = permission.MenuID;
 
+                        this._userPermission = permission;
+
                         return true;
                     }
                 }
@@ -1316,5 +1283,10 @@ namespace Flowpie.Controllers
         }
 
         #endregion;
+
+        public ActionResult PermmissionForbidden()
+        {
+            return View();
+        }
     }
 }

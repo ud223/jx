@@ -11,7 +11,7 @@
 <div class="blackrowgall">
     <div class="row gjvalid" valid="require" validmsg="请填写您的姓名">
         <span class="tt">姓名</span>
-        <input placeholder="请填写真实姓名" type="text" id="Name" name="Name" class="holder" />
+        <input placeholder="请填写真实姓名" type="text" id="Name" name="Name" class="holder" value="@(((System.Collections.Hashtable)ViewData["item"])["Name"])" />
     </div>
     <div class="row actbtn cd-slideoutbtn gjvalid" valid="mobile" validmsg="请填写正确的手机号码" rel="#pp-change-tel">
         <span class="tt">手机</span>
@@ -20,15 +20,20 @@
             <span>点击设置</span>
             <i class="icoin fa fa-angle-right"></i>
         </div>
-        <input type="hidden" id="Phone" name="Phone" value="">
+        <input type="hidden" id="Phone" name="Phone" value="@(((System.Collections.Hashtable)ViewData["item"])["Phone"])">
     </div>
     <div class="row actbtn">
         <span class="tt">性别</span>
         <div class="holder">
             <span>
-                <input type="radio" id="p14-male" name="Sex" value="1" /><label for="p14-male">男</label>
-                &nbsp;&nbsp;
-                <input type="radio" id="p14-female" name="Sex" value="2" /><label for="p14-female">女</label>
+                @if (((System.Collections.Hashtable)ViewData["item"])["Sex"].ToString() == "2")
+                {
+                    <input type="radio" id="p14-male" name="Sex" value="1" /><label for="p14-male">男</label><input type="radio" id="p14-female" name="Sex" value="2" checked="checked" /><label for="p14-female">女</label>
+                }
+                else
+                {
+                    <input type="radio" id="p14-male" name="Sex" value="1"  checked="checked" /><label for="p14-male">男</label><input type="radio" id="p14-female" name="Sex" value="2" /><label for="p14-female">女</label>
+                }
             </span>
         </div>
     </div>
@@ -36,33 +41,41 @@
     <input id="Birthday" name="Birthday" type="hidden" />
     <div class="row gjvalid" valid="id" validmsg="请填写正确身份证号码">
         <span class="tt">身份证号码</span>
-        <input placeholder="填写正确身份证号码" id="Code" name="Code" value="" type="text" class="holder" />
+        <input placeholder="填写正确身份证号码" id="Code" name="Code" value="@(((System.Collections.Hashtable)ViewData["item"])["Code"])" type="text" class="holder" />
     </div>
     <div class="row gjvalid" valid="require" validmsg="请填写身份证所在地">
         <span class="tt">身份证所在地</span>
-        <input placeholder="身份证所在地（城市）" id="Place" name="Place" value="" type="text" class="holder" />
+        <input placeholder="身份证所在地（城市）" id="Place" name="Place" value="@(((System.Collections.Hashtable)ViewData["item"])["Place"])" type="text" class="holder" />
     </div>
     <div class="row">
         <span class="tt">驾照类型</span>
         <div class="holder">
             <select id="LicenseTypeID" name="LicenseTypeID" class="">
-                <option value="1">C1手动</option>
-                <option value="2">C2自动</option>
+                @if (((System.Collections.Hashtable)ViewData["item"])["LicenseTypeID"].ToString() == "2")
+                {
+                    <option value="1">C1手动</option>
+                    <option value="2" selected="selected">C2自动</option>
+                }
+                else
+                {
+                    <option value="1" selected="selected">C1手动</option>
+                    <option value="2">C2自动</option>
+                }
             </select>
         </div>
     </div>
     <div class="row gjvalid" valid="email" validmsg="请填写正确邮箱">
         <span class="tt">邮箱</span>
-        <input placeholder="请填写常用邮箱" id="Email" name="Email" value="" type="text" class="holder" />
+        <input placeholder="请填写常用邮箱" id="Email" name="Email" value="@(((System.Collections.Hashtable)ViewData["item"])["Email"])" type="text" class="holder" />
     </div>
     <div class="row gjvalid" valid="number" validmsg="请填写正确QQ号">
         <span class="tt">QQ</span>
-        <input placeholder="请填写QQ" id="Qq" name="Qq" value="" type="text" class="holder" />
+        <input placeholder="请填写QQ" id="Qq" name="Qq" value="@(((System.Collections.Hashtable)ViewData["item"])["Qq"])" type="text" class="holder" />
     </div>
 </div>
 
-
 <div class="clear-15"></div>
+<input type="hidden" id="SchoolID" name="SchoolID" value="@ViewData["schoolid"]" />
 <span class="fullbtn submit">确认提交</span>
 <div class="bt-distance"></div>
 
@@ -70,7 +83,7 @@
     <div class="tt">请输入您的号码<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
     <div class="blackrowgall">
         <div class="row">
-            <input id="send_no" placeholder="请填写手机号码" type="tel" maxlength="11" value="" class="fulltxtinput">
+            <input id="send_no" placeholder="请填写手机号码" type="tel" maxlength="11" value="@(((System.Collections.Hashtable)ViewData["item"])["Phone"])" class="fulltxtinput">
             <button id="sendvalcodbt" type="button" class="sendvalcodbt">发送验证码</button>
         </div>
         <div class="row">
@@ -86,9 +99,6 @@
 </form>
 <script type="text/javascript">
     $('document').ready(function () {
-        
-
-
 	    var licenseType = localStorage.getItem('licenseType');
 
 	    $('#LicenseType').val(licenseType);

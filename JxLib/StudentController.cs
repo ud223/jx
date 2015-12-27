@@ -27,7 +27,7 @@ namespace JxLib
         {
             this.SqlText = "SELECT * FROM app_students WHERE StudentID = '" + id + "'";
 
-            return base.load("");
+             return base.load("");
         }
 
         public Hashtable getUserByOpenId(string openid)
@@ -55,7 +55,7 @@ namespace JxLib
 
         public override void save(System.Collections.Hashtable data)
         {
-            string strSql = "UPDATE app_students SET Name='@Name@', Sex=@Sex@, Birthday='@Birthday@', Code='@Code@', Place='@Place@', LicenseTypeID=@LicenseTypeID@, Phone='@Phone@', Email='@Email@', Qq='@Qq@', SchoolID=@SchoolID@, CreateAt='@CreateAt@', ModifyAt='@ModifyAt@' WHERE StudentID='@StudentID@'";
+            string strSql = "UPDATE app_students SET Name='@Name@', Sex=@Sex@, Birthday='@Birthday@', Code='@Code@', Place='@Place@', LicenseTypeID=@LicenseTypeID@, Phone='@Phone@', Email='@Email@', Qq='@Qq@', CreateAt='@CreateAt@', ModifyAt='@ModifyAt@' WHERE StudentID='@StudentID@'";
 
             this.SqlText = strSql;
 
@@ -64,7 +64,7 @@ namespace JxLib
 
         public void saveEnter(System.Collections.Hashtable data)
         {
-            string strSql = "UPDATE app_students SET EnterDate='@EnterDate@' WHERE StudentID='@StudentID@'";
+            string strSql = "UPDATE app_students SET SchoolID=@SchoolID@, IsMark=1, MarkDate='@MarkDate@' WHERE StudentID='@StudentID@'";
 
             this.SqlText = strSql;
 
