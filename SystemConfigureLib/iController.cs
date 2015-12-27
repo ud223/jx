@@ -231,10 +231,12 @@ namespace SystemConfigureLib
             this.Message = dataClient.Message;
             this.Result = dataClient.Result;
 
-            List<System.Collections.Hashtable> list = new List<System.Collections.Hashtable>();
+            List<System.Collections.Hashtable> list = null;
 
             if (this.Result)
             {
+                list = new List<System.Collections.Hashtable>();
+
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
                     System.Collections.Hashtable ht = new System.Collections.Hashtable();
@@ -242,7 +244,7 @@ namespace SystemConfigureLib
                     foreach (DataColumn dc in ds.Tables[0].Columns)
                     {
                         string key = dc.ColumnName;
-                        string value = CommonLib.Common.Validate.IsNullString(row[dc.ColumnName]);
+                        string value = row[dc.ColumnName].ToString();
 
                         ht.Add(key, value);
                     }
@@ -255,6 +257,24 @@ namespace SystemConfigureLib
             }
             else
                 return null;
+        }
+
+        public virtual void Execute(string strSql)
+        {
+            DatabaseLib.DatabaseFactory dataFactory = new DatabaseLib.DatabaseFactory();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            //获取数据访问操作端
+            DatabaseLib.IDatabase dataClient = dataFactory.CreateClient(BaseLib.SystemType.Web);
+
+            strSql = tools.fixSqlText(strSql);
+
+            dataClient.SqlText = strSql;
+
+            dataClient.Execute(CommandType.Text);
+
+            this.Message = dataClient.Message;
+            this.Result = dataClient.Result;
         }
 
         /// <summary>

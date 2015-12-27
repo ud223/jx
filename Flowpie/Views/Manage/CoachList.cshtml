@@ -56,7 +56,38 @@
             </div>
             <div class="fix-tb-ct-b2">
                 <div class="fix-tb-body">
-                    <div class="fix-tb-body-row">
+                    @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
+                    {
+                        <div class="fix-tb-body-row">
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">@item["Name"]</div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">男</div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">28</div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">@item["Phone"]</div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">4.9</div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">
+                                    <a href="javascript:(0)" class="listoperbtn danger">冻结</a>
+                                </div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">
+                                    <a href="/Manage/CoachDetail" class="listoperbtn">查看详细</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                    @*<div class="fix-tb-body-row">
                         <div class="fix-tb-body-cell tc">
                             <div class="td">刘大山</div>
                         </div>
@@ -170,7 +201,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div>*@
                 </div>
             </div>
 

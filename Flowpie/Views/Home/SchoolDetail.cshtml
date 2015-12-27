@@ -206,7 +206,8 @@
             <a href="p13_baoming.html" class="fullbtn">立刻报名</a>
         </div>-->
 
-                                <a href="/student/enter" style="background:#F80;border-radius:4px;display:block;padding:10px;text-align:center;color:#FFF !important;margin-top:10px;line-height:32px;">3800元 立刻报名</a>
+                                <a href="/student/enter" style="background:#F80;border-radius:4px;display:block;padding:10px;text-align:center;color:#FFF !important;margin-top:10px;line-height:32px;">立刻报名</a>
+            <a href="javascript:void(0)" id="coach_application" style="background:#F80;border-radius:4px;display:block;padding:10px;text-align:center;color:#FFF !important;margin-top:10px;line-height:32px;">申请为教练</a>
 
                                 <!--<div class="wtradio">
             <input type="radio" id="rad01" value="1" name="LicenseType" name="clients" />
@@ -527,6 +528,8 @@
 
 <div class="bt-distance"></div>
 <script type="text/javascript">
+    var school_id = '1';
+
 	$('document').ready(function(e) {
 		if (imgs_json.length) {
 			// 根据imgs_json的长度和内容循环加载图片
@@ -623,5 +626,49 @@
 		    }
 		    $.alertbox({ msg: '抱歉，你你现在还未通过科目一，还不具备约教上路资格，因此无法约教。' })
 		});
+
+		$("#coach_application").click(function () {
+		    coacheApplication();
+		})
 	});
+
+	function coacheApplication() {
+	    //alert(JSON.stringify(data));
+	    //return;
+	    var user_id = $.cookie('user_id');
+
+	    var data = { 'StudentID': user_id, 'SchoolID': school_id };
+
+	    var params = {
+	        url: '/api/coach/application',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    //alert(data.message);
+	    var opertion = {
+	        msg: data.message,
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+
+	    //if (data.code == "200") {
+
+	    //}
+	}
+
+	function error() {
+	    var opertion = {
+	        msg: "申请教练失败!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+	}
 </script>

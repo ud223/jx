@@ -1,0 +1,368 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    ViewBag.Title = "教练申请列表";
+}
+<div class="main-body-relative fix">
+    <div class="fix-wxp">
+        <div class="fix-wxp-toolbar clearfix">
+            <div class="fix-wxp-toolbar-wp">
+                <span class="fix-wxp-toolbar-txt">教练申请列表</span>
+            </div>
+            <div class="fix-wxp-toolbar-blist">
+                <div class="fix-query-input">
+                    <span class="fix-in-search-ico glyphicons glyphicons-search"></span>
+                    <input class="fix-in-search" placeholder="请输入关键字" type="text" />
+                    <button class="cxbtn">搜索</button>
+                </div>
+
+                @*<div class="fix-query-box">
+                        <span>高级查询</span>
+                        <span class="halflings halflings-menu-down"></span>
+                    </div>*@
+                @*<div class="fix-3d-box">
+                        <span>每页显示</span>
+                        <select>
+                            <option>15</option>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                        <span>条</span>
+                    </div>*@
+            </div>
+            <div class="fix-wxp-toolbar-blist rt">
+
+                @*<div class="dropdown fix-more-box">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="halflings halflings-option-vertical"></i></a>
+                        <ul class="dropdown-menu fix-more-box-menu l1x">
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-eye-open"></span> &nbsp; 查看</a>
+                            </li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-duplicate"></span> &nbsp; 合并</a>
+                            </li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-refresh"></span> &nbsp; 刷新列表</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-open-file"></span> &nbsp; 导出</a>
+                            </li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="filetypes filetypes-xls unvisibility"></span> &nbsp; 导出Excel</a>
+                            </li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-print"></span> &nbsp; 打印单据</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><span class="halflings halflings-fullscreen"></span> &nbsp; 全屏</a>
+                            </li>
+                        </ul>
+                    </div>*@
+
+                @*<div class="fix-options-box">
+                        <span class="halflings halflings-trash"></span>
+                        <span>删除选中</span>
+                    </div>
+                    <div class="fix-options-box">
+                        <span class="halflings halflings-plus"></span>
+                        <a href="/manage/user/add"><span>新建</span></a>
+                    </div>*@
+
+            </div>
+        </div>
+        <div class="fix-tb">
+            <div class="fix-tb-ct-b1">
+                <div class="fix-tb-header">
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                <input type="checkbox" />
+                            </div>
+                        </div>*@
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                编号
+                            </div>
+                        </div>*@
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            姓名
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            昵称
+                        </div>
+                    </div>
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                电子邮箱
+                            </div>
+                        </div>*@
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            电话
+                        </div>
+                    </div>
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                身份证
+                            </div>
+                        </div>*@
+                    @*<div class="fix-tb-header-cell">
+                        <div class="th">
+                            驾照类型
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            内容
+                        </div>
+                    </div>*@
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                状态
+                            </div>
+                        </div>*@
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            申请时间
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            通过
+                        </div>
+                    </div>
+                    <div class="fix-tb-header-cell">
+                        <div class="th">
+                            拒绝
+                        </div>
+                    </div>
+                    @*<div class="fix-tb-header-cell">
+                            <div class="th">
+                                编辑时间
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+            <div class="fix-tb-ct-b2">
+                <div class="fix-tb-body">
+                    @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
+                    {
+                        <div class="fix-tb-body-row">
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td">
+                                        <input type="checkbox" value="" />
+                                    </div>
+                                </div>*@
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td">@item["StudentID"].ToString()</div>
+                                </div>*@
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">@item["Name"]</div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">@item["NickName"]</div>
+                            </div>
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td">@item["Email"].ToString()</div>
+                                </div>*@
+                            <div class="fix-tb-body-cell">
+                                <div class="td">@item["Phone"]</div>
+                            </div>
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td">@item["Code"].ToString()</div>
+                                </div>*@
+                            @*<div class="fix-tb-body-cell tc">
+                                <div class="td">@item["LicenseText"]</div>
+                            </div>
+                            <div class="fix-tb-body-cell">
+                                <div class="td">@item["Remark"]</div>
+                            </div>*@
+                            @*<div class="fix-tb-body-cell tc">
+                                    <div class="td">
+                                        @if (item["IsMark"].ToString() == "0")
+                                        {
+                                            <a href="/manage/studentdetail?studentid=@item["StudentID"]" class="listoperbtn">未登记</a>
+                                        }
+                                        else
+                                        {
+                                            <span style="color:#10D07D">已登记</span>;
+                                        }
+                                    </div>
+                                </div>*@
+
+                            <div class="fix-tb-body-cell tc gray">
+                                <div class="td">
+                                    @{
+                                        DateTime dt = new DateTime();
+                                        bool parseResult = DateTime.TryParse(item["CreateAt"].ToString(), out dt);
+                                        if (parseResult)
+                                        {
+                                            @dt.ToString("MM月d日")
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">
+                                    <a href="javascript:(0)" onclick="apply('@item["CoachApplicationID"]')" class="listoperbtn danger">通过</a>
+                                </div>
+                            </div>
+                            <div class="fix-tb-body-cell tc">
+                                <div class="td">
+                                    <a href="javascript:void(0)" onclick="reject('@item["CoachApplicationID"]')"  class="listoperbtn reject">拒绝</a>
+                                    @*<a href="#" class="listoperbtn"data-toggle="modal" data-target="#myModal">查看详细</a>*@
+                                </div>
+                            </div>
+
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td">@CommonLib.Common.Validate.IsNullString(item["ModifyAt"])</div>
+                                </div>*@
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td"><a >登记为</a></div>
+                                </div>*@
+                            @*<div class="fix-tb-body-cell">
+                                    <div class="td"><a href="/manage/user/edit/@item["UserID"].ToString()">编辑</a></div>
+                                </div>
+                                <div class="fix-tb-body-cell">
+                                    <div class="td"><a class="item-delete" onclick="return confirm('确定删除?');" href="/manage/user/delete/@item["UserID"].ToString()/1">删除</a></div>
+                                </div>*@
+                        </div>
+                                        }
+                </div>
+            </div>
+
+            @*<div class="fix-tb-ct-pager">
+                    <div class="fw1">
+                        <span class="s1">共</span>
+                        <span class="s2">3</span>
+                        <span class="s3">条记录</span>
+
+
+                        <span class="s4 halflings halflings-step-backward"></span>
+                        <span class="s5 halflings halflings-backward"></span>
+                        <input type="text" class="s6" value="5" />
+                        <span class="s7">/</span>
+                        <span class="s8">7</span>
+                        <span class="s9 halflings halflings-forward"></span>
+                        <span class="s10 halflings halflings-step-forward"></span>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+
+</div>
+
+
+@*<div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">学员信息</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->*@
+
+
+<!-- /container -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".nano").nanoScroller();
+		$.readjustWidth();
+		$(window).resize(function(){
+			$.readjustWidth();
+        });
+
+		$(".fix-tb-ct-b2").scroll(function(e) {
+            var slt = $(".fix-tb-ct-b2").scrollLeft();
+			$(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+        });
+	});
+
+	function reject(id) {
+	    if (!id) {
+	        var opertion = {
+	            msg: '没有获取到对应的申请编号!',
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(opertion);
+
+	        return;
+	    }
+
+	    var data = { 'CoachApplicationID': id };
+
+	    var params = {
+	        url: '/api/coach/reject',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function apply(id) {
+	    if (!id) {
+	        var opertion = {
+	            msg: '没有获取到对应的申请编号!',
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(opertion);
+
+	        return;
+	    }
+
+	    var data = { 'CoachApplicationID': id };
+
+	    var params = {
+	        url: '/api/coach/apply',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    alert(data.message);
+	    //var opertion = {
+	    //    msg: data.message,
+	    //    exitText: "关闭!"
+	    //};
+
+	    //$.alertbox(opertion);
+
+	    if (data.code == "200") {
+	        location.reload();
+	    }
+	}
+
+	function error() {
+	    var opertion = {
+	        msg: "审批教练申请失败!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+	}
+</script>

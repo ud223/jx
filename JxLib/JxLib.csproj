@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationController.cs" />
+    <Compile Include="CoachController.cs" />
     <Compile Include="CouponController.cs" />
     <Compile Include="ExamController.cs" />
     <Compile Include="ExamTypeController.cs" />

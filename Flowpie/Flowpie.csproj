@@ -182,6 +182,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CoachController.cs" />
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -1583,6 +1584,7 @@
     <Content Include="Views\Manage\CoachUsage.cshtml" />
     <Content Include="Views\Manage\PermmissionForbidden.cshtml" />
     <Content Include="Views\Manage\StudentApplication.cshtml" />
+    <Content Include="Views\Manage\CoachApplicationList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

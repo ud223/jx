@@ -11,14 +11,14 @@ namespace JxLib
     {
         public override List<Hashtable> getAll()
         {
-            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID ORDER BY app_students.CreateAt DESC";
+            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID where IsCoach = 0 ORDER BY app_students.CreateAt DESC";
 
             return base.getAll();
         }
 
         public List<Hashtable> getBySchool()
         {
-            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID WHERE SchoolID = 1 ORDER BY app_students.CreateAt DESC";
+            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID WHERE IsCoach and SchoolID = 1 ORDER BY app_students.CreateAt DESC";
 
             return base.getAll();
         }

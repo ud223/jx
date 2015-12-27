@@ -214,6 +214,23 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 教练列表action
+
+        public ActionResult CoachApplicationList()
+        {
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            JxLib.CoachController coachController = new JxLib.CoachController();
+
+            List<Hashtable> list = coachController.getApplicationBySchoolID(this.UserData.SchoolID);
+
+            ViewData["list"] = list;
+
+            return View();
+        }
+
         //        [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
         public ActionResult CoachList(int page = 1)
         {
@@ -221,6 +238,12 @@ namespace Flowpie.Controllers
             {
                 return Redirect("/manage/PermmissionForbidden");
             }
+
+            JxLib.CoachController coachController = new JxLib.CoachController();
+
+            List<Hashtable> list = coachController.getAllBySchoolByID(this.UserData.SchoolID);
+
+            ViewData["list"] = list;
 
             return View();
         }
