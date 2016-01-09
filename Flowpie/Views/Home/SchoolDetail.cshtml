@@ -235,20 +235,26 @@
                         <!--<div class="cvr"></div>-->
                         <div class="time-day-select">
                             <div class="table">
-                                <div class="td selected">11月29日</div>
-                                <div class="td">11月30日</div>
-                                <div class="td">12月1日</div>
-                                <div class="td">12月2日</div>
-
-                                @for(int i = 0;i<3;i++)
+                                @for (int i = 1; i < 5; i++)
                                 {
+                                    DateTime date = DateTime.Now;
 
+                                    DateTime tmp_date = date.AddDays(i);
+
+                                    if (i == 1)
+                                    {
+                                        <div class="td date-item selected" val="@tmp_date.ToString("yyyy-MM-dd")">@tmp_date.ToString("MM月dd日")</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="td date-item" val="@tmp_date.ToString("yyyy-MM-dd")">@tmp_date.ToString("MM月dd日")</div>
+                                    }
                                 }
                             </div>
                         </div>
                     </div>
                     <div class="time-tb">
-                        <div class="ttd" val="6">
+                        @*<div class="ttd" val="6">
                             <div class="cowl cowl1">
                                 <div>
                                     <span>时间：</span><span class="val">8:00 - 9:00</span>
@@ -499,7 +505,7 @@
                             <div class="cowl cks">
                                 <i class="fa fa-check-circle"></i>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
@@ -511,10 +517,24 @@
         @*<a href="p10-1_zhifuqueren.html" class="btidiom" id="wxpaybtn">
             <i class="fa fa-weixin"></i> 支付350元 <span class="sce">（8月15日 19:00-20:00, 21:00-22:00）</span>
         </a>*@
+    @if (ViewData["schoolid"].ToString() == "")
+    {
+        @*<a href="/student/enter" class="btidiom up">
+            <i class="fa fa-angle-right"></i> 立即报名去
+        </a>*@
+        <a id="submit" href="javascript:void(0)" class="btidiom up" onclick="testPay()">
+            <i class="fa fa-angle-right"></i> 提交订单
+        </a>
+    }
+    else
+    {
+        <input type="hidden" id="rundate" name="rundate" />
+        <input type="hidden" id="time" name="time" />
+        <a id="submit" href="javascript:void(0)" class="btidiom up">
+            <i class="fa fa-angle-right"></i> 约练
+        </a>
+    }
 
-    <a href="/student/enter" class="btidiom up">
-        <i class="fa fa-angle-right"></i> 立即报名去
-    </a>
 <!--
     作者：vincedotnet@hotmail.com
     时间：2015-09-17
@@ -527,8 +547,30 @@
 </div>
 
 <div class="bt-distance"></div>
+<div id="time-item" style="display:none">
+    <div class="ttd" val="">
+        <div class="cowl cowl1">
+            <div>
+                <span>时间：</span><span class="val time"></span>
+            </div>
+            <div>
+                <span>价格：</span><span class="val price" style="font-size:12px;"></span>
+            </div>
+        </div>
+        <div class="cowl cowl2">
+            <div>已预约：<span class="val num">0</span>人</div>
+            <div>可预约：<span class="val max"></span>人</div>
+            <div class="fullbook">已约满</div>
+        </div>
+        <div class="cowl cks">
+            <i class="fa fa-check-circle"></i>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
-    var school_id = '1';
+    var school_id = '@ViewData["schoolid"]';
+    var cur_weeknum = 1;
+    var cur_date = '';
 
 	$('document').ready(function(e) {
 		if (imgs_json.length) {
@@ -619,18 +661,39 @@
 			$('.detailddlx-open').hide();
 		}
 
-		$('.time-tb .ttd').click(function () {
-		    var $this = $(this).closest('.ttd');
-		    if ($this.hasClass('unclickable')) {
-		        return;
-		    }
-		    $.alertbox({ msg: '抱歉，你你现在还未通过科目一，还不具备约教上路资格，因此无法约教。' })
-		});
+		//$('.time-tb .ttd').click(function () {
+		//    var $this = $(this).closest('.ttd');
+		//    if ($this.hasClass('unclickable')) {
+		//        return;
+		//    }
+		//    $.alertbox({ msg: '抱歉，你你现在还未通过科目一，还不具备约教上路资格，因此无法约教。' })
+		//});
 
 		$("#coach_application").click(function () {
 		    coacheApplication();
 		})
+
+		$(".date-item").click(function () {
+		    dateSelect(this);
+		})
+		var date = new Date();
+
+		//date.setDate(date.getDate() + 1);
+
+		//initTraining(date.getDay());
+
+		$("#submit").click(function () {
+		    submit();
+		})
+
+		loadData();
 	});
+
+	function loadData() {
+	    var select_item = $(".td.date-item.selected");
+
+	    dateSelect(select_item);
+	}
 
 	function coacheApplication() {
 	    //alert(JSON.stringify(data));
@@ -670,5 +733,278 @@
 	    };
 
 	    $.alertbox(opertion);
+	}
+
+	function dateSelect(btn) {
+	    $(".date-item").removeClass("selected");
+
+	    $(btn).addClass("selected");
+
+	    var tmp_date = $(btn).attr('val');
+
+	    $("#rundate").val(tmp_date);
+
+	    var date = new Date(tmp_date);
+
+	    cur_date = tmp_date;
+
+	    initTraining(date.getDay());
+	}
+
+	function initTraining(weeknum) {
+	    if (weeknum == 0)
+	        weeknum = 7;
+
+	    cur_weeknum = weeknum;
+
+	    $("#time").val('');
+
+	    var data = { 'SchoolID': school_id, 'WeekNum': weeknum };
+
+	    var params = {
+	        url: '/api/Training/LoadConfigByWeekNum',
+	        data: data,
+	        successFun: loadTrainingNode,
+	        errorFun: errorInit
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function loadTrainingNode(data) {
+	    ////alert(JSON.stringify(data));
+	    if (data.code == '200') {
+	        var list = $(".time-tb");
+	        var datainfo = eval('(' + data.data + ')');
+	        var tmp_times = datainfo.Time
+	        var times = tmp_times.split(',');
+
+	        list.html("");
+
+	        $.each(times, function () {
+	            var time2 = parseInt(this);
+	            var time1 = time2 - 1;
+
+	            var strTime2 = time2.toString() + ":00";
+
+	            if (time2 < 10)
+	                strTime2 = "0" + strTime2;
+
+	            var strTime1 = time1 + ":00";
+
+	            if (time1 < 10)
+	                strTime1 = "0" + strTime1;
+
+
+	            var node = $("#time-item").find(".ttd").clone();
+
+	            node.attr('val', this);
+	            node.find(".val.time").html(strTime1 + " - " + strTime2);
+	            node.find(".val.price").html("C1 ￥" + datainfo.C1 + " C2 ￥" + datainfo.C2);
+	            node.find(".val.max").html(datainfo.Num);
+
+	            $(node).click(function () {
+	                var $this = $(this).closest('.ttd');
+
+	                if ($this.hasClass('unclickable')) {
+	                    $.alertbox({ msg: '抱歉, 该时段已经预约满!' })
+	                }
+	                else {
+	                    if ($this.hasClass('selected')) {
+	                        unSelectTime($(this).attr('val'));
+
+	                        $this.removeClass('selected');
+	                    }
+	                    else {
+	                        if (selectTime($(this).attr('val'))) {
+	                            $this.addClass('selected');
+	                        }
+	                    }
+	                }
+	            });
+
+	            list.append(node);
+	        });
+
+	        getUseTeachTime();
+	    }
+	}
+
+	function errorInit() {
+
+	}
+
+	function getUseTeachTime() {
+	    $("#time").val('');
+
+	    var user_id = $.cookie('user_id');
+
+	    var data = { 'SchoolID': school_id, 'RunDate': cur_date, 'StudentID': user_id };
+
+	    var params = {
+	        url: '/api/order/LoadOrderByDay',
+	        data: data,
+            type:'get',
+            successFun: loadUseTeachTime,
+            errorFun: errorLoadUseTeachTime
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function loadUseTeachTime(data) {
+	    var list = $(".time-tb").find('.ttd');
+
+	    var datainfo = eval('[' + data.data + ']');
+
+	    $.each(list, function () {
+	        var item = this;
+
+	        $.each(datainfo, function () {
+	            var tmp_time = this.Time.split(',');
+
+	            $.each(tmp_time, function () {
+                    if ($(item).attr('val') == this) {
+	                    var num_span = $(item).find('.val.num');
+	                    var max_span = $(item).find('.val.max');
+
+	                    var num = parseInt(num_span.html());
+	                    var max = parseInt(max_span.html());
+
+	                    num = num + 1;
+
+	                    $(num_span).html(num);
+
+	                    if (num == max) {
+	                        $(item).addClass('unclickable');
+	                    }
+	                }
+	            });
+	        });
+	    });
+	}
+
+	function errorLoadUseTeachTime() {
+
+	}
+
+	function selectTime(time, node) {
+	    var select_time = $("#time").val();
+
+	    if (!select_time) {
+	        $("#time").val(time);
+
+	        return true;
+	    }
+	    else {
+	        var arr_time = select_time.split(',');
+
+	        var tmp_time_head = parseInt(arr_time[0]);
+	        var tmp_time_tail = parseInt(arr_time[arr_time.length - 1]);
+
+	        if (tmp_time_head + 1 == time || tmp_time_head - 1 == time || tmp_time_tail + 1 == time || tmp_time_tail - 1 == time) {
+	            select_time = select_time + ',' + time;
+
+	            $("#time").val(select_time);
+
+	            return true;
+	        }
+	        else {
+	            $(".ttd").removeClass('selected');
+
+	            $("#time").val(time);
+
+	            return true;
+	        }
+	    }
+	}
+
+	function unSelectTime(time) {
+	    var select_time = $("#time").val();
+
+	    if (select_time == time) {
+	        $("#time").val('');
+	    }
+	    else {
+	        select_time = select_time.replace(',' + time, '');
+	        select_time = select_time.replace(time + ',', '');
+
+	        $("#time").val();
+	    }
+	}
+
+	function submit() {
+	    var select_time = $("#time").val();
+
+	    if (!select_time) {
+	        $.alertbox({ msg: '请先约练课程时段!' });
+
+	        return;
+	    }
+
+	    createOrder();
+	}
+
+	function createOrder() {
+	    var user_id = $.cookie('user_id');
+	    var select_time = $("#time").val();
+	    var rundate = $("#rundate").val();
+	    var time = $("#time").val();
+
+	    var date = new Date(rundate);
+
+	    var weeknum = date.getDay();
+
+	    if (weeknum == 0)
+	        weeknum = 7;
+
+	    //alert(time);
+	    var data = { 'StudentID':user_id, 'SchoolID':school_id, 'RunDate':rundate, 'WeekNum':weeknum, 'Time':time };
+	    //alert(JSON.stringify(data));
+	    var params = {
+	        url: '/api/order/OrderAdd',
+	        data: data,
+	        successFun: successCreate,
+	        errorFun: errorCreate
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successCreate(data) {
+	    if (data.code == "200") {
+	        var opertion = {
+	            msg: "创建订单成功!",
+	            exitText: "关闭!",
+	            exitCallback: toConfirm
+	        };
+
+	        localStorage.setItem('cur_order_id', data.data);
+
+	        $.alertbox(opertion); 
+	    }
+	}
+
+	function errorCreate() {
+	    var opertion = {
+	        msg: "创建订单失败!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+	}
+
+	function toConfirm() {
+	    var orderid = localStorage.getItem('cur_order_id');
+
+	    localStorage.setItem('cur_order_id', null);
+
+	    location.href = "/home/OrderConfirmation/" + orderid;
+	}
+
+	function testPay() {
+	    var openid = '@ViewData["openid"]';
+
+	    location.href = '/home/orderpay?openid='+ openid +'&total_fee=1&orderid=1';
 	}
 </script>

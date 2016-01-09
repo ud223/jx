@@ -34,6 +34,8 @@ namespace Flowpie.Controllers
         private Models.Permission _userPermission;
         private string _sSelectTypeSql = " and app_schools.SchoolID = @SchoolID@";
 
+        private string strParam = "";
+
  //       [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]//这里配置角色切忌不能有多余的空格
         public ActionResult Index()
         {
@@ -251,8 +253,10 @@ namespace Flowpie.Controllers
 
         #region 教练详细action
   //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
-        public ActionResult CoachDetail(int page = 1)
+        public ActionResult CoachDetail(string id)
         {
+            this.strParam = id;
+
             if (!this.init())
             {
                 return Redirect("/manage/PermmissionForbidden");
@@ -334,9 +338,56 @@ namespace Flowpie.Controllers
 
         #region 分配教练action
   //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
-        public ActionResult CoachDispatch(string schoolId)
+        public ActionResult CoachDispatch()
         {
-            this.init();
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            string schoolId = this.UserData.SchoolID;
+
+            List<Hashtable> list = orderController.getConfigOrder(schoolId);
+
+            List<string> date_list = new List<string>();
+            List<Models.Value> data = new List<Models.Value>();
+
+            foreach (Hashtable item in list)
+            {
+                if (date_list.Contains(item["RunDate"].ToString()))
+                    continue;
+
+                date_list.Add(item["RunDate"].ToString());
+
+                Models.Value value = new Models.Value();
+
+                value.Key = item["RunDate"].ToString();
+
+                //循环判断当前教学计划都已安排
+                foreach (Hashtable itm in list)
+                {
+                    if (itm["RunDate"].ToString() == value.Key)
+                    {
+                        if (itm["CoachID"].ToString() == "" || itm["CoachID"].ToString().ToLower() == "null")
+                        {
+                            value.Val = "0";
+
+                            break;
+                        }
+                    }
+                }
+
+                //如果都已安排 设置值为1
+                if (value.Val == "")
+                    value.Val = "1";
+
+                data.Add(value);
+            }
+
+            ViewData["list"] = data;
+            //ViewData["date_list"] = date_list;
 
             return View();
         }
@@ -344,12 +395,39 @@ namespace Flowpie.Controllers
 
         #region 分配教练至课程action
   //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
-        public ActionResult CoachDispatchCourse(string schoolId)
+        public ActionResult CoachDispatchCourse(string id)
         {
+            this.strParam = id;
+
             if (!this.init())
             {
                 return Redirect("/manage/PermmissionForbidden");
             }
+
+
+            JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.TrainingController trainingController = new JxLib.TrainingController();
+            JxLib.CoachController coachController = new JxLib.CoachController();
+
+            string schoolId = this.UserData.SchoolID;
+
+            List<Hashtable> list = orderController.loadByDay(id, schoolId);
+
+            DateTime day = Convert.ToDateTime(id);
+
+            DayOfWeek weeknum = day.DayOfWeek;
+            int weekday = Convert.ToInt32(weeknum);
+
+            if (weekday == 0)
+                weekday = 7;
+
+            Hashtable config = trainingController.loadTraining(schoolId, weekday.ToString());
+
+            List<Hashtable> coach_list = coachController.getAllBySchoolByID(schoolId);
+
+            ViewData["day"] = config["Time"].ToString().Split(',');
+            ViewData["list"] = list;
+            ViewData["coach_list"] = coach_list;
 
             return View();
         }
@@ -1223,7 +1301,10 @@ namespace Flowpie.Controllers
 
             if (tmp_url.Length == 4 || tmp_url.Length == 5 || tmp_url.Length == 6)
             {
-                pageName = tmp_url[2] + tmp_url[3];
+                if (this.strParam.Length > 0)
+                    pageName = tmp_url[2] + tmp_url[3].Replace(this.strParam, "");
+                else
+                    pageName = tmp_url[2] + tmp_url[3];
             }
             else if (tmp_url.Length == 3)
             {

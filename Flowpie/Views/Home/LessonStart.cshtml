@@ -1,0 +1,101 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+
+<div class="cskxx-c00">
+    <div>授课时间：2015年10月5日 15:00-20:00</div>
+</div>
+<div class="cskxx-c01">
+    <div class="t">
+        <div class="td">
+            <img class="u" src="img/user02.jpg" />
+        </div>
+        <div class="td">
+            <div class="li">学员姓名：@(((System.Collections.Hashtable)ViewData["stu"])["Name"])</div>
+            <div class="li">电话：@(((System.Collections.Hashtable)ViewData["stu"])["Phone"])</div>
+            <div class="li">性别：@ViewData["sex"]</div>
+            <div class="li">年龄：@ViewData["age"]</div>
+            <div class="li">报名时间：@(Convert.ToDateTime(((System.Collections.Hashtable)ViewData["stu"])["EnterDate"]).ToString("yyyy年MM月dd日")</div>
+        </div>
+    </div>
+</div>
+
+<a href="c04_shoukezhong.html" class="cw-kaishishangke">上课</a>
+
+<div class="blackrowgall unclickable">
+    <div class="row height">
+        <span class="tt blue">学车进度</span>
+    </div>
+    <div class="row">
+        <div class="kejindu-dabk passed">
+            <div class="kejindu-tt">科目一 <i class="fa fa-check-circle mwoi-label">已合格</i></div>
+            <div class="kejindu-bieio">
+                <div class="tc">已于2015年5月4日确认通过考试</div>
+            </div>
+        </div>
+
+        <div class="kejindu-dabk doing">
+            <div class="kejindu-tt">科目二 <i class="fa fa-play-circle mwoi-label">学习中</i></div>
+            <div class="kejindu-bieio">
+                <div class="kejindu-tb">
+                    <div class="kejindu-td col1">1. 倒车入库</div>
+                    <div class="kejindu-td col2">
+                        <div>
+                            <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i>
+                        </div>
+                        <div>
+                            已完成4次训练
+                        </div>
+                    </div>
+                </div>
+                <div class="kejindu-tb">
+                    <div class="kejindu-td col1">2. 出库，入库</div>
+                    <div class="kejindu-td col2">
+                        <div>
+                            <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i>
+                        </div>
+                        <div>
+                            已完成5次训练
+                        </div>
+                    </div>
+                </div>
+                <div class="kejindu-tb">
+                    <div class="kejindu-td col1">3. 上坡起步</div>
+                    <div class="kejindu-td col2">
+                        <div>
+                            暂未训练
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="kejindu-dabk waiting">
+            <div class="kejindu-tt">科目三 <i class="fa fa-clock-o mwoi-label">未开始</i></div>
+            <div class="kejindu-bieio">
+                <div class="tc">暂未开始本科目学习</div>
+            </div>
+        </div>
+
+        <div class="kejindu-dabk waiting">
+            <div class="kejindu-tt">科目四 <i class="fa fa-clock-o mwoi-label">未开始</i></div>
+            <div class="kejindu-bieio">
+                <div class="tc">暂未开始本科目学习</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clear-15"></div>
+<a class="fullbtn normal" href="/home/mylesson">返回</a>
+<div class="bt-distance"></div>
+<script>
+			$('document').ready(function() {
+
+			});
+</script>

@@ -1,0 +1,14 @@
+﻿
+@{
+    Layout = "~/Views/Shared/mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+<span>@ViewData["error"]</span>
+支付失败!
+<script type="text/javascript">
+    $(document).ready(function() {
+        location.href = '/home';
+    })
+</script>

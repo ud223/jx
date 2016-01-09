@@ -1,0 +1,81 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+<div class="suc-t1">
+    <div class="suc-t2"></div>
+    <p class="suc-t3">支付成功</p>
+</div>
+<div class="clear-30"></div>
+<div style="text-align:center;line-height:32px;color:#666;">
+    <div>支付成功，请注意训练时间是</div>
+    <div style="color:#30AF43;font-weight:bold;">
+        <div>@(((System.Collections.Hashtable)ViewData["item"])["RunDate"])</div>
+        @if ((((System.Collections.Hashtable)ViewData["item"])["Time"]) != null)
+        {
+            string time = (((System.Collections.Hashtable)ViewData["item"])["Time"]).ToString();
+
+            string[] str_time = time.Split(',');
+
+            Array.Sort(str_time);
+
+            foreach (string t in str_time)
+            {
+                int tmp = Convert.ToInt32(t);
+                int tmp1 = tmp - 1;
+
+                <div>@tmp1.ToString():00 - @tmp.ToString():00</div>
+
+            }
+}
+        @*<div>14:00-16:00</div>
+        <div>17:00-18:00</div>
+        <div>19:00-20:00</div>*@
+    </div>
+    <div>我们正在为您安排教练</div>
+    <div>稍后会通过短信再次通知您</div>
+</div>
+<div class="clear-30"></div>
+<a href="/home/myrecord" class="fullbtn normal">查看我的学车记录</a>
+<div class="bt-distance"></div>
+<script type="text/javascript">
+    var orderid = '@ViewData["orderid"]';
+
+    $('document').ready(function (e) {
+        orderSuccess();
+    });
+
+    function orderSuccess() {
+        var data = { 'orderid': orderid };
+        //alert(JSON.stringify(data));
+        var params = {
+            url: '/api/order/orderNext',
+            data: data,
+            successFun: success,
+            errorFun: error
+        }
+
+        ajaxTo(params);
+    }
+
+    function success(date) {
+        var opertion = {
+            msg: date.message,
+            exitText: "关闭!"
+        };
+
+        $.alertbox(opertion);
+    }
+
+    function error() {
+        var opertion = {
+            msg: date.message,
+            exitText: "关闭!"
+        };
+
+        $.alertbox(opertion);
+    }
+</script>

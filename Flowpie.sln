@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemConfigureLib", "Syste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JxLib", "JxLib\JxLib.csproj", "{EFBD2A9C-F96A-4CBA-87B0-D63A57C894A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxApiLib", "WxApiLib\WxApiLib.csproj", "{600B688E-0FF1-474A-B18A-A895E2AFDB55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{EFBD2A9C-F96A-4CBA-87B0-D63A57C894A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFBD2A9C-F96A-4CBA-87B0-D63A57C894A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFBD2A9C-F96A-4CBA-87B0-D63A57C894A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{600B688E-0FF1-474A-B18A-A895E2AFDB55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600B688E-0FF1-474A-B18A-A895E2AFDB55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600B688E-0FF1-474A-B18A-A895E2AFDB55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600B688E-0FF1-474A-B18A-A895E2AFDB55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

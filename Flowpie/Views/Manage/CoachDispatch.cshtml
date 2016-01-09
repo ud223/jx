@@ -19,12 +19,28 @@
     <div class="cko-wp">
         <ul class="nav nav-tabs text-tabs mytabs" role="tablist">
             <li role="presentation" class="active"><a href="#ts-info" aria-controls="ts-info" role="tab" data-toggle="tab">一般课程</a></li>
-            <li role="presentation" class=""><a href="#ts-finance" aria-controls="ts-finance" role="tab" data-toggle="tab">集训</a></li>
-            
+            @*<li role="presentation" class=""><a href="#ts-finance" aria-controls="ts-finance" role="tab" data-toggle="tab">集训</a></li>*@          
         </ul>
 
         <div class="tab-content tab-kiki-ct">
             <div role="tabpanel" class="tab-pane fade active in" id="ts-info">
+                @foreach (var date in ViewData["list"] as List<Flowpie.Models.Value>)
+                {
+                    <a href="/manage/coachdispatchcourse/@date.Key" class="bnieitm xsq">
+                        <span class="mgtxt">@DateTime.Parse(date.Key).ToString("yyyy年MM月dd日")</span>
+
+                        @if (date.Val == "0")
+                        {
+                            <span class="dctxt jut">未完全分配</span>
+                        }
+                        else
+                        {
+                            <span class="dctxt ed">已分配</span>
+                        }
+                    </a>
+                }
+            </div>
+                @*
                 <a href="/manage/coachdispatchcourse" class="bnieitm xsq">
                     <span class="mgtxt">2015年5月13日</span>
                     <span class="dctxt jut">未完全分配</span>
@@ -33,8 +49,9 @@
                     <span class="mgtxt">2015年5月12日</span>
                     <span class="dctxt ed">已分配</span>
                 </a>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="ts-finance">
+            *@
+                <!---集训--->
+                @*<div role="tabpanel" class="tab-pane fade" id="ts-finance">
                 <a href="/manage/coachdispatchtraining" class="bnieitm xsq">
                     <span class="mgtxt">2015年4月23日</span>
                     <span class="dctxt jut">未完全分配</span>
@@ -47,9 +64,9 @@
                     <span class="mgtxt">2015年4月12日</span>
                     <span class="dctxt ed">已分配</span>
                 </a>
+            </div>*@
+
             </div>
-            
-        </div>
     </div>
 
 </div>

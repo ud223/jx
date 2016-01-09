@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using WxApiLib;
+using WxApiLib.lib;
 
 namespace Flowpie.Controllers
 {
@@ -90,9 +93,7 @@ namespace Flowpie.Controllers
             }    
 
             return View();
-        }
-
-        
+        }     
 
         private string addStudent(Models.Student stu)
         {
@@ -175,6 +176,18 @@ namespace Flowpie.Controllers
             {
                 Response.RedirectToRoute("school-list");
             }
+
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            System.Collections.Hashtable item = studentController.load(user_id);
+
+            ViewData["data"] = item;
+            ViewData["schoolid"] = item["SchoolID"].ToString();
+
+            ViewData["openid"] = item["OpenId"].ToString();
 
             ViewData["title"] = "驾校信息";
 
@@ -287,6 +300,134 @@ namespace Flowpie.Controllers
             ViewData["title"] = "我的优惠卷";
 
             return View();
+        }
+
+        #endregion;
+
+        #region 订单action
+
+        public ActionResult OrderConfirmation(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+            if (item == null)
+            {
+                return Redirect("/home");
+            }
+
+            ViewData["item"] = item;
+
+            return View();
+        }
+
+        public ActionResult PaySuccess(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+            if (item == null)
+            {
+                return Redirect("/home");
+            }
+
+
+            if (item["State"].ToString() != "0")
+            {
+                return Redirect("/home");
+            }
+
+            ViewData["orderid"] = id;
+            ViewData["state"] = item["State"].ToString();
+            ViewData["item"] = item;
+
+            return View();
+        }
+
+        #endregion;
+
+        #region 约练考试
+
+        public ActionResult LessonStart(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+
+            System.Collections.Hashtable item = orderController.load(id);
+           
+
+            if (item == null)
+            {
+                return Redirect("/home");
+            }
+
+            System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+            List<System.Collections.Hashtable> teachDetail = orderController.getDetailHistory(item["StudentID"].ToString());
+
+            if (item["State"].ToString() != "1")
+            {
+                return Redirect("/home");
+            }
+
+            ViewData["orderid"] = id;
+            ViewData["state"] = item["State"].ToString();
+            ViewData["item"] = item;
+            ViewData["stu"] = stu;
+
+            if (stu["sex"].ToString() == "2")
+            {
+                ViewData["sex"] = "女";
+            }
+            else
+            {
+                ViewData["sex"] = "男";
+            }
+
+            if (stu["Birthday"].ToString() == "")
+                ViewData["age"] = "";
+            else
+            {
+                DateTime birthday = DateTime.Parse(stu["Birthday"].ToString());
+
+                int age = DateTime.Now.Year - birthday.Year;
+
+                if (DateTime.Now.Month < birthday.Month || (DateTime.Now.Month == birthday.Month && DateTime.Now.Day < birthday.Day))
+                    age--;
+
+                ViewData["age"] = age.ToString();
+            }
+           
+
+
+            return View();
+        }
+
+        #endregion;
+
+        #region 我的首页
+
+        public ActionResult MyLesson()
+        {
+            JxLib.CoachController coachController = new JxLib.CoachController();
+
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            if (user_id == null)
+            {
+                return Redirect("/home");
+            }
+
+            List<System.Collections.Hashtable> list = coachController.getMyLesson(user_id);
+
+            ViewData["list"] = list;
+            ViewData["count"] = list.Count;
+
+            return View();
+            
         }
 
         #endregion;
@@ -687,6 +828,91 @@ namespace Flowpie.Controllers
             stu = j.Deserialize<Models.Student>(weixin);
 
             return stu;
+        }
+
+        #endregion
+
+        #region 微信支付操作
+
+        public ActionResult OrderPay()
+        {
+            string wxJsApiParam = "";
+            //string editAddress = "";
+            //JxdLib.OrderController orderController = new JxdLib.OrderController();
+            WxApiLib.lib.Log.Info(this.GetType().ToString(), "1. page load");
+
+            string orderid = Request.QueryString["orderid"];
+            string openid = Request.QueryString["openid"];
+            string total_fee = Request.QueryString["total_fee"];
+
+            //System.Collections.Hashtable item = orderController.load(orderid);
+            ////如果当前传过来的订单id得到的状态不是支付状态 直接返回首页
+            //if (item["state"].ToString() != "2")
+            //{
+            //    return Redirect("/home");
+            //}
+
+            //检测是否给当前页面传递了相关参数
+            if (string.IsNullOrEmpty(openid) || string.IsNullOrEmpty(total_fee) || total_fee == "0")
+            {
+                Response.Write("<span style='color:#FF0000;font-size:20px'>" + "页面传参出错,请返回重试" + "</span>");
+                WxApiLib.lib.Log.Error(this.GetType().ToString(), "This page have not get params, cannot be inited, exit...");
+
+                return View();
+            }
+
+            //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
+            JsApiPay jsApiPay = new JsApiPay(Request, Response);
+            jsApiPay.openid = openid;
+            jsApiPay.total_fee = int.Parse(total_fee);
+
+            //JSAPI支付预处理
+            try
+            {
+                WxApiLib.lib.WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult();
+
+                wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数      
+                                                             //editAddress = jsApiPay.GetEditAddressParameters();          
+
+                WxApiLib.lib.Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
+
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                Models.PayInfo payInfo = js.Deserialize<Models.PayInfo>(wxJsApiParam);
+
+                ViewData["appId"] = payInfo.appId;
+                ViewData["nonceStr"] = payInfo.nonceStr;
+                ViewData["package"] = payInfo.package;
+                ViewData["paySign"] = payInfo.paySign;
+                ViewData["signType"] = payInfo.signType;
+                ViewData["timeStamp"] = payInfo.timeStamp;
+
+                ViewData["orderid"] = Request.QueryString["orderid"];
+                //ViewData["editAddress"] = editAddress;
+                //在页面上显示订单信息
+                //Response.Write("<span style='color:#00CD00;font-size:20px'>订单详情：</span><br/>");
+                //Response.Write("<span style='color:#00CD00;font-size:20px'>" + unifiedOrderResult.ToPrintStr() + "</span>");
+                //Response.Write("<span style='color:#00CD00;font-size:20px'>" + wxJsApiParam + "</span>");
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<span style='color:#FF0000;font-size:20px'>" + "下单失败，请返回重试:" + ex.Message + "</span>");
+            }
+
+            return View();
+        }
+
+        public ActionResult ResultNotify()
+        {
+            ResultNotify resultNotify = new ResultNotify(Request, Response);
+            resultNotify.ProcessNotify();
+
+            return View();
+        }
+
+        public ActionResult PayCancel()
+        {
+            return View();
         }
 
         #endregion

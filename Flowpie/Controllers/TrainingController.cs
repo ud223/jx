@@ -20,6 +20,45 @@ namespace Flowpie.Controllers
 {
     public class TrainingController : ApiController
     {
+        public string LoadConfigByWeekNum()
+        {
+            JxLib.TrainingController trainingController = new JxLib.TrainingController();
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            System.Collections.Hashtable data = tools.paramToData(context.Request.Form);
+
+            Hashtable item = trainingController.loadTraining(data["SchoolID"].ToString(), data["WeekNum"].ToString());
+
+            if (item != null)
+            {
+                Models.TrainingConfig config = new Models.TrainingConfig();
+
+                config.C1 = item["C1"].ToString();
+                config.C2 = item["C2"].ToString();
+                config.Num = item["Num"].ToString();
+                config.SchoolID = item["SchoolID"].ToString();
+                config.Time = item["Time"].ToString();
+                config.WeekNum = item["WeekNum"].ToString();
+                config.IsEnable = item["IsEnable"].ToString();
+
+                string str_json = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+
+                result.code = "200";
+                result.message = "获取成功!";
+                result.data = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+            }
+            else
+            {
+                result.code = "0";
+                result.message = "获取训练计划失败!";
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
         public string LoadConfig()
         {
             JxLib.TrainingController trainingController = new JxLib.TrainingController();
@@ -61,7 +100,7 @@ namespace Flowpie.Controllers
             if (list == null)
             {
                 result.code = "0";
-                result.message = "获取订单列表失败!";
+                result.message = "获取训练计划失败!";
             }
             else
             {

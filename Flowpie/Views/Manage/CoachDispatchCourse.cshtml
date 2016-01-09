@@ -25,7 +25,18 @@
                             学员
                         </div>
                     </div>
-                    <div class="fix-tb-header-cell">
+                    @foreach (var item in ViewData["day"] as string[])
+                    {
+                        int time = Convert.ToInt32(item);
+                        int time1 = time - 1;
+
+                        <div class="fix-tb-header-cell" time="@item">
+                            <div class="th">
+                                @time1.ToString():00 - @time.ToString():00
+                            </div>
+                        </div>
+                    }
+                    @*<div class="fix-tb-header-cell">
                         <div class="th">
                             7:00 - 8:00
                         </div>
@@ -64,229 +75,274 @@
                         <div class="th">
                             21:00 - 22:00
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <div class="fix-tb-ct-b2">
                 <div class="fix-tb-body">
-                    <div class="fix-tb-body-row">
-                        <div class="fix-tb-body-cell tc">
-                            <div class="td">张晓明</div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            <div class="coachdispatchline selected" style="width:300%;" data-toggle="modal" data-target="#myModal">
-                                <img class="img" src="~/statics/jx/img/user04.jpg" />
-                                <span class="txt">陈晓东</span>
-                                <div class="caret"></div>
+                    @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
+                    {
+                        string tmp_time = "";
+
+                        <div class="fix-tb-body-row teach-item">
+                            <div class="fix-tb-body-cell tc student" val="@item["TeachID"]">
+                                <div class="td">@item["StudentName"]</div>
                             </div>
-                        </div>
-                        
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="fix-tb-body-row">
-                        <div class="fix-tb-body-cell tc">
-                            <div class="td">陈晓燕</div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
 
-                        <div class="fix-tb-body-cell tc">
-                            <div class="coachdispatchline" style="width:100%;" data-toggle="modal" data-target="#myModal">
-                                <span class="txt">未分配</span>
-                                <div class="caret"></div>
+                            @foreach (var itm in ViewData["day"] as string[])
+                            {
+                                if (item["Time"].ToString().IndexOf("," + itm) > -1 || item["Time"].ToString().IndexOf(itm + ",") > -1 || item["Time"].ToString() == itm)
+                                {
+                                    if (tmp_time.IndexOf("," + itm) == -1 && tmp_time.IndexOf(itm + ",") == -1)
+                                    {
+                                        tmp_time = item["Time"].ToString();
+                                        int nTime = tmp_time.Split(',').Length * 100;
+
+                                        if (item["CoachID"].ToString() == "" || item["CoachID"].ToString() == "null")
+                                        {
+                                            <div class="fix-tb-body-cell tc coach" val="@item["CoachID"]">
+                                                <div class="coachdispatchline" style="width:@nTime.ToString()%;" data-toggle="modal" onclick="chooseTeach(this)" data-target="#myModal">
+                                                    <span class="txt">未分配</span>
+                                                    <div class="caret"></div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="fix-tb-body-cell tc coach" val="@item["CoachID"]">
+                                                <div class="coachdispatchline" style="width:@nTime.ToString()%;" data-toggle="modal" onclick="chooseTeach(this)" data-target="#myModal">
+                                                    <img class="img" src="@item["CoachPic"]" />
+                                                    <span class="txt">@item["CoachName"]</span>
+                                                    <div class="caret"></div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="fix-tb-body-cell tc">
+
+                                    </div>
+                                }
+                            }
                             </div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                    </div>
-                    
-                    <div class="fix-tb-body-row">
-                        <div class="fix-tb-body-cell tc">
-                            <div class="td">周小天</div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-
-                        <div class="fix-tb-body-cell tc">
-                            
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            <div class="coachdispatchline" style="width:200%;" data-toggle="modal" data-target="#myModal">
-                                <span class="txt">未分配</span>
-                                <div class="caret"></div>
-                            </div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                    </div>
-
-                    <div class="fix-tb-body-row">
-                        <div class="fix-tb-body-cell tc">
-                            <div class="td">刘敏</div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            <div class="coachdispatchline selected" style="width:100%;" data-toggle="modal" data-target="#myModal">
-                                <img class="img" src="~/statics/jx/img/user04.jpg"/>
-                                <span class="txt">张春华</span>
-                                <div class="caret"></div>
-                            </div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                    </div>
-
-                    <div class="fix-tb-body-row">
-                        <div class="fix-tb-body-cell tc">
-                            <div class="td">黄超</div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            <div class="coachdispatchline" style="width:200%;" data-toggle="modal" data-target="#myModal">
-                                <span class="txt">未分配</span>
-                                <div class="caret"></div>
-                            </div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                    </div>
-
-                    <div class="fix-tb-body-row">
-                        <div class="fix-tb-body-cell tc">
-                            <div class="td">张易明</div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                            <div class="coachdispatchline" style="width:200%;" data-toggle="modal" data-target="#myModal">
-                                <span class="txt">未分配</span>
-                                <div class="caret"></div>
-                            </div>
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-                        </div>
-                        <div class="fix-tb-body-cell tc">
-
-                        </div>
-                    </div>
-                </div>
-                <div style="margin:30px 20px 20px 20px;background:transparent;box-shadow:none;" class="bt-btn-bar">
-                    <button class="btn btn-success"><span class="glyphicons glyphicons-send"></span> 分配完毕发送通知</button>
-                </div>
+                        }
+                    @*<div class="fix-tb-body-row">
+        <div class="fix-tb-body-cell tc">
+            <div class="td">张晓明</div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+            <div class="coachdispatchline selected" style="width:300%;" data-toggle="modal" data-target="#myModal">
+                <img class="img" src="~/statics/jx/img/user04.jpg" />
+                <span class="txt">陈晓东</span>
+                <div class="caret"></div>
             </div>
+        </div>
 
-            @*<div class="fix-tb-ct-pager">
-                <div class="fw1">
-                    <span class="s1">共</span>
-                    <span class="s2">3</span>
-                    <span class="s3">条记录</span>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+    </div>
+
+    <div class="fix-tb-body-row">
+        <div class="fix-tb-body-cell tc">
+            <div class="td">陈晓燕</div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+
+        <div class="fix-tb-body-cell tc">
+            <div class="coachdispatchline" style="width:100%;" data-toggle="modal" data-target="#myModal">
+                <span class="txt">未分配</span>
+                <div class="caret"></div>
+            </div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+    </div>
+
+    <div class="fix-tb-body-row">
+        <div class="fix-tb-body-cell tc">
+            <div class="td">周小天</div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+            <div class="coachdispatchline" style="width:200%;" data-toggle="modal" data-target="#myModal">
+                <span class="txt">未分配</span>
+                <div class="caret"></div>
+            </div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+    </div>
+
+    <div class="fix-tb-body-row">
+        <div class="fix-tb-body-cell tc">
+            <div class="td">刘敏</div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+            <div class="coachdispatchline selected" style="width:100%;" data-toggle="modal" data-target="#myModal">
+                <img class="img" src="~/statics/jx/img/user04.jpg"/>
+                <span class="txt">张春华</span>
+                <div class="caret"></div>
+            </div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+    </div>
+
+    <div class="fix-tb-body-row">
+        <div class="fix-tb-body-cell tc">
+            <div class="td">黄超</div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+            <div class="coachdispatchline" style="width:200%;" data-toggle="modal" data-target="#myModal">
+                <span class="txt">未分配</span>
+                <div class="caret"></div>
+            </div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+    </div>
+
+    <div class="fix-tb-body-row">
+        <div class="fix-tb-body-cell tc">
+            <div class="td">张易明</div>
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+        </div>
+        <div class="fix-tb-body-cell tc">
+
+        </div></div>*@
+            
+        </div>
+        <div style="margin:30px 20px 20px 20px;background:transparent;box-shadow:none;" class="bt-btn-bar">
+            <button class="btn btn-success"><span class="glyphicons glyphicons-send"></span> 分配完毕发送通知</button>
+        </div>
+    </div>
+
+    @*<div class="fix-tb-ct-pager">00001
+        <div class="fw1">
+            <span class="s1">共</span>
+            <span class="s2">3</span>
+            <span class="s3">条记录</span>
 
 
-                    <span class="s4 halflings halflings-step-backward"></span>
-                    <span class="s5 halflings halflings-backward"></span>
-                    <input type="text" class="s6" value="5" />
-                    <span class="s7">/</span>
-                    <span class="s8">7</span>
-                    <span class="s9 halflings halflings-forward"></span>
-                    <span class="s10 halflings halflings-step-forward"></span>
-                </div>
-            </div>*@
+            <span class="s4 halflings halflings-step-backward"></span>
+            <span class="s5 halflings halflings-backward"></span>
+            <input type="text" class="s6" value="5" />
+            <span class="s7">/</span>
+            <span class="s8">7</span>
+            <span class="s9 halflings halflings-forward"></span>
+            <span class="s10 halflings halflings-step-forward"></span>
+        </div>
+    </div>*@
         </div>
 
     </div>
@@ -304,166 +360,50 @@
             <div class="modal-body">
                 <div>
                     <div class="segehblk">
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
+                        @foreach (var item in ViewData["coach_list"] as List<System.Collections.Hashtable>)
+                        {
+                            <div class="bewdatimni" val="@item["StudentID"]">
+                                <div class="wp">
+                                    <span class="coach-name">@item["Name"]</span>
+                                    @if (item["HeadPic"].ToString() == "" || item["HeadPic"].ToString() == "null")
+                                    {
+                                        <img class="usrimg" src="/statics/jx/img/user.jpg" />
+                                    }
+                                    else
+                                    {
+                                        <img class="usrimg" src="@item["HeadPic"]" />
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni unuse">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <span class="t2">该时段已有安排</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni selected">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
-                        <div class="bewdatimni">
-                            <div class="wp">
-                                <span>刘春华</span>
-                                <img class="usrimg" src="~/statics/jx/img/user04.jpg" />
-                            </div>
-                        </div>
+                        }
                     </div>
                     <div class="clear"></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">选择</button>
+                <button type="button"  id="choose-close"  class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="choose-coach" class="btn btn-primary">选择</button>
             </div>
         </div>
     </div>
 </div>
-
-
+<div id="time-item-show" style="display:none">
+    <div class="coachdispatchline" style="100%;" data-toggle="modal" onclick="chooseTeach(this)" data-target="#myModal">
+        <img class="img coach-pic" src="" />
+        <span class="txt"></span>
+        <div class="caret"></div>
+    </div>
+</div>
+<div id="time-item-hide" style="display:none">
+    <div class="coachdispatchline" style="width:100%;" data-toggle="modal" onclick="chooseTeach(this)" data-target="#myModal">
+        <span class="txt">未分配</span>
+        <div class="caret"></div>
+    </div>
+</div>
 <!-- /container -->
 <script type="text/javascript">
+    var node = '';
+
 	$(document).ready(function() {
 	    $(".nano").nanoScroller();
 	    $.readjustWidth();
@@ -475,7 +415,125 @@
 	        var slt = $(".fix-tb-ct-b2").scrollLeft();
 	        $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
 	    });
+
+	    $(".bewdatimni").click(function () {
+	        if ($(this).hasClass("selected")) {
+	            $(this).removeClass("selected");
+	        }
+	        else {
+	            $(".bewdatimni").removeClass("selected");
+
+	            $(this).addClass("selected");
+	        }
+	    });
+
+	    $("#choose-coach").click(function () {
+	        chooseCoach();
+
+
+	    })
+
+	    $(".btn-success").click(function () {
+	        saveCoachConfig();
+	    })
 	});
 
+	function chooseTeach(e) {
+	    node = e;
 
+	    $(node).addClass('selected');
+
+	    //    alert($(node).width());
+	}
+
+	function chooseCoach() {
+	    var coach_id = $(".segehblk").find(".selected").attr("val");
+	    var coach_name = $(".segehblk").find(".selected").find(".coach-name").html();
+	    var coach_pic = $(".segehblk").find(".selected").find(".usrimg").prop('src');
+
+	    var width = $(node).width() / 120 * 100;
+	    var item = '';
+
+	    if (!coach_id) {
+	        item = $("#time-item-hide").find(".coachdispatchline").clone();
+
+	        $(item).css('width', width + '%');
+	    }
+	    else {
+	        item = $("#time-item-show").find(".coachdispatchline").clone();
+
+	        $(item).css('width', width + '%');
+
+	        $(item).find('.coach-pic').prop('src', coach_pic);
+	        $(item).find('.txt').html(coach_name)
+	    }
+	    
+	    var panel = $(node).parent();
+
+	    if (coach_id)
+	        $(panel).attr('val', coach_id);
+	    else
+	        $(panel).attr('val', 'null');
+
+	    $(panel).html('');
+
+	    $(panel).append(item);
+	}
+
+	function saveCoachConfig() {
+	    var items = $('.fix-tb-body-row.teach-item');
+
+	    var teach_ids = '';
+        var coach_ids = ''
+
+	    $.each(items, function () {
+	        if (teach_ids != '')
+	            teach_ids = teach_ids + ',';
+
+	        teach_ids = teach_ids + $(this).find('.fix-tb-body-cell').attr('val');
+
+	        if (coach_ids != '')
+	            coach_ids = coach_ids + ',';
+
+	        coach_ids = coach_ids + $(this).find('.coach').attr('val');
+	    })
+
+	    saveConfig(teach_ids, coach_ids);
+	}
+
+	function saveConfig(teach_ids, coach_ids) {
+	    var data = { 'teach_ids': teach_ids, 'coach_ids': coach_ids };
+	    //alert(JSON.stringify(data));
+	    var params = {
+	        url: '/api/order/setCoach',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    //if (data.code == "200") {
+	    //    var opertion = {
+	    //        msg: data.message,
+	    //        exitText: "关闭!"
+	    //    };
+
+	    //    $.alertbox(opertion); 
+	    //}
+
+	    alert(data.message);
+	}
+
+	function error() {
+	    //var opertion = {
+	    //    msg: "设置教练失败!",
+	    //    exitText: "关闭!"
+	    //};
+
+	    //$.alertbox(opertion);
+	    alert("设置教练失败!");
+	}
 </script>
