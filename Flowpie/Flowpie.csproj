@@ -1600,6 +1600,10 @@
     <Content Include="Views\Home\LessonEnd.cshtml" />
     <Content Include="Views\Home\LessonSuccess.cshtml" />
     <Content Include="Views\Home\MyLesson.cshtml" />
+    <Content Include="Views\Home\Lessoning.cshtml" />
+    <Content Include="Views\Home\MyOrder.cshtml" />
+    <Content Include="Views\Home\OrderRating.cshtml" />
+    <Content Include="Views\Home\OrderRatingSuccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

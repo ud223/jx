@@ -70,7 +70,7 @@ namespace JxLib
 
         public string addDetail(Hashtable data)
         {
-            this.SqlText = "insert into app_teachdetail(TeachDetailID, TeachID,TeachTypeID) values('@TeachDetailID@', '@TeachID@',TeachTypeID); select TeachDetailID from app_teachdetail order by TeachDetailID desc limit 1";
+            this.SqlText = "insert into app_teachdetail(TeachDetailID, TeachID,TeachTypeID) values('@TeachDetailID@', '@TeachID@',@TeachTypeID@); select TeachDetailID from app_teachdetail order by TeachDetailID desc limit 1";
 
             return base.add(data);
         }
@@ -84,7 +84,7 @@ namespace JxLib
 
         public List<Hashtable> getDetailHistory(string id)
         {
-            this.SqlText = "select count(*)num, TeachTypeID from app_teachdetail TeachDetailID in (select TeachID from app_teach where StudentID = '" + id + "') group by TeachTypeID";
+            this.SqlText = "select count(*)num, TeachTypeID from app_teachdetail where TeachID in (select TeachID from app_teach where StudentID = '" + id + "') group by TeachTypeID";
 
             return base.Query(this.SqlText);
         }
