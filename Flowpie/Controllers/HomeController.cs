@@ -376,13 +376,13 @@ namespace Flowpie.Controllers
             ViewData["item"] = item;
             ViewData["stu"] = stu;
 
-            if (stu["sex"].ToString() == "2")
+            if (stu["Sex"].ToString() == "2")
             {
-                ViewData["sex"] = "女";
+                ViewData["Sex"] = "女";
             }
             else
             {
-                ViewData["sex"] = "男";
+                ViewData["Sex"] = "男";
             }
 
             if (stu["Birthday"].ToString() == "")
@@ -398,8 +398,160 @@ namespace Flowpie.Controllers
 
                 ViewData["age"] = age.ToString();
             }
-           
+            
+            foreach (System.Collections.Hashtable itm in teachDetail)
+            {
+                ViewData[itm["TeachTypeID"].ToString()] = itm["num"].ToString();
+            }
 
+            if (ViewData["1"] == null)
+            {
+                ViewData["1"] = "0";
+            }
+
+            if (ViewData["2"] == null)
+            {
+                ViewData["2"] = "0";
+            }
+
+            if (ViewData["3"] == null)
+            {
+                ViewData["3"] = "0";
+            }
+
+            string[] times = item["Time"].ToString().Split(',');
+
+            int time = Convert.ToInt32(times[0]) - 1;
+
+            ViewData["rundate"] = Convert.ToDateTime(item["RunDate"]).ToString("yyyy年MM月dd日") + " " + time.ToString() + ":00 - " + times[times.Length - 1] + ":00";
+
+            return View();
+        }
+
+        public ActionResult Lessoning(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+
+            if (item == null)
+            {
+                return Redirect("/home");
+            }
+
+            System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+            List<System.Collections.Hashtable> teachDetail = orderController.getDetailHistory(item["StudentID"].ToString());
+
+            if (item["State"].ToString() != "2")
+            {
+                return Redirect("/home");
+            }
+
+            ViewData["orderid"] = id;
+            ViewData["state"] = item["State"].ToString();
+            ViewData["item"] = item;
+            ViewData["stu"] = stu;
+
+            if (stu["Sex"].ToString() == "2")
+            {
+                ViewData["Sex"] = "女";
+            }
+            else
+            {
+                ViewData["Sex"] = "男";
+            }
+
+            if (stu["Birthday"].ToString() == "")
+                ViewData["age"] = "";
+            else
+            {
+                DateTime birthday = DateTime.Parse(stu["Birthday"].ToString());
+
+                int age = DateTime.Now.Year - birthday.Year;
+
+                if (DateTime.Now.Month < birthday.Month || (DateTime.Now.Month == birthday.Month && DateTime.Now.Day < birthday.Day))
+                    age--;
+
+                ViewData["age"] = age.ToString();
+            }
+
+            foreach (System.Collections.Hashtable itm in teachDetail)
+            {
+                ViewData[itm["TeachTypeID"].ToString()] = itm["num"].ToString();
+            }
+
+            if (ViewData["1"] == null)
+            {
+                ViewData["1"] = "0";
+            }
+
+            if (ViewData["2"] == null)
+            {
+                ViewData["2"] = "0";
+            }
+
+            if (ViewData["3"] == null)
+            {
+                ViewData["3"] = "0";
+            }
+
+            string[] times = item["Time"].ToString().Split(',');
+
+            int time = Convert.ToInt32(times[0]) - 1;
+
+            ViewData["rundate"] = Convert.ToDateTime(item["RunDate"]).ToString("yyyy年MM月dd日") + " " + time.ToString() + ":00 - " + times[times.Length - 1] + ":00";
+
+            return View();
+        }
+
+        public ActionResult LessonEnd(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+
+            if (item == null)
+            {
+                return Redirect("/home");
+            }
+
+            System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+            List<System.Collections.Hashtable> teachDetail = orderController.getDetailHistory(item["StudentID"].ToString());
+
+            if (item["State"].ToString() != "2")
+            {
+                return Redirect("/home");
+            }
+
+            ViewData["orderid"] = id;
+
+            return View();
+        }
+
+        public ActionResult LessonSuccess(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+
+            if (item == null)
+            {
+                return Redirect("/home");
+            }
+
+            System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+            List<System.Collections.Hashtable> teachDetail = orderController.getDetailHistory(item["StudentID"].ToString());
+
+            if (item["State"].ToString() != "3")
+            {
+                return Redirect("/home");
+            }
 
             return View();
         }

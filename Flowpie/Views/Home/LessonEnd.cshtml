@@ -1,1 +1,206 @@
 ﻿
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+<div class="blackrowgall">
+    <div class="row height">
+        <span class="tt">学习进度确认</span>
+    </div>
+    <div class="row">
+        <div class="cw-obki">
+            <div class="cw-optt">
+                科目二：
+            </div>
+            <div class="cw-opttrow">
+                <div class="wtcheckbox">
+                    <input type="checkbox" id="cbk1" class="detail-item" name="" val="1">
+                    <label for="cbk01"></label>
+                </div>
+                <label class="wtcheckboxlabel" for="cbk1">倒车入库</label>
+            </div>
+            <div class="cw-opttrow">
+                <div class="wtcheckbox">
+                    <input type="checkbox" id="cbk2" class="detail-item" name="" val="2">
+                    <label for="cbk02"></label>
+                </div>
+                <label class="wtcheckboxlabel" for="cbk2">出库，入库</label>
+            </div>
+            <div class="cw-opttrow">
+                <div class="wtcheckbox">
+                    <input type="checkbox" id="cbk3" class="detail-item" name="" val="3">
+                    <label for="cbk03"></label>
+                </div>
+                <label class="wtcheckboxlabel" for="cbk3">上坡起步</label>
+            </div>
+            @*<div class="cw-opttrow">
+                <div class="wtcheckbox">
+                    <input type="checkbox" id="cbk04" name="">
+                    <label for="cbk04"></label>
+                </div>
+                <label class="wtcheckboxlabel" for="cbk04">单边桥</label>
+            </div>*@
+        </div>
+
+        @*<div class="cw-obki">
+        <div class="cw-optt">
+            科目三：
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk11" name="">
+                <label for="cbk11"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk11">倒车入库</label>
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk12" name="">
+                <label for="cbk12"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk12">出库画弧</label>
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk13" name="">
+                <label for="cbk13"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk13">单边桥</label>
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk14" name="">
+                <label for="cbk14"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk14">上坡起步</label>
+        </div>
+    </div>
+
+    <div class="cw-obki">
+        <div class="cw-optt">
+            科目四：
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk31" name="">
+                <label for="cbk31"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk31">倒车入库</label>
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk32" name="">
+                <label for="cbk32"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk32">出库画弧</label>
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk33" name="">
+                <label for="cbk33"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk33">单边桥</label>
+        </div>
+        <div class="cw-opttrow">
+            <div class="wtcheckbox">
+                <input type="checkbox" id="cbk44" name="">
+                <label for="cbk44"></label>
+            </div>
+            <label class="wtcheckboxlabel" for="cbk44">上坡起步</label>
+        </div>
+    </div>*@
+    </div>
+</div>
+
+<div class="clear-15"></div>
+<a class="fullbtn submit" href="javascript:void(0)">确认下课</a>
+<div class="clear-15"></div>
+<a class="fullbtn normal" href="/home/mylesson">返回</a>
+<div class="bt-distance"></div>
+
+<script>
+    var orderid = '@ViewData["orderid"]';
+
+	$('document').ready(function() {
+	    $(".submit").click(function () {
+	        lessonEnd(); //addDetail();//
+	    })
+	});
+
+	function lessonEnd() {
+	    var data = { 'orderid': orderid };
+
+	    var params = {
+	        url: '/api/order/orderNext',
+	        data: data,
+	        successFun: successLessonEnd,
+	        errorFun: errorLessonEnd
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successLessonEnd(data) {
+	    if (data.code == '200') {
+	        addDetail();
+	    }
+	}
+
+	function errorLessonEnd() {
+	    alert('提交下课失败!')
+	}
+
+	function addDetail() {
+	    //$("#cbk1").prop("checked"));
+	    //alert($("#cbk2").prop("checked"));
+	    //alert($("#cbk3").prop("checked"));
+	    var detailItem = $(".detail-item");
+	    var detail_value = '';
+
+	    $.each(detailItem, function () {
+	        if ($(this).prop("checked")) {
+	            if (detail_value != '')
+	                detail_value = detail_value + ',';
+
+	            detail_value = detail_value + $(this).attr('val');
+	        }
+	    });
+
+	    if (!detail_value) {
+	        var opertion = {
+	            msg: '训练项目不能为空!',
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(opertion)
+
+	        return;
+	    }
+
+	    var data = { 'orderid': orderid, 'TeachTypeID': detail_value };
+
+	    //alert(JSON.stringify(data)); return;
+
+	    var params = {
+	        url: '/api/order/addOrderDetail',
+	        data: data,
+	        successFun: successAddDetail,
+	        errorFun: errorAddDetail
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successAddDetail(data) {
+	    if (data.code == '200') {
+	        location.href = '/home/LessonSuccess/' + orderid;
+	    }
+	}
+
+	function errorAddDetail() {
+	    alert('提交下课失败!')
+	}
+
+</script>

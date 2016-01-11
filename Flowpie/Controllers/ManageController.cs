@@ -481,7 +481,7 @@ namespace Flowpie.Controllers
             if (schoolId == "0")
                 item = schoolController.loadStructure();
             else
-                schoolController.load(schoolId);
+                item = schoolController.load(schoolId);
 
             ViewData["item"] = item;
 

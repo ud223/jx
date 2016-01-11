@@ -208,6 +208,51 @@ namespace Flowpie.Controllers
         }
 
         [HttpPost]
+        public string addOrderDetail()
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            SystemConfigureLib.SerialNumberController serialController = new SystemConfigureLib.SerialNumberController();
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            Hashtable data = tools.paramToData(context.Request.Form);
+
+            string[] TeachTypeIDs = data["TeachTypeID"].ToString().Split(',');
+
+            foreach (string str in TeachTypeIDs)
+            {
+                Hashtable info = new Hashtable();
+
+                string serial_id = serialController.getSerialNumber("odl", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                info.Add("TeachDetailID", serial_id);
+                info.Add("TeachID", data["orderid"].ToString());
+                info.Add("TeachTypeID", str);
+
+                orderController.addDetail(info);
+
+                if (!orderController.Result)
+                    break;
+            }
+
+            if (orderController.Result)
+            {
+                result.code = "200";
+                result.message = "练习明细添加成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = orderController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        [HttpPost]
         public string setCoach()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
@@ -245,6 +290,7 @@ namespace Flowpie.Controllers
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
         }
 
+        [HttpPost]
         public string orderNext()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();

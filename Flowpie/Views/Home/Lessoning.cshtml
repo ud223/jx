@@ -6,8 +6,9 @@
     ViewBag.Title = ViewData["title"];
 }
 
-<div class="cskxx-c00">
-    <div>授课时间：@ViewData["rundate"]</div>
+<div class="cskxx-c00 teaching">
+    <div class="t1">授课中</div>
+    <div class="t2">授课时间：@ViewData["rundate"]</div>
 </div>
 <div class="cskxx-c01">
     <div class="t">
@@ -24,7 +25,7 @@
     </div>
 </div>
 
-<a href="javascript:void(0)" class="cw-kaishishangke submit">上课</a>
+<a href="javascript:void(0)" class="cw-xiake submit">下课</a>
 
 <div class="blackrowgall unclickable">
     <div class="row height">
@@ -63,7 +64,7 @@
                             else
                             {
                                 <span>已完成<span>@ViewData["1"]</span>次训练</span>
-                            }     
+                            }
                         </div>
                     </div>
                 </div>
@@ -89,7 +90,7 @@
                             else
                             {
                                 <span>已完成<span>@ViewData["2"]</span>次训练</span>
-                            }                          
+                            }
                         </div>
                     </div>
                 </div>
@@ -114,8 +115,8 @@
                             }
                             else
                             {
-                                <span>已完成<span>@ViewData["2"]</span>次训练</span>
-                            }     
+                                <span>已完成<span>@ViewData["3"]</span>次训练</span>
+                            }
                         </div>
                     </div>
                 </div>
@@ -147,30 +148,7 @@
 
 	$('document').ready(function() {
 	    $(".submit").click(function () {
-	        lessonStart();
-	    });
+	        location.href = '/home/lessonend/' + orderid;
+	    })
 	});
-
-	function lessonStart() {
-	    var data = { 'orderid': orderid };
-
-	    var params = {
-	        url: '/api/order/orderNext',
-	        data: data,
-	        successFun: successLessonStart,
-	        errorFun: errorLessonStart
-	    }
-
-	    ajaxTo(params);
-	}
-
-	function successLessonStart(data) {
-	    if (data.code == '200') {
-	        location.href = '/home/Lessoning';
-	    }
-	}
-
-	function errorLessonStart() {
-        alert('提交上课失败!')
-	}
 </script>
