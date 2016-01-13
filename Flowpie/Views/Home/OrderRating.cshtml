@@ -1,1 +1,167 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+
+    ViewBag.Title = ViewData["title"];
+}
+@if (ViewData["item"] != null)
+{
+    var item = ViewData["item"] as System.Collections.Hashtable;
+
+    string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+    string[] times = item["Time"].ToString().Split(',');
+
+    Array.Sort(times);
+
+    int t1 = Convert.ToInt32(times[0]);
+    int t2 = Convert.ToInt32(times[times.Length - 1]);
+
+    t1 = t1 - 1;
+
+    <div class="blackrowgall">
+        <div class="row">
+            <span class="tt">教练</span>
+            <span class="holder">@item["Name"]<span class="lightgray">（@item["Score"]分）</span><img src="@item["HeadPic"]" width="25" /></span>
+        </div>
+    </div>
+    <div class="blackrowgall">
+        <div class="row">
+            <span class="tt">训练时间</span>
+            <span class="holder">@date @t1.ToString():00-@t2.ToString():00</span>
+        </div>
+    </div>
+}
+<div class="blackrowgall">
+    <div class="row height">
+        <span class="tt">打分</span>
+    </div>
+    <div class="row height">
+        <div class="holder">
+            <span class="rating-sub-tt">按时到达</span>
+            <div class="rating-stars on-time">
+                <div class="rating-star empty" val="1"><i class="ico"></i></div>
+                <div class="rating-star empty" val="2"><i class="ico"></i></div>
+                <div class="rating-star empty" val="3"><i class="ico"></i></div>
+                <div class="rating-star empty" val="4"><i class="ico"></i></div>
+                <div class="rating-star empty" val="5"><i class="ico"></i></div>
+                <input type="hidden" />
+            </div>
+        </div>
+    </div>
+    <div class="row height">
+        <div class="holder">
+            <span class="rating-sub-tt">授课内容</span>
+            <div class="rating-stars content">
+                <div class="rating-star empty" val="1"><i class="ico"></i></div>
+                <div class="rating-star empty" val="2"><i class="ico"></i></div>
+                <div class="rating-star empty" val="3"><i class="ico"></i></div>
+                <div class="rating-star empty" val="4"><i class="ico"></i></div>
+                <div class="rating-star empty" val="5"><i class="ico"></i></div>
+                <input type="hidden" />
+            </div>
+        </div>
+    </div>
+    <div class="row height">
+        <div class="holder">
+            <span class="rating-sub-tt">授课方法</span>
+            <div class="rating-stars way">
+                <div class="rating-star empty" val="1"><i class="ico"></i></div>
+                <div class="rating-star empty" val="2"><i class="ico"></i></div>
+                <div class="rating-star empty" val="3"><i class="ico"></i></div>
+                <div class="rating-star empty" val="4"><i class="ico"></i></div>
+                <div class="rating-star empty" val="5"><i class="ico"></i></div>
+                <input type="hidden" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blackrowgall">
+    <div class="row height">
+        <span class="tt">评论</span>
+    </div>
+    <div>
+        <textarea class="sismoe" placeholder="本次授课体验的感受或建议与意见（您提交的内容，不会被教练或者其他学员看到，请放心填写）"></textarea>
+    </div>
+</div>
+
+<div class="clear-15"></div>
+<a href="javascript:void(0)" class="fullbtn submit">提交</a>
+<script>
+    var order_id = '@ViewData["orderid"]';
+
+	$('document').ready(function() {
+	    $('.submit').click(function () {
+	        submit();
+	    })
+
+	    $('body').on('click', '.rating-star', function () {
+	        var $this = $(this).closest('.rating-star');
+	        var val = parseInt($this.attr('val'));
+	        var container = $this.closest('.rating-stars');
+	        var stars = $this.removeClass('empty').siblings('.rating-star');
+	        $.each(stars, function () {
+	            if (parseInt($(this).attr('val')) <= val) {
+	                $(this).removeClass('empty');
+	            } else {
+	                $(this).addClass('empty');
+	            }
+	        });
+	        container.find('input[type="hidden"]').val(val);
+	    });
+	});
+
+	function submit() {
+	    var onTimeScore = 5 - $('.on-time').find('.rating-star.empty').length;
+	    var contentScore = 5 - $('.content').find('.rating-star.empty').length;
+	    var wayScore = 5 - $('.way').find('.rating-star.empty').length;
+	    var content = $(".sismoe").val();
+
+	    var data = { 'TeachID': order_id, 'OnTimeScore': onTimeScore, 'ContentScore': contentScore, 'WayScore': wayScore, 'Content': content };
+
+	    var params = {
+	        url: '/api/student/setScore',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+    }
+
+    function success(data) {
+        if (data.code == "200") {
+            var opertion = {
+                msg: "评分成功!",
+                exitText: "关闭!",
+                exitCallback: toMyOrder
+            };
+
+            $.alertbox(opertion);
+        }
+        else
+        {
+            var opertion = {
+                msg: data.message,
+                exitText: "关闭!"
+            };
+
+            $.alertbox(opertion);
+        }
+    }
+
+    function error() {
+        var opertion = {
+            msg: "评分失败!",
+            exitText: "关闭!"
+        };
+
+        $.alertbox(opertion);
+    }
+
+    function toMyOrder() {
+        location.href = '/home/ratingsuccess';
+    }
+
+</script>

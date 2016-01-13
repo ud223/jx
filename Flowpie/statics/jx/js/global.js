@@ -674,3 +674,4 @@ function getBirthByCode(code) {
 
     return '';
 }
+

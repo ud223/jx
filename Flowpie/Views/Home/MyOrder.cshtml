@@ -1,1 +1,73 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+
+    ViewBag.Title = ViewData["title"];
+}
+<div class="p16-xeet">
+    找到@(ViewData["count"].ToString())条订单记录
+</div>
+
+<div class="blackrowgall nmt">
+    @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
+    {
+        string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+        string[] times = item["Time"].ToString().Split(',');
+
+        Array.Sort(times);
+
+        int t1 = Convert.ToInt32(times[0]);
+        int t2 = Convert.ToInt32(times[times.Length - 1]);
+
+        t1 = t1 - 1;
+
+        <div class="row actbtn height cd_hottap" hottap="/home/orderdetail/@item["TeachID"].ToString()">
+            <div class="tt"><span>@date @t1.ToString():00-@t2.ToString():00</span></div>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+            @switch (item["State"].ToString())
+            {
+                case "0":
+                    {
+                        <span class="status-for-order-sm paid">未支付</span>
+                        break;
+                    }
+                case "1":
+                    {
+                        <span class="status-for-order-sm paid">已支付</span>
+                        break;
+                    }
+                case "2":
+                    {
+                        <span class="status-for-order-sm">练习中</span>
+
+                        break;
+                    }
+                case "3":
+                    {
+                        <span class="status-for-order-sm">待评分</span>
+
+                        break;
+                    }
+                case "4":
+                    {
+                        <span class="status-for-order-sm">已完成</span>
+
+                        break;
+                    }
+            }
+
+        </div>
+    }
+</div>
+
+<div class="clear-15"></div>
+<a class="fullbtn normal" href="/home/myindex">返回</a>
+<div class="bt-distance"></div>
+<script>
+	$('document').ready(function() {
+
+    });
+</script>

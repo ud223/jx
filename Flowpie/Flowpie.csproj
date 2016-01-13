@@ -183,6 +183,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CoachController.cs" />
+    <Compile Include="Controllers\CouponController.cs" />
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -203,6 +204,7 @@
       <DependentUpon>backgroud_main.Master</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Coupon.cs" />
     <Compile Include="Models\Exam.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MyAuthAttribute.cs" />
@@ -1604,6 +1606,7 @@
     <Content Include="Views\Home\MyOrder.cshtml" />
     <Content Include="Views\Home\OrderRating.cshtml" />
     <Content Include="Views\Home\OrderRatingSuccess.cshtml" />
+    <Content Include="Views\Home\RatingSuccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
