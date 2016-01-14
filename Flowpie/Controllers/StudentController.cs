@@ -89,6 +89,34 @@ namespace Flowpie.Controllers
         }
 
         [HttpPost]
+        public string setLessonState()
+        {
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            Models.Result result = new Models.Result();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+            string strParam = context.Request.Form.ToString();
+
+            System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            studentController.updateLessonState(data["lessonstate"].ToString(), DateTime.Now.ToString("yyyy-MM-dd"), data["studentid"].ToString());
+
+            if (studentController.Result)
+            {
+                result.code = "200";
+                result.message = "操作成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = "更新用户课程状态失败:"+ studentController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        [HttpPost]
         public string setScore()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();

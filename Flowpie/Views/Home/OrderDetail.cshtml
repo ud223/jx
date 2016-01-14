@@ -94,16 +94,19 @@
 
     <div class="ccnox">场次1：</div>
     <div class="blackrowgall">
-        <div class="row">
-            <span class="tt">教练</span>
-            <span class="holder">@item["Name"]<span class="lightgray">（@item["Score"]分）</span><img src="@item["HeadPic"]" width="25" /></span>
-        </div>
-        <div class="row">
-            <span class="tt">手机</span>
-            <div class="holder">
-                <span>@item["Phone"]</span>
+        @if (item["Name"].ToString() != "")
+        {
+            <div class="row">
+                <span class="tt">教练</span>
+                <span class="holder">@item["Name"]<span class="lightgray">（@item["Score"]分）</span><img src="@item["HeadPic"]" width="25" /></span>
             </div>
-        </div>
+            <div class="row">
+                <span class="tt">手机</span>
+                <div class="holder">
+                    <span>@item["Phone"]</span>
+                </div>
+            </div>
+        }
         <div class="row">
             <span class="tt">时间</span>
             <div class="holder">
@@ -182,7 +185,7 @@
         })
 
         $('.fullbtn.pay').click(function () {
-            location.href = '/home/paysuccess/' + order_id;
+            location.href = '/home/orderconfirmation/' + order_id;
         })
     });
 </script>

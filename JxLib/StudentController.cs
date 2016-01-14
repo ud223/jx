@@ -79,5 +79,44 @@ namespace JxLib
 
             base.save(data);
         }
+
+        public void updateLessonState(string lessonstate, string date, string studentid)
+        {
+            string tmpSql = "";
+
+            switch (lessonstate)
+            {
+                case "1":
+                    {
+                        tmpSql = ", Date1 ='" + date + "', Date2='', Date3='', Date4='' ";
+
+                        break; 
+                    }
+                case "2":
+                    {
+                        tmpSql = ", Date2 ='" + date + "', Date3='', Date4='' ";
+
+                        break;
+                    }
+                case "3":
+                    {
+                        tmpSql = ", Date3 ='" + date + "', Date4=''";
+
+                        break;
+                    }
+                case "4":
+                    {
+                        tmpSql = ", Date4 ='" + date + "' ";
+
+                        break;
+                    }
+            }
+
+            string strSql = "UPDATE app_students SET LessonState="+ lessonstate + tmpSql + " WHERE StudentID='"+ studentid + "'";
+
+            this.SqlText = strSql;
+
+            base.Execute(this.SqlText);
+        }
     }
 }

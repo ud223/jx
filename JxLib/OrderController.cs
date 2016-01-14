@@ -61,6 +61,13 @@ namespace JxLib
             return base.add(data);
         }
 
+        public void updatePayAmount(string id, string couponid, string payamount)
+        {
+            this.SqlText = "update app_teach set PayAmount = "+ payamount + ", CouponID = '"+ couponid +"' where TeachID = '" + id + "'";
+
+            base.Execute(this.SqlText);
+        }
+
         public void nextState(string id)
         {
             this.SqlText = "update app_teach set state = state + 1 where TeachID = '" + id + "'";

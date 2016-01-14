@@ -138,8 +138,7 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable item = studentController.load(user_id);
 
-            ViewData["schooid"] = item["SchoolID"];
-
+            ViewData["schooid"] = item["SchoolID"];           
             ViewData["title"] = "云e驾";
 
             return View();
@@ -186,7 +185,7 @@ namespace Flowpie.Controllers
 
             ViewData["data"] = item;
             ViewData["schoolid"] = item["SchoolID"].ToString();
-
+            ViewData["lessonstate"] = item["LessonState"].ToString();
             ViewData["openid"] = item["OpenId"].ToString();
 
             ViewData["title"] = "驾校信息";
@@ -309,15 +308,19 @@ namespace Flowpie.Controllers
         public ActionResult OrderConfirmation(string id)
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.CouponController couponController = new JxLib.CouponController();
 
             System.Collections.Hashtable item = orderController.load(id);
+            List<System.Collections.Hashtable> list = couponController.getByStuentId(item["StudentID"].ToString());
 
             if (item == null)
             {
                 return Redirect("/home");
             }
 
+            ViewData["orderid"] = item["TeachID"].ToString();
             ViewData["item"] = item;
+            ViewData["list"] = list;
 
             return View();
         }

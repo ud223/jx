@@ -124,6 +124,15 @@
 
                 <div class="opl-table">
                     <div class="tt">
+                        <select id="lessonState">
+                            <option value="1">科目一</option>
+                            <option value="2">科目二</option>
+                            <option value="3">科目三</option>
+                            <option value="4">科目四</option>
+                        </select>
+                        <button class="btn btn-primary cornerbtn exam-submit">考试通过</button>
+                    </div>
+                    <div class="tt">
                         <span>代金券&amp;学时券</span>
                         <button class="btn btn-primary cornerbtn send-coupon">发送学时券</button>
                     </div>
@@ -172,6 +181,10 @@
     var student_id = '@studentID';
 
 	$(document).ready(function() {
+	    $('.exam-submit').click(function () {
+	        setLessonState();
+	    });
+
 	    $('.send-coupon').click(function () {
 	        sendCoupon();
 	    })
@@ -214,7 +227,7 @@
 
 	    $.alertbox(opertion);
 	}
-
+	
 	function loadMyCoupon() {
 	    var data = { 'StudentID': student_id };
 
@@ -253,6 +266,39 @@
 	}
 
 	function errorCoupon() {
+	    alert('网络异常, 请重试!');
+	}
 
+	function setLessonState() {
+	    var lessonState = $('#lessonState').val();
+
+	    var data = { 'studentid': student_id, 'lessonstate': lessonState };
+
+	    var params = {
+	        url: '/api/student/setLessonState',
+	        data: data,
+	        successFun: successSetLessonState,
+	        errorFun: errorSetLessonState
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successSetLessonState(data) {
+	    var opertion = {
+	        msg: data.message,
+	        exitText: "关闭!"
+	    };
+	    alert(data.message);
+	    //$.alertbox(opertion);
+	}
+
+	function errorSetLessonState() {
+	    var opertion = {
+	        msg: '网络异常, 请重试!',
+	        exitText: "关闭!"
+	    };
+	    alert('网络异常, 请重试!');
+	    //$.alertbox(opertion);
 	}
 </script>

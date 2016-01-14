@@ -519,20 +519,21 @@
         </a>*@
     @if (ViewData["schoolid"].ToString() == "")
     {
-        @*<a href="/student/enter" class="btidiom up">
+        <a href="/student/enter" class="btidiom up">
             <i class="fa fa-angle-right"></i> 立即报名去
-        </a>*@
-        <a id="submit" href="javascript:void(0)" class="btidiom up" onclick="testPay()">
-            <i class="fa fa-angle-right"></i> 提交订单
         </a>
     }
     else
-    {
-        <input type="hidden" id="rundate" name="rundate" />
-        <input type="hidden" id="time" name="time" />
-        <a id="submit" href="javascript:void(0)" class="btidiom up">
-            <i class="fa fa-angle-right"></i> 约练
-        </a>
+    {   
+        //暂时只写了科目一的判断
+        if (ViewData["lessonstate"].ToString() == "1")
+        {
+            <input type="hidden" id="rundate" name="rundate" />
+            <input type="hidden" id="time" name="time" />
+            <a id="submit" href="javascript:void(0)" class="btidiom up">
+                <i class="fa fa-angle-right"></i> 约练
+            </a>
+        }
     }
 
 <!--
