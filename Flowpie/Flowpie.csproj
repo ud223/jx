@@ -1607,6 +1607,7 @@
     <Content Include="Views\Home\OrderRating.cshtml" />
     <Content Include="Views\Home\OrderRatingSuccess.cshtml" />
     <Content Include="Views\Home\RatingSuccess.cshtml" />
+    <Content Include="Views\Home\OrderPay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -109,6 +109,7 @@
 <div class="bt-distance"></div>
 <script type="text/javascript">
     var orderid = '@ViewData["orderid"]';
+    var openid = '@ViewData["openid"]';
 
     $(document).ready(function () {
         $('.pay').click(function () {
@@ -133,9 +134,12 @@
     })
 
     function updatePayAmount() {
-        if ($('#pay-amount').html() == $('#amount').html())
-            return false;
+        if ($('#pay-amount').html() == $('#amount').html()) {
+            pay();
 
+            return;
+        }
+            
         var payAmount = $('#pay-amount').html();
         var couponId = $('#coupon-list').val();
 
@@ -150,6 +154,8 @@
         }
 
         ajaxTo(params);
+
+        return true;
     }
 
     function successCoupon(data) {
@@ -177,9 +183,22 @@
 
     function pay() {
         var url = ''
-
+        var amount = $('#pay-amount').html();
         //测试链接
-        url = '/home/paysuccess/@(((System.Collections.Hashtable)ViewData["item"])["TeachID"])';
+        @*url = '/home/paysuccess/@(((System.Collections.Hashtable)ViewData["item"])["TeachID"])';*@
+
+        if (amount == '0' || amount == '0.00') {
+            var opertion = {
+                msg: '支付金额必须大于0元',
+                exitText: "关闭!"
+            };
+
+            $.alertbox(opertion);
+
+            return;
+        }
+
+        location.href = '/home/orderpay?openid=' + openid + '&total_fee=' + amount + '&orderid=' + orderid
 
         location.href = url;
     }

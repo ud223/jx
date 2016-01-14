@@ -185,6 +185,7 @@ namespace Flowpie.Controllers
 
             ViewData["data"] = item;
             ViewData["schoolid"] = item["SchoolID"].ToString();
+            ViewData["iscoach"] = item["IsCoach"].ToString();
             ViewData["lessonstate"] = item["LessonState"].ToString();
             ViewData["openid"] = item["OpenId"].ToString();
 
@@ -309,9 +310,18 @@ namespace Flowpie.Controllers
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
             JxLib.CouponController couponController = new JxLib.CouponController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+
+            if (id == null || id == "")
+            {
+                return Redirect("/home");
+            }
 
             System.Collections.Hashtable item = orderController.load(id);
+
             List<System.Collections.Hashtable> list = couponController.getByStuentId(item["StudentID"].ToString());
+
+            System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
 
             if (item == null)
             {
@@ -319,6 +329,7 @@ namespace Flowpie.Controllers
             }
 
             ViewData["orderid"] = item["TeachID"].ToString();
+            ViewData["openid"] = stu["OpenId"].ToString();
             ViewData["item"] = item;
             ViewData["list"] = list;
 
@@ -1077,19 +1088,19 @@ namespace Flowpie.Controllers
         {
             string wxJsApiParam = "";
             //string editAddress = "";
-            //JxdLib.OrderController orderController = new JxdLib.OrderController();
+            JxLib.OrderController orderController = new JxLib.OrderController();
             WxApiLib.lib.Log.Info(this.GetType().ToString(), "1. page load");
 
             string orderid = Request.QueryString["orderid"];
             string openid = Request.QueryString["openid"];
             string total_fee = Request.QueryString["total_fee"];
 
-            //System.Collections.Hashtable item = orderController.load(orderid);
-            ////如果当前传过来的订单id得到的状态不是支付状态 直接返回首页
-            //if (item["state"].ToString() != "2")
-            //{
-            //    return Redirect("/home");
-            //}
+            System.Collections.Hashtable item = orderController.load(orderid);
+            //如果当前传过来的订单id得到的状态不是支付状态 直接返回首页
+            if (item["state"].ToString() != "0")
+            {
+                return Redirect("/home");
+            }
 
             //检测是否给当前页面传递了相关参数
             if (string.IsNullOrEmpty(openid) || string.IsNullOrEmpty(total_fee) || total_fee == "0")
@@ -1100,10 +1111,12 @@ namespace Flowpie.Controllers
                 return View();
             }
 
+            decimal amount = Convert.ToDecimal(total_fee) * 100;
+
             //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
             JsApiPay jsApiPay = new JsApiPay(Request, Response);
             jsApiPay.openid = openid;
-            jsApiPay.total_fee = int.Parse(total_fee);
+            jsApiPay.total_fee = Convert.ToInt32(amount);
 
             //JSAPI支付预处理
             try
@@ -1126,12 +1139,6 @@ namespace Flowpie.Controllers
                 ViewData["timeStamp"] = payInfo.timeStamp;
 
                 ViewData["orderid"] = Request.QueryString["orderid"];
-                //ViewData["editAddress"] = editAddress;
-                //在页面上显示订单信息
-                //Response.Write("<span style='color:#00CD00;font-size:20px'>订单详情：</span><br/>");
-                //Response.Write("<span style='color:#00CD00;font-size:20px'>" + unifiedOrderResult.ToPrintStr() + "</span>");
-                //Response.Write("<span style='color:#00CD00;font-size:20px'>" + wxJsApiParam + "</span>");
-
             }
             catch (Exception ex)
             {
