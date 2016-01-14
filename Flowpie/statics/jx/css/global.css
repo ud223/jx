@@ -3258,3 +3258,46 @@ p:after {
     text-align:center;
     font-size:18px;
 }
+
+.rating-sub-tt {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	height: 20px;
+	line-height: 20px;
+	display: block;
+	margin-top: -10px;
+	color: #1AA1CD;
+}
+.rating-stars {
+	height: 40px;
+	width: 150px;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	margin-top: -20px;
+}
+.rating-star {
+	width: 30px;
+	height: 40px;
+	float: left;
+	position: relative;
+}
+.rating-star:active {
+	background: rgba(0, 0, 0, .1);
+}
+.rating-star .ico {
+	width: 18px;
+	height: 18px;
+	left: 50%;
+	top: 50%;
+	margin-left: -9px;
+	margin-top: -9px;
+	position: absolute;
+	background: url(../img/star-full.png) center center no-repeat;
+	background-size: cover;
+	display: block;
+}
+.rating-star.empty .ico {
+	background-image: url(../img/star-empty.png);
+}

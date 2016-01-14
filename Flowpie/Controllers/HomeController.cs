@@ -138,8 +138,7 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable item = studentController.load(user_id);
 
-            ViewData["schooid"] = item["SchoolID"];
-
+            ViewData["schooid"] = item["SchoolID"];           
             ViewData["title"] = "云e驾";
 
             return View();
@@ -186,7 +185,7 @@ namespace Flowpie.Controllers
 
             ViewData["data"] = item;
             ViewData["schoolid"] = item["SchoolID"].ToString();
-
+            ViewData["lessonstate"] = item["LessonState"].ToString();
             ViewData["openid"] = item["OpenId"].ToString();
 
             ViewData["title"] = "驾校信息";
@@ -309,15 +308,19 @@ namespace Flowpie.Controllers
         public ActionResult OrderConfirmation(string id)
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.CouponController couponController = new JxLib.CouponController();
 
             System.Collections.Hashtable item = orderController.load(id);
+            List<System.Collections.Hashtable> list = couponController.getByStuentId(item["StudentID"].ToString());
 
             if (item == null)
             {
                 return Redirect("/home");
             }
 
+            ViewData["orderid"] = item["TeachID"].ToString();
             ViewData["item"] = item;
+            ViewData["list"] = list;
 
             return View();
         }
@@ -333,7 +336,6 @@ namespace Flowpie.Controllers
                 return Redirect("/home");
             }
 
-
             if (item["State"].ToString() != "0")
             {
                 return Redirect("/home");
@@ -343,6 +345,50 @@ namespace Flowpie.Controllers
             ViewData["state"] = item["State"].ToString();
             ViewData["item"] = item;
 
+            return View();
+        }
+
+        public ActionResult OrderDetail(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            if (id == null || id == "")
+            {
+                return Redirect("/home");
+            }
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+            ViewData["item"] = item;
+            ViewData["order_id"] = item["TeachID"].ToString();
+
+            return View();
+        }
+
+        public ActionResult OrderRating(string id)
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            if (id == null || id == "")
+            {
+                return Redirect("/home");
+            }
+
+            System.Collections.Hashtable item = orderController.load(id);
+
+            if (item["State"].ToString() != "3")
+            {
+                return Redirect("/home");
+            }
+
+            ViewData["item"] = item;
+            ViewData["orderid"] = id;
+
+            return View();
+        }
+
+        public ActionResult RatingSuccess()
+        {
             return View();
         }
 
@@ -560,6 +606,27 @@ namespace Flowpie.Controllers
 
         #region 我的首页
 
+        public ActionResult MyOrder()
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            if (user_id == null)
+            {
+                return Redirect("/home");
+            }
+
+            List<System.Collections.Hashtable> list = orderController.getMyOrder(user_id);
+
+            ViewData["list"] = list;
+            ViewData["count"] = list.Count;
+
+            return View();
+        }
+
         public ActionResult MyLesson()
         {
             JxLib.CoachController coachController = new JxLib.CoachController();
@@ -578,8 +645,28 @@ namespace Flowpie.Controllers
             ViewData["list"] = list;
             ViewData["count"] = list.Count;
 
+            return View();          
+        }
+
+        public ActionResult MyRecord()
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            if (user_id == null)
+            {
+                return Redirect("/home");
+            }
+
+            List<System.Collections.Hashtable> list = orderController.getMyOrder(user_id);
+
+            ViewData["list"] = list;
+            ViewData["count"] = list.Count;
+
             return View();
-            
         }
 
         #endregion;

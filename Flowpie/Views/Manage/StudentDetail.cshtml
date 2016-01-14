@@ -36,11 +36,8 @@
         </div>
     </div>
 
-
     <div class="cko-wp">
-
         <div class="clear-20"></div>
-
         <!-- Tab panes -->
         <div class="tab-content tab-kiki-ct">
             <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
@@ -53,54 +50,68 @@
                         <div class="inner-table">
                             <div class="row">
                                 <div class="cell col1">真实姓名</div>
-                                <div class="cell col2">王莹曦</div>
+                                <div class="cell col2">@name</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">昵称</div>
-                                <div class="cell col2">王莹曦</div>
+                                <div class="cell col2">@nickName</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">性别</div>
-                                <div class="cell col2">男</div>
+                                @if (sex == "1")
+                                {
+                                    <div class="cell col2">男</div>
+                                }
+                                else
+                                {
+                                    <div class="cell col2">女</div>
+                                }
                             </div>
                             <div class="row">
                                 <div class="cell col1">生日</div>
-                                <div class="cell col2">1983-05-06</div>
+                                <div class="cell col2">@birthday</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">身份证号码</div>
-                                <div class="cell col2">420103198305068562</div>
+                                <div class="cell col2">@code</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">所在地</div>
-                                <div class="cell col2">深圳市</div>
+                                <div class="cell col2">@place</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">驾照类型</div>
-                                <div class="cell col2">C1手动</div>
+                                @if (licenseTypeID == "1")
+                                {
+                                    <div class="cell col2">C1手动</div>
+                                }
+                                else
+                                {
+                                    <div class="cell col2">C2自动</div>
+                                }
                             </div>
                         </div>
 
                         <div class="inner-table">
                             <div class="row">
                                 <div class="cell col1">电话号码</div>
-                                <div class="cell col2">18676678657</div>
+                                <div class="cell col2">@phone</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">邮箱</div>
-                                <div class="cell col2">274647355@qq.com</div>
+                                <div class="cell col2">@email</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">QQ</div>
-                                <div class="cell col2">274647355</div>
+                                <div class="cell col2">@qq</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">加入时间</div>
-                                <div class="cell col2">2015-11-29 00:00:21</div>
+                                <div class="cell col2">@DateTime.Parse(createAt).ToString("yyyy年MM月dd日 HH:mm:ss")</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">头像</div>
-                                <div class="cell col2"><img src="http://wx.qlogo.cn/mmopen/3ulFaxlc8WicxrpfjvMVb9mYUTywTChEIXcgvCUDS53m3ibTKBibIq8bbwafvFoBpExUeY0rtOyTBBJTrsPTDNHmYKeYuQbwiaZu/0" width="60"></div>
+                                <div class="cell col2"><img src="@headPic" width="60"></div>
                             </div>
                         </div>
 
@@ -113,11 +124,20 @@
 
                 <div class="opl-table">
                     <div class="tt">
-                        <span>代金券&amp;学时券</span>
-                        <button class="btn btn-primary cornerbtn">发送学时券</button>
+                        <select id="lessonState">
+                            <option value="1">科目一</option>
+                            <option value="2">科目二</option>
+                            <option value="3">科目三</option>
+                            <option value="4">科目四</option>
+                        </select>
+                        <button class="btn btn-primary cornerbtn exam-submit">考试通过</button>
                     </div>
-                    <div class="ct clearfix">
-                        <div class="bnieitm xsq">
+                    <div class="tt">
+                        <span>代金券&amp;学时券</span>
+                        <button class="btn btn-primary cornerbtn send-coupon">发送学时券</button>
+                    </div>
+                    <div class="ct clearfix coupon-list">
+                        @*<div class="bnieitm xsq">
                             <span class="mgtxt">2015年5月12日 14:32:34</span>
                             <span class="dctxt">学时券 x 1</span>
                             <span class="dctxt ed">已使用</span>
@@ -141,23 +161,144 @@
                             <span class="mgtxt">2015年5月6日 14:32:34</span>
                             <span class="dctxt">抵扣券 x 1</span>
                             <span class="dctxt ed">已使用</span>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
+</div>
+<div id="coupon-item" style="display:none">
+    <div class="bnieitm xsq">
+        <span class="mgtxt"></span>
+        <span class="dctxt">学时券 x 1</span>
+        <span class="dctxt ed">未使用</span>
+    </div>
 </div>
 
 <!-- /container -->
 <script type="text/javascript">
+    var student_id = '@studentID';
+
 	$(document).ready(function() {
-		
+	    $('.exam-submit').click(function () {
+	        setLessonState();
+	    });
+
+	    $('.send-coupon').click(function () {
+	        sendCoupon();
+	    })
+
+	    loadMyCoupon();
 	});
 
+	function sendCoupon() {
+	    var data = { 'StudentID': student_id };
+
+	    var params = {
+	        url: '/api/Coupon/AddTimeCoupon',
+	        data: data,
+	        successFun: successSend,
+	        errorFun: errorSend
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successSend(data) {
+	    if (data.code == "200") {
+	        loadMyCoupon();
+	    }
+	    else {
+	        var opertion = {
+	            msg: data.message,
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(opertion);
+	    }
+	}
+
+	function errorSend() {
+	    var opertion = {
+	        msg: "评分失败!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+	}
 	
+	function loadMyCoupon() {
+	    var data = { 'StudentID': student_id };
+
+	    var params = {
+	        url: '/api/Coupon/getCoupon',
+	        data: data,
+	        type: 'get',
+	        successFun: successCoupon,
+	        errorFun: errorCoupon
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successCoupon(data) {
+	    var datainfo = eval('[' + data.data + ']');
+
+	    var list = $('.coupon-list');
+
+	    list.html('');
+
+	    $.each(datainfo, function () {
+	        var node = $('#coupon-item').find('.bnieitm').clone();
+
+	        node.find('.mgtxt').html(this.Expire);
+
+	        if (this.IsUse != '1') {
+	            node.find('.ed').removeClass('ed');
+	        }
+	        else {
+	            node.find('.ed').html('已使用');
+	        }
+
+	        list.append(node);
+	    })
+	}
+
+	function errorCoupon() {
+	    alert('网络异常, 请重试!');
+	}
+
+	function setLessonState() {
+	    var lessonState = $('#lessonState').val();
+
+	    var data = { 'studentid': student_id, 'lessonstate': lessonState };
+
+	    var params = {
+	        url: '/api/student/setLessonState',
+	        data: data,
+	        successFun: successSetLessonState,
+	        errorFun: errorSetLessonState
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successSetLessonState(data) {
+	    var opertion = {
+	        msg: data.message,
+	        exitText: "关闭!"
+	    };
+	    alert(data.message);
+	    //$.alertbox(opertion);
+	}
+
+	function errorSetLessonState() {
+	    var opertion = {
+	        msg: '网络异常, 请重试!',
+	        exitText: "关闭!"
+	    };
+	    alert('网络异常, 请重试!');
+	    //$.alertbox(opertion);
+	}
 </script>

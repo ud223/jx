@@ -33,9 +33,6 @@
     <div class="row">
         <div class="kejindu-dabk passed">
             <div class="kejindu-tt">科目一 <i class="fa fa-check-circle mwoi-label">已合格</i></div>
-            <div class="kejindu-bieio">
-                <div class="tc">已于2015年5月4日确认通过考试</div>
-            </div>
         </div>
 
         <div class="kejindu-dabk doing">
@@ -166,7 +163,7 @@
 
 	function successLessonStart(data) {
 	    if (data.code == '200') {
-	        location.href = '/home/Lessoning';
+	        location.href = '/home/Lessoning/' + orderid;
 	    }
 	}
 

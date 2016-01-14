@@ -153,6 +153,7 @@ namespace Flowpie.Controllers
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
         }
 
+        [HttpPost]
         public string OrderAdd()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
@@ -197,6 +198,47 @@ namespace Flowpie.Controllers
                 result.code = "200";
                 result.message = "订单成功!";
                 result.data = serial_id;
+            }
+            else
+            {
+                result.code = "0";
+                result.message = orderController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        [HttpPost]
+        public string UpdateAmount()
+        {
+            JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.CouponController couponController = new JxLib.CouponController();
+          
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            Hashtable data = tools.paramToData(context.Request.Form);
+
+            orderController.updatePayAmount(data["orderid"].ToString(), data["couponid"].ToString(), data["payamount"].ToString());
+
+            if (orderController.Result)
+            {
+                result.code = "200";
+                result.message = "订单成功!";
+
+                Hashtable param = new Hashtable();
+
+                param.Add("CouponID", data["couponid"].ToString());
+
+                couponController.useCoupon(param);
+
+                if (!couponController.Result)
+                {
+                    result.code = "0";
+                    result.message = "优惠卷扣除失败!:"+couponController.Message;
+                }
             }
             else
             {

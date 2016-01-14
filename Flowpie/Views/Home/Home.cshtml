@@ -186,7 +186,10 @@
             </div>
             <div class="stt">十九年传奇品牌，服务深大学子，计时班折扣价3800元</div>
         </div>
-        <a href="/student/enter?schoolid=1" class="fullbtn">立刻报名</a>
+        @if (ViewData["schooid"].ToString() == "")
+        {
+            <a href="/student/enter?schoolid=1" class="fullbtn">立刻报名</a>
+        }   
     </div>
     @*<div class="zhscitm cd_hottap" hottap="p05_jiaxiao.html">
             <div class="tp" style="background-image: url(img/photocase/np02.jpg);"></div>

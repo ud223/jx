@@ -11,7 +11,7 @@ namespace JxLib
     {
         public List<Hashtable> getByStuentId(string id)
         {
-            string strSql = "select * from app_coupon where StudentID = '"+ id +"'";
+            string strSql = "select * from app_coupon where StudentID = '"+ id +"' order by CreateAt desc";
 
             this.SqlText = strSql;
 
@@ -20,7 +20,7 @@ namespace JxLib
 
         public override string add(Hashtable data)
         {
-            string strSql = "INSERT INTO app_coupon(CouponText, Amount, StudentID, Password, CreateAt, ModifyAt) VALUES('@CouponText@', @Amount@, '@StudentID@', '@Password@', '@CreateAt@', '@ModifyAt@'); SELECT CouponID FROM app_coupon ORDER BY CouponID DESC LIMIT 1";
+            string strSql = "INSERT INTO app_coupon(CouponText, Amount, StudentID, Password, CouponTypeID, Expire, IsExpire, CreateAt, ModifyAt) VALUES('@CouponText@', @Amount@, '@StudentID@', '@Password@', @CouponTypeID@, '@Expire@', @IsExpire@, '@CreateAt@', '@ModifyAt@'); SELECT CouponID FROM app_coupon ORDER BY CouponID DESC LIMIT 1";
 
             this.SqlText = strSql;
 
@@ -71,6 +71,13 @@ namespace JxLib
             this.SqlText = strSql;
 
             base.save(data);
+        }
+
+        public void setExpire(string couponid)
+        {
+            string strSql = "UPDATE app_coupon SET IsExpire = 1 WHERE CouponID = "+ couponid;
+
+            base.Execute(this.SqlText);
         }
     }
 }

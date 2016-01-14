@@ -57,5 +57,12 @@ namespace JxLib
 
             return base.Query(this.SqlText);
         }
+
+        public void updateScore(string coachid, string score)
+        {
+            this.SqlText = "update app_students set Score = " + score + " where StudentID ='" + coachid + "'";
+
+            base.Execute(this.SqlText);
+        }
     }
 }

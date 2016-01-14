@@ -25,7 +25,7 @@ namespace JxLib
 
         public override Hashtable load(string id)
         {
-            this.SqlText = "select app_teach.*, SchoolText from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID where TeachID = '" + id + "'";
+            this.SqlText = "select app_teach.*, SchoolText, app_schools.Address, app_students.Name, app_students.Score, app_students.Phone, app_students.HeadPic from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID left join app_students on app_teach.CoachID = app_students.StudentID where TeachID = '" + id + "'";
 
             return base.load("");
         }
@@ -61,6 +61,13 @@ namespace JxLib
             return base.add(data);
         }
 
+        public void updatePayAmount(string id, string couponid, string payamount)
+        {
+            this.SqlText = "update app_teach set PayAmount = "+ payamount + ", CouponID = '"+ couponid +"' where TeachID = '" + id + "'";
+
+            base.Execute(this.SqlText);
+        }
+
         public void nextState(string id)
         {
             this.SqlText = "update app_teach set state = state + 1 where TeachID = '" + id + "'";
@@ -87,6 +94,20 @@ namespace JxLib
             this.SqlText = "select count(*)num, TeachTypeID from app_teachdetail where TeachID in (select TeachID from app_teach where StudentID = '" + id + "') group by TeachTypeID";
 
             return base.Query(this.SqlText);
+        }
+
+        public List<Hashtable> getMyOrder(string id)
+        {
+            this.SqlText = "select * from app_teach where StudentID = '" + id + "' group by CreateAt desc";
+
+            return base.Query(this.SqlText);
+        }
+
+        public string setOrderScore(Hashtable data)
+        {
+            this.SqlText = "insert into app_teachrating(OrderRatingID, TeachID, OnTimeScore, ContentScore, WayScore, Content, CreateAt, ModifyAt) values('@OrderRatingID@', '@TeachID@',  @OnTimeScore@, @ContentScore@, @WayScore@, '@Content@', '@CreateAt@', '@ModifyAt@'); select OrderRatingID from app_teachrating order by CreateAt desc limit 1";
+
+            return base.add(data);
         }
     }
 }
