@@ -706,6 +706,7 @@ textarea:focus {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	max-width: 400px;
+    width:100%;
 }
 .fix-tb-body-cell.wider .td {
 	width: 360px;

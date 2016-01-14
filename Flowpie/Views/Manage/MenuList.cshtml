@@ -143,37 +143,38 @@
                                 </div>
                             </div>*@
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["MenuID"].ToString()</div>
-                            </div>
-                            <div class="fix-tb-body-cell wider">
-                                <div class="td">@menu["MenuText"].ToString()</div>
+                                <div class="td tc">@menu["MenuID"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["Url"].ToString()</div>
+                                <div class="td tc">@menu["MenuText"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["Level"].ToString()</div>
+                                <div class="td tc">@menu["Url"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["ParentID"].ToString()</div>
+                                <div class="td tc">@menu["Level"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["Index"].ToString()</div>
+                                <div class="td tc">@menu["ParentID"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["CreateAt"].ToString()</div>
+                                <div class="td tc">@menu["Index"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">@menu["ModifyAt"].ToString()</div>
+                                <div class="td tc">@menu["CreateAt"].ToString()</div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td">
+                                <div class="td tc">@menu["ModifyAt"].ToString()</div>
+                            </div>
+                            <div class="fix-tb-body-cell">
+                                <div class="td tc">
                                     <a class="listoperbtn" href="/manage/menu/edit/@menu["MenuID"]">编辑</a>
+                                    &nbsp;&nbsp;
                                     <a style="color:#10D07D" href="/manage/permission?menuid=@menu["MenuID"]">配置</a>
                                 </div>
                             </div>
                             <div class="fix-tb-body-cell">
-                                <div class="td"><a class="item-delete" onclick="return confirm('确定删除?');" href="/manage/menu/delete/@menu["MenuID"].ToString()/1">删除</a></div>
+                                <div class="td tc"><a class="listoperbtn danger item-delete" onclick="return confirm('确定删除?');" href="/manage/menu/delete/@menu["MenuID"].ToString()/1">删除</a></div>
                             </div>
                         </div>
                     }
