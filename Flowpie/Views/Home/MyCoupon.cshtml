@@ -22,7 +22,15 @@
             <div class="jiluitm bb un-use-300q">
                 <div class="msg">@item["CouponText"].ToString()</div>
                 <div class="time"><span class="wmp">可使用</span></div>
-                <div class="jxqmio"><sup>￥</sup> <span>@item["Amount"].ToString()</span> <sub>元</sub></div>
+                @if (item["Amount"].ToString() == "0")
+                {
+                    <div class="jxqmio">1小时</div>
+                }
+                else
+                {
+                    <div class="jxqmio"><sup>￥</sup> <span>@item["Amount"].ToString()</span> <sub>元</sub></div>
+                }
+                
                 <span>@item["Password"].ToString()</span>
             </div>
         }
@@ -31,7 +39,14 @@
             <div class="jiluitm bb is-use">
                 <div class="msg">@item["CouponText"].ToString()</div>
                 <div class="time"><span class="wmp">已使用</span></div>
-                <div class="jxqmio"><sup>￥</sup> <span>@item["Amount"].ToString()</span> <sub>元</sub></div>
+                @if (item["Amount"].ToString() == "0")
+                {
+                    <div class="jxqmio">1小时</div>
+                }
+                else
+                {
+                    <div class="jxqmio"><sup>￥</sup> <span>@item["Amount"].ToString()</span> <sub>元</sub></div>
+                }
                 <span>@item["Password"].ToString()</span>
             </div>
         }
@@ -72,12 +87,12 @@
 <div class="bt-distance"></div>
 <script>
 			$('document').ready(function() {
-				$('.aidi').click(function(){
-					$.alertbox({msg: '本优惠券可在科目二，科目三约考时直接在线抵扣现金98元'});
-				});
-				$('.un-use-300q').click(function () {
-				    $.alertbox({ msg: '本优惠券可在报名深大驾校时直接抵扣现金300元' });
-				});
+				//$('.aidi').click(function(){
+				//	$.alertbox({msg: '本优惠券可在科目二，科目三约考时直接在线抵扣现金98元'});
+				//});
+				//$('.un-use-300q').click(function () {
+				//    $.alertbox({ msg: '本优惠券可在报名深大驾校时直接抵扣现金300元' });
+				//});
 				$('.is-use').click(function () {
 				    $.alertbox({ msg: '本代金券已经被使用' });
 				});

@@ -257,10 +257,29 @@ namespace Flowpie.Controllers
         {
             this.strParam = id;
 
+            if (id == null || id == "")
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
             if (!this.init())
             {
                 return Redirect("/manage/PermmissionForbidden");
             }
+
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.OrderController orderController = new JxLib.OrderController();
+
+            List<Hashtable> list = orderController.getRatingByCoachID(id);
+
+            Hashtable item = studentController.load(id);
+
+            ViewData["item"] = item;
+
+            if (list.Count > 0)
+                ViewData["list"] = list;
+            else
+                ViewData["list"] = null;
 
             return View();
         }
@@ -312,15 +331,22 @@ namespace Flowpie.Controllers
 
         #region 常用设置action
         //      [Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]
-        public ActionResult SchoolSetting(string schoolId)
+        public ActionResult SchoolSetting()
         {
             if (!this.init())
             {
                 return Redirect("/manage/PermmissionForbidden");
             }
 
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
+
+            Hashtable item = schoolController.load(this.UserData.SchoolID);
+
+            ViewData["item"] = item;
+
             return View();
         }
+
         #endregion;
 
         #region 训练场次设置action
@@ -423,7 +449,7 @@ namespace Flowpie.Controllers
 
             Hashtable config = trainingController.loadTraining(schoolId, weekday.ToString());
 
-            List<Hashtable> coach_list = coachController.getAllBySchoolByID(schoolId);
+            List<Hashtable> coach_list = coachController.getAllBySchoolNotFreezeByID(schoolId);
 
             ViewData["day"] = config["Time"].ToString().Split(',');
             ViewData["list"] = list;

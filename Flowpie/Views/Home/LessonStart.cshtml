@@ -19,7 +19,7 @@
             <div class="li">电话：@(((System.Collections.Hashtable)ViewData["stu"])["Phone"])</div>
             <div class="li">性别：@ViewData["sex"]</div>
             <div class="li">年龄：@ViewData["age"]</div>
-            <div class="li">报名时间：@(Convert.ToDateTime(((System.Collections.Hashtable)ViewData["stu"])["EnterDate"]).ToString("yyyy年MM月dd日"))</div>
+            <div class="li">报名时间：@(Convert.ToDateTime(((System.Collections.Hashtable)ViewData["stu"])["MarkDate"]).ToString("yyyy年MM月dd日"))</div>
         </div>
     </div>
 </div>

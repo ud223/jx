@@ -11,10 +11,15 @@
         @{ 
             string headPic = "";
             string nickName = "";
-            if(ViewData["data"] != null)
+            string lessonState = "";
+            string isCoach = "";
+
+            if (ViewData["data"] != null)
             {
                 headPic = (ViewData["data"] as System.Collections.Hashtable)["HeadPic"].ToString();
                 nickName = (ViewData["data"] as System.Collections.Hashtable)["NickName"].ToString();
+                lessonState = (ViewData["data"] as System.Collections.Hashtable)["LessonState"].ToString();
+                isCoach = (ViewData["data"] as System.Collections.Hashtable)["IsCoach"].ToString();
             }
         }
         <img src="@headPic" class="usrgmi" />
@@ -34,7 +39,11 @@
                     <div class="td"><a href="/school/detail/1" style="text-decoration: underline;color:#3987D5;">深大驾校</a></div>
                 </div>
             </div>
-            <a href="/exam/menu" class="fullbtn">科目一考题</a>
+            @if (lessonState == "0")
+            {
+                <a href="/exam/menu" class="fullbtn">科目一考题</a>
+            }
+
             @*<div class="kejindu-dabk doing">
                 <div class="kejindu-tt">科目二 <i class="fa fa-play-circle mwoi-label">学习中</i></div>
                 <div class="kejindu-bieio">
@@ -146,52 +155,58 @@
         </div>
     </div>*@
 
-    <div class="blackrowgall">
-       <div class="row actbtn cd_hottap height" hottap="/home/myorder">
-            <span class="tt">我的订单</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
+    @if (isCoach == "0")
+    {
+        <div class="blackrowgall">
+            <div class="row actbtn cd_hottap height" hottap="/home/myorder">
+                <span class="tt">我的订单</span>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+            </div>
+            @*<div class="row actbtn cd_hottap height" hottap="p18_jilu.html">
+                    <span class="tt">我的学车记录</span>
+                    <div class="holder arr">
+                        <i class="icoin fa fa-angle-right"></i>
+                    </div>
+                </div>
+                <div class="row actbtn cd_hottap height" hottap="p09_jindu.html">
+                    <span class="tt">我的学车进度</span>
+                    <div class="holder arr">
+                        <i class="icoin fa fa-angle-right"></i>
+                    </div>
+                </div>*@
+            <div class="row actbtn cd_hottap height" hottap="/my/coupon">
+                <span class="tt">优惠券</span>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+            </div>
+            <div class="row actbtn cd_hottap height" hottap="/my/message">
+                <span class="tt">消息</span>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
             </div>
         </div>
-        @*<div class="row actbtn cd_hottap height" hottap="p18_jilu.html">
-            <span class="tt">我的学车记录</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
+    }
+    else
+    {
+        <div class="blackrowgall">
+            <div class="row actbtn cd_hottap height" hottap="/home/mylesson">
+                <span class="tt">我的授课</span>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+            </div>
+            <div class="row actbtn cd_hottap height" hottap="/my/message">
+                <span class="tt">消息</span>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
             </div>
         </div>
-        <div class="row actbtn cd_hottap height" hottap="p09_jindu.html">
-            <span class="tt">我的学车进度</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
-            </div>
-        </div>*@
-        <div class="row actbtn cd_hottap height" hottap="/my/coupon">
-            <span class="tt">优惠券</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
-            </div>
-        </div>
-        <div class="row actbtn cd_hottap height" hottap="/my/message">
-            <span class="tt">消息</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
-            </div>
-        </div>
-    </div>
-    <div class="blackrowgall">
-        <div class="row actbtn cd_hottap height" hottap="/home/mylesson">
-            <span class="tt">我的授课</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
-            </div>
-        </div>
-        <div class="row actbtn cd_hottap height" hottap="/my/message">
-            <span class="tt">消息</span>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
-            </div>
-        </div>
-    </div>
+    }
 
 
     @*<div class="clear-15"></div>

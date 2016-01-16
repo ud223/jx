@@ -37,24 +37,24 @@ namespace Flowpie.Controllers
             string code = this.HttpContext.Request.QueryString["code"];
             string tmp_web_url = this.HttpContext.Request.QueryString["web_url"];
 
-            string web_url = System.Web.HttpUtility.UrlDecode(tmp_web_url);
+            //string web_url = System.Web.HttpUtility.UrlDecode(tmp_web_url);
 
-            if (CommonLib.Common.Validate.IsNullString(web_url) != "")
-            {
-                if (web_url == "http://wx.yune-jia.com/")
-                {
-                    web_url = "/";
-                }
-                else
-                {
-                    web_url = web_url.Replace("http://wx.yune-jia.com/", "/");
-                }
-            }
-            else
-            {
-                web_url = "/";
-            }
-
+            //if (CommonLib.Common.Validate.IsNullString(web_url) != "")
+            //{
+            //    if (web_url == "http://wx.yune-jia.com/")
+            //    {
+            //        web_url = "/";
+            //    }
+            //    else
+            //    {
+            //        web_url = web_url.Replace("http://wx.yune-jia.com/", "/");
+            //    }
+            //}
+            //else
+            //{
+            //    web_url = "/";
+            //}
+            string web_url = "/";
             string open_id = this.getOpenId(code);
 
             Models.Student stu = this.getUserInfo(open_id);
@@ -129,6 +129,11 @@ namespace Flowpie.Controllers
 
         #region 首页广场
 
+        public ActionResult Clear()
+        {
+            return View();
+        }
+
         public ActionResult Home()
         {
             JxLib.StudentController studentController = new JxLib.StudentController();
@@ -184,7 +189,7 @@ namespace Flowpie.Controllers
             System.Collections.Hashtable item = studentController.load(user_id);
 
             ViewData["data"] = item;
-            ViewData["schoolid"] = item["SchoolID"].ToString();
+            ViewData["schoolid"] = id;
             ViewData["iscoach"] = item["IsCoach"].ToString();
             ViewData["lessonstate"] = item["LessonState"].ToString();
             ViewData["openid"] = item["OpenId"].ToString();
@@ -319,7 +324,7 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable item = orderController.load(id);
 
-            List<System.Collections.Hashtable> list = couponController.getByStuentId(item["StudentID"].ToString());
+            List<System.Collections.Hashtable> list = couponController.getUseByStuentId(item["StudentID"].ToString());
 
             System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
 
@@ -1097,7 +1102,7 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable item = orderController.load(orderid);
             //如果当前传过来的订单id得到的状态不是支付状态 直接返回首页
-            if (item["state"].ToString() != "0")
+            if (item["State"].ToString() != "0")
             {
                 return Redirect("/home");
             }
@@ -1111,7 +1116,7 @@ namespace Flowpie.Controllers
                 return View();
             }
 
-            decimal amount = Convert.ToDecimal(total_fee) * 100;
+            decimal amount = Convert.ToDecimal(total_fee);// * 100;
 
             //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
             JsApiPay jsApiPay = new JsApiPay(Request, Response);

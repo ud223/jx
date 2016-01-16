@@ -108,5 +108,86 @@ namespace Flowpie.Controllers
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
         }
+
+        public string Update()
+        {
+            JxLib.CoachController coachController = new JxLib.CoachController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            Models.Result result = new Models.Result();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+            string strParam = context.Request.Form.ToString();
+
+            System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            coachController.save(data);
+
+            if (coachController.Result)
+            {
+                result.code = "200";
+                result.message = "保存成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = coachController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        public string Freeze()
+        {
+            JxLib.CoachController coachController = new JxLib.CoachController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            Models.Result result = new Models.Result();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+            string strParam = context.Request.Form.ToString();
+
+            System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            coachController.freeze(data["CoachID"].ToString());
+
+            if (coachController.Result)
+            {
+                result.code = "200";
+                result.message = "冻结成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = coachController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        public string UnFreeze()
+        {
+            JxLib.CoachController coachController = new JxLib.CoachController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            Models.Result result = new Models.Result();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+            string strParam = context.Request.Form.ToString();
+
+            System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            coachController.unFreeze(data["CoachID"].ToString());
+
+            if (coachController.Result)
+            {
+                result.code = "200";
+                result.message = "解冻成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = coachController.Message;
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
     }
 }

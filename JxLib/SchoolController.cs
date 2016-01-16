@@ -43,5 +43,19 @@ namespace JxLib
 
             base.save(data);
         }
+
+        public void onCoupon(string id)
+        {
+            this.SqlText = "update app_schools set IsCoupon = 1 where SchoolID ="+ id;
+
+            base.Execute(this.SqlText);
+        }
+
+        public void offCoupon(string id)
+        {
+            this.SqlText = "update app_schools set IsCoupon = 0 where SchoolID =" + id;
+
+            base.Execute(this.SqlText);
+        }
     }
 }

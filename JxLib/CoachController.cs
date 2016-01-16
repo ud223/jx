@@ -16,6 +16,13 @@ namespace JxLib
             return base.getAll();
         }
 
+        public List<Hashtable> getAllBySchoolNotFreezeByID(string schoolid)
+        {
+            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID WHERE IsCoach = 1 and SchoolID = 1 and IsFreeze = 0";
+
+            return base.getAll();
+        }
+
         public List<Hashtable> getApplicationBySchoolID(string schoolid)
         {
             this.SqlText = "select app_coachapplication.*, Name, NickName, Phone from app_coachapplication left join app_students on app_coachapplication.StudentID = app_students.StudentID where State = 1 and app_coachapplication.SchoolID = " + schoolid;
@@ -35,6 +42,13 @@ namespace JxLib
             this.SqlText = "insert into app_coachapplication(StudentID, SchoolID, CreateAt, ModifyAt) values('@StudentID@', @SchoolID@, '@CreateAt@', '@ModifyAt@'); select CoachApplicationID from app_coachapplication order by CoachApplicationID desc limit 1";
             
             return base.add(data);
+        }
+
+        public override void save(Hashtable data)
+        {
+            this.SqlText = "update app_students set Name='@Name@', Phone='@Phone@', Birthday='@Birthday@', Code='@Code@' where StudentID='@StudentID@'";
+
+            base.save(data);
         }
 
         public void application(Hashtable data)
@@ -61,6 +75,20 @@ namespace JxLib
         public void updateScore(string coachid, string score)
         {
             this.SqlText = "update app_students set Score = " + score + " where StudentID ='" + coachid + "'";
+
+            base.Execute(this.SqlText);
+        }
+
+        public void freeze(string coachid)
+        {
+            this.SqlText = "update app_students set IsFreeze = 1 where StudentID ='" + coachid + "'";
+
+            base.Execute(this.SqlText);
+        }
+
+        public void unFreeze(string coachid)
+        {
+            this.SqlText = "update app_students set IsFreeze = 0 where StudentID ='" + coachid + "'";
 
             base.Execute(this.SqlText);
         }

@@ -19,7 +19,7 @@
     string phone = obj["Phone"].ToString();
     string email = obj["Email"].ToString();
     string qq = obj["Qq"].ToString();
-    string schoolID = obj["SchoolID"].ToString();
+    string schoolID = ViewData["schoolid"].ToString();
     string isMark = obj["IsMark"].ToString();
     string createAt = obj["CreateAt"].ToString();
 }
@@ -179,6 +179,7 @@
 <!-- /container -->
 <script type="text/javascript">
     var student_id = '@studentID';
+    var school_id = '@schoolID';
 
 	$(document).ready(function() {
 	    $('.exam-submit').click(function () {

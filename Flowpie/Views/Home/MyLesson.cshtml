@@ -14,10 +14,17 @@
         string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
         string[] times = item["Time"].ToString().Split(',');
 
-        Array.Sort(times);
+        int[] nTimes = new int[times.Length];
 
-        int t1 = Convert.ToInt32(times[0]);
-        int t2 = Convert.ToInt32(times[times.Length - 1]);
+        for (int i = 0; i < times.Length; i++)
+        {
+            nTimes[i] = Convert.ToInt32(times[i]);
+        }
+
+        Array.Sort(nTimes);
+
+        int t1 = nTimes[0];
+        int t2 = nTimes[nTimes.Length - 1];
 
         t1 = t1 - 1;
 

@@ -27,6 +27,8 @@ namespace JxLib
         {
             this.SqlText = "select app_teach.*, SchoolText, app_schools.Address, app_students.Name, app_students.Score, app_students.Phone, app_students.HeadPic from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID left join app_students on app_teach.CoachID = app_students.StudentID where TeachID = '" + id + "'";
 
+            WxApiLib.lib.Log.Info(this.GetType().ToString(), "1.2 page load:"+ this.SqlText);
+
             return base.load("");
         }
 
@@ -108,6 +110,13 @@ namespace JxLib
             this.SqlText = "insert into app_teachrating(OrderRatingID, TeachID, OnTimeScore, ContentScore, WayScore, Content, CreateAt, ModifyAt) values('@OrderRatingID@', '@TeachID@',  @OnTimeScore@, @ContentScore@, @WayScore@, '@Content@', '@CreateAt@', '@ModifyAt@'); select OrderRatingID from app_teachrating order by CreateAt desc limit 1";
 
             return base.add(data);
+        }
+
+        public List<Hashtable> getRatingByCoachID(string id)
+        {
+            this.SqlText = "select app_students.Name, app_students.HeadPic, app_teach.RunDate, app_teach.`Time`, app_teach.State, convert((OnTimeScore + ContentScore + WayScore) / 3, decimal) as Score, CONCAT('准时:', OnTimeScore, '; 内容:', ContentScore, '; 方式 :', WayScore) as ScoreText, app_teachrating.Content  from app_teach left join app_students on app_teach.StudentID = app_students.StudentID left join app_teachrating on app_teach.TeachID = app_teachrating.TeachID where app_teach.State in (1, 2, 3, 4) and app_teach.CoachID = '" + id + "' order by app_teach.CreateAt desc";
+
+            return base.Query(this.SqlText);
         }
     }
 }

@@ -96,7 +96,7 @@
 	        submit();
 	    })
 
-	    $('body').on('click', '.rating-star', function () {
+	    $('.rating-star').click(function () {
 	        var $this = $(this).closest('.rating-star');
 	        var val = parseInt($this.attr('val'));
 	        var container = $this.closest('.rating-stars');

@@ -32,7 +32,7 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable data = tools.paramToData(strParam);
 
-            data.Add("CouponText", "一小时抵用卷");
+            data.Add("CouponText", "学时券");
             data.Add("Amount", "0");
             data.Add("Password", "");
             data.Add("IsUse", "0");
@@ -79,6 +79,11 @@ namespace Flowpie.Controllers
 
                 foreach (Hashtable item in list)
                 {
+                    if (item["Expire"].ToString() == "null")
+                    {
+                        continue;
+                    }
+
                     Models.Coupon coupon = new Models.Coupon();
 
                     coupon.Amount = item["Amount"].ToString();
@@ -86,6 +91,8 @@ namespace Flowpie.Controllers
                     coupon.CouponText = item["CouponText"].ToString();
                     coupon.CouponTypeID = item["CouponTypeID"].ToString();
                     coupon.CreateAt = item["CreateAt"].ToString();
+
+
                     coupon.Expire = DateTime.Parse(item["Expire"].ToString()).ToString("yyyy年MM月dd日");
                     coupon.IsExpire = item["IsExpire"].ToString();
                     coupon.IsUse = item["IsUse"].ToString();

@@ -5,13 +5,17 @@
     ViewBag.Title = "教练详细";
 }
 
+@{
+    System.Collections.Hashtable coach = ViewData["item"] as System.Collections.Hashtable;
+}
+
 <div class="main-body-relative relative">
     <div class="fix-wxp-toolbar unfix">
         <div class="fix-wxp-toolbar-wp">
             <div class="fix-wxp-toolbar-txt">
                 <a href="/manage/coachlist" class="breadcrumb-prev">教练列表</a> 
                 <span class="breadcrumb-prev">/</span> 
-                <span class="breadcrumb-t1">王莹曦</span>
+                <span class="breadcrumb-t1">@coach["Name"]</span>
             </div>
         </div>
     </div>
@@ -34,23 +38,23 @@
                         <div class="inner-table">
                             <div class="row">
                                 <div class="cell col1">真实姓名</div>
-                                <div class="cell col2">王莹曦（4.9分）</div>
+                                <div class="cell col2">@coach["Name"]（@coach["Score"]分）</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">电话号码</div>
-                                <div class="cell col2">18676678657</div>
+                                <div class="cell col2">@coach["Phone"]</div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">生日</div>
-                                <div class="cell col2">1989/3/5</div>
+                                <div class="cell col2">@coach["Birthday"]</div>
                             </div>
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="cell col1">教学年份</div>
-                                <div class="cell col2">2004</div>
-                            </div>
+                                <div class="cell col2">@coach["Birthday"]</div>
+                            </div>*@
                             <div class="row">
                                 <div class="cell col1">身份证号码</div>
-                                <div class="cell col2">420103198305068562</div>
+                                <div class="cell col2">@coach["Code"]</div>
                             </div>
                         </div>
 
@@ -58,7 +62,7 @@
                             <div class="row">
                                 <div class="cell col1">头像</div>
                                 <div class="cell col2">
-                                    <img src="http://wx.qlogo.cn/mmopen/3ulFaxlc8WicxrpfjvMVb9mYUTywTChEIXcgvCUDS53m3ibTKBibIq8bbwafvFoBpExUeY0rtOyTBBJTrsPTDNHmYKeYuQbwiaZu/0" width="60">
+                                    <img src="@coach["HeadPic"]" width="60">
                                     <div class="padtop10px">
                                         <a href="#" class="btn btn-default btn-sm">修改头像</a>
                                     </div>
@@ -68,8 +72,113 @@
 
                     </div>
                 </div>
+                @if (ViewData["list"] != null)
+                {
+                    
 
-                <div class="opl-table">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>授课情况</span>
+                        </div>
+                        <div class="ct clearfix">
+                            <table class="standtb">
+                                <tr class="head">
+                                    <td>时间</td>
+                                    <td>学员头像</td>
+                                    <td>学员姓名</td>
+                                    <td>状态</td>
+                                    <td>评分</td>
+                                    <td>评价内容</td>
+                                </tr>
+                                @foreach (var itm in ViewData["list"] as List<System.Collections.Hashtable>)
+                                {
+                                    string date = DateTime.Parse(itm["RunDate"].ToString()).ToString("yyyy/MM/dd");
+                                    string[] times = itm["Time"].ToString().Split(',');
+                                    string name = itm["Name"].ToString();
+                                    string headpic = itm["HeadPic"].ToString();
+                                    string state = itm["State"].ToString();
+                                    string score = itm["Score"].ToString();
+                                    string scoreText = itm["ScoreText"].ToString();
+                                    string content = itm["Content"].ToString();
+
+                                    int[] nTimes = new int[times.Length];
+
+                                    for (int i = 0; i < times.Length; i++)
+                                    {
+                                        nTimes[i] = Convert.ToInt32(times[i]);
+                                    }
+
+                                    Array.Sort(nTimes);
+
+                                    int t1 = nTimes[0];
+                                    int t2 = nTimes[nTimes.Length - 1];
+
+                                    t1 = t1 - 1;
+
+                                    switch (state)
+                                    {
+                                        case "1":
+                                            {
+                                                <tr>
+                                                    <td>@date @t1.ToString():00 - @t2.ToString():00</td>
+                                                    <td><img class="sibnusr" src="@headpic" /></td>
+                                                    <td>@name</td>
+                                                    <td>等待上课</td>
+                                                    <td> - </td>
+                                                    <td> - </td>
+                                                </tr>
+
+                                                break;
+                                            }
+                                        case "2":
+                                            {
+                                                <tr>
+                                                    <td>@date @t1.ToString():00 - @t2.ToString():00</td>
+                                                    <td><img class="sibnusr" src="@headpic" /></td>
+                                                    <td>@name</td>
+                                                    <td>未评价</td>
+                                                    <td> - </td>
+                                                    <td> - </td>
+                                                </tr>
+
+                                                break;
+                                            }
+                                        case "3":
+                                            {
+                                                <tr>
+                                                    <td>@date @t1.ToString():00 - @t2.ToString():00</td>
+                                                    <td><img class="sibnusr" src="@headpic" /></td>
+                                                    <td>@name</td>
+                                                    <td>未评价</td>
+                                                    <td> - </td>
+                                                    <td> - </td>
+                                                </tr>
+
+                                                break;
+                                            }
+                                        case "4":
+                                            {
+                                                <tr>
+                                                    <td>@date @t1.ToString():00 - @t2.ToString():00</td>
+                                                    <td><img class="sibnusr" src="@headpic" /></td>
+                                                    <td>@name</td>
+                                                    <td>已经评价</td>
+                                                    <td><div class="green">@score 分</div><div class="font12px">（@scoreText）</div></td>
+                                                    <td>@content</td>
+                                                </tr>
+
+                                                break;
+                                            }
+                                    }
+                                }
+                            </table>
+                        </div>
+                    </div>
+
+                }
+
+
+                @*<div class="opl-table">
                     <div class="tt">
                         <span>授课情况</span>
                     </div>
@@ -105,32 +214,31 @@
                                 <td>张龙</td>
                                 <td>已经评价</td>
                                 <td><div class="green">4分</div><div class="font12px">（专业：5，时间控制：3，态度：4）</div></td>
-                                <td>教练不错，教得很耐心，只是部分内容不是很熟练，希望教练下节课可以着重让我们训练一下。</td>
+                                <td>教练不错，教得很耐心，只是部分内容 不是很熟练，希望教练下节课可以着重让我们训练一下。</td>
                             </tr>
-
                         </table>
-
-
-
-
                     </div>
-                </div>
+                </div>*@
                 <div class="bt-btn-bar">
+                    @if (coach["IsFreeze"].ToString() == "0")
+                    {
+                        <button class="btn btn-danger freeze"><span class="halflings halflings-ban-circle"></span> 冻结该教练</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-default unfreeze"><span class="halflings halflings-ok-circle"></span> 解冻该教练</button>
+                    }
+                    
                     @*
                     冻结和解冻二则互斥出现
                     *@
-                    <button class="btn btn-danger"><span class="halflings halflings-ban-circle"></span> 冻结该教练</button>
-                    <button class="btn btn-default"><span class="halflings halflings-ok-circle"></span> 解冻该教练</button>
+                    @*<button class="btn btn-danger"><span class="halflings halflings-ban-circle"></span> 冻结该教练</button>
+                    <button class="btn btn-default"><span class="halflings halflings-ok-circle"></span> 解冻该教练</button>*@
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -143,19 +251,19 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>真实姓名</label>
-                    <input type="text" class="form-control" placeholder="填写教练真实姓名">
+                    <input type="text" class="form-control m-name" placeholder="填写教练真实姓名" value="@coach["Name"]">
                 </div>
                 <div class="form-group">
                     <label>电话号码</label>
-                    <input type="text" class="form-control" placeholder="填写教练电话号码">
+                    <input type="text" class="form-control m-phone" placeholder="填写教练电话号码" value="@coach["Phone"]">
                 </div>
                 <div class="form-group">
                     <label>生日</label>
-                    <input type="text" class="form-control" id="datepicker01" placeholder="1980/01/01">
+                    <input type="text" class="form-control m-birthday" id="datepicker01" placeholder="1980/01/01" value="@coach["Birthday"]">
                 </div>
 
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label>教学年份</label>
                     <select class="form-control">
                         <option>选择教学年份</option>
@@ -171,15 +279,15 @@
                         <option>1981</option>
                         <option>1980</option>
                     </select>
-                </div>
+                </div>*@
                 <div class="form-group">
                     <label>身份证号码</label>
-                    <input type="text" class="form-control" placeholder="身份证号码">
+                    <input type="text" class="form-control m-code" placeholder="身份证号码" value="@coach["Code"]">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary save" onclick="updateCoach()">保存</button>
             </div>
         </div>
     </div>
@@ -190,6 +298,8 @@
 
 <!-- /container -->
 <script type="text/javascript">
+    var coach_id = '@coach["StudentID"]';
+
 	$(document).ready(function() {
 	    $('#datepicker01').datetimepicker({
 	        minView: 2,
@@ -199,7 +309,101 @@
 	        autoclose: true
 	    });
 
+	    $('.freeze').click(function () {
+	        freeze();
+	    })
+
+	    $('.unfreeze').click(function () {
+	        unfreeze();
+	    })
 	});
 
-	
+	function updateCoach() {
+	    var name = $('.m-name').val();
+	    var phone = $('.m-phone').val();
+	    var birthday = $('.m-birthday').val();
+	    var code = $('.m-code').val();
+
+	    var data = { 'StudentID': coach_id, 'Name': name, 'Phone': phone, 'Birthday': birthday, 'Code': code };
+
+	    var params = {
+	        url: '/api/coach/update',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    if (data.code == '200') {
+	        alert('保存成功');
+
+	        location.reload();
+	    }
+	    else {
+	        alert(data.message);
+	    }
+	}
+
+	function error() {
+	    alert('保存失败!');
+	}
+
+	function freeze() {
+	    var data = { 'CoachID': coach_id };
+
+	    var params = {
+	        url: '/api/coach/freeze',
+	        data: data,
+	        successFun: successfreeze,
+	        errorFun: errorfreeze
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successfreeze(data) {
+	    if (data.code == '200') {
+	        alert('冻结成功');
+
+	        location.reload();
+	    }
+	    else {
+	        alert(data.message);
+	    }
+	}
+
+	function errorfreeze() {
+	    alert('冻结失败!');
+	}
+
+	function unfreeze() {
+	    var data = { 'CoachID': coach_id };
+
+	    var params = {
+	        url: '/api/coach/unfreeze',
+	        data: data,
+	        successFun: successunfreeze,
+	        errorFun: errorunfreeze
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successunfreeze(data) {
+	    if (data.code == '200') {
+	        alert('解冻成功');
+
+	        location.reload();
+	    }
+	    else {
+	        alert(data.message);
+	    }
+	}
+
+	function errorunfreeze() {
+	    alert('解冻失败!');
+	}
 </script>

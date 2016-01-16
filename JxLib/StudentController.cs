@@ -18,7 +18,7 @@ namespace JxLib
 
         public List<Hashtable> getBySchool()
         {
-            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID WHERE IsCoach and SchoolID = 1 ORDER BY app_students.CreateAt DESC";
+            this.SqlText = "SELECT app_students.*, app_license.LicenseText  FROM app_students left join app_license on app_students.LicenseTypeID = app_license.LicenseTypeID WHERE IsCoach = 0 and SchoolID = 1 ORDER BY app_students.CreateAt DESC";
 
             return base.getAll();
         }
@@ -55,7 +55,7 @@ namespace JxLib
 
         public override void save(System.Collections.Hashtable data)
         {
-            string strSql = "UPDATE app_students SET Name='@Name@', Sex=@Sex@, Birthday='@Birthday@', Code='@Code@', Place='@Place@', LicenseTypeID=@LicenseTypeID@, Phone='@Phone@', Email='@Email@', Qq='@Qq@', CreateAt='@CreateAt@', ModifyAt='@ModifyAt@' WHERE StudentID='@StudentID@'";
+            string strSql = "UPDATE app_students SET Name='@Name@', Sex=@Sex@, Birthday='@Birthday@', Code='@Code@', Place='@Place@', LicenseTypeID=@LicenseTypeID@, Phone='@Phone@', Email='@Email@', Qq='@Qq@', EnterDate='@EnterDate@', CreateAt='@CreateAt@', ModifyAt='@ModifyAt@' WHERE StudentID='@StudentID@'";
 
             this.SqlText = strSql;
 

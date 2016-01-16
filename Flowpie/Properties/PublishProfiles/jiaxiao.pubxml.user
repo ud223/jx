@@ -34,10 +34,10 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="bin/Flowpie.dll">
-      <publishTime>01/14/2016 22:40:21</publishTime>
+      <publishTime>01/16/2016 17:43:05</publishTime>
     </File>
     <File Include="bin/JxLib.dll">
-      <publishTime>01/14/2016 22:40:20</publishTime>
+      <publishTime>01/16/2016 17:43:04</publishTime>
     </File>
     <File Include="bin/LitJson.dll">
       <publishTime>05/19/2014 21:40:52</publishTime>
@@ -133,7 +133,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="bin/WxApiLib.dll">
-      <publishTime>01/14/2016 22:40:19</publishTime>
+      <publishTime>01/15/2016 01:05:02</publishTime>
     </File>
     <File Include="bin/zh-Hans/EntityFramework.resources.dll">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -4390,7 +4390,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="statics/admin/css/global.css">
-      <publishTime>12/18/2015 16:08:29</publishTime>
+      <publishTime>01/14/2016 23:19:13</publishTime>
     </File>
     <File Include="statics/admin/css/nanoscroller.css">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -4498,7 +4498,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="statics/admin/js/wx.js">
-      <publishTime>12/10/2015 16:10:53</publishTime>
+      <publishTime>01/15/2016 03:18:27</publishTime>
     </File>
     <File Include="statics/jx/css/font-awesome.css">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -4790,6 +4790,15 @@
     </File>
     <File Include="statics/jx/img/qunqr.jpg">
       <publishTime>12/10/2015 16:10:53</publishTime>
+    </File>
+    <File Include="statics/jx/img/star-empty.png">
+      <publishTime>09/15/2015 11:58:16</publishTime>
+    </File>
+    <File Include="statics/jx/img/star-full.png">
+      <publishTime>09/15/2015 11:58:16</publishTime>
+    </File>
+    <File Include="statics/jx/img/star-half.png">
+      <publishTime>09/15/2015 11:58:16</publishTime>
     </File>
     <File Include="statics/jx/img/user04.jpg">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -8460,6 +8469,9 @@
     <File Include="Views/Account/_SetPasswordPartial.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
+    <File Include="Views/Home/Clear.cshtml">
+      <publishTime>01/15/2016 03:10:16</publishTime>
+    </File>
     <File Include="Views/Home/EnterSuccess.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
@@ -8470,16 +8482,16 @@
       <publishTime>01/14/2016 14:12:32</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>01/12/2016 15:18:10</publishTime>
+      <publishTime>01/16/2016 17:22:59</publishTime>
     </File>
     <File Include="Views/Home/LessonEnd.cshtml">
       <publishTime>01/10/2016 15:12:45</publishTime>
     </File>
     <File Include="Views/Home/Lessoning.cshtml">
-      <publishTime>01/12/2016 15:40:28</publishTime>
+      <publishTime>01/15/2016 03:55:30</publishTime>
     </File>
     <File Include="Views/Home/LessonStart.cshtml">
-      <publishTime>01/12/2016 15:40:19</publishTime>
+      <publishTime>01/15/2016 03:53:34</publishTime>
     </File>
     <File Include="Views/Home/LessonSuccess.cshtml">
       <publishTime>01/10/2016 15:15:02</publishTime>
@@ -8488,43 +8500,43 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Home/MyCoupon.cshtml">
-      <publishTime>12/10/2015 16:10:53</publishTime>
+      <publishTime>01/15/2016 02:18:50</publishTime>
     </File>
     <File Include="Views/Home/MyExam.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Home/MyIndex.cshtml">
-      <publishTime>01/12/2016 11:06:59</publishTime>
+      <publishTime>01/15/2016 12:50:25</publishTime>
     </File>
     <File Include="Views/Home/MyLesson.cshtml">
-      <publishTime>01/10/2016 14:29:27</publishTime>
+      <publishTime>01/15/2016 03:02:13</publishTime>
     </File>
     <File Include="Views/Home/MyMessage.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Home/MyOrder.cshtml">
-      <publishTime>01/13/2016 22:01:33</publishTime>
+      <publishTime>01/15/2016 03:01:54</publishTime>
     </File>
     <File Include="Views/Home/MyRecord.cshtml">
       <publishTime>01/13/2016 23:18:05</publishTime>
     </File>
     <File Include="Views/Home/OrderConfirmation.cshtml">
-      <publishTime>01/14/2016 21:41:13</publishTime>
+      <publishTime>01/15/2016 12:21:02</publishTime>
     </File>
     <File Include="Views/Home/OrderDetail.cshtml">
-      <publishTime>01/14/2016 12:57:07</publishTime>
+      <publishTime>01/15/2016 03:01:35</publishTime>
     </File>
     <File Include="Views/Home/OrderPay.cshtml">
-      <publishTime>01/14/2016 21:29:27</publishTime>
+      <publishTime>01/15/2016 01:22:35</publishTime>
     </File>
     <File Include="Views/Home/OrderRating.cshtml">
-      <publishTime>01/13/2016 21:59:26</publishTime>
+      <publishTime>01/15/2016 02:56:57</publishTime>
     </File>
     <File Include="Views/Home/OrderRatingSuccess.cshtml">
       <publishTime>01/10/2016 15:42:26</publishTime>
     </File>
     <File Include="Views/Home/PayCancel.cshtml">
-      <publishTime>12/31/2015 11:41:37</publishTime>
+      <publishTime>01/15/2016 01:22:27</publishTime>
     </File>
     <File Include="Views/Home/PaySuccess.cshtml">
       <publishTime>01/14/2016 14:10:17</publishTime>
@@ -8533,10 +8545,10 @@
       <publishTime>01/13/2016 21:32:21</publishTime>
     </File>
     <File Include="Views/Home/RegUser.cshtml">
-      <publishTime>12/10/2015 16:10:53</publishTime>
+      <publishTime>01/15/2016 03:29:49</publishTime>
     </File>
     <File Include="Views/Home/SchoolDetail.cshtml">
-      <publishTime>01/14/2016 22:20:51</publishTime>
+      <publishTime>01/15/2016 02:01:36</publishTime>
     </File>
     <File Include="Views/Home/SchoolList.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -8572,13 +8584,13 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Manage/CoachApplicationList.cshtml">
-      <publishTime>12/27/2015 16:12:55</publishTime>
+      <publishTime>01/14/2016 23:19:13</publishTime>
     </File>
     <File Include="Views/Manage/CoachApply.cshtml">
       <publishTime>12/14/2015 21:08:35</publishTime>
     </File>
     <File Include="Views/Manage/CoachDetail.cshtml">
-      <publishTime>12/14/2015 21:08:35</publishTime>
+      <publishTime>01/15/2016 11:45:24</publishTime>
     </File>
     <File Include="Views/Manage/CoachDispatch.cshtml">
       <publishTime>01/09/2016 17:14:35</publishTime>
@@ -8590,7 +8602,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Manage/CoachList.cshtml">
-      <publishTime>01/09/2016 14:11:35</publishTime>
+      <publishTime>01/15/2016 03:44:07</publishTime>
     </File>
     <File Include="Views/Manage/CoachUsage.cshtml">
       <publishTime>12/14/2015 21:08:35</publishTime>
@@ -8620,7 +8632,7 @@
       <publishTime>12/16/2015 22:48:07</publishTime>
     </File>
     <File Include="Views/Manage/MenuList.cshtml">
-      <publishTime>12/15/2015 21:55:18</publishTime>
+      <publishTime>01/14/2016 23:19:13</publishTime>
     </File>
     <File Include="Views/Manage/Permission.cshtml">
       <publishTime>12/23/2015 12:49:02</publishTime>
@@ -8686,7 +8698,7 @@
       <publishTime>12/22/2015 16:35:36</publishTime>
     </File>
     <File Include="Views/Shared/_Mobile.cshtml">
-      <publishTime>12/14/2015 21:08:22</publishTime>
+      <publishTime>01/15/2016 10:47:16</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -8695,7 +8707,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/14/2016 22:40:23</publishTime>
+      <publishTime>01/16/2016 17:43:07</publishTime>
     </File>
   </ItemGroup>
 </Project>

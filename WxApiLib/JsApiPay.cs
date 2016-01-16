@@ -152,8 +152,8 @@ namespace WxApiLib
         {
             //统一下单
             WxPayData data = new WxPayData();
-            data.SetValue("body", "快递费");
-            data.SetValue("attach", "支付快递费");
+            data.SetValue("body", "课时费");
+            data.SetValue("attach", "支付课时费");
             data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
             data.SetValue("total_fee", total_fee);
             data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));

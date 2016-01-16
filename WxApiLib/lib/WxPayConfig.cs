@@ -29,7 +29,7 @@ namespace WxApiLib.lib
         //=======【支付结果通知url】===================================== 
         /* 支付结果通知回调url，用于商户接收支付结果
         */
-        public const string NOTIFY_URL = "http://www.playkuaidi.com/home/ResultNotify";
+        public const string NOTIFY_URL = "http://wx.yune-jia.com/home/ResultNotify";
 
         //=======【商户系统后台机器IP】===================================== 
         /* 此参数可手动配置也可在程序中自动获取

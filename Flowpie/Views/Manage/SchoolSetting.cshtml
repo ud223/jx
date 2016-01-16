@@ -4,7 +4,12 @@
 @{
     ViewBag.Title = "常用设置";
 }
+@{ 
+    var item = ViewData["item"] as System.Collections.Hashtable;
 
+    string schoolId = item["SchoolID"].ToString();
+    string isCoupon = item["IsCoupon"].ToString();
+}
 <div class="main-body-relative relative">
     <div class="fix-wxp-toolbar unfix">
         <div class="fix-wxp-toolbar-wp">
@@ -32,11 +37,22 @@
                             <div class="row">
                                 <div class="cell col1">发放代金券</div>
                                 <div class="cell col2">
-                                    <div class="fb-switch" id="sendcouponkey" status="on">
-                                        <div class="dd"></div>
-                                        <div class="txt" for="on">开启</div>
-                                        <div class="txt" for="off">关闭</div>
-                                    </div>
+                                    @if (isCoupon == "1")
+                                    {
+                                        <div class="fb-switch" id="sendcouponkey" status="on">
+                                            <div class="dd"></div>
+                                            <div class="txt" for="on">开启</div>
+                                            <div class="txt" for="off">关闭</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="fb-switch" id="sendcouponkey" status="off">
+                                            <div class="dd"></div>
+                                            <div class="txt" for="on">开启</div>
+                                            <div class="txt" for="off">关闭</div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div class="row">
@@ -93,6 +109,8 @@
 
     <!-- /container -->
     <script type="text/javascript">
+        var school_id = '@schoolId';
+
         $(document).ready(function () {
             $('#sendcouponkey').click(function () {
                 var $this = $(this).closest('.fb-switch');
@@ -104,5 +122,68 @@
                     $('.diin-txt.off').addClass('selected');
                 }
             })
+
+            $('#sendcouponkey').click(function () {
+                if ($(this).attr('status') == 'on')
+                    onCoupon();
+                else
+                    unCoupon();
+            })
         });
+
+        function onCoupon() {
+            var data = { 'SchoolID': school_id };
+
+            var params = {
+                url: '/api/school/oncoupon',
+                data: data,
+                successFun: successCoupon,
+                errorFun: errorCoupon
+            }
+
+            ajaxTo(params);
+        }
+
+        function successCoupon(data) {
+            if (data.code == '200') {
+                alert(data.message);
+
+                location.reload();
+            }
+            else {
+                alert(data.message);
+            }
+        }
+
+        function errorCoupon() {
+            alert('冻结失败!');
+        }
+
+        function unCoupon() {
+            var data = { 'SchoolID': school_id };
+
+            var params = {
+                url: '/api/school/offcoupon',
+                data: data,
+                successFun: successunUnCoupon,
+                errorFun: errorunUnCoupon
+            }
+
+            ajaxTo(params);
+        }
+
+        function successunUnCoupon(data) {
+            if (data.code == '200') {
+                alert(data.message);
+
+                location.reload();
+            }
+            else {
+                alert(data.message);
+            }
+        }
+
+        function errorunUnCoupon() {
+            alert('解冻失败!');
+        }
     </script>

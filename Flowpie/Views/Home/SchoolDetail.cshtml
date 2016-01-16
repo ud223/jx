@@ -207,7 +207,7 @@
         </div>-->
             @if (ViewData["schoolid"].ToString() == "" && ViewData["iscoach"].ToString() == "0")
             {
-                <a href="/student/enter" style="background:#F80;border-radius:4px;display:block;padding:10px;text-align:center;color:#FFF !important;margin-top:10px;line-height:32px;">立刻报名</a>
+                <a href="/student/enter?schoolid=1" style="background:#F80;border-radius:4px;display:block;padding:10px;text-align:center;color:#FFF !important;margin-top:10px;line-height:32px;">立刻报名</a>
             }
 
             @if (ViewData["iscoach"].ToString() == "0")
@@ -526,7 +526,7 @@
         </a>*@
     @if (ViewData["schoolid"].ToString() == "" && ViewData["iscoach"].ToString() == "0")
     {
-        <a href="/student/enter" class="btidiom up">
+        <a href="/student/enter?schoolid=1" class="btidiom up">
             <i class="fa fa-angle-right"></i> 立即报名去
         </a>
     }

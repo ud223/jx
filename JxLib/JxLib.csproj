@@ -94,6 +94,10 @@
       <Project>{0f14c56c-8c26-4e90-b399-cd5aa5866db5}</Project>
       <Name>SystemConfigureLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WxApiLib\WxApiLib.csproj">
+      <Project>{600b688e-0ff1-474a-b18a-a895e2afdb55}</Project>
+      <Name>WxApiLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

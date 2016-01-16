@@ -10,9 +10,9 @@
             <div class="fix-wxp-toolbar-wp">
                 <span class="fix-wxp-toolbar-txt">教练列表</span>
             </div>
-            <div class="fix-wxp-toolbar-blist rt">
-                <a href="/manage/coachapply" class="btn btn-success btn-sm" style="margin-right:15px;">教练申请</a>
-            </div>
+            @*<div class="fix-wxp-toolbar-blist rt">
+                <a href="/manage/CoachApplicationList" class="btn btn-success btn-sm" style="margin-right:15px;">教练申请</a>
+            </div>*@
         </div>
         <div class="fix-tb">
             <div class="fix-tb-ct-b1">
@@ -42,11 +42,11 @@
                             评分
                         </div>
                     </div>
-                    <div class="fix-tb-header-cell">
+                    @*<div class="fix-tb-header-cell">
                         <div class="th">
                             冻结
                         </div>
-                    </div>
+                    </div>*@
                     <div class="fix-tb-header-cell">
                         <div class="th">
                             查看
@@ -72,13 +72,13 @@
                                 <div class="td">@item["Phone"]</div>
                             </div>
                             <div class="fix-tb-body-cell tc">
-                                <div class="td">4.9</div>
+                                <div class="td">@item["Score"]</div>
                             </div>
-                            <div class="fix-tb-body-cell tc">
+                            @*<div class="fix-tb-body-cell tc">
                                 <div class="td">
                                     <a href="javascript:(0)" class="listoperbtn danger">冻结</a>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="fix-tb-body-cell tc">
                                 <div class="td">
                                     <a href="/Manage/CoachDetail/@item["StudentID"]" class="listoperbtn">查看详细</a>

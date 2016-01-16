@@ -18,6 +18,15 @@ namespace JxLib
             return base.getAll();
         }
 
+        public List<Hashtable> getUseByStuentId(string id)
+        {
+            string strSql = "select * from app_coupon where IsUse = 0 and IsExpire = 0 and StudentID = '" + id + "' order by CreateAt desc";
+
+            this.SqlText = strSql;
+
+            return base.getAll();
+        }
+
         public override string add(Hashtable data)
         {
             string strSql = "INSERT INTO app_coupon(CouponText, Amount, StudentID, Password, CouponTypeID, Expire, IsExpire, CreateAt, ModifyAt) VALUES('@CouponText@', @Amount@, '@StudentID@', '@Password@', @CouponTypeID@, '@Expire@', @IsExpire@, '@CreateAt@', '@ModifyAt@'); SELECT CouponID FROM app_coupon ORDER BY CouponID DESC LIMIT 1";

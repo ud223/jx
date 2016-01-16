@@ -78,13 +78,18 @@
         </div>
     </div>
     <div class="row">
-        <span class="tt lightgray">代金券</span>
+        <span class="tt lightgray">学时卷</span>
         <div class="holder">
             <select id="coupon-list">                
-                <option value="0">不使用代金券</option>
+                <option value="0">不使用学时卷</option>
                 @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
                 {
                     string expire = item["Expire"].ToString();
+
+                    if (expire == "" || expire == "null")
+                    {
+                        continue;
+                    }
 
                     <option value="@item["CouponID"]">学时券 x 1（@DateTime.Parse(expire).ToString("MM月dd日") 到期）</option>
                     @*<option>200（5月18日到期）</option>*@
@@ -139,7 +144,7 @@
 
             return;
         }
-            
+
         var payAmount = $('#pay-amount').html();
         var couponId = $('#coupon-list').val();
 
@@ -183,10 +188,8 @@
 
     function pay() {
         var url = ''
-        var amount = $('#pay-amount').html();
-        //测试链接
-        @*url = '/home/paysuccess/@(((System.Collections.Hashtable)ViewData["item"])["TeachID"])';*@
-
+        var amount = $('#pay-amount').html().replace('.00','');
+       
         if (amount == '0' || amount == '0.00') {
             var opertion = {
                 msg: '支付金额必须大于0元',
@@ -197,8 +200,9 @@
 
             return;
         }
-
-        location.href = '/home/orderpay?openid=' + openid + '&total_fee=' + amount + '&orderid=' + orderid
+        //测试链接
+        //url = '/home/paysuccess/' + orderid;
+	    url = '/home/orderpay?openid=' + openid + '&total_fee=' + amount + '&orderid=' + orderid;
 
         location.href = url;
     }

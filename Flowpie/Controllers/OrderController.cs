@@ -59,7 +59,7 @@ namespace Flowpie.Controllers
                     teach.PayAmount = item["PayAmount"].ToString();
                     teach.RunDate = item["RunDate"].ToString();
                     teach.SchoolID = item["SchoolID"].ToString();
-                    teach.Score = item["Score"].ToString();
+                    //teach.Score = item["Score"].ToString();
                     teach.State = item["State"].ToString();
                     teach.StudentID = item["StudentID"].ToString();
                     teach.Time = item["Time"].ToString();

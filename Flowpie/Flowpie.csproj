@@ -41,6 +41,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LitJson, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\kxd\Flowpie\Flowpie\bin\LitJson.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\MySql.Data.dll</HintPath>
@@ -189,6 +193,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
@@ -337,6 +342,9 @@
     <Content Include="statics\jx\img\photocase\tpp02.jpg" />
     <Content Include="statics\jx\img\photocase\tpp03.jpg" />
     <Content Include="statics\jx\img\qunqr.jpg" />
+    <Content Include="statics\jx\img\star-empty.png" />
+    <Content Include="statics\jx\img\star-full.png" />
+    <Content Include="statics\jx\img\star-half.png" />
     <Content Include="statics\jx\img\user04.jpg" />
     <Content Include="statics\admin\js\ajaxhelper.js" />
     <Content Include="statics\jx\js\global.js" />
@@ -1608,6 +1616,7 @@
     <Content Include="Views\Home\OrderRatingSuccess.cshtml" />
     <Content Include="Views\Home\RatingSuccess.cshtml" />
     <Content Include="Views\Home\OrderPay.cshtml" />
+    <Content Include="Views\Home\Clear.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
