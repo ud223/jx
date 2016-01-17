@@ -30,12 +30,12 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable data = tools.paramToData(strParam);
 
-            schoolController.onCoupon(data["SchoolID"].ToString());
+            schoolController.onCoupon(data["SchoolID"].ToString(), data["CouponText"].ToString(), data["CouponAmount"].ToString(), data["CouponRemark"].ToString());
 
             if (schoolController.Result)
             {
                 result.code = "200";
-                result.message = "打开发放成功!";
+                result.message = "保存优惠卷发放配置成功!";
             }
             else
             {
@@ -62,7 +62,7 @@ namespace Flowpie.Controllers
             if (schoolController.Result)
             {
                 result.code = "200";
-                result.message = "关闭发放成功!";
+                result.message = "关闭优惠卷发放成功!";
             }
             else
             {

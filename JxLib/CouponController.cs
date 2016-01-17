@@ -29,7 +29,7 @@ namespace JxLib
 
         public override string add(Hashtable data)
         {
-            string strSql = "INSERT INTO app_coupon(CouponText, Amount, StudentID, Password, CouponTypeID, Expire, IsExpire, CreateAt, ModifyAt) VALUES('@CouponText@', @Amount@, '@StudentID@', '@Password@', @CouponTypeID@, '@Expire@', @IsExpire@, '@CreateAt@', '@ModifyAt@'); SELECT CouponID FROM app_coupon ORDER BY CouponID DESC LIMIT 1";
+            string strSql = "INSERT INTO app_coupon(CouponText, Amount, CouponRemark, StudentID, Password, CouponTypeID, Expire, IsExpire, CreateAt, ModifyAt) VALUES('@CouponText@', @Amount@, '@CouponRemark@', '@StudentID@', '@Password@', @CouponTypeID@, '@Expire@', @IsExpire@, '@CreateAt@', '@ModifyAt@'); SELECT CouponID FROM app_coupon ORDER BY CouponID DESC LIMIT 1";
 
             this.SqlText = strSql;
 

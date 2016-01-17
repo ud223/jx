@@ -34,10 +34,10 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="bin/Flowpie.dll">
-      <publishTime>01/16/2016 17:43:05</publishTime>
+      <publishTime>01/17/2016 16:18:56</publishTime>
     </File>
     <File Include="bin/JxLib.dll">
-      <publishTime>01/16/2016 17:43:04</publishTime>
+      <publishTime>01/17/2016 16:18:55</publishTime>
     </File>
     <File Include="bin/LitJson.dll">
       <publishTime>05/19/2014 21:40:52</publishTime>
@@ -8590,7 +8590,7 @@
       <publishTime>12/14/2015 21:08:35</publishTime>
     </File>
     <File Include="Views/Manage/CoachDetail.cshtml">
-      <publishTime>01/15/2016 11:45:24</publishTime>
+      <publishTime>01/16/2016 23:51:07</publishTime>
     </File>
     <File Include="Views/Manage/CoachDispatch.cshtml">
       <publishTime>01/09/2016 17:14:35</publishTime>
@@ -8602,7 +8602,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Manage/CoachList.cshtml">
-      <publishTime>01/15/2016 03:44:07</publishTime>
+      <publishTime>01/16/2016 23:57:44</publishTime>
     </File>
     <File Include="Views/Manage/CoachUsage.cshtml">
       <publishTime>12/14/2015 21:08:35</publishTime>
@@ -8641,13 +8641,13 @@
       <publishTime>12/26/2015 13:51:52</publishTime>
     </File>
     <File Include="Views/Manage/SchoolEdit.cshtml">
-      <publishTime>12/13/2015 23:14:56</publishTime>
+      <publishTime>01/17/2016 12:52:18</publishTime>
     </File>
     <File Include="Views/Manage/SchoolList.cshtml">
       <publishTime>12/13/2015 22:42:24</publishTime>
     </File>
     <File Include="Views/Manage/SchoolSetting.cshtml">
-      <publishTime>12/10/2015 16:10:53</publishTime>
+      <publishTime>01/17/2016 16:13:13</publishTime>
     </File>
     <File Include="Views/Manage/StudentApplication.cshtml">
       <publishTime>12/26/2015 12:54:58</publishTime>
@@ -8656,7 +8656,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Manage/StudentDetail.cshtml">
-      <publishTime>01/14/2016 15:02:09</publishTime>
+      <publishTime>01/16/2016 17:47:25</publishTime>
     </File>
     <File Include="Views/Manage/StudentList.cshtml">
       <publishTime>01/13/2016 15:34:13</publishTime>

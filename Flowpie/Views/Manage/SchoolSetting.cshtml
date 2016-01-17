@@ -65,21 +65,21 @@
                             <div class="row">
                                 <div class="cell col1">标题</div>
                                 <div class="cell col2">
-                                    <input class="pc100" type="text"/>
+                                    <input class="pc100" id="title" type="text" maxlength="15" value="@item["CouponText"]"/>
                                     <label class="cneitp">用户收到优惠券时看到的标题文字（限15字）</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">优惠金额</div>
                                 <div class="cell col2">
-                                    <input class="pc100" type="text" />
+                                    <input class="pc100" id="price" type="tel" value="@item["CouponAmount"]" />
                                     <label class="cneitp">用户收到优惠券的金额（报名时需按金额抵扣）</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="cell col1">优惠券内容</div>
                                 <div class="cell col2">
-                                    <textarea class="pc100"></textarea>
+                                    <textarea id="remark" class="pc100" maxlength="250">@item["CouponRemark"]</textarea>
                                     <label class="cneitp">优惠券内附带的文字内容，可以向用户介绍课程、驾校特色等信息</label>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="bt-btn-bar">
-                    <button class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 保存</button>
+                    <button class="btn btn-primary  save-setting"><span class="glyphicons glyphicons-edit"></span> 保存</button>
                 </div>
             </div>
 
@@ -123,8 +123,8 @@
                 }
             })
 
-            $('#sendcouponkey').click(function () {
-                if ($(this).attr('status') == 'on')
+            $('.save-setting').click(function () {
+                if ($("#sendcouponkey").attr('status') == 'on')
                     onCoupon();
                 else
                     unCoupon();
@@ -132,7 +132,11 @@
         });
 
         function onCoupon() {
-            var data = { 'SchoolID': school_id };
+            var title = $('#title').val();
+            var price = $('#price').val();
+            var remark = $('#remark').val();
+
+            var data = { 'SchoolID': school_id, 'CouponText': title, 'CouponAmount': price, 'CouponRemark': remark };
 
             var params = {
                 url: '/api/school/oncoupon',

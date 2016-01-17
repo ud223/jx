@@ -44,10 +44,10 @@ namespace JxLib
             base.save(data);
         }
 
-        public void onCoupon(string id)
+        public void onCoupon(string id, string coupontext, string couponamount, string couponremark)
         {
-            this.SqlText = "update app_schools set IsCoupon = 1 where SchoolID ="+ id;
-
+            this.SqlText = "update app_schools set IsCoupon = 1, CouponText='"+ coupontext + "', CouponAmount='"+ couponamount + "', CouponRemark='"+ couponremark +"' where SchoolID =" + id;
+ 
             base.Execute(this.SqlText);
         }
 

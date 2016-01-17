@@ -65,23 +65,33 @@ namespace Flowpie.Controllers
                 ViewData["data"] = "用户注册失败!";
             else
             {
+                JxLib.SchoolController schoolController = new JxLib.SchoolController();
                 JxLib.StudentController studentController = new JxLib.StudentController();
                 JxLib.CouponController couponController = new JxLib.CouponController();
+
+                List<System.Collections.Hashtable> list = schoolController.getAll();
 
                 System.Collections.Hashtable item = studentController.load(student_id);
 
                 if (item["SchoolID"].ToString() == "")
                 {
-                    System.Collections.Hashtable coupon1 = new System.Collections.Hashtable();
+                    foreach (System.Collections.Hashtable itm in list)
+                    {
+                        if (itm["IsCoupon"].ToString() == "0")
+                            continue;
 
-                    coupon1.Add("CouponText", "300元学车券");
-                    coupon1.Add("Amount", "300");
-                    coupon1.Add("Password", couponController.getPassword());
-                    coupon1.Add("StudentID", student_id);
-                    coupon1.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                    coupon1.Add("ModifyAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                        System.Collections.Hashtable coupon1 = new System.Collections.Hashtable();
 
-                    couponController.add(coupon1);
+                        coupon1.Add("CouponText", itm["CouponText"].ToString());
+                        coupon1.Add("Amount", itm["CouponAmount"].ToString());
+                        coupon1.Add("CouponRemark", itm["CouponRemark"].ToString());
+                        coupon1.Add("Password", couponController.getPassword());
+                        coupon1.Add("StudentID", student_id);
+                        coupon1.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                        coupon1.Add("ModifyAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                        couponController.add(coupon1);
+                    } 
                 }
 
                 CacheLib.Cookie cookie = new CacheLib.Cookie();
