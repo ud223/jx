@@ -286,34 +286,33 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        public ActionResult MyMessage()
+        public ActionResult CoachApplication(string id)
         {
-            ViewData["title"] = "我的消息";
+            if (id == null || id == "")
+            {
+                return Redirect("/home");
+            }
 
-            return View();
-        }
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
 
-        public ActionResult MessageDetail()
-        {
-            ViewData["title"] = "消息明细";
-
-            return View();
-        }
-
-        public ActionResult MyCoupon()
-        {
-            JxLib.CouponController couponController = new JxLib.CouponController();
-            DatabaseLib.Tools tools = new DatabaseLib.Tools();
             CacheLib.Cookie cookie = new CacheLib.Cookie();
 
             string user_id = cookie.GetCookie("user_id");
 
-            List<System.Collections.Hashtable> list = couponController.getByStuentId(user_id);
+            System.Collections.Hashtable item = studentController.load(user_id);
+            System.Collections.Hashtable school = schoolController.load(id);
 
-            ViewData["data"] = list;
 
-            ViewData["title"] = "我的优惠卷";
+            ViewData["SchoolID"] = id;
+            ViewData["SchoolText"] = school["SchoolText"].ToString();
+            ViewData["item"] = item;
 
+            return View();
+        }
+
+        public ActionResult CoachApplicationSuccess()
+        {
             return View();
         }
 
@@ -631,7 +630,6 @@ namespace Flowpie.Controllers
         #endregion;
 
         #region 我的首页
-
         public ActionResult MyOrder()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
@@ -691,6 +689,37 @@ namespace Flowpie.Controllers
 
             ViewData["list"] = list;
             ViewData["count"] = list.Count;
+
+            return View();
+        }
+
+        public ActionResult MyMessage()
+        {
+            ViewData["title"] = "我的消息";
+
+            return View();
+        }
+
+        public ActionResult MessageDetail()
+        {
+            ViewData["title"] = "消息明细";
+
+            return View();
+        }
+
+        public ActionResult MyCoupon()
+        {
+            JxLib.CouponController couponController = new JxLib.CouponController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            List<System.Collections.Hashtable> list = couponController.getByStuentId(user_id);
+
+            ViewData["data"] = list;
+
+            ViewData["title"] = "我的优惠卷";
 
             return View();
         }

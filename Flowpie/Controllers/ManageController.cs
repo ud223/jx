@@ -230,6 +230,8 @@ namespace Flowpie.Controllers
 
             ViewData["list"] = list;
 
+            ViewData["SchoolID"] = this.UserData.SchoolID;
+
             return View();
         }
 

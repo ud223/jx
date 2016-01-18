@@ -1,0 +1,112 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+}
+@{
+    System.Collections.Hashtable stu = ViewData["item"] as System.Collections.Hashtable;
+ }
+<div class="jst1">
+    申请成为教练
+</div>
+<div class="jst2">
+    <style>
+        input[type="text"], input[type="tel"], select {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 10px;
+            border: 1px solid #DDD;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .jst1 {
+            padding: 30px 15px 0 15px;
+            text-align: center;
+        }
+
+        .jst2 {
+            padding: 15px;
+        }
+    </style>
+    <input id="name" type="text" placeholder="姓名" value="@stu["Name"]" />
+    <input id="phone" type="tel" placeholder="电话" value="@stu["Phone"]" />
+    <div style="margin-bottom:30px;">申请驾校：<span>@ViewData["SchoolText"]</span></div>
+    <a class="fullbtn" href="javascript:void(0)">申请</a>
+</div>
+<script>
+    var school_id = '@ViewData["SchoolID"]';
+
+	$('document').ready(function() {
+	    $('.fullbtn').click(function () {
+	        coacheApplication();
+	    })
+	});
+
+	function coacheApplication() {
+	    var name = $('#name').val();
+	    var phone = $('#phone').val();
+	    var user_id = $.cookie('user_id');
+
+	    if (!name || !phone) {
+	        var opertion = {
+	            msg: "姓名和电话不能为空!",
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(opertion);
+
+	        return;
+	    }
+
+	    var data = { 'StudentID': user_id, 'SchoolID': school_id, 'Name': name, 'Phone': phone };
+
+	    var params = {
+	        url: '/api/coach/application',
+	        data: data,
+	        successFun: success,
+	        errorFun: error
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    //alert(data.message);
+	    //var opertion = {
+	    //    msg: data.message,
+	    //    exitText: "关闭!"
+	    //};
+
+	    //$.alertbox(opertion);
+
+	    ////if (data.code == "200") {
+
+	    ////}
+	    if (data.code == '200') {
+	        location.href = '/home/coachapplicationsuccess';
+	    }
+	    else {
+	        var option = {
+	            msg: data.message,
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(option);
+	    }
+	}
+
+	function error() {
+	    var opertion = {
+	        msg: "申请教练失败!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(opertion);
+	}
+</script>

@@ -33,20 +33,27 @@ namespace JxLib
         public override Hashtable load(string id)
         {
             this.SqlText = "select * from app_coachapplication where CoachApplicationID =";
-           
+
             return base.load(id);
         }
 
         public override string add(Hashtable data)
         {
             this.SqlText = "insert into app_coachapplication(StudentID, SchoolID, CreateAt, ModifyAt) values('@StudentID@', @SchoolID@, '@CreateAt@', '@ModifyAt@'); select CoachApplicationID from app_coachapplication order by CoachApplicationID desc limit 1";
-            
+
             return base.add(data);
         }
 
         public override void save(Hashtable data)
         {
             this.SqlText = "update app_students set Name='@Name@', Phone='@Phone@', Birthday='@Birthday@', Code='@Code@' where StudentID='@StudentID@'";
+
+            base.save(data);
+        }
+
+        public void saveNameAndPhoen(Hashtable data)
+        {
+            this.SqlText = "update app_students set Name='@Name@', Phone='@Phone@' where StudentID='@StudentID@'";
 
             base.save(data);
         }

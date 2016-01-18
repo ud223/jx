@@ -31,12 +31,22 @@ namespace Flowpie.Controllers
 
             System.Collections.Hashtable data = tools.paramToData(strParam);
 
-            string coachapplication_id = coachController.add(data);
+            coachController.saveNameAndPhoen(data);
 
             if (coachController.Result)
             {
-                result.code = "200";
-                result.message = "申请成功!";
+                string coachapplication_id = coachController.add(data);
+
+                if (coachController.Result)
+                {
+                    result.code = "200";
+                    result.message = "申请成功!";
+                }
+                else
+                {
+                    result.code = "0";
+                    result.message = coachController.Message;
+                }
             }
             else
             {

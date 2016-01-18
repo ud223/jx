@@ -1600,7 +1600,6 @@
     <Content Include="Views\Manage\PermmissionForbidden.cshtml" />
     <Content Include="Views\Manage\StudentApplication.cshtml" />
     <Content Include="Views\Manage\CoachApplicationList.cshtml" />
-    <Content Include="Views\Home\_PartialPage1.cshtml" />
     <Content Include="Views\Home\PayCancel.cshtml" />
     <Content Include="Views\Home\PaySuccess.cshtml" />
     <Content Include="Views\Home\OrderDetail.cshtml" />
@@ -1617,6 +1616,8 @@
     <Content Include="Views\Home\RatingSuccess.cshtml" />
     <Content Include="Views\Home\OrderPay.cshtml" />
     <Content Include="Views\Home\Clear.cshtml" />
+    <Content Include="Views\Home\CoachApplication.cshtml" />
+    <Content Include="Views\Home\CoachApplicationSuccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
