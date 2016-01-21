@@ -417,18 +417,11 @@ textarea:focus {
 .list-group-item.open {
 	transition: background-color 0.2s;
 	-moz-transition: background-color 0.2s;
-	/* Firefox 4 */
 	-webkit-transition: background-color 0.2s;
-	/* Safari 和 Chrome */
 	-o-transition: background-color 0.2s;
-	/* Opera */
-
 	background-color: #FBFBFB;
-	/*font-weight: bold;*/
 }
 .list-group-item.open {
-	/*border-bottom: 1px solid #E0E0E0;*/
-	
 	background-position: right -56px;
 	font-weight: bold;
 }
@@ -453,7 +446,6 @@ textarea:focus {
 }
 .list-group-item-subs {
 	display: none;
-	/*border-bottom: 1px solid #e0e0e0;*/
 }
 .list-group-item-subs .list-group-item .awp {
 	padding-left: 40px;
@@ -463,16 +455,12 @@ textarea:focus {
 	background: #FBFBFB;
 }
 .list-group-item-primary .awp {
-	/*background: linear-gradient(#fff, #F4F4F4);*/
-	/*box-shadow:0 1px 1px rgba(0,0,0,.05);*/
-	
 	padding-top: 12px;
 	padding-bottom: 12px;
 	border-bottom: 1px solid #DDD;
 	font-weight: bold;
 }
 .list-group-item-primary:hover .awp {
-	/*background: linear-gradient(#F8F8F8, #E8E8E8);*/
 }
 .list-group-item-primary .arr {
 	background-image: url(../img/side-ddl.png);
@@ -493,12 +481,6 @@ textarea:focus {
 	cursor: pointer;
 	display: inline-block;
 	outline: none;
-}
-.list-group-item-primary .arr:hover {
-	/*background-color: #ddd;*/
-	/*background-color: rgba(255, 255, 255, .5);*/
-	/*box-shadow: 0 1px 2px rgba(0, 0, 0, .15);*/
-	/*box-shadow:inset 0 0 1px rgba(0,0,0,.2)*/
 }
 .list-group-item-primary.open .arr {
 	background-position: -10px -59px;
