@@ -14,6 +14,7 @@ namespace Flowpie
                 "~/statics/admin/css/font.css",
                 "~/statics/admin/css/nanoscroller.css",
                 "~/statics/admin/css/bsreset.css",
+                "~/ueditor/themes/default/css/ueditor.css",
                 "~/statics/admin/css/global.css"));
 
             //common all js
@@ -23,11 +24,34 @@ namespace Flowpie
                 "~/statics/admin/js/bootstrap-datetimepicker.js",
                 "~/statics/admin/js/nanoscroller.js",
                 "~/statics/admin/js/ajaxhelper.js",
+                "~/statics/admin/js/image.js",
+                "~/statics/admin/js/exif.js",
+                "~/statics/admin/js/mega-pixImage.js",
+                "~/ueditor/ueditor.config.js",
+                "~/ueditor/ueditor.all.min.js",
+                "~/ueditor/lang/zh-cn/zh-cn.js",
                 "~/statics/admin/js/global.js"));
-            
+
+
+            //common all js
+            //bundles.Add(new ScriptBundle("~/statics/admin/js/all").Include(
+            //    "~/statics/admin/js/jquery-1.11.1.min.js",
+            //    "~/statics/admin/js/bootstrap.min.js",
+            //    "~/statics/admin/js/bootstrap-datetimepicker.js",
+            //    "~/statics/admin/js/nanoscroller.js",
+            //    "~/statics/admin/js/ajaxhelper.js",
+            //    "~/statics/admin/js/image.js",
+            //    "~/statics/admin/js/exif.js",
+            //    "~/statics/admin/js/mega-pixImage.js",
+            //    "~/ueditor/ueditor.config.js",
+            //    "~/ueditor/ueditor.all.min.js",
+            //    "~/ueditor/lang/zh-cn/zh-cn.js",
+            //    "~/statics/admin/js/global.js"));
+
             //jx all css
             bundles.Add(new StyleBundle("~/statics/jx/css/all").Include(
                 "~/statics/jx/css/font-awesome.css",
+                "~/ueditor/themes/default/css/ueditor.css",
                 "~/statics/jx/css/global.css"));
 
             //jx all js
@@ -37,6 +61,12 @@ namespace Flowpie
                 "~/statics/jx/js/swipe.js",
                 "~/statics/admin/js/ajaxhelper.js",
                 "~/statics/admin/js/wx.js",
+                "~/statics/admin/js/image.js",
+                "~/statics/admin/js/exif.js",
+                "~/statics/admin/js/mega-pixImage.js",
+                "~/ueditor/ueditor.config.js",
+                "~/ueditor/ueditor.all.min.js",
+                "~/ueditor/lang/zh-cn/zh-cn.js",
                 "~/statics/jx/js/global.js"));
 
 

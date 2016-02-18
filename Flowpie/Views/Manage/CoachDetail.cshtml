@@ -63,9 +63,6 @@
                                 <div class="cell col1">头像</div>
                                 <div class="cell col2">
                                     <img src="@coach["HeadPic"]" width="60">
-                                    <div class="padtop10px">
-                                        <a href="#" class="btn btn-default btn-sm">修改头像</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -176,49 +173,6 @@
                     </div>
 
                 }
-
-
-                @*<div class="opl-table">
-                    <div class="tt">
-                        <span>授课情况</span>
-                    </div>
-                    <div class="ct clearfix">
-                        <table class="standtb">
-                            <tr class="head">
-                                <td>时间</td>
-                                <td>学员头像</td>
-                                <td>学员姓名</td>
-                                <td>状态</td>
-                                <td>评分</td>
-                                <td>评价内容</td>
-                            </tr>
-                            <tr>
-                                <td>2015/4/5 14:00 - 15:00</td>
-                                <td><img class="sibnusr" src="~/statics/jx/img/user04.jpg" /></td>
-                                <td>王静</td>
-                                <td>等待上课</td>
-                                <td> - </td>
-                                <td> - </td>
-                            </tr>
-                            <tr>
-                                <td>2015/4/3 16:00 - 18:00</td>
-                                <td><img class="sibnusr" src="~/statics/jx/img/user04.jpg" /></td>
-                                <td>陈康</td>
-                                <td>未评价</td>
-                                <td> - </td>
-                                <td> - </td>
-                            </tr>
-                            <tr>
-                                <td>2015/4/1 11:00 - 15:00</td>
-                                <td><img class="sibnusr" src="~/statics/jx/img/user04.jpg" /></td>
-                                <td>张龙</td>
-                                <td>已经评价</td>
-                                <td><div class="green">4分</div><div class="font12px">（专业：5，时间控制：3，态度：4）</div></td>
-                                <td>教练不错，教得很耐心，只是部分内容 不是很熟练，希望教练下节课可以着重让我们训练一下。</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>*@
                 <div class="bt-btn-bar">
                     @if (coach["IsFreeze"].ToString() == "0")
                     {
@@ -249,6 +203,19 @@
                 <h4 class="modal-title" id="myModalLabel">编辑基本信息</h4>
             </div>
             <div class="modal-body">
+                <div class="form-group">
+                    <div class="cell col1">头像</div>
+                    <div class="cell col2">
+                        <img id="pre-image" src="@coach["HeadPic"]" width="60">
+                        <div class="padtop10px">
+                            <input type="file" accept="image/*" id="upload-head-pic" style="display: none" name="upload-head-pic">
+                            <input id="tmp_head_pic" name="tmp_head_pic" type="text" value="@coach["HeadPic"]" style="display: none">
+                            <input id="tmp_head_code" name="tmp_head_code" type="text" value="" style="display: none">
+                            <canvas id="upload-canvas" style="display:none"></canvas>
+                            <a id="btn_choose" href="javascript:void(0)" class="btn btn-default btn-sm">修改头像</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label>真实姓名</label>
                     <input type="text" class="form-control m-name" placeholder="填写教练真实姓名" value="@coach["Name"]">
@@ -287,7 +254,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary save" onclick="updateCoach()">保存</button>
+                <button type="button" class="btn btn-primary save" onclick="saveCoach()">保存</button>
             </div>
         </div>
     </div>
@@ -299,6 +266,7 @@
 <!-- /container -->
 <script type="text/javascript">
     var coach_id = '@coach["StudentID"]';
+    var headpic = '';
 
 	$(document).ready(function() {
 	    $('#datepicker01').datetimepicker({
@@ -316,6 +284,18 @@
 	    $('.unfreeze').click(function () {
 	        unfreeze();
 	    })
+
+	    $('#btn_choose').click(function () {
+	        loadPreHeadPic();
+	    })
+
+	    $('#upload-head-pic').change(function () {
+	        var file = this.files[0];
+
+	        headpic = file;
+
+	        ImageOpt(file, 'pre-image');
+	    });
 	});
 
 	function updateCoach() {
@@ -323,8 +303,12 @@
 	    var phone = $('.m-phone').val();
 	    var birthday = $('.m-birthday').val();
 	    var code = $('.m-code').val();
+	    var headpic = $('#tmp_head_pic').val();
+	    var image = $('#tmp_head_code').val();
 
-	    var data = { 'StudentID': coach_id, 'Name': name, 'Phone': phone, 'Birthday': birthday, 'Code': code };
+	    //alert(image); return;
+
+	    var data = { 'StudentID': coach_id, 'Name': name, 'Phone': phone, 'Birthday': birthday, 'Code': code, 'headpic': headpic, 'image': image };
 
 	    var params = {
 	        url: '/api/coach/update',
@@ -406,4 +390,71 @@
 	function errorunfreeze() {
 	    alert('解冻失败!');
 	}
+
+	function loadPreHeadPic() {
+	    $("#upload-head-pic").click();
+
+	    $('#tmp_head_pic').val('');
+	}
+
+	function saveCoach() {
+	    var image = document.getElementById('pre-image');
+	    var is_def = false;
+
+	    EXIF.getData(image, function () {
+	        if (EXIF.getTag(image, 'Orientation') == 6) {
+	            is_def = true;
+	        }
+	        //使用插件初始化图片
+	        var mpImg = new MegaPixImage(headpic);
+	        var option = null;
+
+	        if (is_def)
+	            option = { maxWidth: image.width * 2, maxHeight: image.height * 2, orientation: 6 };
+	        else
+	            option = { maxWidth: image.width * 2, maxHeight: image.height * 2, quality: 0.5 };
+
+	        var canvas = document.getElementById('upload-canvas');
+
+	        mpImg.render(canvas, option, function () {
+	            var base64 = canvas.toDataURL('image/jpeg');
+
+	            $('#tmp_head_code').val(base64);
+
+	            updateCoach();
+	        });
+	    });
+	}
+
+	//function picUpload(file, img_id, canvas_id, url, fun) {
+	//    if (file) {
+	//        var image = document.getElementById(img_id);
+	//        var is_def = false;
+
+	//        EXIF.getData(image, function () {
+	//            if (EXIF.getTag(image, 'Orientation') == 6) {
+	//                is_def = true;
+	//            }
+	//            //使用插件初始化图片
+	//            var mpImg = new MegaPixImage(file);
+	//            var option = null;
+
+	//            if (is_def)
+	//                option = { maxWidth: image.width * 2, maxHeight: image.height * 2, orientation: 6 };
+	//            else
+	//                option = { maxWidth: image.width * 2, maxHeight: image.height * 2, quality: 0.5 };
+
+	//            var canvas = document.getElementById(canvas_id);
+
+	//            mpImg.render(canvas, option, function () {
+	//                var base64 = canvas.toDataURL('image/jpeg');
+
+	//                $.post(url, { 'formFile': base64.substr(22) }, fun);
+	//            });
+	//        });
+	//    }
+	//    else {
+	//        fun('');
+	//    }
+	//}
 </script>

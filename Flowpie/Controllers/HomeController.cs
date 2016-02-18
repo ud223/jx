@@ -37,24 +37,25 @@ namespace Flowpie.Controllers
             string code = this.HttpContext.Request.QueryString["code"];
             string tmp_web_url = this.HttpContext.Request.QueryString["web_url"];
 
-            //string web_url = System.Web.HttpUtility.UrlDecode(tmp_web_url);
+            string web_url = System.Web.HttpUtility.UrlDecode(tmp_web_url);
 
-            //if (CommonLib.Common.Validate.IsNullString(web_url) != "")
-            //{
-            //    if (web_url == "http://wx.yune-jia.com/")
-            //    {
-            //        web_url = "/";
-            //    }
-            //    else
-            //    {
-            //        web_url = web_url.Replace("http://wx.yune-jia.com/", "/");
-            //    }
-            //}
-            //else
-            //{
-            //    web_url = "/";
-            //}
-            string web_url = "/";
+            if (CommonLib.Common.Validate.IsNullString(web_url) != "")
+            {
+                if (web_url == "http://wx.yune-jia.com/")
+                {
+                    web_url = "/";
+                }
+                else
+                {
+                    web_url = web_url.Replace("http://wx.yune-jia.com/", "/");
+                }
+            }
+            else
+            {
+                web_url = "/";
+            }
+
+            //string web_url = "/";
             string open_id = this.getOpenId(code);
 
             Models.Student stu = this.getUserInfo(open_id);
@@ -87,6 +88,7 @@ namespace Flowpie.Controllers
                         coupon1.Add("CouponRemark", itm["CouponRemark"].ToString());
                         coupon1.Add("Password", couponController.getPassword());
                         coupon1.Add("StudentID", student_id);
+                        coupon1.Add("Expire", DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"));
                         coupon1.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                         coupon1.Add("ModifyAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
@@ -191,14 +193,18 @@ namespace Flowpie.Controllers
                 Response.RedirectToRoute("school-list");
             }
 
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
             JxLib.StudentController studentController = new JxLib.StudentController();
             CacheLib.Cookie cookie = new CacheLib.Cookie();
 
             string user_id = cookie.GetCookie("user_id");
 
             System.Collections.Hashtable item = studentController.load(user_id);
+            System.Collections.Hashtable school = schoolController.load(id);
+
 
             ViewData["data"] = item;
+            ViewData["item"] = school;
             ViewData["schoolid"] = id;
             ViewData["iscoach"] = item["IsCoach"].ToString();
             ViewData["lessonstate"] = item["LessonState"].ToString();
@@ -241,6 +247,7 @@ namespace Flowpie.Controllers
         public ActionResult StudentEnterSave()
         {
             JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
             SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
             JxLib.ApplicationController applicationController = new JxLib.ApplicationController();
             DatabaseLib.Tools tools = new DatabaseLib.Tools();
@@ -271,6 +278,14 @@ namespace Flowpie.Controllers
 
             if (applicationController.Result)
             {
+                System.Collections.Hashtable school = schoolController.load(data["SchoolID"].ToString());
+
+                tools.Sms sms = new tools.Sms();
+
+                string content = "感谢您的报名，您的信息已经提交至["+ school["SchoolText"].ToString() + "]，请保持手机畅通，或者您也可以随时联系客服[0755-129393828]";
+
+                sms.SendSms(data["Phone"].ToString(), content);
+
                 return RedirectToRoute("enter-success");
             }
             else
@@ -361,10 +376,10 @@ namespace Flowpie.Controllers
                 return Redirect("/home");
             }
 
-            if (item["State"].ToString() != "0")
-            {
-                return Redirect("/home");
-            }
+            //if (item["State"].ToString() != "0")
+            //{
+            //    return Redirect("/home");
+            //}
 
             ViewData["orderid"] = id;
             ViewData["state"] = item["State"].ToString();
@@ -1161,14 +1176,15 @@ namespace Flowpie.Controllers
             JsApiPay jsApiPay = new JsApiPay(Request, Response);
             jsApiPay.openid = openid;
             jsApiPay.total_fee = Convert.ToInt32(amount);
+            jsApiPay.order_id = orderid;
 
             //JSAPI支付预处理
             try
             {
                 WxApiLib.lib.WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult();
-
-                wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数      
-                                                             //editAddress = jsApiPay.GetEditAddressParameters();          
+                //获取H5调起JS API参数  
+                wxJsApiParam = jsApiPay.GetJsApiParameters();               
+                //editAddress = jsApiPay.GetEditAddressParameters();          
 
                 WxApiLib.lib.Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
 
@@ -1195,7 +1211,82 @@ namespace Flowpie.Controllers
         public ActionResult ResultNotify()
         {
             ResultNotify resultNotify = new ResultNotify(Request, Response);
-            resultNotify.ProcessNotify();
+            //resultNotify.ProcessNotify();
+            WxApiLib.lib.Log.Debug(this.GetType().ToString(), "进入回调");
+            WxApiLib.lib.WxPayData notifyData = resultNotify.GetNotifyData();
+
+            if (!notifyData.IsSet("transaction_id"))
+            {
+                //若transaction_id不存在，则立即返回结果给微信支付后台
+                WxApiLib.lib.WxPayData res = new WxApiLib.lib.WxPayData();
+                res.SetValue("return_code", "FAIL");
+                res.SetValue("return_msg", "支付结果中微信订单号不存在");
+                WxApiLib.lib.Log.Error(this.GetType().ToString(), "The Pay result is error : " + res.ToXml());
+                Response.Write(res.ToXml());
+                Response.End();
+            }
+
+            string transaction_id = notifyData.GetValue("transaction_id").ToString();
+
+            //查询订单，判断订单真实性
+            if (resultNotify.QueryOrder(transaction_id))
+            {
+                string id = notifyData.GetValue("attach").ToString();
+
+                JxLib.OrderController orderController = new JxLib.OrderController();
+                JxLib.StudentController studentController = new JxLib.StudentController();
+                JxLib.SchoolController schoolController = new JxLib.SchoolController();
+
+                WxApiLib.lib.Log.Debug(this.GetType().ToString(), "支付id:" + id);
+                System.Collections.Hashtable item = orderController.load(id);
+
+                if (item["State"].ToString() == "0")
+                {
+                    orderController.nextState(id);
+
+                    if (orderController.Result)
+                    {
+                        System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+                        System.Collections.Hashtable school = schoolController.load(item["SchoolID"].ToString());
+
+                        tools.Sms sms = new tools.Sms();
+
+                        string[] times = item["Time"].ToString().Split(',');
+
+                        Array.Sort(times);
+
+                        string content = "您已经成功支付一次在[" + school["SchoolText"].ToString() + "]的约教订单，时间是["+ item["RunDate"].ToString() + " "+ times[0] + ":00 - "+ times[times.Length - 1] + ":00]，我们正在为您安排教练，一旦分配到教练，我们会再次通知您。";
+
+                        sms.SendSms(stu["Phone"].ToString(), content);
+
+                        WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付成功!");
+                    }
+                    else
+                    {
+                        WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付失败!");
+                    }
+                }
+
+               
+
+                WxApiLib.lib.WxPayData res = new WxApiLib.lib.WxPayData();
+                res.SetValue("return_code", "SUCCESS");
+                res.SetValue("return_msg", "OK");
+                WxApiLib.lib.Log.Info(this.GetType().ToString(), "order query success : " + res.ToXml());
+                Response.Write(res.ToXml());
+                Response.End();
+            }
+            else
+            {
+                WxApiLib.lib.WxPayData res = new WxApiLib.lib.WxPayData();
+                res.SetValue("return_code", "FAIL");
+                res.SetValue("return_msg", "订单查询失败");
+                WxApiLib.lib.Log.Error(this.GetType().ToString(), "Order query failure : " + res.ToXml());
+                Response.Write(res.ToXml());
+                Response.End();
+            }
+
+            //resultNotify.ProcessNotify();
 
             return View();
         }

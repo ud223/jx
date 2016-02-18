@@ -38,6 +38,11 @@ namespace WxApiLib
         public int total_fee { get; set; }
 
         /// <summary>
+        /// 系统订单编号
+        /// </summary>
+        public string order_id { get; set; }
+
+        /// <summary>
         /// 统一下单接口返回结果
         /// </summary>
         public WxPayData unifiedOrderResult { get; set; }
@@ -153,7 +158,7 @@ namespace WxApiLib
             //统一下单
             WxPayData data = new WxPayData();
             data.SetValue("body", "课时费");
-            data.SetValue("attach", "支付课时费");
+            data.SetValue("attach", order_id);
             data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
             data.SetValue("total_fee", total_fee);
             data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));

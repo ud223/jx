@@ -15,6 +15,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Flowpie.Controllers
 {
@@ -129,6 +131,47 @@ namespace Flowpie.Controllers
             string strParam = context.Request.Form.ToString();
 
             System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            string image = data["image"].ToString();
+
+            if (image == "")
+            {
+                data.Add("HeadPic", data["headpic"].ToString());
+            }
+            else
+            {
+                image = image.IndexOf("data:image/jpeg;base64,") > -1 ? image.Replace("data:image/jpeg;base64,", "") : image;
+                image = image.Replace("data:image/png;base64,", "");
+
+                byte[] arr = Convert.FromBase64String(image);
+
+                MemoryStream ms = new MemoryStream(arr);
+                Bitmap bmp = new Bitmap(ms);
+
+
+                Bitmap bmp2 = new Bitmap(bmp.Width, bmp.Height, PixelFormat.Format16bppRgb555);
+
+                Graphics g = Graphics.FromImage(bmp2);
+
+                g.DrawImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+
+                g.Dispose();
+
+                bmp.Dispose();
+
+                ms.Close();
+
+                string path = AppDomain.CurrentDomain.BaseDirectory + "photo/";
+                string filename = DateTime.Now.ToString("yyyyMMddhhmmssfff") + ".jpg";
+
+                string headpic = "/photo/" + filename;
+
+                bmp2.Save(Path.Combine(path, filename));
+
+                bmp2.Dispose();
+
+                data.Add("HeadPic", headpic);
+            }
 
             coachController.save(data);
 

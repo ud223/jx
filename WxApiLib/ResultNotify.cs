@@ -55,7 +55,7 @@ namespace WxApiLib
         }
 
         //查询订单
-        private bool QueryOrder(string transaction_id)
+        public bool QueryOrder(string transaction_id)
         {
             WxPayData req = new WxPayData();
             req.SetValue("transaction_id", transaction_id);

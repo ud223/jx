@@ -34,7 +34,7 @@
         {
             case "1":
                 {
-                    url = "/home/lessonstart/"+ item["TeachID"].ToString();
+                    url = "/home/lessonstart/" + item["TeachID"].ToString();
 
                     break;
                 }
@@ -58,39 +58,76 @@
                 }
         }
 
-        <div class="row actbtn height cd_hottap" hottap="@url">
-            <div class="tt"><span>@t1.ToString():00-@t2.ToString():00</span></div>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
+        if (url == "#")
+        {
+            <div class="row actbtn height">
+                <div class="tt"><span>@date @t1.ToString():00-@t2.ToString():00</span></div>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+                @switch (item["State"].ToString())
+                    {
+                        case "1":
+                            {
+                            <span class="status-for-order-sm paid">等待上课</span>
+                            break;
+                        }
+                    case "2":
+                        {
+                            <span class="status-for-order-sm">上课中</span>
+
+                            break;
+                        }
+                    case "3":
+                        {
+                            <span class="status-for-order-sm">待评分</span>
+
+                            break;
+                        }
+                    case "4":
+                        {
+                            <span class="status-for-order-sm">已完成</span>
+
+                            break;
+                        }
+                }
             </div>
-            @switch (item["State"].ToString())
-            {
-                case "1":
-                    {
-                        <span class="status-for-order-sm paid">等待上课</span>
-                        break;
-                    }
-                case "2":
-                    {
-                        <span class="status-for-order-sm">上课中</span>
+        }
+        else
+        {
+            <div class="row actbtn height cd_hottap" hottap="@url">
+                <div class="tt"><span>@date @t1.ToString():00-@t2.ToString():00</span></div>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+                @switch (item["State"].ToString())
+                {
+                    case "1":
+                        {
+                            <span class="status-for-order-sm paid">等待上课</span>
+                            break;
+                        }
+                    case "2":
+                        {
+                            <span class="status-for-order-sm">上课中</span>
 
-                        break;
-                    }
-                case "3":
-                    {
-                        <span class="status-for-order-sm">待评分</span>
+                            break;
+                        }
+                    case "3":
+                        {
+                            <span class="status-for-order-sm">待评分</span>
 
-                        break;
-                    }
-                case "4":
-                    {
-                        <span class="status-for-order-sm">已完成</span>
+                            break;
+                        }
+                    case "4":
+                        {
+                            <span class="status-for-order-sm">已完成</span>
 
-                        break;
-                    }
-            }
-           
-        </div>
+                            break;
+                        }
+                }
+            </div>
+        }              
     }
 </div>
 

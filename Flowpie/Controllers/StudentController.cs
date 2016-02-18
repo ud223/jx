@@ -44,6 +44,7 @@ namespace Flowpie.Controllers
         public string Sign()
         {
             JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
             JxLib.ApplicationController applicationController = new JxLib.ApplicationController();
             DatabaseLib.Tools tools = new DatabaseLib.Tools();
             Models.Result result = new Models.Result();
@@ -66,10 +67,18 @@ namespace Flowpie.Controllers
                 data.Add("SchoolID", application["SchoolID"].ToString());
                 data.Add("StudentID", application["StudentID"].ToString());
 
+                System.Collections.Hashtable school = schoolController.load(application["SchoolID"].ToString());
+
                 studentController.saveEnter(data);
 
                 if (studentController.Result)
                 {
+                    tools.Sms sms = new tools.Sms();
+
+                    string content = "您的报名已经被审批通过，现在开始您已经是["+ school["Phone"].ToString() + "]的正式学员了";
+
+                    sms.SendSms(student["Phone"].ToString(), content);
+
                     result.code = "200";
                     result.message = "审批成功!";
                 }

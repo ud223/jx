@@ -517,6 +517,7 @@ namespace Flowpie.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult SchoolSave()
         {
             JxLib.SchoolController schoolController = new JxLib.SchoolController();

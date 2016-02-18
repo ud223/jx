@@ -17,6 +17,13 @@
 	}];
 </script>
 
+@{ 
+
+    var item = ViewData["item"] as System.Collections.Hashtable;
+
+    string remark = item["Remark"].ToString();
+}
+
 <!--此段为滑动多图的html部分，写死在这里-->
 <div class="jiaxiao-bk">
     <a href="/home" class="fa fa-chevron-left eibackto">
@@ -73,8 +80,8 @@
     <div class="cd-bigblk jxbigblk selected" name="cd-blkx1">
         <div class="dipu2">
             <div class="dipu3">驾校简介</div>
-            <div class="detailddlx">
-                <div style="padding:15px 0"><img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/jx104.jpg")" width="100%" /></div>
+            <div class="detailddlx" id="div_remark">
+                @*<div style="padding:15px 0"><img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/jx104.jpg")" width="100%" /></div>
                 <div style="padding:0 0 15px 0;"><img src="@CommonLib.Web.WebTool.CDN("/statics/jx/img/home/jx105.jpg")" width="100%"/></div>
                 <p style="font-weight:bold;">1.综合班简介：</p>
                 <div style="margin-bottom:15px;">深大驾校成立于1996年，是深圳市内唯一在高校设有驾校训练场地一体化的驾驶培训学校，至今服务深大师生已19年，兢兢业业，勇于创新，服务了一届又一届的深大人。如今，饱含着历史沉淀的深大驾校与“云e驾”互联网品牌强强合作，通过微信端链接学员与教练，颠覆传统驾校学车模式，提升驾考体验，运用互联网技术，实现一人一车一教练，微信下单随时随地预约练车，解决学员预约教练难的难题，减少学员学车的时间和费用成本，推出新型学车模式，专业的互联网技术团队、优质的服务团队、良好的练车环境，打造新型品牌互联网学车平台引领者，做最牛学车驾考联军。</div>
@@ -104,7 +111,7 @@
                         <div>QQ: 2239139505</div>
                         <div>电话:0755-26534013</div>
                     </div>
-                </div>
+                </div>*@
                 
             </div>
             <div class="detailddlx-open" alt="收起">展开</div>
@@ -575,12 +582,15 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="tmp_remark" value="@remark" />
 <script type="text/javascript">
     var school_id = '@ViewData["schoolid"]';
     var cur_weeknum = 1;
     var cur_date = '';
 
-	$('document').ready(function(e) {
+    $('document').ready(function (e) {
+        $('#div_remark').html($('#tmp_remark').val());
+
 		if (imgs_json.length) {
 			// 根据imgs_json的长度和内容循环加载图片
 			$.each(imgs_json, function() {
@@ -694,6 +704,8 @@
 		$("#submit").click(function () {
 		    submit();
 		})
+
+
 
 		loadData();
 	});

@@ -298,6 +298,7 @@ namespace Flowpie.Controllers
         public string setCoach()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
 
             SystemConfigureLib.SerialNumberController serialController = new SystemConfigureLib.SerialNumberController();
             Models.Result result = new Models.Result();
@@ -316,6 +317,28 @@ namespace Flowpie.Controllers
 
                 if (!orderController.Result)
                     break;
+                else
+                {
+                    System.Collections.Hashtable order = orderController.load(teach_ids[i]);
+
+                    System.Collections.Hashtable stu = studentController.load(order["SchoolID"].ToString());
+                    System.Collections.Hashtable coach = studentController.load(coach_ids[i]);
+
+                    tools.Sms sms = new tools.Sms();
+
+                    string content = "我们已经为您分配到学车教练["+ coach["Name"].ToString() + "]，请根据约教订单时间，提前10分钟到场准备上车训练。";   
+
+                    sms.SendSms(stu["Phone"].ToString(), content);
+
+                    string date = order["RunDate"].ToString();
+                    string[] times = order["Time"].ToString().Split(',');
+
+                    Array.Sort(times);
+
+                    string content1 = "你有新的学员：[" + stu["Name"].ToString() + "]，授课时间：["+ date + " "+  times[0] + ":00 - "+ times[times.Length - 1] +":00]，请准时为学员上课。";
+
+                    sms.SendSms(coach["Phone"].ToString(), content1);
+                }
             }
 
             if (orderController.Result)
@@ -336,7 +359,7 @@ namespace Flowpie.Controllers
         public string orderNext()
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
-
+            JxLib.StudentController studentController = new JxLib.StudentController();
             SystemConfigureLib.SerialNumberController serialController = new SystemConfigureLib.SerialNumberController();
             Models.Result result = new Models.Result();
             DatabaseLib.Tools tools = new DatabaseLib.Tools();
@@ -344,6 +367,27 @@ namespace Flowpie.Controllers
             HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
 
             Hashtable data = tools.paramToData(context.Request.Form);
+
+            System.Collections.Hashtable order = orderController.load(data["orderid"].ToString());
+
+            System.Collections.Hashtable stu = studentController.load(order["StudentID"].ToString());
+            System.Collections.Hashtable coach = studentController.load(order["CoachID"].ToString());
+
+            tools.Sms sms = new tools.Sms();
+
+            if (order["State"].ToString() == "1")
+            {
+                string content = "你的教练["+ coach["Name"].ToString() + "]已经开始为您上课";
+
+                sms.SendSms(stu["Phone"].ToString(), content);
+            }
+            else if (order["State"].ToString() == "2")
+            {
+                string content = "下课啦！请进入“个人中心”为本次授课做一个评分，谢谢";
+
+                sms.SendSms(stu["Phone"].ToString(), content);
+
+            }
 
              orderController.nextState(data["orderid"].ToString());
 
@@ -360,5 +404,11 @@ namespace Flowpie.Controllers
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
         }
+
+        //[HttpPost]
+        //public string orderPay()
+        //{
+
+        //}
     }
 }

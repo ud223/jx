@@ -138,13 +138,16 @@
                         <div class="ct clearfix">
                             <div class="inner-table">
                                 <div class="row">
-                                    <div class="cell col1">详细介绍</div>
+                                    <div class="cell col1"></div>
                                     <div class="cell col2">
-                                        <textarea id="Remark" name="Remark" class="pc100" placeholder="暂时手动填充富文本">@(((System.Collections.Hashtable)ViewData["item"])["Remark"])</textarea>
+                                        @*<textarea id="Remark" name="Remark" class="pc100" placeholder="暂时手动填充富文本">@(((System.Collections.Hashtable)ViewData["item"])["Remark"])</textarea>*@
+                                        <script type="text/plain" id="Remark" name="Remark" style="width:1000px;height:240px;">
+                                            <p>请输入新闻内容</p>
+                                        </script>
                                     </div>
                                 </div>
                             </div>
-                            <div class="inner-block">
+                            @*<div class="inner-block">
                                 <div class="col1">
                                     上传图片
                                 </div>
@@ -195,10 +198,11 @@
                                         <div class="imgitmblk add">+</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                     <div class="bt-btn-bar">
+                        <input type="hidden" id="tmp_content" name="tmp_content" value="@(((System.Collections.Hashtable)ViewData["item"])["Remark"])">
                         <input type="hidden" id="SchoolID" name="SchoolID" value="@(((System.Collections.Hashtable)ViewData["item"])["SchoolID"])" />
                         <button type="submit" class="btn btn-primary"><span class="glyphicons glyphicons-edit"></span> 保存</button>
                     </div>
@@ -210,6 +214,25 @@
     <!-- /container -->
     <script type="text/javascript">
         $(document).ready(function () {
+            //实例化编辑器
+            var um = UE.getEditor('Remark');
+
+            um.addListener('blur', function () {
+                $('#focush2').html('编辑器失去焦点了')
+            });
+            um.addListener('focus', function () {
+                $('#focush2').html('')
+
+
+            });
+
+            um.addListener("ready", function () {
+                var content = $('#tmp_content').val();
+
+                // editor准备好之后才可以使用
+                um.setContent(content);
+            });
+
             $('body').on('click', '.lcilt, .lcirt', function () {
                 var container = $(this).closest('.imgitmblk');
                 var target;

@@ -46,7 +46,7 @@ namespace JxLib
 
         public override void save(Hashtable data)
         {
-            this.SqlText = "update app_students set Name='@Name@', Phone='@Phone@', Birthday='@Birthday@', Code='@Code@' where StudentID='@StudentID@'";
+            this.SqlText = "update app_students set Name='@Name@', Phone='@Phone@', Birthday='@Birthday@', Code='@Code@', HeadPic='@HeadPic@' where StudentID='@StudentID@'";
 
             base.save(data);
         }

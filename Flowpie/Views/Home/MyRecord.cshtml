@@ -12,6 +12,7 @@
 <div class="blackrowgall unclickable nmt">
     <div class="row">
         <div class="timeline-blks">
+            @*<a href="/home/orderrating/@item["TeachID"]" class="uncomment"><i class="fa fa-pencil-square-o"></i> 前往评价</a>*@
             @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
             {
                 string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
@@ -48,7 +49,7 @@
                                                 <div class="td">@item["Name"]</div>
                                             </div>
                                         </div>
-                                        <div class="commentblk"><a href="/home/orderrating/@item["TeachID"]" class="uncomment"><i class="fa fa-pencil-square-o"></i> 前往评价</a></div>
+                                        <div class="commentblk"><i class="fa fa-pencil-square-o"></i> 前往评价</div>
                                     </div>
                                     <div class="lab">待评价</div>
                                 </div>
