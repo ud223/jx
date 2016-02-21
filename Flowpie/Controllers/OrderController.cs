@@ -324,18 +324,18 @@ namespace Flowpie.Controllers
                     System.Collections.Hashtable stu = studentController.load(order["SchoolID"].ToString());
                     System.Collections.Hashtable coach = studentController.load(coach_ids[i]);
 
-                    tools.Sms sms = new tools.Sms();
-
-                    string content = "我们已经为您分配到学车教练["+ coach["Name"].ToString() + "]，请根据约教订单时间，提前10分钟到场准备上车训练。";   
-
-                    sms.SendSms(stu["Phone"].ToString(), content);
-
                     string date = order["RunDate"].ToString();
                     string[] times = order["Time"].ToString().Split(',');
 
+                    tools.Sms sms = new tools.Sms();
+
+                    string content = "您好，[" + stu["Name"].ToString() + "]已经为您分配教练[" + coach["Name"].ToString() + "]，联系电话[" + coach["Phone"].ToString() + "]，请于[" + date + " " + times[0] + ":00 - " + times[times.Length - 1] + ":00]准时前往训练场地上课";//"我们已经为您分配到学车教练["+ coach["Name"].ToString() + "]，请根据约教订单时间，提前10分钟到场准备上车训练。";   
+
+                    sms.SendSms(stu["Phone"].ToString(), content);
+
                     Array.Sort(times);
 
-                    string content1 = "你有新的学员：[" + stu["Name"].ToString() + "]，授课时间：["+ date + " "+  times[0] + ":00 - "+ times[times.Length - 1] +":00]，请准时为学员上课。";
+                    string content1 = "教练[" + coach["Name"].ToString() + "]你好，你有新的约教学员[" + stu["Name"].ToString() + "]，电话[" + stu["Phone"].ToString() + "]，授课时间是[" + date + " " + times[0] + ":00 - " + times[times.Length - 1] + ":00]，届时请提前前往场地准备授课（可以前往云e驾平台查看详细）";//"你有新的学员：[" + stu["Name"].ToString() + "]，授课时间：["+ date + " "+  times[0] + ":00 - "+ times[times.Length - 1] +":00]，请准时为学员上课。";
 
                     sms.SendSms(coach["Phone"].ToString(), content1);
                 }
@@ -377,13 +377,13 @@ namespace Flowpie.Controllers
 
             if (order["State"].ToString() == "1")
             {
-                string content = "你的教练["+ coach["Name"].ToString() + "]已经开始为您上课";
+                string content = "您的教练[" + coach["Name"].ToString() + "]已经开始为您授课，请认真学习。";//"你的教练["+ coach["Name"].ToString() + "]已经开始为您上课";
 
                 sms.SendSms(stu["Phone"].ToString(), content);
             }
             else if (order["State"].ToString() == "2")
             {
-                string content = "下课啦！请进入“个人中心”为本次授课做一个评分，谢谢";
+                string content = "授课结束，辛苦您了。麻烦前往服务号为教练[" + coach["Name"].ToString() + "]的本次授课评分，谢谢。";//"下课啦！请进入“个人中心”为本次授课做一个评分，谢谢";
 
                 sms.SendSms(stu["Phone"].ToString(), content);
 

@@ -280,9 +280,11 @@ namespace Flowpie.Controllers
             {
                 System.Collections.Hashtable school = schoolController.load(data["SchoolID"].ToString());
 
+                System.Collections.Hashtable student = studentController.load(user_id);
+
                 tools.Sms sms = new tools.Sms();
 
-                string content = "感谢您的报名，您的信息已经提交至["+ school["SchoolText"].ToString() + "]，请保持手机畅通，或者您也可以随时联系客服[0755-129393828]";
+                string content = "你好[" + student["Name"].ToString() + "]，你的入学申请已经提交给[" + school["SchoolText"].ToString() + "]，客服人员会尽快与您联系，您也可以致电[" + school["Phone"].ToString() + "]主动和驾校联系。";
 
                 sms.SendSms(data["Phone"].ToString(), content);
 

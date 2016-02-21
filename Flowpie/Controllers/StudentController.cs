@@ -75,7 +75,7 @@ namespace Flowpie.Controllers
                 {
                     tools.Sms sms = new tools.Sms();
 
-                    string content = "您的报名已经被审批通过，现在开始您已经是["+ school["Phone"].ToString() + "]的正式学员了";
+                    string content = "你好[" + student["Name"].ToString() + "]，您已经正式成为[" + school["SchoolText"].ToString() + "]的学员，祝您早日通过考试拿到驾照！";//"您的报名已经被审批通过，现在开始您已经是["+ school["Phone"].ToString() + "]的正式学员了";
 
                     sms.SendSms(student["Phone"].ToString(), content);
 
