@@ -1,2 +1,19 @@
 2016-02-22 16:46:26.365 INFO JxLib.OrderController: 1.2 page load:select app_teach.*, SchoolText, app_schools.Address, app_students.Name, app_students.Score, app_students.Phone, app_students.HeadPic from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID left join app_students on app_teach.CoachID = app_students.StudentID where TeachID = '2016022200001'
 2016-02-22 17:10:49.315 INFO JxLib.OrderController: 1.2 page load:select app_teach.*, SchoolText, app_schools.Address, app_students.Name, app_students.Score, app_students.Phone, app_students.HeadPic from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID left join app_students on app_teach.CoachID = app_students.StudentID where TeachID = '2016022200002'
+2016-02-22 23:09:01.338 INFO JxLib.OrderController: 1.2 page load:select app_teach.*, SchoolText, app_schools.Address, app_students.Name, app_students.Score, app_students.Phone, app_students.HeadPic from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID left join app_students on app_teach.CoachID = app_students.StudentID where TeachID = '2016022200003'
+2016-02-22 23:09:07.620 INFO Flowpie.Controllers.HomeController: 1. page load
+2016-02-22 23:09:07.620 INFO JxLib.OrderController: 1.2 page load:select app_teach.*, SchoolText, app_schools.Address, app_students.Name, app_students.Score, app_students.Phone, app_students.HeadPic from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID left join app_students on app_teach.CoachID = app_students.StudentID where TeachID = '2016022200003'
+2016-02-22 23:09:07.699 DEBUG WxPayApi: 2. UnfiedOrder request : <xml><appid><![CDATA[wx78b3b4daaed7f512]]></appid><attach><![CDATA[2016022200003]]></attach><body><![CDATA[课时费]]></body><goods_tag><![CDATA[]]></goods_tag><mch_id><![CDATA[1291713801]]></mch_id><nonce_str><![CDATA[5b2e3ef44c03438a9ecab2879ef4b3a5]]></nonce_str><notify_url><![CDATA[http://wx.yune-jia.com/home/ResultNotify]]></notify_url><openid><![CDATA[oyyOBuKwjD1e6Utbygoo0PoAw0gs]]></openid><out_trade_no><![CDATA[129171380120160222230907442]]></out_trade_no><sign><![CDATA[7614912E9851F8040395C8DEF7B2B29C]]></sign><spbill_create_ip><![CDATA[8.8.8.8]]></spbill_create_ip><time_expire><![CDATA[20160222231907]]></time_expire><time_start><![CDATA[20160222230907]]></time_start><total_fee>602</total_fee><trade_type><![CDATA[JSAPI]]></trade_type></xml>
+2016-02-22 23:09:08.164 DEBUG WxPayApi: 3. UnfiedOrder response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx78b3b4daaed7f512]]></appid>
+<mch_id><![CDATA[1291713801]]></mch_id>
+<nonce_str><![CDATA[3NouQevpfPLj3pEj]]></nonce_str>
+<sign><![CDATA[F265E9066FF9225A50CF4DF4C3AF8FB9]]></sign>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<prepay_id><![CDATA[wx20160222230913b0de9efb0b0206154878]]></prepay_id>
+<trade_type><![CDATA[JSAPI]]></trade_type>
+</xml>
+2016-02-22 23:09:08.167 DEBUG WxApiLib.JsApiPay: JsApiPay::GetJsApiParam is processing...
+2016-02-22 23:09:08.179 DEBUG WxApiLib.JsApiPay: Get jsApiParam : {"appId":"wx78b3b4daaed7f512","nonceStr":"719a1966e545454988f6e5c91fec4557","package":"prepay_id=wx20160222230913b0de9efb0b0206154878","paySign":"1982617FD15E141617BB24FFF7077449","signType":"MD5","timeStamp":"1456153748"}
+2016-02-22 23:09:08.180 DEBUG Flowpie.Controllers.HomeController: wxJsApiParam : {"appId":"wx78b3b4daaed7f512","nonceStr":"719a1966e545454988f6e5c91fec4557","package":"prepay_id=wx20160222230913b0de9efb0b0206154878","paySign":"1982617FD15E141617BB24FFF7077449","signType":"MD5","timeStamp":"1456153748"}

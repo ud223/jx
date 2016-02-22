@@ -573,6 +573,12 @@
 	            node.find(".val.price").html("C1 ￥" + datainfo.C1 + " C2 ￥" + datainfo.C2);
 	            node.find(".val.max").html(datainfo.Num);
 
+	            //虚假报名
+	            var num = 100 - parseInt(datainfo.Num);
+
+	            node.find('.val.num').html(num);
+	            node.find(".val.max").html(100);
+
 	            $(node).click(function () {
 	                var $this = $(this).closest('.ttd');
 
@@ -663,6 +669,10 @@
 	                    num = num + 1;
 
 	                    $(num_span).html(num);
+
+                        //虚假报名数
+	                    $(num_span).html(num);
+	                    $(max_span).html(100);
 
 	                    if (num == max) {
 	                        $(item).addClass('unclickable');
