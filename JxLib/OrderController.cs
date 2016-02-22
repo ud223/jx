@@ -18,7 +18,7 @@ namespace JxLib
 
         public List<Hashtable> getConfigOrder(string schoolid)
         {
-            this.SqlText = "select app_teach.*, SchoolText from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID where app_teach.State = 1 and app_teach.SchoolID = " + schoolid + "";
+            this.SqlText = "select app_teach.*, SchoolText from app_teach left join app_schools on app_teach.SchoolID = app_schools.SchoolID where app_teach.State = 1 and app_teach.SchoolID = " + schoolid + "  order by app_teach.RunDate desc";
 
             return base.Query(this.SqlText);
         }

@@ -90,11 +90,12 @@ namespace Flowpie.Controllers
                     coupon.CouponID = item["CouponID"].ToString();
                     coupon.CouponText = item["CouponText"].ToString();
                     coupon.CouponTypeID = item["CouponTypeID"].ToString();
-                    coupon.CreateAt = item["CreateAt"].ToString();
 
+                    coupon.CreateAt = DateTime.Parse(item["CreateAt"].ToString()).ToString("yyyy年MM月dd日"); 
 
                     coupon.Expire = DateTime.Parse(item["Expire"].ToString()).ToString("yyyy年MM月dd日");
                     coupon.IsExpire = item["IsExpire"].ToString();
+
                     coupon.IsUse = item["IsUse"].ToString();
                     coupon.ModifyAt = item["ModifyAt"].ToString();
                     coupon.Password = item["Password"].ToString();

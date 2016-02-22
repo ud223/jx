@@ -22,6 +22,7 @@
     string schoolID = obj["SchoolID"].ToString();
     string isMark = obj["IsMark"].ToString();
     string createAt = obj["CreateAt"].ToString();
+    string lessonState = obj["LessonState"].ToString();
 }
 
 
@@ -125,10 +126,38 @@
                 <div class="opl-table">
                     <div class="tt">
                         <select id="lessonState">
-                            <option value="1">科目一</option>
-                            <option value="2">科目二</option>
-                            <option value="3">科目三</option>
-                            <option value="4">科目四</option>
+                            @if (lessonState == "0")
+                            {
+                                <option value="1" selected="selected">科目一</option>
+                            }
+                            else
+                            {
+                                <option value="1">科目一</option>
+                            }
+                            @if (lessonState == "1")
+                            {
+                                <option value="2" selected="selected">科目二</option>
+                            }
+                            else
+                            {
+                                <option value="2">科目二</option>
+                            }
+                            @if (lessonState == "2")
+                            {
+                                <option value="3" selected="selected">科目三</option>
+                            }
+                            else
+                            {
+                                <option value="3">科目三</option>
+                            }
+                            @if (lessonState == "3")
+                            {
+                                <option value="4" selected="selected">科目四</option>
+                            }
+                            else
+                            {
+                                <option value="4">科目四</option>
+                            } 
                         </select>
                         <button class="btn btn-primary cornerbtn exam-submit">考试通过</button>
                     </div>
@@ -253,7 +282,9 @@
 	    $.each(datainfo, function () {
 	        var node = $('#coupon-item').find('.bnieitm').clone();
 
-	        node.find('.mgtxt').html(this.Expire);
+	        var d = this.CreateAt + ' - ' + this.Expire;
+
+	        node.find('.mgtxt').html(d);
 
 	        if (this.IsUse != '1') {
 	            node.find('.ed').removeClass('ed');
