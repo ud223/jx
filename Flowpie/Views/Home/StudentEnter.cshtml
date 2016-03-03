@@ -109,14 +109,15 @@
 	        var birthday = getBirthByCode(code);
 	        $("#Birthday").val(birthday);
             
-	        var validResult = $.gjvalidator();
-	        console.log(validResult.msg);
-	        if (validResult.result) {
-	            $('#student-submit').submit();
-	        } else {
-	            $.toastMsg(validResult.msg);
-	        }
+	        //var validResult = $.gjvalidator();
+	        //console.log(validResult.msg);
+	        //if (validResult.result) {
+	        //    $('#student-submit').submit();
+	        //} else {
+	        //    $.toastMsg(validResult.msg);
+	        //}
 	        
+	        $('#student-submit').submit();
 	    })
 
 	    $('#sendvalcodbt').tapA(function () {
