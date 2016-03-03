@@ -19,6 +19,8 @@
 
 @{ 
 
+    var stu = ViewData["data"] as System.Collections.Hashtable;
+
     var item = ViewData["item"] as System.Collections.Hashtable;
 
     string remark = item["Remark"].ToString();
@@ -72,7 +74,7 @@
     <div class="sch-det-blk" id="fix-sch-det-blk">
         <div class="sch-det-blk-itm selected" rel="cd-blkx1"><i class="fa fa-clone"></i> 驾校详情</div>
         <div class="sch-det-blk-itm mid" rel="cd-blkx2"><i class="fa fa-lightbulb-o"></i> 报名&amp;费用</div>
-        <div class="sch-det-blk-itm" rel="cd-blkx3"><i class="fa fa-calendar-check-o"></i> 约练</div>
+        <div class="sch-det-blk-itm lesson" rel="cd-blkx3"><i class="fa fa-calendar-check-o"></i> 约练</div>
     </div>
 
 </div>
@@ -288,7 +290,7 @@
     else
     {
         //暂时只写了科目一的判断
-        if (ViewData["lessonstate"].ToString() == "1")
+        if (ViewData["lessonstate"].ToString() == "1" || ViewData["lessonstate"].ToString() == "2")
         {// && ViewData["iscoach"].ToString() == "0"
             <input type="hidden" id="rundate" name="rundate" />
             <input type="hidden" id="time" name="time" />
@@ -335,6 +337,7 @@
     var school_id = '@ViewData["schoolid"]';
     var cur_weeknum = 1;
     var cur_date = '';
+    var lessonType = '@stu["LessonState"]';
 
     $('document').ready(function (e) {
         $('#div_remark').html($('#tmp_remark').val());
@@ -541,7 +544,7 @@
 	}
 
 	function loadTrainingNode(data) {
-	    ////alert(JSON.stringify(data));
+	    //alert(JSON.stringify(data));
 	    if (data.code == '200') {
 	        var list = $(".time-tb");
 	        var datainfo = eval('(' + data.data + ')');
@@ -566,6 +569,9 @@
 
 
 	            var node = $("#time-item").find(".ttd").clone();
+
+	            if (datainfo.IsEnable == '0')
+	                $(node).addClass('unclickable');
 
 	            node.attr('id', 'item_' + this);
 	            node.attr('val', this);
@@ -761,7 +767,33 @@
 	    var select_time = $("#time").val();
 
 	    if (!select_time) {
-	        $.alertbox({ msg: '请先约练课程时段!' });
+	        //$.alertbox({ msg: '请先约练课程时段!' });
+
+	        var tab = $('.sch-det-blk-itm.lesson');
+
+	        var $this = $(tab);
+	        var name = $this.attr('rel');
+	        $('.sch-det-blk-itm.selected').removeClass('selected');
+	        $('.sch-det-blk-itm[rel="' + name + '"]').addClass('selected');
+	        $.each($('.cd-bigblk'), function () {
+
+	            if ($(this).attr('name') != name) {
+
+	                $(this).removeClass('selected');
+
+	            } else {
+
+	                $(this).addClass('selected');
+
+	            }
+
+	        });
+
+	        if ($('.sch-det-blk-itm[rel="cd-blkx3"]').hasClass('selected')) {
+	            $('#wxpaybtn').removeClass('down').addClass('up');
+	        } else {
+	            $('#wxpaybtn').addClass('down').removeClass('up');
+	        }
 
 	        return;
 	    }
@@ -774,7 +806,7 @@
 	    var select_time = $("#time").val();
 	    var rundate = $("#rundate").val();
 	    var time = $("#time").val();
-
+	    var LessonType = 2;
 	    var date = new Date(rundate);
 
 	    var weeknum = date.getDay();
@@ -782,8 +814,11 @@
 	    if (weeknum == 0)
 	        weeknum = 7;
 
+	    if (lessonType == 2)
+	        LessonType = 3;
+
 	    //alert(time);
-	    var data = { 'StudentID':user_id, 'SchoolID':school_id, 'RunDate':rundate, 'WeekNum':weeknum, 'Time':time };
+	    var data = { 'StudentID': user_id, 'SchoolID': school_id, 'RunDate': rundate, 'WeekNum': weeknum, 'Time': time, 'LessonType': LessonType };
 	    //alert(JSON.stringify(data));
 	    var params = {
 	        url: '/api/order/OrderAdd',

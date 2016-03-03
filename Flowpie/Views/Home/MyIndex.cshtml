@@ -43,56 +43,133 @@
             {
                 <a href="/exam/menu" class="fullbtn">科目一考题</a>
             }
+            else if (lessonState == "1")
+            {
+                <div class="kejindu-dabk doing">
+                    <div class="kejindu-tt">科目二 <i class="fa fa-play-circle mwoi-label">学习中</i></div>
+                    <div class="kejindu-bieio">
+                        @{ 
+                            int i = 1;
+                        }
+                        @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
+                        {
+                            int num = Int32.Parse(item["num"].ToString());
 
-            @*<div class="kejindu-dabk doing">
-                <div class="kejindu-tt">科目二 <i class="fa fa-play-circle mwoi-label">学习中</i></div>
-                <div class="kejindu-bieio">
-                    <div class="kejindu-tb">
-                        <div class="kejindu-td col1">1. 倒车入库</div>
-                        <div class="kejindu-td col2">
-                            <div>
-                                <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i>
-                            </div>
-                            <div>
-                                已完成4次训练
-                            </div>
-                        </div>
-                    </div>
-                    <div class="kejindu-tb">
-                        <div class="kejindu-td col1">2. 出库，入库</div>
-                        <div class="kejindu-td col2">
-                            <div>
-                                <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i> <i class="fa fa-check-square"></i>
-                            </div>
-                            <div>
-                                已完成5次训练
-                            </div>
-                        </div>
-                    </div>
-                    <div class="kejindu-tb">
-                        <div class="kejindu-td col1">3. 上坡起步</div>
-                        <div class="kejindu-td col2">
-                            <div>
-                                暂未训练
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="kejindu-tb">
+                                <div class="kejindu-td col1">@i.ToString() . @item["teachtypetext"]</div>
+                                <div class="kejindu-td col2">
+                                    <div>
+                                        @for (int n = 0; n < num; n++)
+                                        {
+                                            <i class="fa fa-check-square"></i>
+                                        }
+                                       
+                                    </div>
+                                    
+                                        @if (num > 0)
+                                        {
+                                            <div>
+                                                已完成<span>@num</span>次训练
+                                            </div>
+                                        }
+                                        else
+                                        {
 
-                <div>
-                    
+                                            <div>
+                                                暂未训练 </div>
+                                        }
+
+
+                                    </div>
+
+                            </div>
+
+                            i++;
+                        }
+                    </div>
+
+                    @*<div>
+
                         作者：
                         时间：2015-09-19
                         描述：下方3个按钮，代表了考前集训的不同阶段，后面2个span只是状态显示，无法点击<br />
                         理论上同一时刻只能出现一个，请酌情切换显示。
-                    
-                    <a href="p10_yuejiao.html" class="fullbtn jixun yj">约教</a>
-                    <a href="p09-1_jixunshenqing.html" class="fullbtn jixun lightgray">考前集训报名</a>
-                    <span class="fullbtn jixun waiting">考前集训报名已提交，正在分配教练</span>
-                    <span class="fullbtn jixun bookinged">已预约考前集训，日期：2015.12.15</span>
-                </div>
-            </div>*@
 
+                        <a href="p10_yuejiao.html" class="fullbtn jixun yj">约教</a>
+                        <a href="p09-1_jixunshenqing.html" class="fullbtn jixun lightgray">考前集训报名</a>
+                        <span class="fullbtn jixun waiting">考前集训报名已提交，正在分配教练</span>
+                        <span class="fullbtn jixun bookinged">已预约考前集训，日期：2015.12.15</span>
+                    </div>*@
+                </div>
+            }
+            else if (lessonState == "2")
+            {
+                <div class="kejindu-dabk doing">
+                    <div class="kejindu-tt">科目三 <i class="fa fa-play-circle mwoi-label">学习中</i></div>
+                    <div class="kejindu-bieio">
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
+                        {
+                            int num = Int32.Parse(item["num"].ToString());
+
+                            <div class="kejindu-tb">
+                                <div class="kejindu-td col1">@i.ToString() . @item["teachtypetext"]</div>
+                                <div class="kejindu-td col2">
+                                    <div>
+                                        @for (int n = 0; n < num; n++)
+                                        {
+                                            <i class="fa fa-check-square"></i>
+                                        }
+
+                                    </div>
+
+                                    @if (num > 0)
+                                    {
+                                        <div>
+                                            已完成<span>@num</span>次训练
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        <div>
+                                            暂未训练
+                                        </div>
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                            i++;
+                        }
+                    </div>
+
+                    @*<div>
+
+                            作者：
+                            时间：2015-09-19
+                            描述：下方3个按钮，代表了考前集训的不同阶段，后面2个span只是状态显示，无法点击<br />
+                            理论上同一时刻只能出现一个，请酌情切换显示。
+
+                            <a href="p10_yuejiao.html" class="fullbtn jixun yj">约教</a>
+                            <a href="p09-1_jixunshenqing.html" class="fullbtn jixun lightgray">考前集训报名</a>
+                            <span class="fullbtn jixun waiting">考前集训报名已提交，正在分配教练</span>
+                            <span class="fullbtn jixun bookinged">已预约考前集训，日期：2015.12.15</span>
+                        </div>*@
+                </div>
+            }
+            else if (lessonState == "3")
+            {
+                <a href="/exam/menu" class="fullbtn">科目四考题</a>
+            }
+            else
+            {
+
+            }
         </div>
     </div>
 
@@ -107,17 +184,17 @@
     @*<a href="p13_baoming.html" class="fullbtn">报名驾校</a>*@
 
     <!--此处若没有钱，则隐藏-->
-    @*<div class="blackrowgall unclickable">
+    <div class="blackrowgall unclickable">
         <div class="row actbtn">
             <span class="tt">账户余额</span>
             <div class="holder">
                 <span>0元</span>
             </div>
         </div>
-    </div>*@
+    </div>
 
-    @*<div class="blackrowgall">
-        <div class="row actbtn cd-slideoutbtn" rel="#pp-change-name">
+    <div class="blackrowgall">
+        <div class="row actbtn cd-slideoutbtn" rel="#">
             <span class="tt">真实姓名</span>
             <div class="holder arr">
                 <span>@if (ViewData["data"] != null)
@@ -141,7 +218,7 @@
                 <i class="icoin fa fa-angle-right"></i>
             </div>
         </div>
-        <div class="row actbtn cd-slideoutbtn" rel="#pp-change-id">
+        <div class="row actbtn cd-slideoutbtn" rel="#">
             <span class="tt">身份证号</span>
             <div class="holder arr">
                 <span>@if (ViewData["data"] != null)
@@ -153,7 +230,7 @@
                 <i class="icoin fa fa-angle-right"></i>
             </div>
         </div>
-    </div>*@
+    </div>
 
     @if (isCoach == "0")
     {
@@ -164,13 +241,13 @@
                     <i class="icoin fa fa-angle-right"></i>
                 </div>
             </div>
-            @*<div class="row actbtn cd_hottap height" hottap="p18_jilu.html">
+            <div class="row actbtn cd_hottap height" hottap="/home/myhistory">
                     <span class="tt">我的学车记录</span>
                     <div class="holder arr">
                         <i class="icoin fa fa-angle-right"></i>
                     </div>
                 </div>
-                <div class="row actbtn cd_hottap height" hottap="p09_jindu.html">
+                @*<div class="row actbtn cd_hottap height" hottap="p09_jindu.html">
                     <span class="tt">我的学车进度</span>
                     <div class="holder arr">
                         <i class="icoin fa fa-angle-right"></i>
@@ -209,12 +286,12 @@
     }
 
 
-    @*<div class="clear-15"></div>
-    <a href="p19_tousu.html" class="fullbtn normal">投诉和建议</a>
+    <div class="clear-15"></div>
+    @*<a href="p19_tousu.html" class="fullbtn normal">投诉和建议</a>*@
 
     <div class="bt-distance"></div>
 
-    <div class="slidepopup cd-slidepopup" id="pp-change-name">
+    @*<div class="slidepopup cd-slidepopup" id="pp-change-name">
         <div class="tt">更改真实姓名<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
         <div class="blackrowgall">
             <div class="row">
@@ -225,26 +302,32 @@
         <div class="fullbtn">
             确认
         </div>
-    </div>
+    </div>*@
 
     <div class="slidepopup cd-slidepopup" id="pp-change-tel">
         <div class="tt">请输入您的号码<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
         <div class="blackrowgall">
             <div class="row">
-                <input placeholder="请填写手机号码" type="tel" maxlength="11" value="18923833647" class="fulltxtinput" />
-                <button class="sendvalcodbt">发送验证码</button>
+                <input id="phone" placeholder="请填写手机号码" type="tel" maxlength="11" value="@if (ViewData["data"] != null)
+                {
+                    var user = ViewData["data"] as System.Collections.Hashtable;
+
+                    @user["Phone"].ToString();
+                }" class="fulltxtinput" />
+                <button id="sendvalcodbt" class="sendvalcodbt">发送验证码</button>
             </div>
             <div class="row">
-                <input placeholder="验证码" type="tel" maxlength="11" class="fulltxtinput" />
+                <input id="val_code" placeholder="验证码" type="tel" maxlength="11" class="fulltxtinput" />
+                <input type="hidden" id="rand_code">
             </div>
         </div>
         <div class="clear-15"></div>
-        <div class="fullbtn">
+        <div id="btn_saveinfo" class="fullbtn">
             确认
         </div>
     </div>
 
-    <div class="slidepopup cd-slidepopup" id="pp-change-id">
+    @*<div class="slidepopup cd-slidepopup" id="pp-change-id">
         <div class="tt">更改身份证号码<span class="back cd-slidepopupback"><i class="ico fa fa-angle-left"></i></span></div>
         <div class="blackrowgall">
             <div class="row">
@@ -254,21 +337,148 @@
         <div class="clear-15"></div>
         <div class="fullbtn">
             确认
-        </div>*@
-    </div>
+        </div>
+    </div>*@
 <div class="bt-distance"></div>
 
 
 <script type="text/javascript">
-	$('document').ready(function() {
-		$('#didntsettel').tapA(function(){
-			$('#pp-change-tel-btn').tapA();
-		});
-	});
+    $('document').ready(function () {
 
-	$('document').ready(function () {
-	    $('body').addClass('HOMEMENU');
-	    $("#menu_fix_me").addClass('selected');
-	});
+        $('body').addClass('HOMEMENU');
+        $("#menu_fix_me").addClass('selected');
+
+		$('#didntsettel').click(function(){
+		    $('#pp-change-tel-btn').click();
+		});
+
+		$('#sendvalcodbt').click(function () {
+		    var mobile_no = $('#phone').val();
+
+		    if (!mobile_no || mobile_no.length != 11) {
+		        alert("请输入正确的手机号码!");
+
+		        return;
+		    }
+
+		    var params = {
+		        url: "/api/tools/sendsms",
+		        data: { 'mobile': mobile_no },
+		        successFun: successFun,
+		        errorFun: errorFun
+		    }
+
+		    ajaxTo(params);
+
+		    //is_count = true;
+		    countDown(this);
+		})
+
+		$('#validate_code').click(function () {
+		    var code = $("#rand_code").val();
+
+		    var tmp_code = $("#val_code").val();
+
+		    if (!tmp_code) {
+		        alert('请先验证验证码!');
+
+		        return;
+		    }
+		    if (code != tmp_code) {
+		        if (code.indexOf(tmp_code) == -1) {
+		            alert("验证码不正确!");
+
+		            return;
+		        }
+		    }
+
+		    var mobile_no = $('#send_no').val();
+
+		    $('#student_phone').html(mobile_no);
+		    $('#Phone').val(mobile_no);
+		    //验证成功后清空缓存
+		    $("#rand_code").val('');
+
+		    closePopup($("#pp-change-tel").find('.cd-slidepopupback'));
+		})
+
+		$('#btn_saveinfo').click(function () {
+		    save();
+		})
+    });
+    function successFun(data) {
+        var code = $("#rand_code").val();
+        //alert(data.data);
+        if (!code)
+            code = data.data;
+        else
+            code = code + "|" + data.data;
+
+        $("#rand_code").val(code);
+    }
+
+    function errorFun(data) {
+        alert(data.message);
+    }
+
+
+	function save() {
+	    var user_id = $.cookie('user_id');
+	    var phone = $("#phone").val();
+	    var num = $('#val_code').val();
+	    var valid_phone = $('#rand_code').val();
+
+	    if (!num) {
+	        var options = {
+	            msg: "请输入验证码!",
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(options);
+
+	        return;
+	    }
+
+	    if (num != valid_phone) {
+	        var options = {
+	            msg: "验证码不正确!",
+	            exitText: "关闭!"
+	        };
+
+	        $.alertbox(options);
+
+	        return;
+	    }
+
+	    var params = {
+	        url: "/api/Student/setValue",
+	        data: { 'StudentID': user_id, 'phone': phone },
+            type:'post',
+	        successFun: success,
+	        errorFun: false
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function success(data) {
+	    var options = {
+	        msg: "保存成功!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(options);
+
+	    location.reload();
+	}
+
+	function error(data) {
+	    var options = {
+	        msg: "保存失败!",
+	        exitText: "关闭!"
+	    };
+
+	    $.alertbox(options);
+	}
 
 </script>

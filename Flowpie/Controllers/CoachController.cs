@@ -134,7 +134,7 @@ namespace Flowpie.Controllers
 
             string image = data["image"].ToString();
 
-            if (image == "")
+            if (image == "NULL")
             {
                 data.Add("HeadPic", data["headpic"].ToString());
             }

@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+
+    var item = ViewData["item"] as System.Collections.Hashtable;
+    string tmp_date = item["CreateAt"].ToString();
+
+    string date = DateTime.Parse(tmp_date).ToString("yyyy年MM月dd日 HH:mm").Replace("年0", "年").Replace("月0", "月");
+}
+<div class="p21-x01">
+    <div class="t1">@item["Title"]</div>
+    <div class="t2">@date</div>
+</div>
+
+<div class="p21-x02">
+    <p>@item["MessageText"]</p>
+</div>
+<div class="clear-15"></div>
+<a class="fullbtn normal" href="/home/mymessage">返回</a>
+<div class="bt-distance"></div>
+
+<script>
+    $('document').ready(function () {
+
+    });
+</script>

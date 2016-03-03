@@ -266,7 +266,7 @@
 <!-- /container -->
 <script type="text/javascript">
     var coach_id = '@coach["StudentID"]';
-    var headpic = '';
+    var headpic = '@coach["HeadPic"]';
 
 	$(document).ready(function() {
 	    $('#datepicker01').datetimepicker({
@@ -398,32 +398,39 @@
 	}
 
 	function saveCoach() {
-	    var image = document.getElementById('pre-image');
-	    var is_def = false;
+	    var tmp_pic = $('#tmp_head_pic').val();
 
-	    EXIF.getData(image, function () {
-	        if (EXIF.getTag(image, 'Orientation') == 6) {
-	            is_def = true;
-	        }
-	        //使用插件初始化图片
-	        var mpImg = new MegaPixImage(headpic);
-	        var option = null;
+	    if (headpic == tmp_pic) {
+	        updateCoach();
+	    }
+	    else {
+	        var image = document.getElementById('pre-image');
+	        var is_def = false;
 
-	        if (is_def)
-	            option = { maxWidth: image.width * 2, maxHeight: image.height * 2, orientation: 6 };
-	        else
-	            option = { maxWidth: image.width * 2, maxHeight: image.height * 2, quality: 0.5 };
+	        EXIF.getData(image, function () {
+	            if (EXIF.getTag(image, 'Orientation') == 6) {
+	                is_def = true;
+	            }
+	            //使用插件初始化图片
+	            var mpImg = new MegaPixImage(headpic);
+	            var option = null;
 
-	        var canvas = document.getElementById('upload-canvas');
+	            if (is_def)
+	                option = { maxWidth: image.width * 2, maxHeight: image.height * 2, orientation: 6 };
+	            else
+	                option = { maxWidth: image.width * 2, maxHeight: image.height * 2, quality: 0.5 };
 
-	        mpImg.render(canvas, option, function () {
-	            var base64 = canvas.toDataURL('image/jpeg');
+	            var canvas = document.getElementById('upload-canvas');
 
-	            $('#tmp_head_code').val(base64);
+	            mpImg.render(canvas, option, function () {
+	                var base64 = canvas.toDataURL('image/jpeg');
 
-	            updateCoach();
+	                $('#tmp_head_code').val(base64);
+
+	                updateCoach();
+	            });
 	        });
-	    });
+	    } 
 	}
 
 	//function picUpload(file, img_id, canvas_id, url, fun) {

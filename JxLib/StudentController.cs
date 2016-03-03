@@ -118,5 +118,16 @@ namespace JxLib
 
             base.Execute(this.SqlText);
         }
+
+        public void saveValue(Hashtable data)
+        {
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            string sql = tools.createUpdateSqlText(data, "StudentID, CreateAt");
+
+            this.SqlText = "update app_students set " + sql + " where StudentID = '" + data["StudentID"].ToString() + "'";
+
+            base.Execute(this.SqlText);
+        }
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchoolController.cs" />
     <Compile Include="StudentController.cs" />
+    <Compile Include="TeachTypeController.cs" />
     <Compile Include="TrainingController.cs" />
     <Compile Include="UserExamController.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -89,6 +90,10 @@
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
       <Project>{5a37ab4f-04a5-46b5-b0d9-46354dc55051}</Project>
       <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseLib\DatabaseLib.csproj">
+      <Project>{5455edd7-420b-4b97-8d29-e13991d93030}</Project>
+      <Name>DatabaseLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\SystemConfigureLib\SystemConfigureLib.csproj">
       <Project>{0f14c56c-8c26-4e90-b399-cd5aa5866db5}</Project>

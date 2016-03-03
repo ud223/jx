@@ -43,6 +43,7 @@
     <Compile Include="DeptController.cs" />
     <Compile Include="iController.cs" />
     <Compile Include="MenuController.cs" />
+    <Compile Include="MessageController.cs" />
     <Compile Include="PermissionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialNumberController.cs" />

@@ -58,7 +58,7 @@ namespace JxLib
 
         public override string add(Hashtable data)
         {
-            this.SqlText = "insert into app_teach(TeachID, RunDate, WeekNum, Time, SchoolID, StudentID, CoachID, Amount, CouponID, PayAmount, CreateAt, ModifyAt) values('@TeachID@', '@RunDate@', @WeekNum@, '@Time@', @SchoolID@, '@StudentID@', '@CoachID@', @Amount@, '@CouponID@', @PayAmount@, '@CreateAt@', '@ModifyAt@'); select TeachID from app_teach order by CreateAt desc limit 1";
+            this.SqlText = "insert into app_teach(TeachID, RunDate, WeekNum, Time, SchoolID, StudentID, CoachID, Amount, CouponID, PayAmount, LessonType, CreateAt, ModifyAt) values('@TeachID@', '@RunDate@', @WeekNum@, '@Time@', @SchoolID@, '@StudentID@', '@CoachID@', @Amount@, '@CouponID@', @PayAmount@, @LessonType@, '@CreateAt@', '@ModifyAt@'); select TeachID from app_teach order by CreateAt desc limit 1";
 
             return base.add(data);
         }

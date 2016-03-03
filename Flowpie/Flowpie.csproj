@@ -279,6 +279,7 @@
     <Content Include="statics\jx\img\find.png" />
     <Content Include="statics\jx\img\home-w.png" />
     <Content Include="statics\jx\img\home.png" />
+    <Content Include="statics\jx\img\home\ad1.jpg" />
     <Content Include="statics\jx\img\home\cp01.jpg" />
     <Content Include="statics\jx\img\home\cp02.jpg" />
     <Content Include="statics\jx\img\home\i1.jpg" />
@@ -1924,6 +1925,8 @@
     <Content Include="ueditor\third-party\video-js\font\vjs.eot" />
     <Content Include="ueditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="ueditor\third-party\video-js\font\vjs.woff" />
+    <Content Include="Views\Home\Message.cshtml" />
+    <Content Include="Views\Home\MyHistory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

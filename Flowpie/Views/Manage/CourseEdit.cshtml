@@ -1625,6 +1625,7 @@
 	    $(".row.config-time").find(".ieowim." + dayIndex).addClass("has");
 	    $(".row.config-time").find(".ieowim." + dayIndex).html("已设置");
 	}
+	var succ = 0;
 
 	function submit() {
 	    for (var i = 1; i < 8; i++) {
@@ -1650,8 +1651,6 @@
 	}
 	
 	function saveConfig(data) {
-	    //alert(JSON.stringify(data));
-	    //return;
 	    var params = {
 	        url: '/api/training/Config',
 	        data: data,
@@ -1664,16 +1663,21 @@
 
 	function success(data) {
 	    //alert(data.message);
-	    var opertion = {
-	        msg: data.message,
-	        exitText: "关闭!"
-	    };
+	    //var opertion = {
+	    //    msg: data.message,
+	    //    exitText: "关闭!"
+	    //};
 
-	    $.alertbox(opertion);
+	    //$.alertbox(opertion);
 
 	    //if (data.code == "200") {
 
 	    //}
+	    succ = succ + 1;
+
+	    if (succ == 7) {
+	        location.reload();
+	    }
 	}
 
 	function error() {

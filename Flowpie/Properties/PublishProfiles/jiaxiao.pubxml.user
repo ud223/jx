@@ -34,10 +34,10 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="bin/Flowpie.dll">
-      <publishTime>02/22/2016 10:23:25</publishTime>
+      <publishTime>03/03/2016 11:00:54</publishTime>
     </File>
     <File Include="bin/JxLib.dll">
-      <publishTime>02/22/2016 10:23:24</publishTime>
+      <publishTime>03/03/2016 11:00:53</publishTime>
     </File>
     <File Include="bin/LitJson.dll">
       <publishTime>05/19/2014 21:40:52</publishTime>
@@ -127,7 +127,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="bin/SystemConfigureLib.dll">
-      <publishTime>02/21/2016 16:44:00</publishTime>
+      <publishTime>03/03/2016 11:00:53</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -4584,6 +4584,9 @@
     <File Include="statics/jx/img/home.png">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
+    <File Include="statics/jx/img/home/ad1.jpg">
+      <publishTime>02/18/2016 08:07:37</publishTime>
+    </File>
     <File Include="statics/jx/img/home/art02.jpg">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
@@ -4813,7 +4816,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="statics/jx/js/global.js">
-      <publishTime>01/13/2016 21:41:45</publishTime>
+      <publishTime>03/02/2016 13:49:26</publishTime>
     </File>
     <File Include="statics/jx/js/swipe.js">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -9388,13 +9391,13 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Home/Home.cshtml">
-      <publishTime>01/14/2016 14:12:32</publishTime>
+      <publishTime>02/23/2016 09:49:12</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>02/22/2016 16:43:47</publishTime>
+      <publishTime>02/28/2016 20:47:46</publishTime>
     </File>
     <File Include="Views/Home/LessonEnd.cshtml">
-      <publishTime>01/10/2016 15:12:45</publishTime>
+      <publishTime>03/03/2016 10:50:14</publishTime>
     </File>
     <File Include="Views/Home/Lessoning.cshtml">
       <publishTime>01/15/2016 03:55:30</publishTime>
@@ -9405,23 +9408,29 @@
     <File Include="Views/Home/LessonSuccess.cshtml">
       <publishTime>01/10/2016 15:15:02</publishTime>
     </File>
+    <File Include="Views/Home/Message.cshtml">
+      <publishTime>03/02/2016 12:19:50</publishTime>
+    </File>
     <File Include="Views/Home/MessageDetail.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Home/MyCoupon.cshtml">
-      <publishTime>01/15/2016 02:18:50</publishTime>
+      <publishTime>03/02/2016 12:44:26</publishTime>
     </File>
     <File Include="Views/Home/MyExam.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
+    <File Include="Views/Home/MyHistory.cshtml">
+      <publishTime>03/03/2016 10:28:45</publishTime>
+    </File>
     <File Include="Views/Home/MyIndex.cshtml">
-      <publishTime>01/15/2016 12:50:25</publishTime>
+      <publishTime>03/03/2016 10:07:41</publishTime>
     </File>
     <File Include="Views/Home/MyLesson.cshtml">
       <publishTime>01/20/2016 11:43:18</publishTime>
     </File>
     <File Include="Views/Home/MyMessage.cshtml">
-      <publishTime>12/10/2015 16:10:53</publishTime>
+      <publishTime>03/02/2016 12:15:31</publishTime>
     </File>
     <File Include="Views/Home/MyOrder.cshtml">
       <publishTime>01/15/2016 03:01:54</publishTime>
@@ -9457,7 +9466,7 @@
       <publishTime>01/15/2016 03:29:49</publishTime>
     </File>
     <File Include="Views/Home/SchoolDetail.cshtml">
-      <publishTime>02/22/2016 23:13:18</publishTime>
+      <publishTime>03/03/2016 10:57:20</publishTime>
     </File>
     <File Include="Views/Home/SchoolList.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -9475,7 +9484,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Home/StudentEnter.cshtml">
-      <publishTime>12/25/2015 19:30:44</publishTime>
+      <publishTime>03/02/2016 13:38:45</publishTime>
     </File>
     <File Include="Views/Home/test.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -9499,7 +9508,7 @@
       <publishTime>12/14/2015 21:08:35</publishTime>
     </File>
     <File Include="Views/Manage/CoachDetail.cshtml">
-      <publishTime>02/22/2016 09:32:44</publishTime>
+      <publishTime>02/23/2016 08:43:27</publishTime>
     </File>
     <File Include="Views/Manage/CoachDispatch.cshtml">
       <publishTime>01/09/2016 17:14:35</publishTime>
@@ -9520,7 +9529,7 @@
       <publishTime>12/10/2015 16:10:53</publishTime>
     </File>
     <File Include="Views/Manage/CourseEdit.cshtml">
-      <publishTime>01/11/2016 14:46:05</publishTime>
+      <publishTime>02/23/2016 08:27:32</publishTime>
     </File>
     <File Include="Views/Manage/DeptEdit.cshtml">
       <publishTime>12/10/2015 16:10:53</publishTime>
@@ -9607,7 +9616,7 @@
       <publishTime>01/24/2016 13:58:49</publishTime>
     </File>
     <File Include="Views/Shared/_Mobile.cshtml">
-      <publishTime>02/22/2016 13:47:13</publishTime>
+      <publishTime>02/23/2016 08:56:30</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>12/10/2015 16:10:53</publishTime>

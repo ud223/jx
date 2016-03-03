@@ -20,15 +20,17 @@
         @Styles.Render("~/statics/jx/css/all")
         @Scripts.Render("~/statics/jx/js/all")
     }
-
+    <script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js" type="text/ecmascript"></script>
     <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "//hm.baidu.com/hm.js?cd6a83d796361da6aaae6c4bbd7dc9dd";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(hm, s);
-        })();
+        if (remote_ip_info["city"] != '武汉') {
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?cd6a83d796361da6aaae6c4bbd7dc9dd";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        }
     </script>
 </head>
 <body ontouchstart="">

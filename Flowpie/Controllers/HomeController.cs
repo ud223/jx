@@ -29,6 +29,19 @@ namespace Flowpie.Controllers
 
         public ActionResult Index()
         {
+            //短信测试
+            //JxLib.SchoolController schoolController = new JxLib.SchoolController();
+            //JxLib.StudentController studentController = new JxLib.StudentController();
+
+            //System.Collections.Hashtable stu = studentController.load("2016011500000000005");
+            //System.Collections.Hashtable school = schoolController.load("1");
+
+            //tools.Sms sms = new tools.Sms();
+
+            //string content = "您已经成功支付一次在[" + school["SchoolText"].ToString() + "]的约教订单，时间是[2016-02-23 00:00:00]，我们正在为您安排教练，一旦分配到教练，我们会再次通知您。";
+
+            //sms.SendSms(stu["Phone"].ToString(), content);
+
             return View();
         }
 
@@ -164,11 +177,21 @@ namespace Flowpie.Controllers
         public ActionResult MyIndex()
         {
             JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.TrainingController trainingController = new JxLib.TrainingController();
+
             CacheLib.Cookie cookie = new CacheLib.Cookie();
 
             string user_id = cookie.GetCookie("user_id");
 
-            ViewData["data"] = studentController.load(user_id);
+            var item = studentController.load(user_id);
+
+            ViewData["data"] = item;
+
+            if (item["LessonState"].ToString() == "1")
+                ViewData["list"] = trainingController.getLesson2State(user_id);
+            else
+                ViewData["list"] = trainingController.getLesson3State(user_id);
+
             ViewData["user_id"] = user_id;
             ViewData["title"] = "我的首页";
 
@@ -287,6 +310,21 @@ namespace Flowpie.Controllers
                 string content = "你好[" + student["Name"].ToString() + "]，你的入学申请已经提交给[" + school["SchoolText"].ToString() + "]，客服人员会尽快与您联系，您也可以致电[" + school["Phone"].ToString() + "]主动和驾校联系。";
 
                 sms.SendSms(data["Phone"].ToString(), content);
+
+                SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                message.Add("MessageID", message_id);
+                message.Add("Title", "感谢提交入学申请");
+                message.Add("MessageText", content);
+                message.Add("StudentID", student["StudentID"]);
+                message.Add("SendID", "system");
+                message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                messageController.add(message);
 
                 return RedirectToRoute("enter-success");
             }
@@ -598,6 +636,7 @@ namespace Flowpie.Controllers
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
             JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.TeachTypeController teachTypeController = new JxLib.TeachTypeController();
 
             System.Collections.Hashtable item = orderController.load(id);
 
@@ -615,6 +654,20 @@ namespace Flowpie.Controllers
                 return Redirect("/home");
             }
 
+            if (stu["LessonState"].ToString() == "1")
+            {
+                List<System.Collections.Hashtable> teachType = teachTypeController.getLesson2Item();
+
+                ViewData["list"] = teachType;
+            }
+            else
+            {
+                List<System.Collections.Hashtable> teachType = teachTypeController.getLesson3Item();
+
+                ViewData["list"] = teachType;
+            }
+
+            ViewData["LessonState"] = stu["LessonState"];
             ViewData["orderid"] = id;
 
             return View();
@@ -712,13 +765,32 @@ namespace Flowpie.Controllers
 
         public ActionResult MyMessage()
         {
+            SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            List<System.Collections.Hashtable> list = messageController.getMyMessage(user_id);
+
+            ViewData["list"] = list;
             ViewData["title"] = "我的消息";
 
             return View();
         }
 
-        public ActionResult MessageDetail()
+        public ActionResult MessageDetail(string id)
         {
+            if (id == null || id == "")
+            {
+                this.Redirect("/home/mymessage");
+            }
+
+            SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+            System.Collections.Hashtable item = messageController.load(id);
+
+            ViewData["item"] = item;
             ViewData["title"] = "消息明细";
 
             return View();
@@ -737,6 +809,40 @@ namespace Flowpie.Controllers
             ViewData["data"] = list;
 
             ViewData["title"] = "我的优惠卷";
+
+            return View();
+        }
+
+        public ActionResult MyHistory()
+        {
+            JxLib.TrainingController trainingController = new JxLib.TrainingController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            List<System.Collections.Hashtable> list = trainingController.getMyHistory(user_id);
+
+            foreach (System.Collections.Hashtable item in list)
+            {
+                List<System.Collections.Hashtable> details = trainingController.getTeachDetail(item["TeachID"].ToString());
+
+                string detail = "";
+
+                foreach (var itm in details)
+                {
+                    if (detail.Length > 0)
+                        detail = detail + ",";
+
+                    detail = detail + itm["teachtypetext"].ToString();
+                }
+
+                item.Add("detail", detail);
+            }
+
+            ViewData["list"] = list;
+
+            ViewData["title"] = "我的历史";
 
             return View();
         }
@@ -1172,7 +1278,7 @@ namespace Flowpie.Controllers
                 return View();
             }
 
-            decimal amount = Convert.ToDecimal(total_fee);// * 100;
+            decimal amount = Convert.ToDecimal(total_fee) * 100;
 
             //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
             JsApiPay jsApiPay = new JsApiPay(Request, Response);
@@ -1261,6 +1367,23 @@ namespace Flowpie.Controllers
 
                         sms.SendSms(stu["Phone"].ToString(), content);
 
+                        SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                        System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                        SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                        string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                        message.Add("MessageID", message_id);
+                        message.Add("Title", "支付成功");
+                        message.Add("MessageText", content);
+                        message.Add("StudentID", stu["StudentID"]);
+                        message.Add("SendID", "system");
+                        message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                        messageController.add(message);
+
                         WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付成功!");
                     }
                     else
@@ -1268,8 +1391,6 @@ namespace Flowpie.Controllers
                         WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付失败!");
                     }
                 }
-
-               
 
                 WxApiLib.lib.WxPayData res = new WxApiLib.lib.WxPayData();
                 res.SetValue("return_code", "SUCCESS");

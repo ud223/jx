@@ -1,0 +1,255 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+
+    var list = ViewData["list"] as List<System.Collections.Hashtable>;
+}
+<div class="p16-xeet">
+    找到<span>@list.Count</span>条记录
+</div>
+
+<div class="blackrowgall unclickable nmt">
+    <div class="row">
+        <div class="timeline-blks">
+            @foreach (var item in list)
+            {
+                if (item["State"].ToString() == "0")
+                {
+                    continue;
+                }
+
+                string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+                string[] times = item["Time"].ToString().Split(',');
+
+                int[] nTimes = new int[times.Length];
+
+                for (int i = 0; i < times.Length; i++)
+                {
+                    nTimes[i] = Convert.ToInt32(times[i]);
+                }
+
+                Array.Sort(nTimes);
+
+                int t1 = nTimes[0];
+                int t2 = nTimes[nTimes.Length - 1];
+
+                t1 = t1 - 1;
+
+                string lessonTypeText = "科目二";
+
+                if (item["LessonType"].ToString() == "3")
+                {
+                    lessonTypeText = "科目三";
+                }
+
+                if (item["State"].ToString() == "1" && item["CoachID"].ToString() == "null")
+                {
+                    <div class="itmc waiting">
+                        <div class="circl"></div>
+                        <div class="rtbcd">
+                            <div class="triangle-topright"></div>
+                            <div class="ct">
+                                <div class="t1">@date @t1.ToString():00-@t2.ToString():00</div>
+                                <div class="t2">我们正在为您分配教练 ...</div>
+
+                            </div>
+                            <div class="lab">预约中</div>
+                        </div>
+                    </div>
+                }
+                else if (item["State"].ToString() == "1" && item["CoachID"].ToString() != "null")
+                {
+                    <div class="itmc bookinged">
+                        <div class="circl"></div>
+                        <div class="rtbcd">
+                            <div class="triangle-topright"></div>
+                            <div class="ct">
+                                <div class="t1">@date @t1.ToString():00-@t2.ToString():00</div>
+                                <div class="tb">
+                                    <div class="tr">
+                                        <div class="td col1">教练：</div>
+                                        <div class="td">@item["name"]</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lab">已预约</div>
+                        </div>
+                    </div>
+                }
+                else if (item["State"].ToString() == "2")
+                {
+                    <div class="itmc bookinged">
+                        <div class="circl"></div>
+                        <div class="rtbcd">
+                            <div class="triangle-topright"></div>
+                            <div class="ct">
+                                <div class="t1">@date @t1.ToString():00-@t2.ToString():00</div>
+                                <div class="tb">
+                                    <div class="tr">
+                                        <div class="td col1">教练：</div>
+                                        <div class="td">@item["name"]</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lab">已预约</div>
+                        </div>
+                    </div>
+                }
+                else if (item["State"].ToString() == "3")
+                {
+                    <div class="itmc">
+                        <div class="circl"></div>
+                        <div class="rtbcd">
+                            <div class="triangle-topright"></div>
+                            <div class="ct">
+                                <div class="t1">@date @t1.ToString():00-@t2.ToString():00</div>
+                                <div class="tb">
+                                    <div class="tr">
+                                        <div class="td col1">@lessonTypeText：</div>
+                                        <div class="td">@item["detail"]</div>
+                                    </div>
+                                    <div class="tr">
+                                        <div class="td col1">教练：</div>
+                                        <div class="td">@item["name"]</div>
+                                    </div>
+                                </div>
+                                <div class="commentblk"><a href="/home/orderrating/@item["TeachID"]" class="uncomment"><i class="fa fa-pencil-square-o"></i> 前往评价</a></div>
+                            </div>
+                            <div class="lab">已完成</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="itmc">
+                        <div class="circl"></div>
+                        <div class="rtbcd">
+                            <div class="triangle-topright"></div>
+                            <div class="ct">
+                                <div class="t1">@date @t1.ToString():00-@t2.ToString():00</div>
+                                <div class="tb">
+                                    <div class="tr">
+                                        <div class="td col1">@lessonTypeText：</div>
+                                        <div class="td">@item["detail"]</div>
+                                    </div>
+                                    <div class="tr">
+                                        <div class="td col1">教练：</div>
+                                        <div class="td">@item["name"]</div>
+                                    </div>
+                                </div>
+                                @if (item["Content"].ToString() != "")
+                                {
+                                    <div class="commentblk">
+                                        <div class="tb">
+                                            <div class="tr">
+                                                <div class="td col1">我的评分：</div>
+                                                <div class="td">@item["score"]</div>
+                                            </div>
+                                            <div class="tr">
+                                                <div class="td col1">评价：</div>
+                                                <div class="td">@item["Content"]</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }                             
+                            </div>
+                            <div class="lab">已完成</div>
+                        </div>
+                    </div>
+                }
+            }
+            @*<div class="itmc waiting">
+                <div class="circl"></div>
+                <div class="rtbcd">
+                    <div class="triangle-topright"></div>
+                    <div class="ct">
+                        <div class="t1">5月15日 14:00 - 16:00</div>
+                        <div class="t2">我们正在为您分配教练 ...</div>
+
+                    </div>
+                    <div class="lab">预约中</div>
+                </div>
+            </div>
+            <div class="itmc bookinged">
+                <div class="circl"></div>
+                <div class="rtbcd">
+                    <div class="triangle-topright"></div>
+                    <div class="ct">
+                        <div class="t1">5月15日 14:00 - 16:00</div>
+                        <div class="tb">
+                            <div class="tr">
+                                <div class="td col1">教练：</div>
+                                <div class="td">张三丰</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lab">已预约</div>
+                </div>
+            </div>
+            <div class="itmc">
+                <div class="circl"></div>
+                <div class="rtbcd">
+                    <div class="triangle-topright"></div>
+                    <div class="ct">
+                        <div class="t1">5月12日 14:00 - 16:00</div>
+                        <div class="tb">
+                            <div class="tr">
+                                <div class="td col1">科目二：</div>
+                                <div class="td">侧方位停车，靠边停车</div>
+                            </div>
+                            <div class="tr">
+                                <div class="td col1">教练：</div>
+                                <div class="td">张三丰</div>
+                            </div>
+                        </div>
+                        <div class="commentblk"><a href="p06-1_rating.html" class="uncomment"><i class="fa fa-pencil-square-o"></i> 前往评价</a></div>
+                    </div>
+                    <div class="lab">已完成</div>
+                </div>
+            </div>
+            <div class="itmc">
+                <div class="circl"></div>
+                <div class="rtbcd">
+                    <div class="triangle-topright"></div>
+                    <div class="ct">
+                        <div class="t1">5月11日 14:00 - 16:00</div>
+                        <div class="tb">
+                            <div class="tr">
+                                <div class="td col1">科目二：</div>
+                                <div class="td">侧方位停车，上坡起步</div>
+                            </div>
+                            <div class="tr">
+                                <div class="td col1">教练：</div>
+                                <div class="td">张三丰</div>
+                            </div>
+                        </div>
+                        <div class="commentblk">
+                            <div class="tb">
+                                <div class="tr">
+                                    <div class="td col1">我的评分：</div>
+                                    <div class="td">5.0</div>
+                                </div>
+                                <div class="tr">
+                                    <div class="td col1">评价：</div>
+                                    <div class="td">张老师一如既往地耐心，今天的收获非常多，车辆状况也很好。</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lab">已完成</div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<div class="clear-15"></div>
+<a href="/home/myindex" class="fullbtn normal">返回</a>
+<div class="bt-distance"></div>
+<script>
+	$('document').ready(function() {
+
+	});
+</script>

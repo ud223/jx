@@ -79,6 +79,23 @@ namespace Flowpie.Controllers
 
                     sms.SendSms(student["Phone"].ToString(), content);
 
+                    SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                    System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                    SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                    string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                    message.Add("MessageID", message_id);
+                    message.Add("Title", "报名成功");
+                    message.Add("MessageText", content);
+                    message.Add("StudentID", student["StudentID"]);
+                    message.Add("SendID", "system");
+                    message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    messageController.add(message);
+
                     result.code = "200";
                     result.message = "审批成功!";
                 }
@@ -204,6 +221,33 @@ namespace Flowpie.Controllers
                     result.code = "0";
                     result.message = "评分保存失败!:"+ orderController.Message;
                 }
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        [HttpPost]
+        public string setValue()
+        {
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            System.Collections.Hashtable data = tools.paramToData(context.Request.Form);
+
+            studentController.saveValue(data);
+
+            if (studentController.Result)
+            {
+                result.code = "200";
+                result.message = "修改成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = studentController.Message.Replace("'", "\"");
             }
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");

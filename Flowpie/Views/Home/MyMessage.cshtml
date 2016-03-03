@@ -3,22 +3,33 @@
 }
 @{
     ViewBag.Title = ViewData["title"];
+
+    List<System.Collections.Hashtable> list = ViewData["list"] as List<System.Collections.Hashtable>;
 }
 
 @*返回菜单*@
 @Html.Partial("BackBanner", new List<string> { "我的消息", "/my/index" })
 
 <div class="p16-xeet">
-    找到1条记录
+    找到<span>@list.Count</span>条记录
 </div>
 
 <div class="blackrowgall nmt">
-    <div class="row actbtn cd_hottap height" hottap="/message/detail">
+    @foreach (var item in list)
+    {
+        <div class="row actbtn cd_hottap height" hottap="/home/message/@item["MessageID"]">
+            <span class="tt">@item["Title"]</span>
+            <div class="holder arr">
+                <i class="icoin fa fa-angle-right"></i>
+            </div>
+        </div>
+    }
+    @*<div class="row actbtn cd_hottap height" hottap="/message/detail">
         <span class="tt">欢迎加入 云e驾</span>
         <div class="holder arr">
             <i class="icoin fa fa-angle-right"></i>
         </div>
-    </div>
+    </div>*@
 </div>
 
 <div class="bt-distance"></div>

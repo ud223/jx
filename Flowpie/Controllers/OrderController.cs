@@ -313,6 +313,9 @@ namespace Flowpie.Controllers
 
             for (int i = 0; i < teach_ids.Length; i++)
             {
+                if (coach_ids[i].ToLower() == "null")
+                    continue;
+
                 orderController.saveCoach(teach_ids[i], coach_ids[i]);
 
                 if (!orderController.Result)
@@ -321,7 +324,7 @@ namespace Flowpie.Controllers
                 {
                     System.Collections.Hashtable order = orderController.load(teach_ids[i]);
 
-                    System.Collections.Hashtable stu = studentController.load(order["SchoolID"].ToString());
+                    System.Collections.Hashtable stu = studentController.load(order["StudentID"].ToString());
                     System.Collections.Hashtable coach = studentController.load(coach_ids[i]);
 
                     string date = order["RunDate"].ToString();
@@ -333,11 +336,41 @@ namespace Flowpie.Controllers
 
                     sms.SendSms(stu["Phone"].ToString(), content);
 
+                    SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                    System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                    SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                    string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                    message.Add("MessageID", message_id);
+                    message.Add("Title", "教练分配成功");
+                    message.Add("MessageText", content);
+                    message.Add("StudentID", stu["StudentID"]);
+                    message.Add("SendID", "system");
+                    message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    messageController.add(message);
+
                     Array.Sort(times);
 
                     string content1 = "教练[" + coach["Name"].ToString() + "]你好，你有新的约教学员[" + stu["Name"].ToString() + "]，电话[" + stu["Phone"].ToString() + "]，授课时间是[" + date + " " + times[0] + ":00 - " + times[times.Length - 1] + ":00]，届时请提前前往场地准备授课（可以前往云e驾平台查看详细）";//"你有新的学员：[" + stu["Name"].ToString() + "]，授课时间：["+ date + " "+  times[0] + ":00 - "+ times[times.Length - 1] +":00]，请准时为学员上课。";
 
                     sms.SendSms(coach["Phone"].ToString(), content1);
+
+                    System.Collections.Hashtable message1 = new System.Collections.Hashtable();
+
+                    string message_id1 = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                    message1.Add("MessageID", message_id1);
+                    message1.Add("Title", "教学安排通知");
+                    message1.Add("MessageText", content1);
+                    message1.Add("StudentID", coach["StudentID"]);
+                    message1.Add("SendID", "system");
+                    message1.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    messageController.add(message1);
                 }
             }
 
@@ -380,12 +413,46 @@ namespace Flowpie.Controllers
                 string content = "您的教练[" + coach["Name"].ToString() + "]已经开始为您授课，请认真学习。";//"你的教练["+ coach["Name"].ToString() + "]已经开始为您上课";
 
                 sms.SendSms(stu["Phone"].ToString(), content);
+
+                SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                message.Add("MessageID", message_id);
+                message.Add("Title", "开始上课通知");
+                message.Add("MessageText", content);
+                message.Add("StudentID", stu["StudentID"]);
+                message.Add("SendID", "system");
+                message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                messageController.add(message);
             }
             else if (order["State"].ToString() == "2")
             {
                 string content = "授课结束，辛苦您了。麻烦前往服务号为教练[" + coach["Name"].ToString() + "]的本次授课评分，谢谢。";//"下课啦！请进入“个人中心”为本次授课做一个评分，谢谢";
 
                 sms.SendSms(stu["Phone"].ToString(), content);
+
+                SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                message.Add("MessageID", message_id);
+                message.Add("Title", "结束课程通知");
+                message.Add("MessageText", content);
+                message.Add("StudentID", stu["StudentID"]);
+                message.Add("SendID", "system");
+                message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                messageController.add(message);
 
             }
 

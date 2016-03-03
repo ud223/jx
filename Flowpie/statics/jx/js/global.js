@@ -78,8 +78,8 @@ $.gjvalidator = function (options) {
         'require': new RegExp(/\S{1,}/),
         'email': new RegExp(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/),
         'mobile': new RegExp(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/),
-        'number': new RegExp(/^\+?[1-9][0-9]*$/),
-        'id': new RegExp(/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/)
+        'number': new RegExp(/^\+?[1-9][0-9]*$/)//,
+      //  'id': new RegExp(/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/)
     }
 
     var t = $(settings.selector);
