@@ -1927,6 +1927,9 @@
     <Content Include="ueditor\third-party\video-js\font\vjs.woff" />
     <Content Include="Views\Home\Message.cshtml" />
     <Content Include="Views\Home\MyHistory.cshtml" />
+    <Content Include="Views\Manage\GroundList.cshtml" />
+    <Content Include="Views\Manage\GroundEdit.cshtml" />
+    <Content Include="Views\Home\MyGround.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

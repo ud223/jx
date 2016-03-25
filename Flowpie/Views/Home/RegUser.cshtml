@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = ViewData["title"];
 }
-@*@if (ViewData["data"] != null)
+@if (ViewData["data"] != null)
 {
     <script type="text/javascript">
         var user_id = '@ViewData["data"].ToString()';
@@ -14,6 +14,6 @@
 
         location.href = '@ViewData["url"].ToString()';
     </script>
-}*@
-@ViewData["data"]
+}
+@*@ViewData["data"]*@
 正在处理中, 请稍后....

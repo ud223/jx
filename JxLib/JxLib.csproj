@@ -55,6 +55,7 @@
     <Compile Include="CouponController.cs" />
     <Compile Include="ExamController.cs" />
     <Compile Include="ExamTypeController.cs" />
+    <Compile Include="GroundController.cs" />
     <Compile Include="OrderController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchoolController.cs" />

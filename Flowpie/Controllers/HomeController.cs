@@ -106,7 +106,7 @@ namespace Flowpie.Controllers
                         coupon1.Add("ModifyAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
                         couponController.add(coupon1);
-                    } 
+                    }
                 }
 
                 CacheLib.Cookie cookie = new CacheLib.Cookie();
@@ -115,7 +115,7 @@ namespace Flowpie.Controllers
 
                 ViewData["data"] = student_id;
                 ViewData["url"] = web_url;
-            }    
+            }
 
             return View();
         }     
@@ -843,6 +843,26 @@ namespace Flowpie.Controllers
             ViewData["list"] = list;
 
             ViewData["title"] = "我的历史";
+
+            return View();
+        }
+
+        public ActionResult MyGround()
+        {
+            JxLib.GroundController groundController = new JxLib.GroundController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            var list2 = groundController.getByType("2");
+            var list3 = groundController.getByType("3");
+
+            var item = studentController.load(user_id);
+
+            ViewData["list2"] = list2;
+            ViewData["list3"] = list3;
+            ViewData["item"] = item;
 
             return View();
         }

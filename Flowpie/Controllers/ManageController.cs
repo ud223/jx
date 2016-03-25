@@ -202,11 +202,16 @@ namespace Flowpie.Controllers
             {
                 return Redirect("/manage/PermmissionForbidden");
             }
-
+            JxLib.GroundController groundController = new JxLib.GroundController();
             JxLib.StudentController studentController = new JxLib.StudentController();
 
             System.Collections.Hashtable item = studentController.getUserByStudentId(studentId);
 
+            var list2 = groundController.getByType("2");
+            var list3 = groundController.getByType("3");
+
+            ViewData["list2"] = list2;
+            ViewData["list3"] = list3;
             ViewData["item"] = item;
             ViewData["open_menu"] = "驾校管理";
 
@@ -563,6 +568,85 @@ namespace Flowpie.Controllers
             return View();
         }
         #endregion;
+
+        #region 场地管理
+
+        public ActionResult GroundList()
+        {
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            ViewData["title"] = "考试场地列表";
+
+            JxLib.GroundController groundController = new JxLib.GroundController();
+
+            var list = groundController.getAll();
+
+            ViewData["list"] = list;
+
+            return View();
+        }
+
+        public ActionResult GroundEdit(string id)
+        {
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            ViewData["title"] = "考试场地编辑";
+
+            JxLib.GroundController groundController = new JxLib.GroundController();
+
+            var ground = groundController.load(id);
+
+            ViewData["item"] = ground;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GroundSave()
+        {
+            JxLib.GroundController groundController = new JxLib.GroundController();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            string strParam = Request.Form.ToString();
+
+            System.Collections.Hashtable data = tools.paramToData(strParam);
+
+            string id = CommonLib.Common.Validate.IsNullString(Request.Params["groundid"]);
+
+            if (id == "")
+            {
+                if (!checkUser(1))
+                {
+                    return Redirect("/manage/groundlist");
+                }
+
+                id = groundController.add(data);
+
+                if (id == null)
+                {
+                    return RedirectToRoute("/manage/groundedit");
+                }
+            }
+            else
+            {
+                if (!checkUser(2))
+                {
+                    return Redirect("/manage/groundlist");
+                }
+
+                groundController.save(data);
+            }
+
+            return Redirect("/manage/groundedit");
+        }
+
+        #endregion
 
         #region 优惠卷
 
@@ -1350,7 +1434,7 @@ namespace Flowpie.Controllers
 
                 foreach (Models.Permission permission in this.UserData.Permissions)
                 {
-                    if (permission.AccessFile.ToLower().IndexOf(pageName) > -1)
+                    if (permission.AccessFile.ToLower().IndexOf(tmp_page_name) > -1)
                     {
                         bool tmp_result = true;
 

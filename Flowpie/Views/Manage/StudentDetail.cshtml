@@ -23,6 +23,9 @@
     string isMark = obj["IsMark"].ToString();
     string createAt = obj["CreateAt"].ToString();
     string lessonState = obj["LessonState"].ToString();
+
+    var list2 = ViewData["list2"] as List<System.Collections.Hashtable>;
+    var list3 = ViewData["list3"] as List<System.Collections.Hashtable>;
 }
 
 
@@ -124,6 +127,38 @@
                 </div>
 
                 <div class="opl-table">
+                    <div class="tt">科目二考场
+                        <select id="ground2">
+                            @foreach (var itm in list2)
+                            {
+                                if (itm["groundid"].ToString() == obj["groundid_2"].ToString())
+                                {
+                                    <option value="@itm["groundid"]" selected="selected">@itm["groundname"]</option>
+                                }
+                                else
+                                {
+                                    <option value="@itm["groundid"]">@itm["groundname"]</option>
+                                }
+                            }
+                        </select>
+                        <button class="btn btn-primary cornerbtn ground2-save">修改考场</button>
+                    </div>
+                    <div class="tt">科目三考场
+                        <select id="ground3">
+                            @foreach (var itm in list3)
+                            {
+                                if (itm["groundid"].ToString() == obj["groundid_3"].ToString())
+                                {
+                                    <option value="@itm["groundid"]" selected="selected">@itm["groundname"]</option>
+                                }
+                                else
+                                {
+                                    <option value="@itm["groundid"]">@itm["groundname"]</option>
+                                }
+                            }
+                        </select>
+                        <button class="btn btn-primary cornerbtn ground3-save">修改考场</button>
+                    </div>
                     <div class="tt">
                         <select id="lessonState">
                             @if (lessonState == "0")
@@ -220,6 +255,32 @@
 	    })
 
 	    loadMyCoupon();
+
+	    $('.ground2-save').click(function () {
+	        var groundid2 = $('#ground2').val();
+	        var groundname2 = $('#ground2').find("option:selected").text();
+
+	        if (groundid2 == 0) {
+	            alert("请选择科目二考场!");
+
+	            return;
+	        }
+
+	        saveGround(groundid2, groundname2, student_id, 2);
+	    })
+
+	    $('.ground3-save').click(function () {
+	        var groundid3 = $('#ground3').val();
+	        var groundname3 = $('#ground3').find("option:selected").text();
+
+	        if (groundid3 == 0) {
+	            alert("请选择科目三考场!");
+
+	            return;
+	        }
+
+	        saveGround(groundid3, groundname3, student_id, 3);
+	    })
 	});
 
 	function sendCoupon() {
@@ -332,5 +393,33 @@
 	    };
 	    alert('网络异常, 请重试!');
 	    //$.alertbox(opertion);
+	}
+
+	function saveGround(groundid, groundname, userid, type) {
+	    var data = null;
+
+	    if (type == 2) {
+	        data = { 'StudentID': userid, 'groundid_2': groundid, 'groundname_2': groundname };
+	    }
+	    else {
+	        data = { 'StudentID': userid, 'groundid_3': groundid, 'groundname_3': groundname };
+	    }
+
+	    var params = {
+	        url: '/api/student/setValue',
+	        data: data,
+	        successFun: successSaveGround,
+	        errorFun: errorSaveGround
+	    }
+
+	    ajaxTo(params);
+	}
+
+	function successSaveGround(data) {
+	    alert(data.message);
+	}
+
+	function errorSaveGround() {
+	    alert("保存失败!");
 	}
 </script>

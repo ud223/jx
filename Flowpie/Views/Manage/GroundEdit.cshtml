@@ -1,0 +1,128 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Manage.cshtml";
+}
+@{
+    System.Collections.Hashtable item = null;
+
+    if (ViewData["item"] != null)
+    {
+        item = ViewData["item"] as System.Collections.Hashtable;
+    }
+    else
+    {
+        item = new System.Collections.Hashtable();
+
+        item.Add("groundid", "");
+        item.Add("groundname", "");
+        item.Add("price", "");
+        item.Add("address", "");
+        item.Add("examtype", "");
+    }
+}
+<form action="/manage/GroundSave" method="post">
+    <div class="main-body-relative relative">
+        <div class="cko-wp">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs mytabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ts-info" aria-controls="ts-info" role="tab" data-toggle="tab">菜单信息</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tab-kiki-ct">
+                <div role="tabpanel" class="tab-pane fade in active" id="ts-info">
+                    <div class="opl-table">
+                        <div class="tt">
+                            <span>场地编辑</span>
+                            <button class="downbtn-normal down"></button>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">场地名称</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="groundname" name="groundname" value="@item["groundname"]" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">单价(小时)</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="price" name="price" value="@item["price"]" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">地址</div>
+                                    <div class="cell col2">
+                                        <input type="text" id="address" name="address" value="@item["address"]" maxlength="25" style="width:100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ct clearfix">
+                            <div class="inner-table">
+                                <div class="row">
+                                    <div class="cell col1">考试科目</div>
+                                    <div class="cell col2">
+                                        <div class="input-group">
+                                            @{
+                                                string examtext = "";
+
+                                                if (item["examtype"].ToString() == "3")
+                                                {
+                                                    examtext = "科目三";
+                                                }
+                                                else if (item["examtype"].ToString() == "2")
+                                                {
+                                                    examtext = "科目二";
+                                                }
+                                            }
+                                            <input id="examtype_text" name="examtype_text" type="text" class="form-control dropdown-text" value="@examtext" readonly="readonly" aria-label="...">
+                                            <input id="examtype" name="examtype" type="hidden" value="@item["examtype"]" class="dropdown-value" />
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择科目 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="javascript:void(0)" class="dropdown-item" val="2">科目二</a></li>
+                                                    <li><a href="javascript:void(0)" class="dropdown-item" val="3">科目三</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bt-btn-bar">
+                        <input type="hidden" id="groundid" name="groundid" value="@item["groundid"]">
+                        <button type="submit" class="btn btn-success glyphicons glyphicons-disk-saved" style="height:40px">保存修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- /container -->
+<script type="text/javascript">
+        //<span class=""></span>
+        $(document).ready(function () {
+            $(".nano").nanoScroller();
+            $.readjustWidth();
+            $(window).resize(function () {
+                $.readjustWidth();
+            });
+            $(".fix-tb-ct-b2").scroll(function (e) {
+                var slt = $(".fix-tb-ct-b2").scrollLeft();
+                $(this).closest('.fix-tb').find('.fix-tb-header').css('left', '-' + slt + 'px');
+            });
+            $('.mytabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+        });
+</script>

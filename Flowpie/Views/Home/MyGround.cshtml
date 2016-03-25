@@ -1,0 +1,119 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+    ViewBag.Title = ViewData["title"];
+
+    var list2 = ViewData["list2"] as List<System.Collections.Hashtable>;
+    var list3 = ViewData["list3"] as List<System.Collections.Hashtable>;
+    var item = ViewData["item"] as System.Collections.Hashtable;
+}
+<div class="tt">
+    科目二考场
+    <select id="ground2">
+        <option value="0">科目二考场</option>
+        @foreach (var itm in list2)
+        {
+            if (itm["groundid"].ToString() == item["groundid_2"].ToString())
+            {
+                <option value="@itm["groundid"]" selected="selected">@itm["groundname"]</option>
+            }
+            else
+            {
+                <option value="@itm["groundid"]">@itm["groundname"]</option>
+            }
+        }
+    </select>
+</div>
+<div class="tt">
+    科目三考场
+    <select id="ground3">
+        <option value="0">科目三考场</option>
+        @foreach (var itm in list3)
+        {
+            if (itm["groundid"].ToString() == item["groundid_3"].ToString())
+            {
+                <option value="@itm["groundid"]" selected="selected">@itm["groundname"]</option>
+            }
+            else
+            {
+                <option value="@itm["groundid"]" >@itm["groundname"]</option>
+            } 
+        }
+    </select>
+</div>
+
+<div class="clear-15"></div>
+<a class="fullbtn submit" href="javascript:void(0)">保存考场</a>
+<script type="text/javascript">
+    //
+    $(document).ready(function () {
+        $('.submit').click(function () {
+            save();
+        })
+    });
+
+    function save() {
+        var user_id = localStorage.getItem('user_id');
+        var groundid2 = $('#ground2').val();
+        var groundname2 = $('#ground2').find("option:selected").text();
+        var groundid3 = $('#ground3').val();
+        var groundname3 = $('#ground3').find("option:selected").text();
+
+        if (groundid2 == 0) {
+            alert("请选择科目二考场!");
+
+            return;
+        }
+
+        if (groundid3 == 0) {
+            alert("请选择科目三考场!");
+
+            return;
+        }
+
+        saveGround(groundid2, groundname2, user_id, 2);
+
+        saveGround(groundid3, groundname3, user_id, 3);
+    }
+
+    function saveGround(groundid, groundname, userid, type) {
+        var data = null;
+
+        if (type == 2) {
+            data = { 'StudentID': userid, 'groundid_2':groundid, 'groundname_2': groundname };
+        }
+        else {
+            data = { 'StudentID': userid, 'groundid_3':groundid, 'groundname_3': groundname };
+        }
+
+        var params = {
+            url: '/api/student/setValue',
+            data: data,
+            successFun: successSave,
+            errorFun: errorSave
+        }
+
+        ajaxTo(params);
+    }
+
+    function successSave(data) {
+        var opertion = {
+            msg: data.message,
+            exitText: "关闭!"
+        };
+
+        $.alertbox(opertion);
+    }
+
+    function errorSave() {
+        var opertion = {
+            msg: "保存失败!",
+            exitText: "关闭!"
+        };
+
+        $.alertbox(opertion);
+    }
+</script>

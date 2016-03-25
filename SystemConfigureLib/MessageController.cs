@@ -20,7 +20,7 @@ namespace SystemConfigureLib
         {
             this.SqlText = "select * from app_message where MessageID = '" + id + "'";
 
-            return base.load(id);
+            return base.load("");
         }
 
         public override string add(Hashtable data)
