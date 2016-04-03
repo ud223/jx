@@ -252,5 +252,34 @@ namespace Flowpie.Controllers
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
         }
+
+        [HttpPost]
+        public string assessment()
+        {
+            JxLib.AssessmentController assessmentController = new JxLib.AssessmentController();
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            System.Collections.Hashtable data = tools.paramToData(context.Request.Form);
+
+            assessmentController.add(data);
+
+            if (assessmentController.Result)
+            {
+                result.code = "200";
+                result.message = "报名成功!";
+            }
+            else
+            {
+                result.code = "0";
+                result.message = assessmentController.Message.Replace("'", "\"");
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
+
+        
     }
 }

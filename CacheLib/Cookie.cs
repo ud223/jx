@@ -28,6 +28,7 @@ namespace CacheLib
 
             HttpCookie cookie = new HttpCookie(key);
 
+            cookie.Path = "/";
             cookie.Expires = DateTime.Now.AddDays(1);
             cookie.Value = value;
 
@@ -36,6 +37,7 @@ namespace CacheLib
 
         public void Delete(string key)
         {
+            //HttpContext.Current.Response.Cookies.Remove(key);
             if (HttpContext.Current.Request.Cookies[key] != null)
             {
                 HttpContext.Current.Response.Cookies[key].Expires = DateTime.Now.AddDays(-1);

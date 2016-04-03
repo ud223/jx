@@ -9,179 +9,335 @@
 {
     var item = ViewData["item"] as System.Collections.Hashtable;
 
-    string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
-    string[] times = item["Time"].ToString().Split(',');
-
-    int[] nTimes = new int[times.Length];
-
-    for (int i = 0; i < times.Length; i++)
+    if (item["Type"].ToString() == "1")
     {
-        nTimes[i] = Convert.ToInt32(times[i]);
-    }
+        string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+        string[] times = item["Time"].ToString().Split(',');
 
-    Array.Sort(nTimes);
+        int[] nTimes = new int[times.Length];
 
-    int t1 = nTimes[0];
-    int t2 = nTimes[nTimes.Length - 1];
+        for (int i = 0; i < times.Length; i++)
+        {
+            nTimes[i] = Convert.ToInt32(times[i]);
+        }
 
-    t1 = t1 - 1;
+        Array.Sort(nTimes);
 
-    switch (item["State"].ToString())
-    {
-        case "0":
-            {
+        int t1 = nTimes[0];
+        int t2 = nTimes[nTimes.Length - 1];
+
+        t1 = t1 - 1;
+
+        switch (item["State"].ToString())
+        {
+            case "0":
+                {
                 <!-- case 2: completed付款完成状态时（END） -->
                 <!-- case 1: pending等待支付状态时（START） -->
                 <!-- 该按钮点击了也是跳转至付款页面 -->
-                <div class="status-for-order pending">
-                    待付款，现在支付
-                </div>
+                    <div class="status-for-order pending">
+                        待付款，现在支付
+                    </div>
 
-                break;
-            }
-        case "1":
-            {
+                    break;
+                }
+            case "1":
+                {
                 <!-- case 2: completed付款完成状态时（START） -->
-                <div class="status-for-order completed">
-                    已支付
-                </div>
-                break;
-            }
-        case "2":
-            {
+                    <div class="status-for-order completed">
+                        已支付
+                    </div>
+                    break;
+                }
+            case "2":
+                {
                 <!-- case 2: completed付款完成状态时（START） -->
-                <div class="status-for-order completed">
-                    上课中
-                </div>
+                    <div class="status-for-order completed">
+                        上课中
+                    </div>
 
-                break;
-            }
-        case "3":
-            {
+                    break;
+                }
+            case "3":
+                {
                 <!-- case 2: completed付款完成状态时（START） -->
-                <div class="status-for-order completed">
-                    待评价
-                </div>
+                    <div class="status-for-order completed">
+                        待评价
+                    </div>
 
-                break;
-            }
-        case "4":
-            {
+                    break;
+                }
+            case "4":
+                {
                 <!-- case 2: completed付款完成状态时（START） -->
-                <div class="status-for-order completed">
-                    已完成
-                </div>
+                    <div class="status-for-order completed">
+                        已完成
+                    </div>
 
-                break;
-            }
-        case "8":
-            {
+                    break;
+                }
+            case "8":
+                {
                 <!-- case 1: pending等待支付状态时（END） -->
                 <!-- case 3: refunding等待退款状态时（START） -->
                 <!-- 该按钮点击了也是跳转至付款页面 -->
-                <div class="status-for-order refunding">
-                    退款申请中
-                </div>
+                    <div class="status-for-order refunding">
+                        退款申请中
+                    </div>
 
-                break;
-            }
-        case "9":
-            {
+                    break;
+                }
+            case "9":
+                {
                 <!-- case 3: refunding等待退款状态时（END） -->
                 <!-- case 4: refunded等待退款状态时（START） -->
                 <!-- 该按钮点击了也是跳转至付款页面 -->
-                <div class="status-for-order refunded">
-                    已退款
-                </div>
+                    <div class="status-for-order refunded">
+                        已退款
+                    </div>
                 <!-- case 4: refunding等待退款状态时（END） -->
 
-                break;
-            }
-    }
+                    break;
+                }
+        }
 
-    <div class="ccnox">场次1：</div>
-    <div class="blackrowgall">
-        @if (item["Name"].ToString() != "")
-        {
+        <div class="ccnox">场次1：</div>
+        <div class="blackrowgall">
+            @if (item["Name"].ToString() != "")
+            {
+                <div class="row">
+                    <span class="tt">教练</span>
+                    <span class="holder">@item["Name"]<span class="lightgray">（@item["Score"]分）</span><img src="@item["HeadPic"]" width="25" /></span>
+                </div>
+                <div class="row">
+                    <span class="tt">手机</span>
+                    <div class="holder">
+                        <span>@item["Phone"]</span>
+                    </div>
+                </div>
+            }
             <div class="row">
-                <span class="tt">教练</span>
-                <span class="holder">@item["Name"]<span class="lightgray">（@item["Score"]分）</span><img src="@item["HeadPic"]" width="25" /></span>
-            </div>
-            <div class="row">
-                <span class="tt">手机</span>
+                <span class="tt">时间</span>
                 <div class="holder">
-                    <span>@item["Phone"]</span>
+                    <span>@date @t1.ToString():00-@t2.ToString():00</span>
                 </div>
             </div>
-        }
-        <div class="row">
-            <span class="tt">时间</span>
-            <div class="holder">
-                <span>@date @t1.ToString():00-@t2.ToString():00</span>
+            <div class="row">
+                <span class="tt">驾校地址</span>
+                <div class="holder">
+                    <span class="font12px">@item["Address"]</span>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <span class="tt">驾校地址</span>
-            <div class="holder">
-                <span class="font12px">@item["Address"]</span>
-            </div>
-        </div>
-    </div>
-    <div class="clear-15"></div>
-    switch (item["State"].ToString())
-    {
-        case "0":
-            {
+        <div class="clear-15"></div>
+        switch (item["State"].ToString())
+        {
+            case "0":
+                {
                 <!-- case 2: completed付款完成状态时（END） -->
                 <!-- case 1: pending等待支付状态时（START） -->
                 <!-- 该按钮点击了也是跳转至付款页面 -->
-                <div class="fullbtn pay">继续支付</div>
-                @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">取消订单</a>*@
+                    <div class="fullbtn pay">继续支付</div>
+                    @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">取消订单</a>*@
 
-                break;
-            }
-        case "1":
-            {
-                <!-- case 2: completed付款完成状态时（START） -->
-                @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">申请退款</a>*@
-                break;
-            }
-        case "2":
-            {
-                <!-- case 2: completed付款完成状态时（START） -->
-                @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">申请退款</a>*@
+                    break;
+                }
+            case "1":
+                {
+                                        <!-- case 2: completed付款完成状态时（START） -->
+                                            @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">申请退款</a>*@
+                    break;
+                }
+            case "2":
+                {
+                                        <!-- case 2: completed付款完成状态时（START） -->
+                                            @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">申请退款</a>*@
 
-                break;
-            }
-        case "3":
-            {
+                    break;
+                }
+            case "3":
+                {
                 <!-- case 2: completed付款完成状态时（START） -->
-                <div class="fullbtn rating">授课评分</div>
+                    <div class="fullbtn rating">授课评分</div>
 
-                break;
-            }
-        case "4":
-            {
+                    break;
+                }
+            case "4":
+                {
                 <!-- case 2: completed付款完成状态时（START） -->
-                <div class="status-for-order completed">
-                    已完成
-                </div>
+                    <div class="status-for-order completed">
+                        已完成
+                    </div>
 
-                break;
-            }
-        case "8":
-            {
-                break;
-            }
-        case "9":
-            {
-                break;
-            }
+                    break;
+                }
+            case "8":
+                {
+                    break;
+                }
+            case "9":
+                {
+                    break;
+                }
+        }
     }
-    <div class="clear-15"></div>
-    <div class="fullbtn normal cd_hottap" hottap="/home/myorder">返回</div>
-    <div class="bt-distance"></div>
+    else
+    {
+        var stu = ViewData["stu"] as System.Collections.Hashtable;
+        string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+
+        switch (item["State"].ToString())
+        {
+            case "0":
+                {
+                <!-- case 2: completed付款完成状态时（END） -->
+                <!-- case 1: pending等待支付状态时（START） -->
+                <!-- 该按钮点击了也是跳转至付款页面 -->
+                    <div class="status-for-order pending">
+                        待付款，现在支付
+                    </div>
+
+                    break;
+                }
+            case "1":
+                {
+                <!-- case 2: completed付款完成状态时（START） -->
+                    <div class="status-for-order completed">
+                        已支付
+                    </div>
+                    break;
+                }
+            case "2":
+                {
+                <!-- case 2: completed付款完成状态时（START） -->
+                    <div class="status-for-order completed">
+                        已支付
+                    </div>
+
+                    break;
+                }
+            case "3":
+                {
+                <!-- case 2: completed付款完成状态时（START） -->
+                    <div class="status-for-order completed">
+                        已支付
+                    </div>
+
+                    break;
+                }
+            case "4":
+                {
+                <!-- case 2: completed付款完成状态时（START） -->
+                    <div class="status-for-order completed">
+                        已完成
+                    </div>
+
+                    break;
+                }
+            case "8":
+                {
+                <!-- case 1: pending等待支付状态时（END） -->
+                <!-- case 3: refunding等待退款状态时（START） -->
+                <!-- 该按钮点击了也是跳转至付款页面 -->
+                    <div class="status-for-order refunding">
+                        退款申请中
+                    </div>
+
+                    break;
+                }
+            case "9":
+                {
+                <!-- case 3: refunding等待退款状态时（END） -->
+                <!-- case 4: refunded等待退款状态时（START） -->
+                <!-- 该按钮点击了也是跳转至付款页面 -->
+                    <div class="status-for-order refunded">
+                        已退款
+                    </div>
+                <!-- case 4: refunding等待退款状态时（END） -->
+
+                    break;
+                }
+        }
+
+        <div class="ccnox">集训：</div>
+        <div class="blackrowgall">
+            <div class="row">
+                <span class="tt">时间</span>
+                <div class="holder">
+                    <span>@date</span>
+                </div>
+            </div>
+            <div class="row">
+                <span class="tt">考场</span>
+                <div class="holder">
+                    @if (stu["LessonState"].ToString() == "1")
+                    {
+                        <span class="font12px">@stu["groundname_2"]</span>
+                    }
+                    else
+                    {
+                        <span class="font12px">@stu["groundname_3"]</span>
+                    }                  
+                </div>
+            </div>
+        </div>
+        <div class="clear-15"></div>
+        switch (item["State"].ToString())
+        {
+            case "0":
+                {
+                <!-- case 2: completed付款完成状态时（END） -->
+                <!-- case 1: pending等待支付状态时（START） -->
+                <!-- 该按钮点击了也是跳转至付款页面 -->
+                    <div class="fullbtn pay">继续支付</div>
+                    @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">取消订单</a>*@
+
+                    break;
+                }
+            case "1":
+                {
+                                                    <!-- case 2: completed付款完成状态时（START） -->
+                                @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">申请退款</a>*@
+                    break;
+                }
+            case "2":
+                {
+                                                    <!-- case 2: completed付款完成状态时（START） -->
+                                @*<a href="p17-3_ordercancelsuccess.html" class="fullbtn normal" style="background:#FBFBFB;color:#aaa;">申请退款</a>*@
+
+                    break;
+                }
+            case "3":
+                {
+                <!-- case 2: completed付款完成状态时（START） -->
+                    <div class="fullbtn rating">授课评分</div>
+
+                    break;
+                }
+            case "4":
+                {
+                <!-- case 2: completed付款完成状态时（START） -->
+                    <div class="status-for-order completed">
+                        已完成
+                    </div>
+
+                    break;
+                }
+            case "8":
+                {
+                    break;
+                }
+            case "9":
+                {
+                    break;
+                }
+        }
+    }
 }
+
+<div class="clear-15"></div>
+<div class="fullbtn normal cd_hottap" hottap="/home/myorder">返回</div>
+<div class="bt-distance"></div>
 
 <script type="text/javascript">
     var order_id = '@ViewData["order_id"]'

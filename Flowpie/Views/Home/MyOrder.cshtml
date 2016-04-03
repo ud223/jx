@@ -12,61 +12,107 @@
 <div class="blackrowgall nmt">
     @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
     {
-        string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
-        string[] times = item["Time"].ToString().Split(',');
-
-        int[] nTimes = new int[times.Length];
-
-        for (int i = 0; i < times.Length; i++)
+        if (item["Type"].ToString() == "1")
         {
-            nTimes[i] = Convert.ToInt32(times[i]);
-        }
+            string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+            string[] times = item["Time"].ToString().Split(',');
 
-        Array.Sort(nTimes);
+            int[] nTimes = new int[times.Length];
 
-        int t1 = nTimes[0];
-        int t2 = nTimes[nTimes.Length - 1];
-
-        t1 = t1 - 1;
-
-        <div class="row actbtn height cd_hottap" hottap="/home/orderdetail/@item["TeachID"].ToString()">
-            <div class="tt"><span>@date @t1.ToString():00-@t2.ToString():00</span></div>
-            <div class="holder arr">
-                <i class="icoin fa fa-angle-right"></i>
-            </div>
-            @switch (item["State"].ToString())
+            for (int i = 0; i < times.Length; i++)
             {
-                case "0":
-                    {
-                        <span class="status-for-order-sm paid">未支付</span>
-                        break;
-                    }
-                case "1":
-                    {
-                        <span class="status-for-order-sm paid">已支付</span>
-                        break;
-                    }
-                case "2":
-                    {
-                        <span class="status-for-order-sm">上课中</span>
-
-                        break;
-                    }
-                case "3":
-                    {
-                        <span class="status-for-order-sm">待评分</span>
-
-                        break;
-                    }
-                case "4":
-                    {
-                        <span class="status-for-order-sm">已完成</span>
-
-                        break;
-                    }
+                nTimes[i] = Convert.ToInt32(times[i]);
             }
 
-        </div>
+            Array.Sort(nTimes);
+
+            int t1 = nTimes[0];
+            int t2 = nTimes[nTimes.Length - 1];
+
+            t1 = t1 - 1;
+
+            <div class="row actbtn height cd_hottap" hottap="/home/orderdetail/@item["TeachID"].ToString()">
+                <div class="tt"><span>@date @t1.ToString():00-@t2.ToString():00</span></div>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+                @switch (item["State"].ToString())
+                {
+                    case "0":
+                        {
+                            <span class="status-for-order-sm paid">未支付</span>
+                            break;
+                        }
+                    case "1":
+                        {
+                            <span class="status-for-order-sm paid">已支付</span>
+                            break;
+                        }
+                    case "2":
+                        {
+                            <span class="status-for-order-sm">上课中</span>
+
+                            break;
+                        }
+                    case "3":
+                        {
+                            <span class="status-for-order-sm">待评分</span>
+
+                            break;
+                        }
+                    case "4":
+                        {
+                            <span class="status-for-order-sm">已完成</span>
+
+                            break;
+                        }
+                }
+
+            </div>
+        }
+        else if (item["Type"].ToString() == "2")
+        {
+            string date = DateTime.Parse(item["RunDate"].ToString()).ToString("MM月dd日");
+
+            <div class="row actbtn height cd_hottap" hottap="/home/orderdetail/@item["TeachID"].ToString()">
+                <div class="tt"><span>@date 集训</span></div>
+                <div class="holder arr">
+                    <i class="icoin fa fa-angle-right"></i>
+                </div>
+                @switch (item["State"].ToString())
+                {
+                    case "0":
+                        {
+                            <span class="status-for-order-sm paid">未支付</span>
+                            break;
+                        }
+                    case "1":
+                        {
+                            <span class="status-for-order-sm paid">已支付</span>
+                            break;
+                        }
+                    case "2":
+                        {
+                            <span class="status-for-order-sm">已支付</span>
+
+                            break;
+                        }
+                    case "3":
+                        {
+                            <span class="status-for-order-sm">已支付</span>
+
+                            break;
+                        }
+                    case "4":
+                        {
+                            <span class="status-for-order-sm">已支付</span>
+
+                            break;
+                        }
+                }
+
+            </div>
+        }
     }
 </div>
 

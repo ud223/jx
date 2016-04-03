@@ -380,6 +380,7 @@ namespace Flowpie.Controllers
             JxLib.OrderController orderController = new JxLib.OrderController();
             JxLib.CouponController couponController = new JxLib.CouponController();
             JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.TestController testController = new JxLib.TestController();
 
             if (id == null || id == "")
             {
@@ -391,6 +392,7 @@ namespace Flowpie.Controllers
             List<System.Collections.Hashtable> list = couponController.getUseByStuentId(item["StudentID"].ToString());
 
             System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+            var test = testController.load(item["otherid"].ToString());
 
             if (item == null)
             {
@@ -400,6 +402,7 @@ namespace Flowpie.Controllers
             ViewData["orderid"] = item["TeachID"].ToString();
             ViewData["openid"] = stu["OpenId"].ToString();
             ViewData["item"] = item;
+            ViewData["test"] = test;
             ViewData["list"] = list;
 
             return View();
@@ -407,6 +410,8 @@ namespace Flowpie.Controllers
 
         public ActionResult PaySuccess(string id)
         {
+            JxLib.SchoolController schoolController = new JxLib.SchoolController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
             JxLib.OrderController orderController = new JxLib.OrderController();
 
             System.Collections.Hashtable item = orderController.load(id);
@@ -421,6 +426,50 @@ namespace Flowpie.Controllers
             //    return Redirect("/home");
             //}
 
+            if (item["State"].ToString() == "0")
+            {
+                orderController.nextState(id);
+
+                if (orderController.Result)
+                {
+                    System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+                    System.Collections.Hashtable school = schoolController.load(item["SchoolID"].ToString());
+
+                    tools.Sms sms = new tools.Sms();
+
+                    string[] times = item["Time"].ToString().Split(',');
+
+                    Array.Sort(times);
+
+                    string content = "您已经成功支付一次在[" + school["SchoolText"].ToString() + "]的约教订单，时间是[" + item["RunDate"].ToString() + " " + times[0] + ":00 - " + times[times.Length - 1] + ":00]，我们正在为您安排教练，一旦分配到教练，我们会再次通知您。";
+
+                    sms.SendSms(stu["Phone"].ToString(), content);
+
+                    SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                    System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                    SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                    string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                    message.Add("MessageID", message_id);
+                    message.Add("Title", "支付成功");
+                    message.Add("MessageText", content);
+                    message.Add("StudentID", stu["StudentID"]);
+                    message.Add("SendID", "system");
+                    message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    messageController.add(message);
+
+                    WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付成功!");
+                }
+                else
+                {
+                    WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付失败!");
+                }
+            }
+
             ViewData["orderid"] = id;
             ViewData["state"] = item["State"].ToString();
             ViewData["item"] = item;
@@ -431,6 +480,7 @@ namespace Flowpie.Controllers
         public ActionResult OrderDetail(string id)
         {
             JxLib.OrderController orderController = new JxLib.OrderController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
 
             if (id == null || id == "")
             {
@@ -438,8 +488,10 @@ namespace Flowpie.Controllers
             }
 
             System.Collections.Hashtable item = orderController.load(id);
+            var stu = studentController.load(item["StudentID"].ToString());
 
             ViewData["item"] = item;
+            ViewData["stu"] = stu;
             ViewData["order_id"] = item["TeachID"].ToString();
 
             return View();
@@ -779,7 +831,7 @@ namespace Flowpie.Controllers
             return View();
         }
 
-        public ActionResult MessageDetail(string id)
+        public ActionResult Message(string id)
         {
             if (id == null || id == "")
             {
@@ -863,6 +915,24 @@ namespace Flowpie.Controllers
             ViewData["list2"] = list2;
             ViewData["list3"] = list3;
             ViewData["item"] = item;
+
+            return View();
+        }
+        
+        public ActionResult MyTest()
+        {
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.AssessmentController assessmentController = new JxLib.AssessmentController();
+
+            CacheLib.Cookie cookie = new CacheLib.Cookie();
+
+            string user_id = cookie.GetCookie("user_id");
+
+            var stu = studentController.load(user_id);
+            var list = assessmentController.getByUserID(user_id);
+
+            ViewData["stu"] = stu;
+            ViewData["list"] = list;
 
             return View();
         }
@@ -1364,6 +1434,7 @@ namespace Flowpie.Controllers
                 JxLib.OrderController orderController = new JxLib.OrderController();
                 JxLib.StudentController studentController = new JxLib.StudentController();
                 JxLib.SchoolController schoolController = new JxLib.SchoolController();
+                JxLib.TestController testController = new JxLib.TestController();
 
                 WxApiLib.lib.Log.Debug(this.GetType().ToString(), "支付id:" + id);
                 System.Collections.Hashtable item = orderController.load(id);
@@ -1374,35 +1445,42 @@ namespace Flowpie.Controllers
 
                     if (orderController.Result)
                     {
-                        System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
-                        System.Collections.Hashtable school = schoolController.load(item["SchoolID"].ToString());
+                        if (item["Type"].ToString() == "1")
+                        {
+                            System.Collections.Hashtable stu = studentController.load(item["StudentID"].ToString());
+                            System.Collections.Hashtable school = schoolController.load(item["SchoolID"].ToString());
 
-                        tools.Sms sms = new tools.Sms();
+                            tools.Sms sms = new tools.Sms();
 
-                        string[] times = item["Time"].ToString().Split(',');
+                            string[] times = item["Time"].ToString().Split(',');
 
-                        Array.Sort(times);
+                            Array.Sort(times);
 
-                        string content = "您已经成功支付一次在[" + school["SchoolText"].ToString() + "]的约教订单，时间是["+ item["RunDate"].ToString() + " "+ times[0] + ":00 - "+ times[times.Length - 1] + ":00]，我们正在为您安排教练，一旦分配到教练，我们会再次通知您。";
+                            string content = "您已经成功支付一次在[" + school["SchoolText"].ToString() + "]的约教订单，时间是[" + item["RunDate"].ToString() + " " + times[0] + ":00 - " + times[times.Length - 1] + ":00]，我们正在为您安排教练，一旦分配到教练，我们会再次通知您。";
 
-                        sms.SendSms(stu["Phone"].ToString(), content);
+                            sms.SendSms(stu["Phone"].ToString(), content);
 
-                        SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+                            SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
 
-                        System.Collections.Hashtable message = new System.Collections.Hashtable();
+                            System.Collections.Hashtable message = new System.Collections.Hashtable();
 
-                        SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+                            SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
 
-                        string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+                            string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
 
-                        message.Add("MessageID", message_id);
-                        message.Add("Title", "支付成功");
-                        message.Add("MessageText", content);
-                        message.Add("StudentID", stu["StudentID"]);
-                        message.Add("SendID", "system");
-                        message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                            message.Add("MessageID", message_id);
+                            message.Add("Title", "支付成功");
+                            message.Add("MessageText", content);
+                            message.Add("StudentID", stu["StudentID"]);
+                            message.Add("SendID", "system");
+                            message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                        messageController.add(message);
+                            messageController.add(message);
+                        }
+                        else if (item["Type"].ToString() == "2")
+                        {
+                            testController.Next(item["otherid"].ToString());
+                        }
 
                         WxApiLib.lib.Log.Info(this.GetType().ToString(), "支付成功!");
                     }

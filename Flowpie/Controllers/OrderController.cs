@@ -190,6 +190,7 @@ namespace Flowpie.Controllers
             string serial_id = serialController.getSerialNumber("ord", DateTime.Now.ToString("yyyy-MM-dd"));
 
             data.Add("TeachID", serial_id);
+            data.Add("Type", "1");
 
             orderController.add(data);
 
@@ -472,10 +473,118 @@ namespace Flowpie.Controllers
             return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
         }
 
-        //[HttpPost]
-        //public string orderPay()
-        //{
+        [HttpPost]
+        public string toTest()
+        {
+            JxLib.TestController testController = new JxLib.TestController();
+            JxLib.AssessmentController assessmentController = new JxLib.AssessmentController();
+            JxLib.StudentController studentController = new JxLib.StudentController();
+            JxLib.GroundController groundController = new JxLib.GroundController();
+            JxLib.OrderController orderController = new JxLib.OrderController();
 
-        //}
+            Models.Result result = new Models.Result();
+            DatabaseLib.Tools tools = new DatabaseLib.Tools();
+
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
+
+            System.Collections.Hashtable data = tools.paramToData(context.Request.Form);
+
+            string assessmentid = data["assessmentid"].ToString();
+
+            var assessment = assessmentController.load(assessmentid);
+            var stu = studentController.load(assessment["studentid"].ToString());
+            var test = testController.getByAssessId(assessmentid);
+
+            if (test != null)
+            {
+                result.code = "0";
+                result.message = "通知已发送!";
+
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+            }
+
+            System.Collections.Hashtable ground = null;
+
+            if (assessment["level"].ToString() == "2")
+            {
+                ground = groundController.load(stu["groundid_2"].ToString());
+            }
+            else
+            {
+                ground = groundController.load(stu["groundid_3"].ToString());
+            }
+
+            var tmp_assessment_date = assessment["testdate"].ToString();
+
+            var tmp_date = DateTime.Parse(tmp_assessment_date);
+
+            var date = tmp_date.AddDays(-1);
+
+            var info = new System.Collections.Hashtable();
+
+            info.Add("studentid", stu["StudentID"].ToString());
+            info.Add("price", ground["price"].ToString());
+            info.Add("groundid", ground["groundid"].ToString());
+            info.Add("assessmentid", assessmentid);
+            info.Add("testdate", date.ToString("yyyy-MM-dd"));
+            info.Add("expire", date.ToString("yyyy-MM-dd"));
+            info.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            string test_id = testController.add(info);
+
+            if (testController.Result)
+            {
+                result.code = "200";
+                result.message = "通知成功!";
+
+                var order = new System.Collections.Hashtable();
+
+                SystemConfigureLib.SerialNumberController serialController = new SystemConfigureLib.SerialNumberController();
+
+                string serial_id = serialController.getSerialNumber("ord", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                order.Add("TeachID", serial_id);
+                order.Add("RunDate", date.ToString("yyyy-MM-dd"));
+                order.Add("StudentID", stu["StudentID"].ToString());
+                order.Add("Type", "2");
+                order.Add("PayAmount", ground["price"].ToString());
+                order.Add("Amount", ground["price"].ToString()); 
+                order.Add("SchoolID", stu["SchoolID"].ToString());
+                order.Add("otherid", test_id);
+                order.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                orderController.add(order);
+
+                tools.Sms sms = new tools.Sms();
+                
+                string content = stu["Name"].ToString() + "您好，您将于" + assessment["testdate"].ToString() + "参加科目"+ assessment["level"].ToString() +"考试, 我们建议您于" + date.ToString("yyyy-MM-dd") +"参加集训, 以便顺利通过考试. 具体信息请看微信客户端, 谢谢";   
+
+                sms.SendSms(stu["Phone"].ToString(), content);
+
+                SystemConfigureLib.MessageController messageController = new SystemConfigureLib.MessageController();
+
+                System.Collections.Hashtable message = new System.Collections.Hashtable();
+
+                SystemConfigureLib.SerialNumberController serialNumberController = new SystemConfigureLib.SerialNumberController();
+
+                string message_id = serialNumberController.getSerialNumber("msg", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                message.Add("MessageID", message_id);
+                message.Add("Title", "集训通知");
+                message.Add("MessageText", content);
+                message.Add("StudentID", stu["StudentID"]);
+                message.Add("SendID", "system");
+                message.Add("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                messageController.add(message);
+            }
+            else
+            {
+                result.code = "0";
+                result.message = testController.Message.Replace("'", "\"");
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result).Replace("\"", "'");
+        }
     }
 }

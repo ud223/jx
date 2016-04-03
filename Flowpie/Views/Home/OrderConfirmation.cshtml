@@ -7,6 +7,9 @@
 }
 @{
     string time = "";
+
+    var itm = ViewData["item"] as System.Collections.Hashtable;
+    var test = ViewData["test"] as System.Collections.Hashtable;
 }
 <!--<div style="background:#FFF;z-index:99;top:0;left:0;width:100%;height:32px;line-height:32px;text-align:center;position: fixed;" id="xxeee">
         </div>-->
@@ -32,36 +35,49 @@
             <span>@(((System.Collections.Hashtable)ViewData["item"])["SchoolText"])</span>
         </div>
     </div>
-    <div class="row height">
-        <span class="tt">时间</span>
-    </div>
-    <div class="row">
-        <div class="p1001-p1">
-            <div class="bold td">@(((System.Collections.Hashtable)ViewData["item"])["RunDate"])</div>
-            <div class="blue td col2">
-                @if ((((System.Collections.Hashtable)ViewData["item"])["Time"]) != null)
-                {
-                    time = (((System.Collections.Hashtable)ViewData["item"])["Time"]).ToString();
-
-                    string[] str_time = time.Split(',');
-
-                    Array.Sort(str_time);
-
-                    foreach (string t in str_time)
+    @if (itm["Type"].ToString() == "1")
+    {
+        <div class="row height">
+            <span class="tt">时间</span>
+        </div>
+        <div class="row">
+            <div class="p1001-p1">
+                <div class="bold td">@(((System.Collections.Hashtable)ViewData["item"])["RunDate"])</div>
+                <div class="blue td col2">
+                    @if ((((System.Collections.Hashtable)ViewData["item"])["Time"]) != null)
                     {
-                        int tmp = Convert.ToInt32(t);
-                        int tmp1 = tmp - 1;
+                        time = (((System.Collections.Hashtable)ViewData["item"])["Time"]).ToString();
 
-                        <div>@tmp1.ToString():00 ~ @tmp.ToString():00</div>
+                        string[] str_time = time.Split(',');
 
+                        Array.Sort(str_time);
+
+                        foreach (string t in str_time)
+                        {
+                            int tmp = Convert.ToInt32(t);
+                            int tmp1 = tmp - 1;
+
+                            <div>@tmp1.ToString():00 ~ @tmp.ToString():00</div>
+
+                        }
                     }
-                }
-                @*<div>12:00 ~ 13:00</div>
-                <div>15:00 ~ 16:00</div>
-                <div>17:00 ~ 18:00</div>*@
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else if (itm["Type"].ToString() == "2")
+    {
+        <div class="row height">
+            <span class="tt">集训日期</span>
+        </div>
+        <div class="row">
+            <div class="p1001-p1">
+                <div class="bold td">@test["testdate"]</div>
+                <div class="blue td col2">
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <div class="blackrowgall tran unclickable">
@@ -77,27 +93,32 @@
             <span>100</span><span class="lijian-bpe">（减）</span>
         </div>
     </div>
-    <div class="row">
-        <span class="tt lightgray">学时卷</span>
-        <div class="holder">
-            <select id="coupon-list">                
-                <option value="0">不使用学时卷</option>
-                @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
-                {
-                    string expire = item["Expire"].ToString();
 
-                    if (expire == "" || expire == "null")
+    @if (itm["Type"].ToString() == "1")
+    {
+        <div class="row">
+            <span class="tt lightgray">学时卷</span>
+            <div class="holder">
+                <select id="coupon-list">
+                    <option value="0">不使用学时卷</option>
+                    @foreach (var item in ViewData["list"] as List<System.Collections.Hashtable>)
                     {
-                        continue;
+                        string expire = item["Expire"].ToString();
+
+                        if (expire == "" || expire == "null")
+                        {
+                            continue;
+                        }
+
+                        <option value="@item["CouponID"]">学时券 x 1（@DateTime.Parse(expire).ToString("MM月dd日") 到期）</option>
                     }
 
-                    <option value="@item["CouponID"]">学时券 x 1（@DateTime.Parse(expire).ToString("MM月dd日") 到期）</option>
-                    @*<option>200（5月18日到期）</option>*@
-                }
-                
-            </select><span class="lijian-bpe">（减）</span>
+                </select><span class="lijian-bpe">（减）</span>
+            </div>
         </div>
-    </div>
+    }
+    
+    
     <div class="row">
         <span class="tt">付款</span>
         <div class="holder">
@@ -191,19 +212,23 @@
         var amount = $('#pay-amount').html().replace('.00','');
        
         if (amount == '0' || amount == '0.00') {
-            var opertion = {
-                msg: '支付金额必须大于0元',
-                exitText: "关闭!"
-            };
+            //var opertion = {
+            //    msg: '支付金额必须大于0元',
+            //    exitText: "关闭!"
+            //};
 
-            $.alertbox(opertion);
+            //$.alertbox(opertion);
 
-            return;
+            //return;
+            url = '/home/paysuccess/' + orderid;
         }
+        else {
+            url = '/home/orderpay?openid=' + openid + '&total_fee=' + amount + '&orderid=' + orderid;
+        }
+
         //测试链接
         //url = '/home/paysuccess/' + orderid;
-	    url = '/home/orderpay?openid=' + openid + '&total_fee=' + amount + '&orderid=' + orderid;
-
+	   
         location.href = url;
     }
 </script>

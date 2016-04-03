@@ -5,6 +5,11 @@
     ViewBag.Title = ViewData["title"];
 
     List<System.Collections.Hashtable> list = ViewData["list"] as List<System.Collections.Hashtable>;
+
+    if (list == null)
+    {
+        list = new List<System.Collections.Hashtable>();
+    }
 }
 
 @*返回菜单*@

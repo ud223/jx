@@ -1,0 +1,140 @@
+﻿@{
+    Layout = "~/Views/Shared/_Mobile.cshtml";
+}
+@{
+
+    ViewBag.Title = ViewData["title"];
+
+    var list = ViewData["list"] as List<System.Collections.Hashtable>;
+}
+@if (ViewData["stu"] != null)
+{
+    var item = ViewData["stu"] as System.Collections.Hashtable;
+
+    <div class="status-for-order refunded">
+        报名考试
+    </div>
+
+    <div class="ccnox">考试信息：</div>
+    <div class="blackrowgall">
+        <div class="row level" val="@item["LessonState"]">
+            <span class="tt">科目</span>
+            @if (item["LessonState"].ToString() == "1")
+            {
+                <span class="holder">二</span>
+            }
+            else
+            {
+                <span class="holder">三</span>
+            }   
+        </div>
+        <div class="row">
+            <span class="tt">考场</span>
+            <div class="holder">
+                @if (item["LessonState"].ToString() == "1")
+                {
+                    <span>@item["groundname_2"]</span>
+                }
+                else
+                {
+                    <span>@item["groundname_3"]</span>
+                }              
+            </div>
+        </div>
+        <div class="row">
+            <span class="tt">时间</span>
+            <div class="holder">
+                <input type="date" id="testdate">
+            </div>
+        </div>
+    </div>
+    if (list.Count < 2)
+    {
+        if (item["LessonState"].ToString() == "1")
+        {
+            if (list.Count == 0)
+            {
+                if (item["groundname_2"].ToString() != "")
+                {
+                    <div class="clear-15"></div>
+                    <a href="javascript:void(0)" class="fullbtn submit"><i class="fa fa-wechat"></i>报名提交</a>
+                }
+            }
+        }
+        else
+        {
+            if (item["groundname_3"].ToString() != "")
+            {
+                <div class="clear-15"></div>
+                <a href="javascript:void(0)" class="fullbtn submit"><i class="fa fa-wechat"></i>报名提交</a>
+            }
+        }
+    }
+
+
+    <div class="clear-15"></div>
+    <a href="/home/myindex" class="fullbtn normal">返回</a>
+}
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $('.fullbtn.submit').click(function () {
+            submit();
+        })
+
+        function success(data) {
+            alert(data.message);
+
+            if (data.code == '200') {
+                location.href = '/home/myindex';
+            }
+        }
+
+        function error() {
+            alert('报名失败!');
+        }
+
+        function submit() {
+            var studentid = localStorage.getItem('user_id');
+            var testdate = $("#testdate").val();
+            var level = $('.level').attr('val');
+
+            level = parseInt(level) + 1;
+
+            if (!testdate) {
+                alert('考试日期不能为空!');
+
+                retur;
+            }
+
+            var today = new Date();
+
+            today.setDate(today.getDate() + 3);
+
+            var year = today.getFullYear();
+            var month = today.getMonth() + 1;
+            var day = today.getDate();
+
+            var date = year + "-" + month + "-" + day;
+
+            var a = (Date.parse(testdate) - Date.parse(date)) / 3600 / 1000;
+   
+            if (a < 0) {
+                alert("必须提前3天报名考试!");
+
+                return;
+            }
+
+            var data = { 'studentid': studentid, 'testdate': testdate, 'level': level };
+
+            var params = {
+                url: '/api/student/assessment',
+                data: data,
+                successFun: success,
+                errorFun: error
+            }
+
+            ajaxTo(params);
+        }
+    });
+</script>

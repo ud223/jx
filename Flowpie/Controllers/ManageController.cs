@@ -648,6 +648,28 @@ namespace Flowpie.Controllers
 
         #endregion
 
+        #region 考试申请列表
+
+        public ActionResult AssessmentList()
+        {
+            if (!this.init())
+            {
+                return Redirect("/manage/PermmissionForbidden");
+            }
+
+            ViewData["title"] = "考试申请列表";
+
+            JxLib.AssessmentController assessmentController = new JxLib.AssessmentController();
+
+            var list = assessmentController.getList();
+
+            ViewData["list"] = list;
+
+            return View();
+        }
+
+        #endregion
+
         #region 优惠卷
 
         //[Flowpie.Models.MyAuth(Roles = "系统用户,驾校管理员")]

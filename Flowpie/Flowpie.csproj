@@ -1930,6 +1930,8 @@
     <Content Include="Views\Manage\GroundList.cshtml" />
     <Content Include="Views\Manage\GroundEdit.cshtml" />
     <Content Include="Views\Home\MyGround.cshtml" />
+    <Content Include="Views\Home\MyTest.cshtml" />
+    <Content Include="Views\Manage\AssessmentList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
