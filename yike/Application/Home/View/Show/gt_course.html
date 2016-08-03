@@ -1,0 +1,179 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <?php
+    import("Org.Fit.WeChat.jssdk");
+    $jssdk = new \JSSDK("wx8f573f8116d3d740", "f6c37757e5f11a12b4cdd80c2cda8b7e");
+    $signPackage = $jssdk->GetSignPackage();
+    ?>
+    <div class="tpcbanner">
+        <input type="hidden" id="lesson_id" value="{$data['lesson'][0].lesson_config_id}">
+        <div class="tt1">{$data['lesson'][0].name}</div>
+        <div class="tt2">{$data['lesson'][0].name_en}</div>
+        <span class="iconfont icon-angleleft historyback" parentUrl="/show/home?bakc=1"></span>
+    </div>
+
+    <div style="background:url(/Public/upload/{$data['lesson'][0].show_pic}) center center no-repeat;background-size:cover;height:200px;"></div>
+
+    <!--<button id="submit" class="colorbtn bookcbtn">预定课程</button>-->
+    <div style="z-index:5;box-shadow:0 0 20px rgba(0,0,0,.1);padding:10px 20px;position:fixed;bottom:0;left:0;width:100%;box-sizing: border-box;background:#FFF;">
+        <button id="submit" class="colorbtn full" style="width:100%;height:40px;line-height: 40px;border:none;border-radius: 100px;" >预定课程</button>
+    </div>
+
+    <!--<button class="bookcbtn full">约满</button>-->
+    <div class="pad-20">
+        <div class="shdblked">
+            <!--<div class="cmiyitm">-->
+                <!--<span class="iconfont icon-time"></span>-->
+                <!--<span class="t2"><span id="date"></span> <span id="week"></span> <span id="start_time">{$data['lesson'][0].start_time}</span>-<span id="end_time">{$data['lesson'][0].end_time}</span></span>-->
+            <!--</div>-->
+            <div class="cmiyitm">
+                <span class="iconfont icon-price"></span>
+                <div class="t2 price" style="display: none">VIP特价：<span class="font10px">￥</span>{$data['lesson'][0].vip_price_1}</div>
+                <div class="t2 free" style="font-weight: bold; color:#29cde7; display: none">新用户，免费试练</div>
+                <!--<div id="not-vip" class="bcvipc tc tapquick" url="/show/gt_vipcard" style="display: none">成为VIP，享受特价</div>-->
+                <!--<div id="is-vip" class="bcvipc tapquick vipcharge" url="/show/gt_charge" style="display: none">VIP充值</div>-->
+            </div>
+            <div class="cmiyitm">
+                <span class="iconfont icon-location"></span>
+                <!--<span class="iconfont icon-angleright"></span>-->
+                <span id="lesson_local" class="t2">{$data['lesson'][0].local}</span>
+            </div>
+        </div>
+
+        <div class="shdblked">
+            <div class="t1">
+                <span class="iconfont icon-coach"></span>
+                <span>教练组</span>
+            </div>
+            <div class="contd">
+                <div class="introdtxt">教练介绍</div>
+                <img src="/Public/common/js/img/laoshi.jpg" style="width:100%;border-radius:4px;" />
+            </div>
+        </div>
+
+        <div class="shdblked">
+            <div class="t1">
+                <span class="iconfont icon-qiapian"></span>
+                <span>课程介绍</span>
+            </div>
+            <div class="contd">
+                <div class="introdtxt">{$data['lesson'][0].remark}</div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" charset="UTF-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        var run_date = "{$data['lesson'][0].run_date}";
+        var lat = "{$data['lesson'][0].lat}";
+        var lng = "{$data['lesson'][0].lng}";
+        var local = "{$data['lesson'][0].local}";
+        var name = "{$data['lesson'][0].name}";
+
+        $(function(){
+            User.loadData = function (user) {
+                if (user.scene_id == '') {
+                    $('.t2.price').show();
+                }
+                else {
+                    $('.t2.free').show();
+                }
+            };
+
+            User.load();
+
+            initDate(run_date);
+
+            Order.success = createSuccess;
+
+            $('#submit').click(function() {
+                Order.create(1, 0, 0);
+            })
+
+            $('#lesson_local').click(function() {
+//                location.href = '/show/wx_map';
+                wx.config({
+                    debug: false,
+                    appId: '<?php echo $signPackage["appId"];?>',
+                    timestamp: <?php echo $signPackage["timestamp"];?>,
+                    nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+                    signature: '<?php echo $signPackage["signature"];?>',
+                    jsApiList: ['openLocation']
+                });
+
+                wx.ready(function () {
+                    wx.openLocation({
+                        latitude: lat, // 纬度，浮点数，范围为90 ~ -90
+                        longitude: lng, // 经度，浮点数，范围为180 ~ -180  22.543460,113.950500
+                        name: name, // 位置名
+                        address: local, // 地址详情说明
+                        scale: 20, // 地图缩放级别,整形值,范围从1~28。默认为最大
+                        infoUrl: '#' // 在查看位置界面底部显示的超链接,可点击跳转
+                    });
+                });
+
+                wx.error(function (res) {
+    //                    alert(res.errMsg);
+                });
+            });
+        });
+
+        function createSuccess(id) {
+            location.href = '/show/gt_orderdetail?id=' + id;
+        }
+
+        function initDate(d) {
+            var date = new Date(d);
+
+            var date_text = date.getMonth() + 1 + '月' + date.getDate() + '日';
+
+            $('#date').attr('val', d);
+            $('#date').html(date_text);
+
+            var week_text = "星期";
+
+            switch (date.getDay()) {
+                case 1: {
+                    week_text = week_text + "一";
+
+                    break;
+                }
+                case 2: {
+                    week_text = week_text + "二";
+
+                    break;
+                }
+                case 3: {
+                    week_text = week_text + "三";
+
+                    break;
+                }
+                case 4: {
+                    week_text = week_text + "四";
+
+                    break;
+                }
+                case 5: {
+                    week_text = week_text + "五";
+
+                    break;
+                }
+                case 6: {
+                    week_text = week_text + "六";
+
+                    break;
+                }
+                default :{
+                    week_text = week_text + "天";
+
+                    break;
+                }
+            }
+
+            $('#week').html(week_text);
+        }
+    </script>
+</block>

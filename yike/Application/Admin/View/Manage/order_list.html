@@ -1,0 +1,92 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">订单管理</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 120px">姓名</th>
+                        <th style="width: 150px">电话</th>
+                        <th style="width: 250px">高尔夫球场</th>
+                        <th style="width: 100px">状态</th>
+                        <th style="width: 150px">日期</th>
+                        <th style="width: 100px">上课时间</th>
+                        <th style="width: 300px">地址</th>
+                        <!--<th style="width:80px">操作</th>-->
+                        <th>下课</th>
+                    </tr>
+
+                    <volist name="data.order" id="itm">
+                        <tr>
+                            <td>{$itm.order_id}</td>
+                            <td>{$itm.name}</td>
+                            <td>{$itm.tel}</td>
+                            <td>{$itm.lesson_name}</td>
+                            <td>
+                                <if condition="$itm.state eq '20'">
+                                    未使用
+                                    <else  />
+                                    已下课
+                                </if>
+                            </td>
+                            <td>{$itm.run_date}</td>
+                            <td>{$itm.start_time}</td>
+                            <td>{$itm.local}</td>
+                            <!--<td><a href="javascript:void(0)" class="itm-edit" val="{$itm.order_id}">查看</a></td>-->
+                            <td><a href="javascript:void(0)" class="itm-over" val="{$itm.order_id}">下课</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            //查看订单
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/admin/manage/order_detail?id='+ id;
+            });
+
+            $('.itm-over').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('请确认是否该课程下课?')) {
+                    fit.ajax({
+                        url:'/api/lesson_end',
+                        data:{
+                            'order_id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+</block>

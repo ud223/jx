@@ -1,0 +1,28 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="pad-20">
+        <style>
+            body {
+                padding-top:30px;
+            }
+        </style>
+        <div class="resu_dip01">
+            <div class="iconfont icon-attention resu_dip02 fail"></div>
+            <div class="clear"></div>
+            <div class="resu_dip03">操作失败</div>
+            <div class="resu_dip04">请点击返回重新尝试支付</div>
+            <!--此处的返回按钮跳转指向应该是被设定的-->
+            <button class="whitebtn full tapquick" url="/show/gt_orderdetail?id={$order_id}&back=1">返回</button>
+        </div>
+
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+
+        })
+    </script>
+</block>

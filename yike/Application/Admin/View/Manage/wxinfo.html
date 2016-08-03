@@ -1,0 +1,71 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">微信信息管理</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="input-group">
+                    <span class="input-group-addon">APP ID:</span>
+                    <input type="text" class="form-control" placeholder="" name="appid_field" id="appid_field" maxlength="50">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">APP SECRET:</span>
+                    <input type="text" class="form-control" placeholder="" name="appsecret_field" id="appsecret_field" maxlength="50">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">商户号:</span>
+                    <input type="text" class="form-control" placeholder="" name="shopcode_field" id="shopcode_field" maxlength="30">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">商户密码:</span>
+                    <input type="text" class="form-control" placeholder="" name="shoppwd_field" id="shoppwd_field" maxlength="50">
+                </div>
+                <input type="hidden" id="id_field" name="id_field">
+            </div><!-- /.box-body -->
+            <div class="box-footer clearfix "></div>
+
+            <div class="col-md-2" style="padding: 20px;">
+                <a class="btn btn-block btn-primary save_wxinfo_btn"  href="javascript:void(0)">保存</a>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+<block name="script">
+<script>
+    $(function() {
+        $('.save_wxinfo_btn').click(function() {
+            var id = $('#id_field').val();
+            var appid = $('#appid_field').val();
+            var appsecret = $('#appsecret_field').val();
+            var shopcode = $('#shopcode_field').val();
+            var shoppwd = $('#shoppwd_field').val();
+
+            var data = {
+                'id': id,
+                'appid': appid,
+                'appsecret': appsecret,
+                'shopcode': shopcode,
+                'shoppwd': shoppwd
+            };
+
+            fit.ajax({
+                url:'/admin/manage/save_wx',
+                data: data,
+                success:function(result){
+                    var id = result.data;
+
+                    $('#id_field').val(id);
+
+                    alert(result.msg);
+                }
+            });
+
+            return false;
+        })
+    });
+</script>
+</block>

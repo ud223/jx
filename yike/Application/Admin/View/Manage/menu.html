@@ -1,0 +1,246 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">菜单管理</h3>
+            </div>
+
+            <div class="col-md-2" style="padding: 20px;">
+                <a class="btn btn-block btn-primary add_menu_btn" href="/product/manage">添加菜单</a>
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 150px">名称</th>
+                        <th style="width: 300px">url</th>
+                        <th style="width: 100px">父id</th>
+                        <th style="width: 100px">序号</th>
+                        <th style="width: 100px">是否启用</th>
+                        <th style="width: 100px">操作</th>
+                        <th>删除</th>
+                    </tr>
+
+                    <volist name="data.menu" id="itm">
+                        <tr>
+                            <td class="menu-id">{$itm.id}</td>
+                            <td class="menu-name">{$itm.name}</td>
+                            <td class="menu-url">{$itm.url}</td>
+                            <td class="menu-pid">{$itm.pid}</td>
+                            <td class="menu-sort">{$itm.sort}</td>
+                            <td class="menu-enable">{$itm.enable}</td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">编辑</a></td>
+                            <td><a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加菜单</div>
+            <div class="am-modal-bd">
+
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">菜单名</span>
+                        <input type="text" class="form-control" placeholder="" name="name_field" id="name_field" maxlength="30">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">URL</span>
+                        <input type="text" class="form-control" placeholder="" name="url_field" id="url_field" maxlength="30">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">父菜单</span>
+                        <!--<input type="text" class="form-control" placeholder="" name="pid_field" id="pid_field" maxlength="30">-->
+                        <select class="form-control" name="pid_field" id="pid_field">
+                            <option value="0">顶级菜单</option>
+                            <volist name="data.pmenu" id="itm">
+                                <option value="{$itm.id}">{$itm.name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">序号</span>
+                        <select class="form-control" name="sort_field" id="sort_field">
+                            <?php for ($i = 1; $i < 51; $i++): ?>
+                                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否启用</span>
+                        <input type="radio" id="enable_menu" name="enable_field" value="1" checked="checked"> 启用 <input type="radio" id="disable_menu" name="enable_field" value="0"> 不启用
+                    </div>
+                </div>
+
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+<script>
+    $(function(){
+        $('.itm-del').click(function() {
+            var id = $(this).attr('val');
+
+            if (confirm('是否删除该菜单项?')) {
+                fit.ajax({
+                    url:'/admin/manage/del_menu',
+                    data:{
+                        'id':id
+                    },
+                    success:function(result){
+                        alert(result.msg);
+
+                        window.location.reload();
+                    }
+                });
+            }
+        })
+        //保存菜单
+        $('.itm-edit').click(function() {
+            var id = $(this).attr('val');
+            //初始化编辑面板
+            clearModal();
+
+            //获取当前行的菜单信息
+            var tr = $(this).closest('tr');
+
+            var name = tr.find('.menu-name').html();
+            var url = tr.find('.menu-url').html();
+            var pid = tr.find('.menu-pid').html();
+            var sort = tr.find('.menu-sort').html();
+            var enable = tr.find('.menu-enable').html();
+
+            //获取行的值赋值到编辑面板
+            $('#name_field').val(name);
+            $('#url_field').val(url);
+            $('#pid_field').val(pid);
+            $('#sort_field').val(sort);
+
+            if (enable == 0) {
+                $('input:radio[name="enable_field"][value="1"]').prop('checked', false);
+                $('input:radio[name="enable_field"][value="0"]').prop('checked', true);
+            }
+
+            $('#my-prompt').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    //alert('你输入的是：' + e.data || '');
+                    var name = $('#name_field').val();
+                    var url = $('#url_field').val();
+                    var pid = $('#pid_field').val();
+                    var sort = $('#sort_field').val();
+                    var enable = $('input:radio[name="enable_field"]:checked').val();
+
+                    var data = {
+                        'id': id,
+                        'name': name,
+                        'url': url,
+                        'pid': pid,
+                        'sort': sort,
+                        'enable': enable
+                    };
+
+                    fit.ajax({
+                        url:'/admin/manage/save_menu',
+                        data: data,
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+
+                },
+                onCancel: function(e) {
+
+                }
+            });
+
+            return false;
+        })
+
+        $('.add_menu_btn').click(function(){
+//            var id = $(this).closest('tr').data('id');
+//            var level = $(this).closest('tr').data('level');
+//
+//            $('#my-prompt').data('id',id);
+//            $('#my-prompt').data('level',level);
+            clearModal();
+
+            $('#my-prompt').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    //alert('你输入的是：' + e.data || '');
+                    var name = $('#name_field').val();
+                    var url = $('#url_field').val();
+                    var pid = $('#pid_field').val();
+                    var sort = $('#sort_field').val();
+                    var enable = $('input:radio[name="enable_field"]:checked').val();
+
+                    var data = {
+                        'name': name,
+                        'url': url,
+                        'pid': pid,
+                        'sort': sort,
+                        'enable': enable
+                    };
+
+                    fit.ajax({
+                        url:'/admin/manage/add_menu',
+                        data: data,
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+
+                },
+                onCancel: function(e) {
+                    //alert('不想说!');
+                }
+            });
+
+            return false;
+        });
+    });
+
+    function clearModal() {
+        $('#name_field').val('');
+        $('#url_field').val('');
+        $('#pid_field').val('');
+        $('#sort_field').val(0);
+
+        $('input:radio[name="enable_field"][value="1"]').prop('checked', true);
+        $('input:radio[name="enable_field"][value="0"]').prop('checked', false);
+    }
+</script>
+</block>

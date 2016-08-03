@@ -1,0 +1,90 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">生成二维码</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">选择渠道</span>
+                        <select class="form-control" name="channel_field" id="channel_field">
+                            <volist name="data.channel" id="itm">
+                                <option value="{$itm.id}">{$itm.name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">选择套餐</span>
+                        <select class="form-control" name="setmeal_field" id="setmeal_field">
+                            <volist name="data.setmeal" id="itm">
+                                <option value="{$itm.id}">{$itm.name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">生成数量</span>
+                        <input type="number" id="num_field" name="num_field" class="form-control" min="1" max="20" value="1">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <span id="btn_save" class="am-modal-btn">生成</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/admin/manage/qrcode_list';
+            });
+        });
+
+        function saveItem() {
+            var channel = $('#channel_field').val();
+            var setmeal = $('#setmeal_field').val();
+            var num = $('#num_field').val();
+
+            var data = { 'channel':channel, 'setmeal':setmeal, 'num':num };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否生成二维码?')) {
+                fit.ajax({
+                    url:'/admin/manage/qrcode_create',
+                    data:data,
+                    success:function(result){
+//                        console.log(JSON.stringify(result));
+//                        console.log(result.url);
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/admin/manage/qrcode_list';
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

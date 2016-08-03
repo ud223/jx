@@ -1,0 +1,155 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <?php
+    import("Org.Fit.WeChat.jssdk");
+    $jssdk = new \JSSDK("wx8f573f8116d3d740", "f6c37757e5f11a12b4cdd80c2cda8b7e");
+    $signPackage = $jssdk->GetSignPackage();
+    ?>
+    <div class="tpcbanner">
+        <div class="tt1">确认预约</div>
+        <div class="tt2">Confirm Order</div>
+        <span id="btn_back" class="iconfont icon-angleleft historyback" parentUrl="/show/gt_course?id={$data['order'][0].order_id}&back=1"></span>
+    </div>
+
+    <div class="pad-20">
+        <div style="padding:10px 0;">
+            请确认预约信息
+        </div>
+        <div class="shdblked">
+            <div class="cmiyitm">
+                <span class="iconfont icon-timecourse"></span>
+                <span class="t2">{$data['order'][0].name}</span>
+            </div>
+            <div class="cmiyitm" style="display: none">
+                <span class="iconfont icon-time"></span>
+                <span class="t2"><?php echo date("m月d日", strtotime($data['order'][0]['run_date'])) ?> <?php $arr=array("天","一","二","三","四","五","六");
+echo "星期".$arr[date("w",strtotime($data['order'][0]['run_date']))]; ?> {$data['order'][0].start_time}-{$data['order'][0].end_time}</span>
+            </div>
+
+            <!--普通用户出现-->
+            <div id="vip-price" class="cmiyitm" style="display: none">
+                <span class="iconfont icon-price"></span>
+                <div class="t2">体验价：<span class="font10px">￥</span>初次免费体验 <span class="split"></span></div>
+            </div>
+            <!--vip会员出现-->
+            <div id="not-vip-price" class="cmiyitm is-vip" style="display: none">
+                <span class="iconfont icon-price"></span>
+                <div class="t2">VIP价：<span class="font10px">￥</span>{$data['order'][0].vip_price_1} <span class="split"></span></div>
+            </div>
+
+            <div class="cmiyitm">
+                <span class="iconfont icon-location"></span>
+                <!--<span class="iconfont icon-angleright"></span>-->
+                <span id="lesson_local" class="t2">{$data['order'][0].local}</span>
+            </div>
+        </div>
+
+        <!--普通用户出现-->
+        <style>
+            .notvip {
+                background:rgba(255,255,255,.85);
+                color:#F0AD4E;
+                padding:15px;
+                margin-bottom:15px;
+                border-radius:4px;
+                border:0.5px solid #F0AD4E;
+                font-weight:bold;
+            }
+        </style>
+        <div id="not-vip" style="margin-bottom:15px; display: none" url="#">
+            <input type="hidden" id="order_id" value="{$data['order'][0].order_id}">
+            <button class="confirmbtn full" val="{$data['order'][0].vip_price_1}"><span class="iconfont icon-wechat"></span>确认支付 <span id="test-price">￥{$data['order'][0].vip_price_1}</span>元</button>
+        </div>
+
+        <!--VIP会员出现-->
+        <style>
+            .myyue {
+                padding-top:15px;
+                font-size:12px;
+                color:#bbb;
+            }
+            .myyue span {
+                color:#F0AD4E;
+            }
+        </style>
+        <div id="is-vip" style="margin-bottom:15px; display: none" url="#">
+            <div class="notvip">
+                初次体验，完全免费，赶快预约吧
+            </div>
+            <!--?url属性里面的网址"?back=1"表示可以无视historyback直接强制返回到parentUrl-->
+            <button class="confirmbtn full" val="0"><span class="iconfont icon-check"></span>确认预约</button>
+            <!--<div class="myyue">我的余额：￥<span id="my-amount">0</span></div>-->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" charset="UTF-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        var price = '{$data['order'][0].price}';
+        var vip_price = '{$data['order'][0].vip_price_1}';
+        var lat = "{$data['order'][0].lat}";
+        var lng = "{$data['order'][0].lng}";
+        var local = "{$data['order'][0].local}";
+        var name = "{$data['order'][0].name}";
+
+        $(function(){
+            User.loadData = function(user) {
+                if (user.scene_id != '') {
+                    $('#is-vip').show();
+                    $('#vip-price').show();
+                }
+                else {
+                    $('#not-vip').show();
+                    $('#not-vip-price').show();
+                }
+
+                $('#my-amount').html(User.data.amount);
+            }
+
+            User.load();
+
+            $('#btn_back').click(function() {
+                var lesson_id = $('#lesson_id').val();
+
+                location.href = '/show/gt_course?id=' + lesson_id;
+            })
+
+            $('.confirmbtn').click(function() {
+                var order_id = $('#order_id').val();
+
+                var pay_amount = $(this).attr('val');
+
+                Order.setAmount(order_id, pay_amount, vip_price);
+            })
+
+            $('#lesson_local').click(function() {
+//                location.href = '/show/wx_map';
+                wx.config({
+                    debug: false,
+                    appId: '<?php echo $signPackage["appId"];?>',
+                    timestamp: <?php echo $signPackage["timestamp"];?>,
+                nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+                        signature: '<?php echo $signPackage["signature"];?>',
+                        jsApiList: ['openLocation']
+            });
+
+            wx.ready(function () {
+                wx.openLocation({
+                    latitude: lat, // 纬度，浮点数，范围为90 ~ -90
+                    longitude: lng, // 经度，浮点数，范围为180 ~ -180  22.543460,113.950500
+                    name: name, // 位置名
+                    address: local, // 地址详情说明
+                    scale: 20, // 地图缩放级别,整形值,范围从1~28。默认为最大
+                    infoUrl: '#' // 在查看位置界面底部显示的超链接,可点击跳转
+                });
+            });
+
+            wx.error(function (res) {
+                //                    alert(res.errMsg);
+            });
+        });
+        });
+    </script>
+</block>

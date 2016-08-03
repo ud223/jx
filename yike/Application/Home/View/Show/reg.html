@@ -1,0 +1,23 @@
+<extend name="Base/tools"/>
+
+<block name="body">
+    用户信息处理中...
+</block>
+
+<block name="script">
+    <script>
+        $(function() {
+            var user_id = "<?php echo $data['user_id']; ?>";
+            var url = "<?php echo $data['url']; ?>";
+
+//            alert(user_id);
+//            alert(url);
+
+            if (user_id) {
+                localStorage.setItem('user_id', user_id);
+
+                location.href = url;
+            }
+        })
+    </script>
+ </block>

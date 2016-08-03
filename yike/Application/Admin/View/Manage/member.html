@@ -1,0 +1,59 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <section class="content-header">
+
+    </section>
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">成员列表</h3>
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 40px">登录名</th>
+                        <th style="width: 40px">电话</th>
+                        <th style="width: 40px">地区</th>
+                        <th style="width: 100px;">街道</th>
+                        <th style="width: 100px;">操作</th>
+                    </tr>
+
+                    <volist name="data.member" id="itm">
+                        <tr>
+                            <td>{$itm.uid}</td>
+                            <td>{$itm.username}</td>
+
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <a href="/user/detail">详情</a>
+                                <a href="">模拟登陆</a>
+                            </td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+
+
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+
+
+</block>

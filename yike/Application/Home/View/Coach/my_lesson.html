@@ -1,0 +1,126 @@
+<extend name="Base/coach_master"/>
+
+<block name="body">
+    <div class="p16-xeet">
+        以下是确认需要您和学员联系并前往授课的订单
+    </div>
+
+    <div id="lesson-list">
+
+    </div>
+
+    <div id="node-itm" style="display: none">
+        <div class="p23-itm waiting">
+            <div class="ct">
+                <div class="t t1">客户：<span class="rx name"></span></div>
+                <div class="t t2">手机：<span class="rx tel"></span></div>
+                <div class="t t4">日期：<span class="rx run_date"></span></div>
+                <div class="t t4">时间：<span class="rx time"></span></div>
+                <div class="t t3">类型：<span class="rx type"></span></div>
+            </div>
+            <div class="slag state">已付款</div>
+            <div class="btb">
+                点击开始上课
+            </div>
+        </div>
+        <div class="p23-itm over">
+            <div class="ct">
+                <div class="t t1">客户：<span class="rx name"></span></div>
+                <div class="t t2">手机：<span class="rx tel"></span></div>
+                <div class="t t4">日期：<span class="rx run_date"></span></div>
+                <div class="t t4">时间：<span class="rx time"></span></div>
+                <div class="t t3">类型：<span class="rx type"></span></div>
+            </div>
+            <div class="slag state">已完成</div>
+        </div>
+    </div>
+
+    <div class="clear-15"></div>
+    <div class="fullbtn normal cd_hottap" hottap="/home/coach/home">返回</div>
+    <div class="bt-distance"></div>
+</block>
+
+<block name="script">
+    <script>
+        $(function() {
+            loadData();
+        });
+
+        function loadData() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'coach_id': user_id };
+
+            fit.ajax({
+                url:'/api/getCocahOrders',
+                data:data,
+                success:function(result){
+                    if (result.code == 200) {
+//                        alert(JSON.stringify(result));
+
+                        if (result.data.length > 0) {
+                            $('.emptybox').hide();
+                        }
+
+                        $.each(result.data, function() {
+                            var node = createNode(this);
+
+                            $('#lesson-list').append(node);
+                        })
+                    }
+                }
+            });
+        }
+
+        function createNode(item) {
+            var node = null;
+
+            if (item.state != 40) {
+                node = $('#node-itm').find('.waiting').clone();
+            }
+            else {
+                node = $('#node-itm').find('.over').clone();
+            }
+
+            node.find('.name').html(item.name);
+            node.find('.tel').html(item.tel);
+
+            var date = new Date(item.run_date);
+
+            node.find('.run_date').html(date.getMonth() + 1 + "月" + date.getDate() + "日");
+            node.find('.time').html(item.start_time);
+
+            if (item.type == 1) {
+                node.find('.type').html('小组课');
+            }
+            else {
+                node.find('.type').html('私教');
+            }
+
+            switch (item.state) {
+                case '20': {
+                    node.attr('url', '/show/coach_start?id='+ item.order_id);
+                    node.find('.state').html('待上课');
+                    break;
+                }
+                case '30': {
+                    node.attr('url', '/show/coach_end?id='+ item.order_id);
+                    node.find('.state').html('待下课');
+                    break;
+                }
+                default: {
+                    node.find('.state').html('已结束');
+                    node.attr('url', '#');
+
+                    break;
+                }
+            }
+
+            node.click(function() {
+                location.href = $(this).attr('url');
+            })
+
+            return node;
+        }
+    </script>
+</block>

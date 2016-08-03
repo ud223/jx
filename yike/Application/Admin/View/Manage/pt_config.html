@@ -1,0 +1,140 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">锻炼时段配置</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">星期一</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week1_field" id="week1_field" value="{$data[0].time}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">星期二</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week2_field" id="week2_field" value="{$data[1].time}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">星期三</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week3_field" id="week3_field" value="{$data[2].time}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">星期四</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week4_field" id="week4_field" value="{$data[3].time}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">星期五</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week5_field" id="week5_field" value="{$data[4].time}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">星期六</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week6_field" id="week6_field" value="{$data[5].time}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">星期天</span>
+                        <input type="text" class="form-control" placeholder="请输入锻炼时段..." name="week7_field" id="week7_field" value="{$data[6].time}">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="coach_id" value="{$data['coach'][0]['id']}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        var tmp_pic = null;
+
+        $(function(){
+            //实例化编辑器
+//            var um = UM.getEditor('editor_remark');
+//
+//            um.addListener('blur',function(){
+//                $('#focush2').html('编辑器失去焦点了')
+//            });
+//            um.addListener('focus',function(){
+//                $('#focush2').html('')
+//            });
+//
+//            um.setContent('{$data[lesson].remark}');
+
+            $('#tmp_show').click(function() {
+                $('#upload_show_pic').click();
+            })
+
+            $('#tmp_show_big').click(function() {
+                $('#upload_show_pic_big').click();
+            })
+
+            //file控件选择改变 同步修改页面上image标签
+            $('#upload_show_pic').change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                ImageOpt(file, 'pre-image', null, getImageCode);
+            });
+
+            $('#upload_show_pic_big').change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                ImageOpt(file, 'pre-image-big', null, getBigImageCode);
+            });
+
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/admin/manage/coach_list';
+            });
+        });
+
+        function saveItem() {
+            var time_1 = $('#week1_field').val();
+            var time_2 = $('#week2_field').val();
+            var time_3 = $('#week3_field').val();
+            var time_4 = $('#week4_field').val();
+            var time_5 = $('#week5_field').val();
+            var time_6 = $('#week6_field').val();
+            var time_7 = $('#week7_field').val();
+
+            var data = { 'time_1':time_1, 'time_2':time_2,'time_3':time_3,'time_4':time_4,'time_5':time_5,'time_6':time_6,'time_7':time_7 };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存该配置信息?')) {
+                fit.ajax({
+                    url:'/admin/manage/save_pt_config',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/admin/manage/pt_config';
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

@@ -1,0 +1,70 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">二维码管理</h3>
+            </div>
+            <div class="col-md-2" style="padding: 20px;">
+                <a class="btn btn-block btn-primary add_btn" href="javascript:void(0)">新增二维码</a>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 200px">渠道名称</th>
+                        <th style="width: 200px">套餐名称</th>
+                        <th style="width: 200px">领用人</th>
+                        <th style="width: 200px">创建日期</th>
+                        <th style="width: 200px">使用日期</th>
+                        <th style="width: 150px">状态</th>
+                        <th style="width: 100px">操作</th>
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.channel_name}</td>
+                            <td>{$itm.setmeal_name}</td>
+                            <td>{$itm.user_name}</td>
+                            <td>{$itm.create_date}</td>
+                            <td>{$itm.modify_date}</td>
+                            <td>
+                                <if condition="$itm.is_use eq '1'">
+                                    过期
+                                <else />
+                                    有效
+                                </if>
+                            </td>
+                            <td><a href="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={$itm.ticket}" class="itm-edit" target="_blank">获取二维码</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.add_btn').click(function(){
+                location.href = '/admin/manage/qrcode_edit';
+            });
+        });
+    </script>
+</block>

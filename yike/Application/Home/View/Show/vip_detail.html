@@ -1,0 +1,48 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="tpcbanner">
+        <div class="tt1">预约详细</div>
+        <div class="tt2">Order Detail</div>
+        <span class="iconfont icon-angleleft historyback" parentUrl="/show/me_profile"></span>
+    </div>
+
+    <div class="pad-20">
+        <div class="shdblked">
+            <div class="cmiyitm">
+                <span class="iconfont icon-timecourse"></span>
+                <span class="t2">vip充值成功</span>
+            </div>
+            <div class="cmiyitm">
+                <span class="iconfont icon-price"></span>
+                <div class="t2">金额：<span class="font10px">￥</span>{$order.amount} <span class="split"></div>
+            </div>
+            <div class="cmiyitm">
+                <span class="iconfont icon-phone"></span>
+                <span class="t2">0755-394994056</span>
+            </div>
+            <div class="cmiyitm tc gocourse tapquick" url="/show/gt_course?id={$data['order'][0].lesson_id}">
+                <span>更多课程详情</span>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            User.loadData = function() {
+                if (User.data.amount > 0) {
+                    $('#is-vip').show();
+                }
+                else {
+                    $('#not-vip').show();
+                }
+
+                $('#my-amount').html(User.data.amount);
+            }
+
+            User.load();
+        });
+    </script>
+</block>

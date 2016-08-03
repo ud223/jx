@@ -1,0 +1,181 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">球场管理</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">中文名称</span>
+                        <input type="text" class="form-control" placeholder="请输入球场名称..." name="name_field" id="name_field" value="{$data[lesson].name}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">副标题</span>
+                        <input type="text" class="form-control" placeholder="请输入副标题..." name="name_en_field" id="name_en_field" value="{$data[lesson].name_en}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">地址</span>
+                        <input type="text" class="form-control" placeholder="请输入地址..." name="local_field" id="local_field" value="{$data[lesson].local}" maxlength="100">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">lat</span>
+                        <input type="text" class="form-control" placeholder="请输入纬度..." name="lat_field" id="lat_field" value="{$data[lesson].lat}" maxlength="100">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">lng</span>
+                        <input type="text" class="form-control" placeholder="请输入经度..." name="lng_field" id="lng_field" value="{$data[lesson].lng}" maxlength="100">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">联系电话</span>
+                        <input type="text" class="form-control" placeholder="请输入经度..." name="phone_field" id="phone_field" value="{$data[lesson].phone}" maxlength="100">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">展示图片</span>
+                        <input type="text" class="form-control" readonly name="tmp_show" id="tmp_show" value="请点击选择上传的图片..." >
+                    </div>
+                    <div class="input-group">
+                        <?php if ($data['lesson']['show_pic']) :?>
+                            <img id="pre-image" src="<?php echo UPLOAD_DIR . $data['lesson']['show_pic'] ?>" style="width:1000px; height: 500px" />
+                        <?php else :?>
+                            <img id="pre-image" style="width:1000px; height: 500px" />
+                        <?php endif; ?>
+                        <input type="file"  accept="image/*" id="upload_show_pic" style="display: none">
+                        <input id="old_show_pic" name="old_show_pic" type="text" value="{$data['lesson']['show_pic']}" style="display: none">
+                        <input id="show_pic_field" name="show_pic_field" type="text" value="" style="display: none">
+                        <canvas id="upload-canvas" style="display:none"></canvas>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">课程描述</span>
+                        <script type="text/plain" id="editor_remark" name="editor_remark" style="width:100%;height:240px;">
+                            <p>请输入课程描述</p>
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="tmp_remark" value="{$data[lesson].remark}">
+                <input type="hidden" id="lesson_id" value="{$data['lesson']['id']}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        var tmp_pic = null;
+
+        $(function(){
+            //实例化编辑器
+            var um = UM.getEditor('editor_remark');
+
+            um.addListener('blur',function(){
+                $('#focush2').html('编辑器失去焦点了')
+            });
+            um.addListener('focus',function(){
+                $('#focush2').html('')
+            });
+
+            var tmp_remarm_text = $('#tmp_remark').val();
+
+            um.addListener("ready", function () {
+                // editor准备好之后才可以使用
+                um.setContent(tmp_remarm_text);
+            });
+
+            $('#tmp_show').click(function() {
+                $('#upload_show_pic').click();
+            })
+            //file控件选择改变 同步修改页面上image标签
+            $('#upload_show_pic').change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                ImageOpt(file, 'pre-image', null, getImageCode);
+            });
+
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/admin/manage/lesson_list';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#lesson_id').val();
+
+            var name = $('#name_field').val();
+            var name_en = $('#name_en_field').val();
+            var local = $('#local_field').val();
+            var lat = $('#lat_field').val();
+            var lng = $('#lng_field').val();
+            var old_show_pic = $('#old_show_pic').val();
+            var show_pic = $('#show_pic_field').val();
+            var phone = $('#phone_field').val();
+            var html_remark = UM.getEditor('editor_remark').getContent();
+
+            var data = { 'id':id, 'name':name, 'name_en':name_en, 'local':local, 'remark':html_remark, 'old_show_pic':old_show_pic, 'show_pic':show_pic, 'lat': lat, 'lng': lng, 'phone':phone };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存该课程?')) {
+                fit.ajax({
+                    url:'/admin/manage/save_lesson',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/admin/manage/lesson_edit?id=' + result.data;
+                        }
+                    }
+                });
+            }
+        }
+
+        function getImageCode() {
+            var image = document.getElementById('pre-image');
+            var is_def = false;
+
+            EXIF.getData(image, function () {
+                if (EXIF.getTag(image, 'Orientation') == 6) {
+                    is_def = true;
+                }
+                //使用插件初始化图片
+                var mpImg = new MegaPixImage(tmp_pic);
+                var option = null;
+
+                if (is_def)
+                    option = { maxWidth: image.width * 2, maxHeight: image.height * 2, orientation: 6 };
+                else
+                    option = { maxWidth: image.width * 2, maxHeight: image.height * 2, quality: 0.5 };
+
+                var canvas = document.getElementById('upload-canvas');
+
+                mpImg.render(canvas, option, function () {
+                    var base64 = canvas.toDataURL('image/jpeg');
+
+                    $('#show_pic_field').val(base64);
+                });
+            });
+        }
+    </script>
+</block>

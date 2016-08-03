@@ -1,0 +1,86 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="pad-20">
+        <style>
+            body {
+                padding-top: 30px;
+            }
+        </style>
+        <div class="resu_dip01">
+            <div class="iconfont icon-iconfontcheck resu_dip02 success"></div>
+            <div class="clear"></div>
+            <div class="resu_dip03">信息保存成功</div>
+            <div class="resu_dip04"><span id="restcountdown">5</span>秒后将继续支付</div>
+            <button class="whitebtn full" id="paydirectbtn">立即支付</button>
+        </div>
+    </div>
+    <input type="hidden" id="order_id" value="{$data['order'][0].order_id}">
+    <!--<span id="my-amount" style="display: none">0</span>-->
+</block>
+
+<block name="script">
+    <!--onclick="$.toastMsg('错误信息')"-->
+    <script>
+        var price = '0';
+        var vip_price = '{$data['order'][0].vip_price_1}';
+
+        $(function() {
+            User.loadData = function(user) {
+//                $('#my-amount').html(User.data.amount);
+                if (user.scene_id == '') {
+                    price = vip_price;
+                }
+            }
+
+            User.load();
+
+            $('#paydirectbtn').click(function() {
+                order_pay();
+            });
+
+            setInterval(function() {
+                var r = parseInt($('#restcountdown').text());
+                if (r > 0) {
+                    r = r - 1;
+                    $('#restcountdown').text(r);
+                } else {
+                    waiting();
+                    order_pay();
+                }
+            }, 1000);
+        })
+
+        function order_pay() {
+            var order_id = $('#order_id').val();
+//            var user_amount = Number($('#my-amount').html());
+//            alert(price);
+//            alert(vip_price);
+            //支付金额参数
+//            var pay_amount = 0;
+//            var pay_vip_amount = 0;
+
+            //判断是否有余额
+//            if (user_amount > 0) {
+//                var tmp_vip_price = Number(vip_price);
+//
+//                //判断余额是否比支付金额大
+//                if (user_amount >= tmp_vip_price) {
+//                    pay_vip_amount = tmp_vip_price;
+//                    pay_amount = 0;
+//                }
+//                else {
+//                    pay_amount = tmp_vip_price - user_amount;
+//                    pay_vip_amount = user_amount;
+//                }
+//            }
+//            else {
+//                pay_amount = price;
+//            }
+
+//            alert(price); return;
+
+            Order.setAmount(order_id, price, vip_price);
+        }
+    </script>
+</block>

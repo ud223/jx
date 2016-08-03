@@ -1,0 +1,171 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="tpcbanner">
+        <div class="tt1">开通VIP / 充值</div>
+        <div class="tt2">Become VIP / Charge</div>
+        <span class="iconfont icon-angleleft historyback" parentUrl="/show/gt_vipcard"></span>
+    </div>
+    <style>
+        .cimebtb {
+            display: table;
+            width: 100%;
+        }
+
+        .cimebtb .r {
+            display: table-row;
+        }
+
+        .cimebtb .r .td {
+            font-size: 16px;
+            padding: 10px 0;
+            width: 50%;
+            display: table-cell;
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+        }
+
+        .cimebtb .r:last-child .td {
+            border-bottom: none;
+        }
+
+        .cimebtb .r .td.col2 {
+            text-align: right;
+            color: #F0AD4E;
+        }
+
+        .cniwetetb {
+            width: 100%;
+            display: table;
+        }
+
+        .cniwetetb .cgeitm1 {
+            display: table-cell;
+            width: 32%;
+            color: #666;
+            box-sizing: border-box;
+        }
+        .cniwetetb .cgeitm1 .inner {
+            text-align: center;
+            border: .5px solid #666;
+            padding:10px 0;
+        }
+        .cniwetetb .cgeitm1 .t2 {
+            font-size: 12px;
+            color:#F60;
+        }
+        .cniwetetb .cgeitm1:nth-child(even) {
+            width: 36%;
+        }
+
+        .cniwetetb .cgeitm1:nth-child(even) {
+            padding: 0 10px;
+        }
+    </style>
+    <div class="pad-20">
+        <div class="cimebtb">
+            <div class="r">
+                <div class="td col1">充值账户：</div>
+                <div id="name" class="td col2"></div>
+            </div>
+            <div class="r">
+                <div class="td col1">账户余额：</div>
+                <div id="my-account" class="td col2"></div>
+            </div>
+            <div class="r">
+                <div class="td col1">本次充值额度：</div>
+                <div class="td col2"></div>
+            </div>
+        </div>
+
+        <div class="cniwetetb">
+            <div id="vip1000" class="cgeitm1" val="1100">
+                <div class="inner">
+                    <div class="t1">充值1000</div>
+                    <div class="t2">到账1100</div>
+                </div>
+            </div>
+            <div id="vip2500" class="cgeitm1" val="2800">
+                <div class="inner">
+                    <div class="t1">充值2500</div>
+                    <div class="t2">到账2800</div>
+                </div>
+            </div>
+            <div id="vip5000" class="cgeitm1" val="5800">
+                <div class="inner">
+                    <div class="t1">充值5000</div>
+                    <div class="t2">到账5800</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            User.loadData = function (user) {
+                $('#name').html(user.Name);
+
+                if (user.amount == '0.00') {
+                    $('#my-account').html('暂未开通VIP');
+                }
+                else {
+                    $('#my-account').html(user.amount);
+                }
+            };
+
+            User.load();
+
+            $('#vip1000').click(function() {
+                var today = new Date();
+
+                var month = today.getMonth() + 1;
+
+                Order.data = today.getFullYear() + month + today.getDate();
+
+                Order.success = createSuccess;
+
+                var amount = $(this).attr('val');
+                var pay_amount = 1000;
+
+                Order.create(2, amount, pay_amount);
+            });
+
+            $('#vip2500').click(function() {
+                var today = new Date();
+
+                var month = today.getMonth() + 1;
+
+                Order.data = today.getFullYear() + month + today.getDate();
+
+                Order.success = createSuccess;
+
+                var amount = $(this).attr('val');
+                var pay_amount = 2500;
+
+                Order.create(2, amount, pay_amount);
+            });
+
+            $('#vip5000').click(function() {
+                var today = new Date();
+
+                var month = today.getMonth() + 1;
+
+                Order.data = today.getFullYear() + month + today.getDate();
+
+                Order.success = createSuccess;
+
+                var amount = $(this).attr('val');
+                var pay_amount = 5000;
+
+                Order.create(2, amount, pay_amount);
+            });
+        });
+
+        function createSuccess() {
+            var url =  '/show/order_pay?id='+ Order.id;
+
+            location.href = url;
+        }
+    </script>
+</block>

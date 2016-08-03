@@ -1,0 +1,175 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="tpcbanner">
+        <div class="tt1">高手高尔夫</div>
+        <div class="tt2">Gaoshou golf</div>
+        <!--<a id="get_vip" class="colorbtn colorshadow vipbadge" href="/show/gt_vipcard">成为VIP</a>-->
+    </div>
+    <div class="btmenu">
+        <div class="td tapquick selected" url="#">
+            <div class="tc1">预约球场</div>
+            <div class="tc2">Reserve Court</div>
+        </div>
+        <div class="td tapquick" url="/show/gt_aboutus">
+            <div class="tc1">关于我们</div>
+            <div class="tc2">About Us</div>
+        </div>
+        <div class="td tapquick" url="/show/me_orders">
+            <div class="tc1">我的订单</div>
+            <div class="tc2">My Orders</div>
+        </div>
+    </div>
+
+    <!--<div class="weektbs">-->
+        <!--<div class="td date selected" val="<?php echo date("Y-m-d",strtotime("+1 day")) ?>">-->
+            <!--<div class="day"><?php echo date("D",strtotime("+1 day")) ?></div>-->
+            <!--<div class="date"><?php echo date("m.d",strtotime("+1 day")) ?></div>-->
+        <!--</div>-->
+        <!--<div class="td date" val="<?php echo date("Y-m-d",strtotime("+2 day")) ?>">-->
+            <!--<div class="day"><?php echo date("D",strtotime("+2 day")) ?></div>-->
+            <!--<div class="date"><?php echo date("m.d",strtotime("+2 day")) ?></div>-->
+        <!--</div>-->
+        <!--<div class="td date" val="<?php echo date("Y-m-d",strtotime("+3 day")) ?>">-->
+            <!--<div class="day"><?php echo date("D",strtotime("+3 day")) ?></div>-->
+            <!--<div class="date"><?php echo date("m.d",strtotime("+3 day")) ?></div>-->
+        <!--</div>-->
+        <!--<div class="td date" val="<?php echo date("Y-m-d",strtotime("+4 day")) ?>">-->
+            <!--<div class="day"><?php echo date("D",strtotime("+4 day")) ?></div>-->
+            <!--<div class="date"><?php echo date("m.d",strtotime("+4 day")) ?></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="gallitms">
+        <div id="lesson-list">
+
+        </div>
+
+        <!--<div class="nomore">-->
+            <!--没有更多了-->
+        <!--</div>-->
+    </div>
+    <div id="lesson-node" style="display: none">
+        <div class="gallitm tapquick lesson-itm node">
+            <div class="whitesharp">
+                <div class="mt1" style="display: none">
+                    <span class="iconfont icon-time"></span>
+                    <span class="date"></span>
+                    <span class="time"></span>
+                </div>
+                <div class="mt2 lesson-name">
+
+                </div>
+                <div class="mt3 lesson-name-en">
+
+                </div>
+                <div class="mt4 clearfix">
+                    <div class="gbe1">
+                        体验价：<span class="gbe2">￥</span><span class="price"></span>
+                    </div>
+                    <div class="gbe1 vip">
+                        初次免费体验
+                    </div>
+                </div>
+                <!--<div class="bdibt submit">-->
+                    <!--<div class="inner">-->
+                        <!--<span class="yibt1">预约</span>-->
+                        <!--<span class="yibt2">Order</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="lesson_id" value="">
+    <input type="hidden" id="date" value="">
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.td.date').click(function() {
+                $('.td.date').removeClass('selected');
+
+                $(this).addClass('selected');
+            })
+
+            $('.td.date').click(function() {
+                var date = $('.td.date.selected').attr('val');
+
+                localStorage.setItem('order_date', date);
+
+                loadData(date);
+            })
+
+            User.loadData = function (user) {
+//                if (user.amount.toString() != '0.00') {
+//                    $('#get_vip').html('充值');
+//                }
+            };
+
+            User.load();
+
+            loadData();
+        });
+
+        function loadData() {
+            var tmp_date = new Date().Format("yyyy-MM-dd");
+
+            var data = {  'run_date': tmp_date };
+//            console.log(JSON.stringify(data));
+//            alert(JSON.stringify(data));
+            fit.ajax({
+                url:'/api/getLessonByWeekNum',
+                data:data,
+                success:function(result){
+                    if (result.code == 200) {
+                        $('#lesson-list').empty();
+//                        alert(JSON.stringify(result));
+
+                        $.each(result.data, function() {
+                            var node = createNode(this);
+
+                            $('#lesson-list').append(node);
+                        })
+                    }
+                }
+            });
+        }
+
+        function createNode(item) {
+            var node = $('#lesson-node').find('.node').clone();
+
+            node.attr('url', '/show/gt_course?id=' + item.lesson_config_id);
+            node.attr('val', item.lesson_id);
+            node.css("backgroundImage","url(<?php echo UPLOAD_DIR; ?>"+ item.show_pic +")");
+
+            node.find('.date').html(new Date(item.run_date).Format("MM月dd日"));
+            node.find('.date').attr(item.run_date)
+            node.find('.time').html(item.start_time + "-" + item.end_time)
+            node.find('.lesson-name').html(item.name);
+            node.find('.lesson-name-en').html(item.name_en);
+            node.find('.price').html(item.vip_price_1);
+//            node.find('.vip-price').html(item.vip_price_1);
+
+            node.click(function() {
+                location.href = $(this).attr('url');
+            });
+
+            node.find('.submit').click(function() {
+                Order.success = function(id) {
+                    location.href = '/show/gt_orderdetail?id=' + id;
+                }
+
+                $('#date').attr('val', $(node).find('.date').attr('val'));
+                $('#lesson_id').val(item.lesson_config_id);
+
+//                Order.validate();
+
+                Order.create(1, 0, 0);
+
+                return false;
+            });
+
+            return node;
+        }
+    </script>
+</block>

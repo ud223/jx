@@ -1,0 +1,125 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="tpcbanner">
+        <div class="tt1">必要信息</div>
+        <div class="tt2">Register information</div>
+        <span class="iconfont icon-angleleft historyback" parentUrl="/show/home?back=1"></span>
+    </div>
+    <div class="alert alert-info" style="font-size:12px;margin:20px 20px 0 20px;">
+        <div>在您购买之前请完善下列信息以便客服人员为您服务</div>
+        <div style="opacity: .5;">（我们会为您的私有信息做好保密工作，请放心填写）</div>
+    </div>
+    <div class="pad-20">
+        <div class="migrows">
+            <div class="migrow">
+                <span class="tt">姓名</span>
+                <input id="name" type="text" placeholder="请输入真实姓名" value="" />
+            </div>
+            <div class="migrow">
+                <span class="tt">手机号</span>
+                <input id="tel" type="tel" placeholder="请输入手机号" />
+            </div>
+            <div class="migrow">
+                <input id="val_code" type="tel" placeholder="请输入验证码" style="padding-left:15px;" />
+                <button class="getvcode">获取验证码</button>
+            </div>
+            <input id="nickname" type="hidden" value="" />
+            <button class="whitebtn full">保存信息</button>
+        </div>
+    </div>
+
+</block>
+
+<block name="script">
+    <!--onclick="$.toastMsg('错误信息')"-->
+    <script>
+        var order_id = '{$order_id}';
+
+        $(function(){
+            User.loadData = function () {
+                $('#nickname').val(User.data.NickName);
+                $('#name').val(User.data.Name);
+                $('#tel').val(User.data.Tel);
+            };
+
+            User.load();
+
+            $('.whitebtn').click(function() {
+                var nickname = $('#nickname').val();
+                var name = $('#name').val();
+                var tel = $('#tel').val();
+                var code = $('#val_code').val();
+                var validate_cdoe = $('#val_code').attr('code');
+
+                if (!name) {
+                    alert('名字不能为空!'); return;
+                }
+
+                if (!tel) {
+                    alert('电话不能为空!'); return;
+                }
+
+                if (!validate_cdoe) {
+                    alert('请先验证电话号码!'); return;
+                }
+
+                if (code != validate_cdoe) {
+                    alert('验证码错误!'); return;
+                }
+
+                User.updated = function(result) {
+                    if (result.code == 200) {
+                        location.href = '/show/gt_registersuccess?order_id='+ order_id;
+                    }
+                }
+
+                User.update(name, tel, nickname);
+
+                is_count = false;
+            })
+
+            $('.getvcode').click(function() {
+                var tel = $('#tel').val();
+
+                if (!tel) {
+                    alert('请先输入电话号码!');
+
+                    return;
+                }
+
+                is_count = true;
+
+                setTime(this);
+
+                User.setCode = function(result) {
+                    if (result.code == 200) {
+                        $('#val_code').attr('code', result.data);
+                    }
+                }
+
+                User.getCode(tel);
+            });
+        });
+
+        var countdown=60;
+        var is_count = false;
+
+        function setTime(val) {
+            if (!is_count && countdown == 0)
+                return;
+
+            if (countdown == 0 || is_count == false) {
+                $(val).removeAttr("disabled");
+                $(val).html("发送验证码");
+                countdown = 60;
+                is_count = false
+            } else {
+                $(val).attr("disabled", "true");
+                $(val).html("重新发送(" + countdown + ")");
+                countdown--;
+            }
+            setTimeout(function() { setTime(val) },1000)
+        }
+    </script>
+</block>
