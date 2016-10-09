@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <button class="btn btn-primary" type="button" onclick="ShowAdminGroupModal();"><i class="fa fa-group"></i>&nbsp;添加管理员组</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+          
+          <button class="btn btn-danger" type="button" onclick="DeleteAdminGroup();"><i class="fa fa-trash-o"></i>&nbsp;删除选中的管理员组</button>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th style="width: 100px;">
+                <div class="checkbox checkbox-inline checkbox-info">
+                  <input type="checkbox" name="list_chk_all" id="list_chk_all_1" onclick="ListMainCheckBoxClick(this);">
+                  <label for="list_chk_all_1">编号</label>
+                </div>
+              </th>
+              <th>组名称</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="AdminGroupList">
+              <tr>
+                <td colspan="3" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="AdminGroupList" id="list">
+                <tr>
+                  <td style="width: 100px;">
+                    <div class="checkbox checkbox-inline checkbox-info">
+                      <input type="checkbox" name="list_chk_sub" id="list_chk_sub_{$i}" onclick="ListSubCheckBoxClick(this);" value="{$list.id}">
+                      <label for="list_chk_sub_{$i}">{$list.id}</label>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="cursor-hand" data-id="{$list.id}" data-field="group_name" data-val="{$list.group_name}" onclick="QuickModifyField(this);">{$list.group_name}</span>
+                  </td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <a href="__URL__/AdminGroupPermissionManage/admin_group_id/{$list.id}" class="btn btn-primary"><i class="fa fa-gear"></i>&nbsp;设定组权限</a>
+                    </div>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th style="width: 100px;">
+                <div class="checkbox checkbox-inline checkbox-info">
+                  <input type="checkbox" name="list_chk_all" id="list_chk_all_2" onclick="ListMainCheckBoxClick(this);">
+                  <label for="list_chk_all_2">编号</label>
+                </div>
+              </th>
+              <th>组名称</th>
+              <th class="text-right"></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <button class="btn btn-primary" type="button" onclick="ShowAdminGroupModal();"><i class="fa fa-group"></i>&nbsp;添加管理员组</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+
+          <button class="btn btn-danger" type="button" onclick="DeleteAdminGroup();"><i class="fa fa-trash-o"></i>&nbsp;删除选中的管理员组</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--添加管理员组Modal Begin-->
+  <div class="modal inmodal fade" id="modal_add_group_ifr" data-backdrop="static" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">添加管理员组</h4>
+        </div>
+
+        <div class="modal-body form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">
+              <span class="label label-info">必填</span> 管理员组
+            </label>
+            <div class="col-sm-9">
+              <input type="text" name="group_name" id="group_name" autocomplete="off" class="form-control" placeholder="输入管理员组" value="">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" onclick="SaveAdminGroup();"><i class="fa fa-save"></i>&nbsp;保存</button>
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--添加管理员组Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  //region 添加管理员组
+  function ShowAdminGroupModal(){
+    $("#modal_add_group_ifr").modal();
+  }
+
+  function CloseAdminGroupModal(){
+    $("#modal_add_group_ifr").modal("hide");
+  }
+
+  function SaveAdminGroup(){
+    CloseAdminGroupModal();
+    BlockWindow_ExecOp('正在保存管理员组数据', 140);
+
+    var nGroupName = $('#group_name').val();
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxAdminGroupSave",
+      dataType:"json",
+      data: {"group_name": nGroupName},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        SaveAdminGroupResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function SaveAdminGroupResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    var nMsgType = "success";
+
+    if(objJson.error != 0){
+      nMsgType = "error";
+    }
+
+    swal(
+      {
+        title: "",
+        text: objJson.info,
+        type: nMsgType,
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        if(objJson.error != 0){
+          ShowAdminGroupModal();
+        }else{
+          f5();
+        }
+      }
+    );
+  }
+  //endregion 添加管理员组
+
+  //region 快速修改管理员组信息
+  function QuickModifyField(obj){
+    var sVal = $(obj).text();
+    var sField = $(obj).attr('data-field');
+    var sDataID = $(obj).attr('data-id');
+
+    if(IsN(sVal) || IsN(sField)){ return false; }
+
+    var sHtml = '<input type="text" name="qm_'+ sField +'" id="qm_'+ sField +'" class="form-control" value="'+ sVal +'">';
+    $(obj).html(sHtml);
+
+    $('#qm_'+ sField).focus().blur(function(){
+      ExecModifyField(obj, sVal, $(this).val(), sField, sDataID);
+    }).keypress(function(e){
+      var curKey = e.which;
+
+      if (curKey == 13) {
+        ExecModifyField(obj, sVal, $(this).val(), sField, sDataID);
+      }
+    });
+  }
+
+  //执行快速修改商品基本信息字段值
+  function ExecModifyField(obj, sval, snewval, sfield, dataid){
+    if(snewval == sval){
+      $(obj).html(sval);
+    }else{
+      BlockWindow_ExecOp('数据处理中', 140);
+
+      $.ajax({
+        type: "POST",
+        url: "__URL__/QuickModifyGroupField",
+        dataType:"json",
+        data:{"key":sfield, "val":snewval, "id":dataid},
+        timeout: 6000,
+        beforeSend : function (XMLHttpRequest) {
+          XMLHttpRequest.setRequestHeader("request_type","ajax");
+        },
+        success: function(data){
+          ExecModifyFieldResponse(data, obj);
+        },
+        error: function(request, status, error){
+          Un_BlockWindow_ExecOp();
+          AlertError("请求服务器时发生错误");
+        }
+      });
+    }
+  }
+
+  //快速修改商品基本信息字段值的回调
+  function ExecModifyFieldResponse(objJson, obj){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    $(obj).html(objJson.data);
+  }
+  //endregion 快速修改管理员组信息
+  
+  //region 刷新管理员组缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新管理员缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetAdminGroupCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新管理员组缓存
+
+  //region 删除选中的管理员组
+  function DeleteAdminGroup(){
+    var sSelectValue = GetListCheckBoxSelectValue();
+
+    if(IsN(sSelectValue)){
+      AlertError("请选择需要删除的管理员组");
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: "确定删除选中的管理员组吗？",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#F8AC59",
+        confirmButtonText: "确定删除",
+        cancelButtonText: "取消",
+        closeOnConfirm: true,
+        closeOnCancel: true
+      },
+      function(isConfirm){
+        if(isConfirm){
+          ExcuteDelete(sSelectValue);
+        }else{
+          return false;
+        }
+      }
+    );
+  }
+
+  //执行删除
+  function ExcuteDelete(id){
+    BlockWindow_ExecOp('正在删除选中的管理员组', 200);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxAdminGroupDelete",
+      dataType:"json",
+      timeout: 6000,
+      data:{"admin_group_id": id},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        ExcuteDeleteResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function ExcuteDeleteResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 删除选中的管理员组
+</script>
+</body>
+
+</html>

@@ -14,6 +14,8 @@ class ShowController extends Controller {
     private $access_token = '';
 
     public function index(){
+        print_r($_SERVER); exit;
+
         $this->display();
     }
 

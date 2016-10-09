@@ -64,3 +64,21 @@ function convertImgToBase64(url, callback, outputFormat) {
     };
     img.src = url;
 }
+
+function saveImage(url, path, type, text, fun) {
+    var data = { 'url': url, 'path': path, 'type': type, 'text': text }
+    // alert(JSON.stringify(data));
+    fit.ajax({
+        url:'/manage/save_photo',
+        data:data,
+        success:function(result){
+            alert(result.msg);
+
+            if (result.code == 200) {
+                if (fun) {
+                    fun(result.data);
+                }
+            }
+        }
+    });
+}

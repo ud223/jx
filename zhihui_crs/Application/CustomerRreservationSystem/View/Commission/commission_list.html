@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="BackIndexPage();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <a href="__URL__/CommissionInfo" class="btn btn-primary"><i class="fa fa-user-plus"></i>&nbsp;添加佣金</a>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          <h3>{$DateInfo}</h3>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th class="text-center">排名</th>
+              <th class="text-left">销售经理</th>
+              <th class="text-center">提成标准</th>
+              <th class="text-center">业绩</th>
+              <th class="text-left">收入项</th>
+              <th class="text-left">支出项</th>
+              <th class="text-left">工资</th>
+              <th class="text-center">发放状态</th>
+              <th class="text-center">备注</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="CommissionList">
+              <tr>
+                <td colspan="10" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="CommissionList" id="list">
+                <tr>
+                  <td class="text-center">{$list.rank}</td>
+                  <td class="text-left">
+                    <p class="form-control-static">{$list.seller_manager_name}</p>
+                    <p class="form-control-static">{$list.region}</p>
+                  </td>
+                  <td class="text-center">{$list.standard_name}</td>
+                  <td class="text-center"><i class="fa fa-cny"></i>{$list.achievements}</td>
+                  <td class="text-left">
+                    <p class="form-control-static">
+                      底薪：<i class="fa fa-cny"></i>{$list.base_salary}<br/>
+                      提成：<i class="fa fa-cny"></i>{$list.rake}<br/>
+                      奖金：<i class="fa fa-cny"></i>{$list.bonus}<br/>
+                      补贴：<i class="fa fa-cny"></i>{$list.subsidy}<br/>
+                    </p>
+                  </td>
+                  <td class="text-left">
+                    <p class="form-control-static">
+                      扣除个税：<i class="fa fa-cny"></i>{$list.tax}<br/>
+                      其它扣除：<i class="fa fa-cny"></i>{$list.other_minus}<br/>
+                    </p>
+                  </td>
+                  <td class="text-left">
+                    <p class="form-control-static">
+                      <label class="label label-info">应发：<i class="fa fa-cny"></i>{$list.should_pay}</label>
+                    </p>
+                    <p class="form-control-static">
+                      <label class="label label-primary">实发：<i class="fa fa-cny"></i>{$list.actual_delivery}</label>
+                    </p>
+                  </td>
+                  <td class="text-center tooltip-demo">
+                    <empty name="list.remarks">
+                      --
+                    <else/>
+                      <label class="label label-info cursor-hand" data-toggle="tooltip" data-placement="left" title="{$list.remarks}"><i class="fa fa-eye"></i></label>
+                    </empty>
+                  </td>
+                  <td class="text-center">{$list.status_style}</td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <a href="__URL__/CommissionInfo/commission_id/{$list.id}" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+                    </div>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th class="text-center">排名</th>
+              <th class="text-left">销售经理</th>
+              <th class="text-center">提成标准</th>
+              <th class="text-center">业绩</th>
+              <th class="text-left">收入项</th>
+              <th class="text-left">支出项</th>
+              <th class="text-left">工资</th>
+              <th class="text-center">发放状态</th>
+              <th class="text-center">备注</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <a href="__URL__/CommissionInfo" class="btn btn-primary"><i class="fa fa-user-plus"></i>&nbsp;添加佣金</a>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/CommissionList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+  
+  for (var selector in config) $(selector).chosen(config[selector]);
+
+  //region 刷新缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新佣金缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetCommissionCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新缓存
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{$ComName}{$SystemName}</title>
+
+  <link href="__PUBLIC__/crs/res/css/bootstrap.min.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/font-awesome.min.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/plugins/iCheck/custom.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/plugins/chosen/chosen.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/animate.min.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/style.min.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/public.css" rel="stylesheet">
+  
+  <!--[if lt IE 9]>
+  <meta http-equiv="refresh" content="0;ie.html" />
+  <![endif]-->
+  <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center loginscreen animated fadeInDown">
+  <div>
+    <div>
+      <h1 class="logo-name">{$EnAbbrName}</h1>
+    </div>
+    
+    <h3>{$SystemName}</h3>
+
+    <form id="LoginForm" class="m-t" action="__URL__/DoLogin" method="post">
+      <div class="tooltip-demo">
+        <div class="form-group text-left">
+          <select class="chosen-select" name="login_type" id="login_type" autocomplete="off" style="width: 100%;" data-placeholder="选择帐号类型" data-toggle="tooltip" data-placement="right" title="选择账号类型">
+            <option value="">选择帐号类型</option>
+            <option value="{$SellerManagerType}">销售经理</option>
+            <option value="{$BrokerCompanyType}">经纪公司</option>
+            <option value="{$AdminType}">管理员</option>
+          </select>
+        </div>
+        
+        <div class="form-group text-left">
+          <input type="text" class="form-control" id="login_name" name="login_name" placeholder="登陆账号" value="" data-toggle="tooltip" data-placement="right" title="登陆账号">
+        </div>
+        
+        <div class="form-group text-left">
+          <input type="password" class="form-control" id="login_pwd" name="login_pwd" placeholder="登陆密码" value="" data-toggle="tooltip" data-placement="right" title="登陆密码">
+        </div>
+        
+        <div class="form-group text-left">
+          <input type="text" class="form-control" id="login_code" name="login_code" placeholder="验证码" value="" data-toggle="tooltip" data-placement="right" title="验证码">
+        </div>
+  
+        <div class="form-group text-left">
+          <div class="tooltip-ifr">
+            <img id="verifyImg" src="{:U('CreateVerify')}" onclick="FleshVerify();" border="0" style="cursor:pointer;" />
+          </div>
+        </div>
+      
+      
+        <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="__PUBLIC__/crs/res/js/jquery.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/chosen/chosen.jquery.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/iCheck/icheck.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/layer/layer.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/jquery.blockUI.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/jquery-form/jquery.form.js"></script>
+<script src="__PUBLIC__/crs/res/js/content.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/public.js"></script>
+
+<script>
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+
+  for (var selector in config) $(selector).chosen(config[selector]);
+  
+  $.validator.setDefaults({
+    highlight: function(e) {
+      $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
+    },
+    success: function(e) {
+      e.closest(".form-group").removeClass("has-error").addClass("has-success")
+    },
+    errorElement: "span",
+    errorPlacement: function(e, r) {
+      e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
+    },
+    errorClass: "help-block m-b-none",
+    validClass: "help-block m-b-none"
+  });
+  
+  $(document).ready(function() {
+    var e = "<i class='fa fa-times-circle'></i> ";
+    $("#LoginForm").validate({
+      rules: {
+        login_name: {
+          required : true
+        },
+        login_pwd: {
+          required : true
+        },
+        login_type: {
+          required : true
+        },
+        login_code: {
+          required : true
+        }
+      },
+      messages: {
+        login_name: e + "请输入登陆账号",
+        login_pwd: e + "请输入登陆密码",
+        login_type: e + "请选择帐号类型",
+        login_code: {
+          required: e + "请输入验证码"
+        }
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+  });
+    
+  function SubmitBefore(){
+    BlockWindow_ExecOp('登陆中，请稍后……', 180);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error != 0){
+      AlertError(responseText.info);
+      FleshVerify()
+      return false;
+    }
+    
+    window.location.href = "__MODULE__/Index/index";
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+    AlertError("服务器处理遇到错误！");
+    FleshVerify()
+  }
+  //endregion 提交表单
+  
+  function FleshVerify(){
+    var src = $('#verifyImg').attr("src");
+    $('#verifyImg').attr("src", "__MODULE__/Login/CreateVerify/v/" + Math.random());
+    $('#login_code').val('');
+  }
+</script>
+</body>
+
+</html>

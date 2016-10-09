@@ -2,8 +2,8 @@
 namespace Admin\Controller;
 use Think\Controller;
 class ManageController extends AdminController {
-    private $app_id = 'wx8f573f8116d3d740';
-    private $app_secret = 'f6c37757e5f11a12b4cdd80c2cda8b7e';
+    private $app_id = '';
+    private $app_secret = '';
     private $access_token = '';
 
     #region 系统操作action
@@ -167,301 +167,194 @@ class ManageController extends AdminController {
 
     #endregion;
 
-    #region 课程管理
+    #region 颜色管理
 
-    public function lesson_list() {
-        $lesson = D('lesson');
+    public function color_list() {
+        $db = D('color');
 
-        $d_lesson = $lesson->select();
+        $list = $db->select();
 
         $this->assign('data', array(
-            'lesson' => $d_lesson
+            'list' => $list
         ));
 
         $this->display();
     }
 
-    public function lesson_edit() {
-        $lesson = D('lesson');
+    public function color_edit() {
+        $db = D('color');
 
         $id = I('id');
 
         if (empty($id) || $id == 0) {
             $this->assign('title', array(
-                'text' => '添加课程'
+                'text' => '添加颜色'
             ));
         }
         else {
             $this->assign('title', array(
-                'text' => '编辑课程'
+                'text' => '编辑颜色'
             ));
 
-            $condition = array('id' => $id);
-          //  print_r($lesson->find($id)); exit;
+            $item = $db->find($id);
+
             $this->assign('data', array(
-                'lesson' => $lesson->find($id)//->where($condition)->select()
+                'item' => $item
             ));
         }
 
         $this->display();
     }
 
-    public function save_lesson() {
-        $lesson = D('Lesson');
+    public function color_save() {
+        $db = D('color');
 
         $id = I('id');
 
-        $name = I('name');
-        $name_en = I('name_en');
-        $local = I('local');
-        $lat = I('lat');
-        $lng = I('lng');
-        $show_pic = I('show_pic');
-        $old_show_pic = I('old_show_pic');
-        $phone = I('phone');
-        $remark = html_entity_decode(I('remark'));
+        $color = I('color');
+        $code = I('code');
 
-        try {
-            if ($show_pic) {
-                $s = base64_decode(str_replace('data:image/jpeg;base64,', '', $show_pic));
+        $data = array(
+            'color' => $color,
+            'code' => $code
+        );
 
-                $pic_name = date('YmdHis') . '.jpg';
+        $result = false;
 
-                $full_pic_name = SITE_DIR . UPLOAD_DIR . $pic_name;
+        if (empty($id) || $id == '') {
+            $result = $db->add($data);
 
-                $file_count = file_put_contents($full_pic_name, $s);
+            $id = $result;
+        }
+        else {
+            $condition = array('id' => $id);
 
-                if (!$file_count) {
-                    echo fit_api(true, 0, '文件保存失败!', '');
+            $result = $db->where($condition)->save($data);
+        }
 
-                    exit;
-                }
-            }
-            else {
-                $pic_name = $old_show_pic;
-            }
+        if ($result)
+            echo fit_api(true, 200,'保存成功', $id);
+        else
+            echo fit_api(true, 0,'保存失败', $id);
+    }
 
-            $data = array(
-                'name' => $name,
-                'name_en' => $name_en,
-                'local' => $local,
-                'lat' => $lat,
-                'lng' => $lng,
-                'show_pic' => $pic_name,
-                'remark' => $remark,
-                'phone' => $phone
-            );
+    public function color_del() {
+        $db = D('color');
+
+        $id = I('id');
+
+        $condition = array('id' => $id);
+
+        $db->where($condition)->delete();
+
+        echo fit_api(true,200,'删除成功', '');
+    }
+
+    #endregion
+
+    #region 商品管理
+
+    public function item_list() {
+        $itemModel = D('item');
+
+        $list = $itemModel->select();
+
+        $this->assign('data', array(
+            'list' => $list
+        ));
+
+        $this->display();
+    }
+
+    public function item_edit() {
+        $itemModel = D('item');
+        $colorModel = D('color');
+
+        $id = I('id');
+
+        $color = $colorModel->select();
+
+        if (empty($id) || $id == 0) {
+            $this->assign('title', array(
+                'text' => '添加商品'
+            ));
+
+            $this->assign('data', array(
+                'color' => $color
+            ));
+        }
+        else {
+            $this->assign('title', array(
+                'text' => '编辑商品'
+            ));
+
+            $this->assign('data', array(
+                'item' => $itemModel->find($id),
+                'color' => $color
+            ));
+        }
+
+        $this->display();
+    }
+
+    public function save_item() {
+        $itemModel = D('item');
+
+        $item_id = I('item_id');
+
+        $item_name = I('item_name');
+        $sub_name = I('sub_name');
+        $price = I('price');
+        $color = I('color');
+        $show_photo = I('show_photo');
+        $content_photo = I('content_photo');
+
+        $data = array(
+            'item_name' => $item_name,
+            'sub_name' => $sub_name,
+            'price' => $price,
+            'color' => $color,
+            'show_photo' => $show_photo,
+            'content_photo' => $content_photo
+        );
 
 //            echo fit_api(true, 200,'保存成功', $data); exit;
 
-            if (empty($id) || $id == '') {
-                $id = $lesson->add($data);
-            }
-            else {
-                $condition = array('id' => $id);
-
-                $lesson->where($condition)->save($data);
-            }
-
-            echo fit_api(true, 200,'保存成功', $id);
-        }
-        catch (Exception $e) {
-            echo fit_api(true, 0,'保存失败', '', '');
-        }
-    }
-
-    public function del_lesson() {
-        $lesson = D('Lesson');
-
-        $id = I('id');
-
-        $data = array('id' => $id);
-
-        $lesson->where($data)->delete();
-
-        echo fit_api(true,200,'删除成功', '');
-    }
-
-    #endregion
-
-    #region vip类型管理
-
-    public function vip_type_list() {
-        $vip_type = D('vip_type');
-
-        $d_vip_type = $vip_type->select();
-
-        $this->assign('data', array(
-            'vip_type' => $d_vip_type
-        ));
-
-        $this->display();
-    }
-
-    public function vip_type_edit() {
-        $vip_type = D('vip_type');
-
-        $id = I('id');
-
-        if (empty($id) || $id == 0) {
-            $this->assign('title', array(
-                'text' => '添加vip类型'
-            ));
+        if (!$item_id) {
+//            echo fit_api(true, 0,'保存失败1', $data); exit;
+            $item_id = $itemModel->add($data);
         }
         else {
-            $this->assign('title', array(
-                'text' => '编辑vip类型'
-            ));
+//            echo fit_api(true, 0,'保存失败2', $data); exit;
+//            $condition = array('id' => $item_id);
 
-            $this->assign('data', array(
-                'vip_type' => $vip_type->find($id)//->where($condition)->select()
-            ));
+            $item_id = $itemModel->where('id = '. $item_id)->save($data);
         }
 
-        $this->display();
-    }
-
-    public function save_vip_type() {
-        $vip_type = D('vip_type');
-
-        $id = I('id');
-
-        $name = I('name');
-
-        try {
-            $data = array(
-                'name' => $name
-            );
-
-            if (empty($id) || $id == '') {
-                $id = $vip_type->add($data);
-            }
-            else {
-                $condition = array('id' => $id);
-
-                $vip_type->where($condition)->save($data);
-            }
-
-            echo fit_api(true, 200,'保存成功', $id);
-        }
-        catch (Exception $e) {
-            echo fit_api(true, 0,'保存失败', '', '');
-        }
-    }
-
-    public function del_vip_type() {
-        $vip_type = D('vip_type');
-
-        $id = I('id');
-
-        $data = array('id' => $id);
-
-        $vip_type->where($data)->delete();
-
-        echo fit_api(true,200,'删除成功', '');
-    }
-
-    #endregion
-
-    #region 课程配置
-
-    public function lesson_config_list() {
-        $db = M();
-
-        $sql_text = 'select fit_lesson_config.id, fit_lesson_config.run_date, fit_lesson_config.end_date, fit_lesson_config.week_num, fit_lesson.name, fit_lesson_config.start_time, fit_lesson_config.end_time, fit_lesson_config.price, fit_lesson_config.vip_price_1, fit_lesson_config.max_count, fit_lesson_config.is_show from fit_lesson_config left join fit_lesson on fit_lesson_config.lesson_id = fit_lesson.id';
-
-        $this->assign('data', array(
-            'lesson_config' => $db->query($sql_text)
-        ));
-
-        $this->display();
-    }
-
-    public function lesson_config_edit() {
-        $lesson_config = D('lesson_config');
-        $lesson = D('lesson');
-
-        $id = I('id');
-
-        if (empty($id) || $id == 0) {
-            $this->assign('data', array(
-                'lesson' => $lesson->select()
-            ));
+        if ($item_id == false) {
+            echo fit_api(true, 0, '保存失败!', $item_id);
+            exit;
         }
         else {
-//            print_r($lesson_config->find($id)); exit;
-
-            $this->assign('data', array(
-                'lesson_config' => $lesson_config->find($id),
-                'lesson' => $lesson->select()
-            ));
-        }
-
-        $this->display();
-    }
-
-    public function save_lesson_config() {
-        $lesson_config = D('lesson_config');
-
-        $id = I('id');
-
-        $lesson_id = I('lesson_id');
-        $run_date = I('run_date');
-        $end_date = I('end_date');
-        $start_time = I('start_time');
-        $end_time = I('end_time');
-        $price = I('price');
-        $vip_price_1 = I('vip_price_1');
-        $max_count = I('max_count');
-        $week_num = I('week_num');
-        $is_show = I('is_show');
-
-        try {
-            $data = array(
-                'lesson_id' => $lesson_id,
-                'run_date' => $run_date,
-                'end_date' => $end_date,
-                'start_time' => $start_time,
-                'end_time' => $end_time,
-                'price' => $price,
-                'vip_price_1' => $vip_price_1,
-                'max_count' => $max_count,
-                'week_num' => $week_num,
-                'is_show' => $is_show
-            );
-
-            if (empty($id) || $id == '') {
-//                $exist_condition = array('lesson_id' => $lesson_id);
-//
-//                $tmp_config = $lesson_config->where($exist_condition)->select();
-//
-//                if (!empty($tmp_config) || count($tmp_config) > 0) {
-//                    echo fit_api(true, 0,'该课程配置已经存在', ''); exit;
-//                }
-
-                $id = $lesson_config->add($data);
+            if ($item_id >= 0) {
+                echo fit_api(true, 200, '保存成功!', $item_id);
+                exit;
             }
             else {
-                $condition = array('id' => $id);
-
-                $lesson_config->where($condition)->save($data);
+                echo fit_api(true, 0, '保存失败!', $item_id);
+                exit;
             }
-
-            echo fit_api(true, 200,'保存成功', $id);
-        }
-        catch (Exception $e) {
-            echo fit_api(true, 0,'保存失败', '', '');
         }
     }
 
-    public function del_lesson_config() {
-        $lesson_config = D('lesson_config');
+    public function del_item() {
+        $itemModel = D('item');
 
         $id = I('id');
 
         $data = array('id' => $id);
 
-        $lesson_config->where($data)->delete();
+        $itemModel->where($data)->delete();
 
         echo fit_api(true,200,'删除成功', '');
     }
@@ -517,367 +410,6 @@ class ManageController extends AdminController {
         echo fit_api(true,200,'保存成功', '');
     }
 
-    #endregion
-
-    #region 教练管理
-
-    public function coach_list() {
-        $db = M();
-
-        $sql_text = "select fit_user.id, fit_user.Name, fit_coach_config.price, fit_coach_config.title, fit_coach_config.label from fit_user left join fit_coach_config on fit_user.id = fit_coach_config.user_id where fit_user.is_coach = 1";
-
-        $coach_list = $db->query($sql_text);
-
-        $this->assign('data', $coach_list);
-
-        $this->display();
-    }
-
-    public function  coach_edit() {
-        $userModel = M('user');
-        $coachModel = M('coach_config');
-
-        $id = I('id');
-
-        $user = $userModel->where('id = '. $id)->select();
-        $user_config = $coachModel->where('user_id = '. $id)->select();
-
-        $this->assign('data', array(
-            'coach' => $user,
-            'coach_config' => $user_config
-        ));
-
-        $this->display();
-    }
-
-    public function save_coach() {
-        $userModel = D('user');
-        $coachModel = D('coach_config');
-
-        $id = I('id');
-
-        $name = I('name');
-        $label = I('label');
-        $title = I('title');
-        $price = I('price');
-        $price_vip1 = I('price_vip1');
-        $old_show_pic = I('old_show_pic');
-        $show_pic = I('show_pic');
-        $old_show_pic_big = I('old_show_pic_big');
-        $show_pic_big = I('show_pic_big');
-
-        if (!$id) {
-            echo fit_api(true, 0, '用户ID不能为空!', '', '');
-            exit;
-        }
-
-        try {
-            if ($show_pic) {
-                $s = base64_decode(str_replace('data:image/jpeg;base64,', '', $show_pic));
-
-                $pic_name = date('YmdHis') . '.jpg';
-
-                $full_pic_name = SITE_DIR . UPLOAD_DIR . $pic_name;
-
-                $file_count = file_put_contents($full_pic_name, $s);
-
-                if (!$file_count) {
-                    echo fit_api(true, 0, '文件保存失败!', '');
-
-                    exit;
-                }
-
-
-            }
-            else {
-                $pic_name = $old_show_pic;
-            }
-
-            if ($show_pic_big) {
-                $s = base64_decode(str_replace('data:image/jpeg;base64,', '', $show_pic_big));
-
-                $pic_name_big = date('YmdHis') . '_big.jpg';
-
-                $full_pic_name = SITE_DIR . UPLOAD_DIR . $pic_name_big;
-
-                $file_count = file_put_contents($full_pic_name, $s);
-
-                if (!$file_count) {
-                    echo fit_api(true, 0, '文件保存失败!', '');
-
-                    exit;
-                }
-            }
-            else {
-                $pic_name_big = $old_show_pic_big;
-            }
-
-            $user_data = array(
-                'Name' => $name
-            );
-
-            $coach_data = array(
-                'title' => $title,
-                'label' => $label,
-                'price' => $price,
-                'price_vip1' => $price_vip1,
-                'show_pic' => $pic_name,
-                'show_pic_big' => $pic_name_big,
-                'user_id' => $id
-            );
-
-            $user_condition = array('id' => $id);
-
-            $userModel->where($user_condition)->save($user_data);
-
-            $coach_condition = array('user_id' => $id);
-
-            $coach_config = $coachModel->where($coach_condition)->select();
-
-            if (empty($coach_config) || count($coach_config) == 0) {
-                $coachModel->add($coach_data);
-            }
-            else {
-                $coachModel->where($coach_condition)->save($coach_data);
-            }
-
-            echo fit_api(true, 200, '保存成功', $id);
-        } catch (Exception $e) {
-            echo fit_api(true, 0, '保存失败', '', '');
-        }
-    }
-
-    #endregion
-
-    #region 私教时间安排
-
-    public function pt_config() {
-        $pt_configModel = M('pt_config');
-
-        $pt_config = $pt_configModel->select();
-
-        $this->assign('data', $pt_config);
-
-        $this->display();
-    }
-
-    public function save_pt_config() {
-        $pt_configModel = M('pt_config');
-
-        $id = I('id');
-
-        $time_1 = I('time_1');
-        $time_2 = I('time_2');
-        $time_3 = I('time_3');
-        $time_4 = I('time_4');
-        $time_5 = I('time_5');
-        $time_6 = I('time_6');
-        $time_7 = I('time_7');
-
-        $pt_configModel->where('1')->delete();
-
-        $config1["week_num"] = 1;
-        $config1["time"] = $time_1;
-
-        $pt_configModel->add($config1);
-
-        $config2["week_num"] = 2;
-        $config2["time"] = $time_2;
-
-        $pt_configModel->add($config2);
-
-        $config3["week_num"] = 3;
-        $config3["time"] = $time_3;
-
-        $pt_configModel->add($config3);
-
-        $config4["week_num"] = 4;
-        $config4["time"] = $time_4;
-
-        $pt_configModel->add($config4);
-
-        $config5["week_num"] = 5;
-        $config5["time"] = $time_5;
-
-        $pt_configModel->add($config5);
-
-        $config6["week_num"] = 6;
-        $config6["time"] = $time_6;
-
-        $pt_configModel->add($config6);
-
-        $config7["week_num"] = 7;
-        $config7["time"] = $time_7;
-
-        $pt_configModel->add($config7);
-
-        echo fit_api(true, 200, '保存成功', $id);
-    }
-
-    #endregion
-
-    #region 渠道管理
-
-    public function channel_list() {
-        $db = D('channel');
-
-        $list = $db->select();
-
-        $this->assign('data', array(
-            'list' => $list
-        ));
-
-        $this->display();
-    }
-
-    public function channel_edit() {
-        $db = D('channel');
-
-        $id = I('id');
-
-        if (empty($id) || $id == 0) {
-            $this->assign('title', array(
-                'text' => '添加渠道'
-            ));
-        }
-        else {
-            $this->assign('title', array(
-                'text' => '编辑渠道'
-            ));
-
-            $item = $db->find($id);
-
-            $this->assign('data', array(
-                'item' => $item
-            ));
-        }
-
-        $this->display();
-    }
-
-    public function channel_save() {
-        $db = D('channel');
-
-        $id = I('id');
-
-        $name = I('name');
-
-        $data = array(
-            'name' => $name,
-        );
-
-        $result = false;
-
-        if (empty($id) || $id == '') {
-            $result = $db->add($data);
-
-            $id = $result;
-        }
-        else {
-            $condition = array('id' => $id);
-
-            $result = $db->where($condition)->save($data);
-        }
-
-        if ($result)
-            echo fit_api(true, 200,'保存成功', $id);
-        else
-            echo fit_api(true, 0,'保存失败', $id);
-    }
-
-    public function channel_del() {
-        $db = D('channel');
-
-        $id = I('id');
-
-        $data = array('id' => $id);
-
-        $db->where($data)->delete();
-
-        echo fit_api(true,200,'删除成功', '');
-    }
-    #endregion
-
-    #region 套餐管理
-
-    public function setmeal_list() {
-        $db = D('setmeal');
-
-        $list = $db->select();
-
-        $this->assign('data', array(
-            'list' => $list
-        ));
-
-        $this->display();
-    }
-
-    public function setmeal_edit() {
-        $db = D('setmeal');
-
-        $id = I('id');
-
-        if (empty($id) || $id == 0) {
-            $this->assign('title', array(
-                'text' => '添加套餐'
-            ));
-        }
-        else {
-            $this->assign('title', array(
-                'text' => '编辑套餐'
-            ));
-
-            $item = $db->find($id);
-
-            $this->assign('data', array(
-                'item' => $item
-            ));
-        }
-
-        $this->display();
-    }
-
-    public function setmeal_save() {
-        $db = D('setmeal');
-
-        $id = I('id');
-
-        $name = I('name');
-
-        $data = array(
-            'name' => $name,
-        );
-
-        $result = false;
-
-        if (empty($id) || $id == '') {
-            $result = $db->add($data);
-
-            $id = $result;
-        }
-        else {
-            $condition = array('id' => $id);
-
-            $result = $db->where($condition)->save($data);
-        }
-
-        if ($result)
-            echo fit_api(true, 200,'保存成功', $id);
-        else
-            echo fit_api(true, 0,'保存失败', $id);
-    }
-
-    public function setmeal_del() {
-        $db = D('setmeal');
-
-        $id = I('id');
-
-        $data = array('id' => $id);
-
-        $db->where($data)->delete();
-
-        echo fit_api(true,200,'删除成功', '');
-    }
     #endregion
 
     #region 二维码管理
@@ -992,6 +524,142 @@ class ManageController extends AdminController {
         $stream_context = stream_context_create($context);
         $data = file_get_contents($url, FALSE, $stream_context);
         return $data;
+    }
+
+    public function upload() {
+        $targetFolder = '/Public/uploads'; // Relative to the root
+
+        $verifyToken = md5('unique_salt' . $_POST['timestamp']);
+
+        if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
+            $tempFile = $_FILES['Filedata']['tmp_name'];
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
+
+            // Validate the file type
+            $fileTypes = array('jpg','jpeg','gif','png'); // File extensions
+            $fileParts = pathinfo($_FILES['Filedata']['name']);
+
+            $new_file_name = uniqid().time().rand(10000000,99999999). '.' . $fileParts['extension'];
+
+            $targetFile = rtrim($targetPath,'/') . '/' . $new_file_name;
+            $web_file = '/Public/uploads/'. $new_file_name;
+
+            if (in_array($fileParts['extension'], $fileTypes)) {
+                move_uploaded_file($tempFile,$targetFile);
+
+                $info = array(
+                    'url' => $web_file,
+                    'path' => $targetFile
+                );
+
+                echo fit_api(true,200,'上传成功!', $info);
+            } else {
+                echo fit_api(true,0,'上传失败, 错误文件类型!', '');
+            }
+        }
+    }
+
+    public function save_photo() {
+        $photoModel = D('photo');
+
+        $url = I('url');
+        $path = I('path');
+        $text = I('text');
+        $type = I('type');
+
+        $data = array(
+            'url' => $url,
+            'path' => $path,
+            'text' => $text,
+            'type' => $type
+        );
+
+        $id = $photoModel->add($data);
+
+        if ($id) {
+            echo fit_api(true,200,'保存成功!', $id);
+        }
+        else {
+            unlink($path);
+
+            echo fit_api(true,0,'保存失败!', '');
+        }
+    }
+
+    public function link_photo() {
+        $itemModel = D('item');
+        $photoModel = D('photo');
+        $db = M('');
+
+        $item_id = I('item_id');
+        $photo_id = I('photo_id');
+
+        if (!$item_id) {
+            $item_data = array(
+                'item_name' => ''
+            );
+
+            $item_id = $itemModel->add($item_data);
+
+            if (!$item_id) {
+                echo fit_api(true, 0,'关联图片失败!', $item_id);
+
+                exit;
+            }
+        }
+
+        $photo_data = array(
+            'other_id' => $item_id
+        );
+
+        $result = $photoModel->where('id = '. $photo_id)->data($photo_data)->save();
+
+        if (false !== $result) {
+            echo fit_api(true, 200, '关联图片成功!', $item_id);
+        }
+        else {
+            echo fit_api(true, 0, '关联图片失败, 请与管理员联系!', $item_id);
+        }
+    }
+
+    public function loadImageList() {
+        $photoModel = D('photo');
+
+        $other_id = I('item_id');
+        $type = I('type');
+
+        $photo_condition = array('other_id' => $other_id ,'type' => $type);
+
+        $list = $photoModel->where($photo_condition)->select();
+
+        echo fit_api(true, 200, '获取图片成功', $list);
+    }
+
+    public function del_photo() {
+        $photoModel = D('photo');
+
+        $id = I('photo_id');
+
+        if (!$id) {
+            echo fit_api(true, 0, '删除图片失败, 图片id不能为空!', '');
+            exit;
+        }
+
+        $photo = $photoModel->find($id);
+
+        fopen($photo['path'], 'a+');
+
+        $result = unlink($photo['path']);
+
+        if (!$result) {
+            echo fit_api(true, 200, '删除图片失败', $photo['path']);
+
+            exit;
+        }
+
+        $photoModel->where('id = '. $id)->delete();
+
+        echo fit_api(true, 200, '删除图片成功', $id);
     }
 
     #endregion

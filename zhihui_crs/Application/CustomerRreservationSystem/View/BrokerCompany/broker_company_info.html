@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>{$AdminUserInfo.login_name}的账号信息</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/AjaxBrokerCompanySave" method="post">
+            <input type="hidden" autocomplete="off" name="broker_company_id" id="broker_company_id" value="{$BrokerCompanyInfo.id}" />
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 经纪公司名称
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="broker_company_name" id="broker_company_name" class="form-control" placeholder="请输入经纪公司名称" value="{$BrokerCompanyInfo.broker_company_name}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/BrokerCompanyList";
+
+  $(function(){
+    $("#addForm").validate({
+      ignore: "",
+      rules: {
+        broker_company_name : {
+          required : true
+        }
+      },
+      messages: {
+        broker_company_name: "请输入经济公司名称"
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse    // 提交后的回调函数
+        });
+      }
+    });
+  });
+
+  //region 提交表单
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存经济公司数据', 180);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        BackIndexPage();
+      }
+    );
+  }
+  //endregion 提交表单
+  
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

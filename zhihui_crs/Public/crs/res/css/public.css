@@ -1,0 +1,7 @@
+.pagination-ifr{padding:0; margin: 5px 0; text-align: left; overflow: hidden;}
+.pagination-ifr div{float:left;}
+.pagination-ifr .paging-info-ifr{line-height:35px; padding-right: 20px; overflow: hidden;}
+.pagination-ifr .paging-info-ifr input{width:40px; line-height: 20px; margin: 0 5px; border: 0; border-bottom: 1px solid #38CBCD; text-align: center;}
+.pagination-ifr .paging-margin{margin-right:5px;}
+
+.cursor-hand{cursor: pointer;}

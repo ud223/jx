@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>工单编号：{$OrderInfo.order_sn}</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="editForm" action="__URL__/AjaxOrderAdd" method="post">
+            <input type="hidden" autocomplete="off" name="order_sn" id="order_sn" value="{$OrderInfo.order_sn}" />
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 经纪公司
+              </label>
+              <div class="col-sm-9">
+                <eq name="AccountType" value="$AdminAccount">
+                  <select class="chosen-select" name="broker_company" id="broker_company" data-placeholder="请选择经纪公司" style="width: 260px !important;" onchange="LoadOptionList(this);">
+                    <option value="">请选择经纪公司</option>
+                    <volist name="BrokerCompanyOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.broker_company_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                  <else/>
+                  <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                  <input type="hidden" name="broker_company" id="broker_company" value="{$AccountInfo.broker_company_id}" />
+                </eq>
+
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 销售经理
+              </label>
+              <div class="col-sm-9">
+                <eq name="AccountType" value="$AdminAccount">
+                  <select class="chosen-select" name="seller_manager" id="seller_manager" data-placeholder="请选择销售经理" style="width: 260px !important;">
+                    <option value="">请选择销售经理</option>
+                    <volist name="SellerManagerOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.seller_manager_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                  <else/>
+                  <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                  <input type="hidden" name="seller_manager" id="seller_manager" value="{$AccountInfo.seller_manager_id}" />
+                </eq>
+
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 门店
+              </label>
+              <div class="col-sm-9">
+                <eq name="AccountType" value="$AdminAccount">
+                  <select class="chosen-select" name="store" id="store" data-placeholder="请选择门店" style="width: 260px !important;">
+                    <option value="">请选择门店</option>
+                    <volist name="StoreOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.store_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                  <else/>
+                  <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                  <input type="hidden" name="store" id="store" value="{$AccountInfo.store_id}" />
+                </eq>
+
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 拟购产品
+              </label>
+              <div class="col-sm-3">
+                <eq name="AccountType" value="$AdminAccount">
+                  <select class="chosen-select" name="service_providers" id="service_providers" data-placeholder="请选择服务商" style="width: 100% !important;" onchange="LoadProductOptionList(this);">
+                    <option value="">请选择服务商</option>
+                    <volist name="ServiceProvidersOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.service_providers_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                  <else/>
+                  <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                  <input type="hidden" name="service_providers" id="service_providers" value="{$AccountInfo.seller_manager_id}" />
+                </eq>
+              </div>
+              <div class="col-sm-3">
+                <select class="chosen-select" name="product" id="product" data-placeholder="请选择产品" style="width: 100% !important;" onchange="LoadProductInfo(this);">
+                  <option value="">请选择产品</option>
+                  <volist name="ProductOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.product_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" id="product_info_ifr">
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9" id="product_content_ifr">
+                <p class="form-control-static">
+                  <label class="label label-info">产品编号：<span class="label label-default">{$ProductInfo.id}</span></label>&nbsp;
+                  <label class="label label-info">产品名称：<span class="label label-default">{$ProductInfo.product_name}</span></label>&nbsp;
+                  <label class="label label-info">产品价格：<span class="label label-default"><i class="fa fa-cny"></i>{$ProductInfo.product_price}</span></label>&nbsp;
+                </p>
+                <p class="form-control-static">
+                  <label class="label label-info">产品简介：<span class="label label-default">{$ProductInfo.intro}</span></label>&nbsp;
+                </p>
+                <p class="form-control-static">
+                  <label class="label label-info">产品备注：<span class="label label-default">{$ProductInfo.remarks}</span></label>&nbsp;
+                </p>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 客户
+              </label>
+              <div class="col-sm-9">
+                <select class="chosen-select" name="customer" id="customer" data-placeholder="请选择客户" style="width: 260px !important;" onchange="LoadCustomerInfo(this);">
+                  <option value="">请选择客户</option>
+                  <volist name="CustomerOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.customer_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" id="customer_info_ifr">
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9" id="customer_content_ifr">
+                <p class="form-control-static">
+                  <label class="label label-info">客户编号：<span class="label label-default">{$CustomerInfo.id}</span></label>&nbsp;
+                  <label class="label label-info">姓名：<span class="label label-default">{$CustomerInfo.real_name}</span></label>&nbsp;
+                  <label class="label label-info">性别：<span class="label label-default">{$CustomerInfo.gender}</span></label>&nbsp;
+                  <label class="label label-info">国籍：<span class="label label-default">{$CustomerInfo.nationality}</span></label>&nbsp;
+                </p>
+                <p class="form-control-static">
+                  <label class="label label-info">证件类型：<span class="label label-default">{$CustomerInfo.idcard_type}</span></label>&nbsp;
+                  <label class="label label-info">证件号：<span class="label label-default">{$CustomerInfo.idcard_no}</span></label>&nbsp;
+                  <label class="label label-info">证件照片：<span class="label label-default">{$CustomerInfo.idcard_img_a.original_name}</span></label>&nbsp;
+                </p>
+                <p class="form-control-static">
+                  <label class="label label-info">联系电话：<span class="label label-default">{$CustomerInfo.phone}</span></label>&nbsp;
+                </p>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 工单附件
+              </label>
+              <div class="col-sm-7">
+                <notempty name="OrderInfo.attachment">
+                  <p class="form-control-static">
+                    <label class="label label-info">已上传的文件名：<span class="label label-default">{$OrderInfo.attachment.original_name}</span></label>&nbsp;
+                    <label class="label label-info">文件大小：<span class="label label-default">{$OrderInfo.attachment.file_size_kb} KB</span></label>
+                  </p>
+                </notempty>
+
+                <input type="file" name="attachment" id="attachment" class="form-control">
+                <input type="hidden" name="attachment_id" id="attachment_id" value="{$OrderInfo.attachment.id}" />
+                <span class="help-block m-b-none">只能上传zip、rar、word、excel类型的文件</span>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">销售经理备注</label>
+              <div class="col-sm-7">
+                <textarea class="form-control" name="seller_manager_remarks" id="seller_manager_remarks" rows="5" autocomplete="off" placeholder="销售经理信息" style="resize: none;">{$OrderInfo.seller_manager_remarks}</textarea>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            <label class="label label-info">审核工单</label>&nbsp;{$OrderInfo.order_sn}
+          </h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/OrderInfoReviewSave" method="post">
+            <input type="hidden" autocomplete="off" name="order_sn" id="hf_order_sn" value="{$OrderInfo.order_sn}" />
+
+            <div class="form-group">
+              <div class="col-sm-10 col-sm-offset-1">
+                <label>审批意见</label>
+                <textarea class="form-control" name="review_remarks" id="review_remarks" rows="5" autocomplete="off" placeholder="审批意见" style="resize: none;">{$ReviewInfo.review_remarks}</textarea>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <input type="hidden" name="review_status" id="review_status" value="" />
+                
+                <button class="btn btn-primary" type="button" data-review="2" onclick="SetReviewForm(this);"><i class="fa fa-check"></i>&nbsp;同意</button>
+                <button class="btn btn-danger" type="button" data-review="3" onclick="SetReviewForm(this);"><i class="fa fa-remove"></i>&nbsp;驳回</button>
+
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-title"><h5>客户信息</h5></div>
+                  <div class="ibox-content">
+                    <div class="row">
+                      
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户姓名
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.real_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户性别
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.gender}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          出生年月
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.birthday}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          国籍
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.nationality}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          {$CustomerInfo.idcard_type}
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.idcard_no}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          现住址
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.province_name} {$CustomerInfo.city_name} {$CustomerInfo.district_name} {$CustomerInfo.address}</p>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-title"><h5>工单信息</h5></div>
+                  <div class="ibox-content">
+                    <div class="row">
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          拟购产品
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.type_name} - {$ProductInfo.product_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          服务商
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ServiceProvidersInfo.service_providers_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          拟消费金额
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static"><i class="fa fa-cny"></i>{$ProductInfo.product_price}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          服务门店
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$StoreInfo.store_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户描述及备注
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$OrderInfo.seller_manager_remarks}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title"><h5>附件信息</h5></div>
+              <div class="ibox-content">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <notempty name="OrderInfo.attachment">
+                      <div class="file-box">
+                        <div class="file">
+                          <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.attachment.id}">
+                            <span class="corner"></span>
+
+                            <div class="icon">
+                              <i class="fa {$OrderInfo.attachment.icon}"></i>
+                            </div>
+                            <div class="file-name">
+                              {$OrderInfo.attachment.original_name}
+                              <br/>
+                              <small>文件大小：{$OrderInfo.attachment.file_size_kb}KB</small>
+                              <br/>
+                              <small>添加时间：{$OrderInfo.attachment.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </notempty>
+                    
+                    <notempty name="CustomerInfo.idcard_img_a">
+                      <div class="file-box">
+                        <div class="file">
+                          <!--<a href="javascript:void(0);">-->
+                          <a href="__MODULE__/Download/OriginalNameImage/image_id/{$CustomerInfo.idcard_img_a.id}">
+                          
+                            <span class="corner"></span>
+
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$CustomerInfo.idcard_img_a.full_file}">
+                            </div>
+                            <div class="file-name">
+                              {$CustomerInfo.idcard_img_a.original_name}
+                              <br/>
+                              <small>添加时间：{$CustomerInfo.idcard_img_a.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </notempty>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/OrderList";
+  
+  $(document).ready(function(){
+    //region 下拉框样式
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框样式
+
+    //region 表单验证
+    $.validator.addMethod("UploadAttachmentFile", function (value,element,params) {
+      var nAttachmentID = $('#attachment_id').val();
+      var blResult = null;
+
+      if(IsN(nAttachmentID)){
+        blResult = !IsN(value);
+      }else{
+        blResult = true;
+      }
+
+      return blResult;
+    },"请选择选择需要上传的工单附件");
+    
+    $("#editForm").validate({
+      ignore: "",
+      rules: {
+        broker_company : {
+          required : true,
+          min:1,
+          number:true
+        },
+        seller_manager : {
+          required : true,
+          min:1,
+          number:true
+        },
+        store : {
+          required : true,
+          min:1,
+          number:true
+        },
+        service_providers : {
+          required : true,
+          min:1,
+          number:true
+        },
+        product : {
+          required : true,
+          min:1,
+          number:true
+        },
+        customer : {
+          required : true,
+          min:1,
+          number:true
+        },
+        attachment : {UploadAttachmentFile:""}
+      },
+      messages: {
+        broker_company: {
+          required : "请选择经纪公司",
+          min : "经纪公司不存在",
+          number : "经纪公司不存在",
+        },
+        seller_manager: {
+          required : "请选择销售经理",
+          min : "销售经理不存在",
+          number : "销售经理不存在",
+        },
+        store: {
+          required : "请选择门店",
+          min : "门店不存在",
+          number : "门店不存在",
+        },
+        service_providers: {
+          required : "请选择服务商",
+          min : "服务商不存在",
+          number : "服务商不存在",
+        },
+        product: {
+          required : "请选择产品",
+          min : "产品不存在",
+          number : "产品不存在",
+        },
+        customer: {
+          required : "请选择客户",
+          min : "客户不存在",
+          number : "客户不存在",
+        },
+        attachment: {
+          required : "请选择选择需要上传的工单附件"
+        }
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+    //endregion 表单验证
+    
+    //region 提交审核结果
+    $("#addForm").validate({
+      ignore: "",
+      rules: {
+        review_remarks : {
+          required : true
+        }
+      },
+      messages: {
+        broker_company: "请输入审批意见"
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+    //endregion 提交审核结果
+  });
+  
+  //region 提交表单
+  function SetReviewForm(obj){
+    var nReviewStatus = $(obj).attr("data-review");
+    $('#review_status').val(nReviewStatus);
+
+    $("#addForm").submit();
+  }
+  
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+  
+  //region 获取销售经理及门店列表
+  function LoadOptionList(obj){
+    var nBrokerCompanyID = $(obj).val();
+    
+    if(IsN(nBrokerCompanyID)){
+      var sKey = $('#seller_manager').attr("data-placeholder");
+      $('#seller_manager').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxOptionList",
+      dataType:"json",
+      data: {"broker_company_id": nBrokerCompanyID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadOptionListResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+  
+  function LoadOptionListResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    var sKey = $('#seller_manager').attr("data-placeholder");
+    
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      $('#seller_manager').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+      
+      return false;
+    }
+
+    //region 销售经理
+    var Dom = [];
+    var OptionList = objJson.data.seller_manage_option;
+    var nLen = OptionList.length;
+    var Info = null;
+
+    Dom.push('<option value="">'+ sKey +'</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = OptionList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#seller_manager').html(Dom.join('')).trigger("chosen:updated");
+    //endregion 销售经理
+    
+    //region 门店
+    sKey = $('#store').attr("data-placeholder");
+    Dom = [];
+    OptionList = objJson.data.store_option;
+    nLen = OptionList.length;
+
+    Dom.push('<option value="">'+ sKey +'</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = OptionList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#store').html(Dom.join('')).trigger("chosen:updated");
+    //endregion 门店
+    
+    //region 客户
+    sKey = $('#customer').attr("data-placeholder");
+    Dom = [];
+    OptionList = objJson.data.customer_option;
+    nLen = OptionList.length;
+
+    Dom.push('<option value="">'+ sKey +'</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = OptionList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#customer').html(Dom.join('')).trigger("chosen:updated");
+    //endregion 客户
+  }
+  //endregion 获取销售经理及门店列表
+  
+  //region 获取产品列表
+  function LoadProductOptionList(obj){
+    var nServiceProvidersID = $(obj).val();
+    
+    if(IsN(nServiceProvidersID)){
+      var sKey = $('#product').attr("data-placeholder");
+      $('#product').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取产品列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxProductOptionList",
+      dataType:"json",
+      data: {"service_providers_id": nServiceProvidersID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadProductOptionListResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadProductOptionListResponse(objJson){
+    Un_BlockWindow_ExecOp();
+    
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var sKey = $('#product').attr("data-placeholder");
+    if(IsN(objJson.data)){
+      $('#product').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+
+      return false;
+    }
+
+    //region 产品列表
+    var Dom = [];
+    var OptionList = objJson.data;
+    var nLen = OptionList.length;
+    var Info = null;
+
+    Dom.push('<option value="">'+ sKey +'</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = OptionList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#product').html(Dom.join('')).trigger("chosen:updated");
+    //endregion 产品列表
+  }
+  //endregion 获取产品列表
+  
+  //region 获取产品信息
+  function LoadProductInfo(obj){
+    var nProductID = $(obj).val();
+
+    if(IsN(nProductID)){
+      $('#product_content_ifr').html('');
+      $('#product_info_ifr').fadeOut('fast');
+      return false;
+    }
+
+    BlockWindow_ExecOp('获取产品信息', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxProductInfo",
+      dataType:"json",
+      data: {"product_id": nProductID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadProductInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadProductInfoResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      $('#product_content_ifr').html('');
+      $('#product_info_ifr').fadeOut('fast');
+      
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var sKey = $('#product').attr("data-placeholder");
+    if(IsN(objJson.data)){
+      $('#product').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+
+      return false;
+    }
+
+    //region 产品列表
+    var Dom = [];
+    var ProductInfo = objJson.data;
+
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">产品编号：<span class="label label-default">'+ ProductInfo.id +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">产品名称：<span class="label label-default">'+ ProductInfo.product_name +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">产品价格：<span class="label label-default"><i class="fa fa-cny"></i>'+ ProductInfo.product_price +'</span></label>&nbsp;');
+    Dom.push('</p>');
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">产品简介：<span class="label label-default">'+ ProductInfo.intro +'</span></label>&nbsp;');
+    Dom.push('</p>');
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">产品备注：<span class="label label-default">'+ ProductInfo.remarks +'</span></label>&nbsp;');
+    Dom.push('</p>');
+
+    $('#product_content_ifr').html(Dom.join(''));
+    $('#product_info_ifr').fadeIn();
+    //endregion 产品列表
+  }
+  //endregion 获取产品信息
+
+  //region 获取客户信息
+  function LoadCustomerInfo(obj){
+    var nCustomerID = $(obj).val();
+
+    if(IsN(nCustomerID)){
+      $('#customer_content_ifr').html('');
+      $('#customer_info_ifr').fadeOut('fast');
+      return false;
+    }
+
+    BlockWindow_ExecOp('获取产品信息', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCustomerInfo",
+      dataType:"json",
+      data: {"customer_id": nCustomerID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadCustomerInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadCustomerInfoResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      $('#customer_content_ifr').html('');
+      $('#customer_info_ifr').fadeOut('fast');
+
+      AlertError(objJson.info);
+      return false;
+    }
+
+    //region 产品列表
+    var Dom = [];
+    var CustomerInfo = objJson.data;
+
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">客户编号：<span class="label label-default">'+ CustomerInfo.id +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">姓名：<span class="label label-default">'+ CustomerInfo.real_name +'</label>&nbsp;');
+    Dom.push('<label class="label label-info">性别：<span class="label label-default">'+ CustomerInfo.gender +'</label>&nbsp;');
+    Dom.push('<label class="label label-info">国籍：<span class="label label-default">'+ CustomerInfo.nationality +'</label>&nbsp;');
+    Dom.push('</p>');
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">证件类型：<span class="label label-default">'+ CustomerInfo.idcard_type +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">证件号：<span class="label label-default">'+ CustomerInfo.idcard_no +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">证件照片：<span class="label label-default">'+ CustomerInfo.idcard_img_a.original_name +'</span></label>&nbsp;');
+    Dom.push('</p>');
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">联系电话：<span class="label label-default">'+ CustomerInfo.phone +'</span></label>&nbsp;');
+    Dom.push('</p>');
+
+    $('#customer_content_ifr').html(Dom.join(''));
+    $('#customer_info_ifr').fadeIn();
+    //endregion 产品列表
+  }
+  //endregion 获取客户信息
+  
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

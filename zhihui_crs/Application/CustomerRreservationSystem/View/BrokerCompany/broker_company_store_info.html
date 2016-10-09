@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            <empty name="BrokerCompanyStoreInfo">
+              添加经纪公司门店
+            <else/>
+              {$BrokerCompanyStoreInfo.store_name}信息
+            </empty>
+          </h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/AjaxBrokerCompanyStoreSave" method="post">
+            <input type="hidden" autocomplete="off" name="broker_company_store_id" id="broker_company_store_id" value="{$BrokerCompanyStoreInfo.id}" />
+            
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <eq name="AccountType" value="$AdminAccount"><span class="label label-info">必填</span></eq> 经纪公司
+              </label>
+              <div class="col-sm-4">
+                <eq name="AccountType" value="$AdminAccount">
+                  <select class="chosen-select" name="broker_company" id="broker_company" data-placeholder="请选择经纪公司" style="width: 100% !important;">
+                    <option value="">请选择经纪公司</option>
+                    <volist name="BrokerCompanyOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$BrokerCompanyStoreInfo.broker_company_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                  <else/>
+                  <p class="form-control-static">{$AccountInfo.broker_company_name}</p>
+                  <input type="hidden" name="broker_company" id="broker_company" value="{$AccountInfo.broker_company_id}" />
+                </eq>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 门店名称
+              </label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="store_name" id="store_name" class="form-control" placeholder="请输入门店名称" value="{$BrokerCompanyStoreInfo.store_name}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">联系电话</label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="phone" id="phone" class="form-control" placeholder="请输入联系电话" value="{$BrokerCompanyStoreInfo.phone}">
+                <span class="help-block m-b-none"></span>
+              </div>
+            </div>
+            
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">省市区</label>
+              <div class="col-sm-3">
+                <select class="chosen-select" name="province_id" id="province_id" data-placeholder="请选择省份" style="width:100% !important;" date-sub-type="city" onchange="LoadSubRegion(this);">
+                  <option value="">请选择省份</option>
+                  <volist name="ProvinceList" id="list">
+                    <option value="{$list.province_id}" <eq name="list.province_id" value="$BrokerCompanyStoreInfo.province_id">selected</eq> >{$list.province_name}</option>
+                  </volist>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <select class="chosen-select" name="city_id" id="city_id" data-placeholder="请选择城市" style="width:100% !important;" date-sub-type="district" onchange="LoadSubRegion(this);">
+                  <option value="">请选择城市</option>
+                  <notempty name="CityList">
+                    <volist name="CityList" id="list">
+                      <option value="{$list.city_id}" <eq name="list.city_id" value="$BrokerCompanyStoreInfo.city_id">selected</eq> >{$list.city_name}</option>
+                    </volist>
+                  </notempty>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <select class="chosen-select" name="district_id" id="district_id" data-placeholder="请选择区县" style="width:100% !important;">
+                  <option value="">请选择区县</option>
+                  <notempty name="DistrictList">
+                    <volist name="DistrictList" id="list">
+                      <option value="{$list.district_id}" <eq name="list.district_id" value="$BrokerCompanyStoreInfo.district_id">selected</eq> >{$list.district_name}</option>
+                    </volist>
+                  </notempty>
+                </select>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">详细地址</label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="address" id="address" class="form-control" placeholder="请输入详细地址" value="{$BrokerCompanyStoreInfo.address}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/BrokerCompanyStoreList";
+
+  $(document).ready(function(){
+    //region 下拉框样式
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框样式
+
+    //region 表单验证
+    $("#addForm").validate({
+      ignore: "",
+      rules: {
+        broker_company : {
+          required : true,
+          min:1,
+          number:true
+        },
+        store_name : {
+          required : true
+        }
+      },
+      messages: {
+        broker_company: {
+          required : "请选择经纪公司",
+          min : "经纪公司不存在",
+          number : "经纪公司不存在",
+        },
+        store_name :{
+          required: "请输入门店名称"
+        }
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+    //endregion 表单验证
+  });
+  
+  //region 提交表单
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存经纪公司数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+
+  //region 区域选择
+  function LoadSubRegion(obj){
+    var nParentID = $(obj).val();
+    var sSubType = $(obj).attr("date-sub-type");
+    var sTypeName = "";
+
+    switch(sSubType){
+      case "city":
+        sTypeName = "城市";
+        break;
+
+      case "district":
+        sTypeName = "区县";
+        break;
+    }
+
+    BlockWindow_ExecOp('正在获取'+sTypeName+'列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__MODULE__/Region/GetSubRegionOption",
+      dataType:"json",
+      data: {"parent_id": nParentID, "sub_type": sSubType},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadSubRegionResponse(data, sSubType);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadSubRegionResponse(objJson, sub_typ){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var Dom = [];
+    var SubList = objJson.data;
+    var nLen = SubList.length;
+    var Info = null;
+
+    Dom.push('<option value="">--</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = SubList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#'+sub_typ+'_id').html(Dom.join('')).trigger("chosen:updated");
+
+    if(sub_typ == "city"){
+      $('#district_id').html('<option value="">--</option>').trigger("chosen:updated");
+    }
+  }
+  //endregion 区域选择
+  
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

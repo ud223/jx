@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!-- 搜索 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>搜索经纪公司门店</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="searchForm" action="__URL__/BrokerCompanyStoreList" method="get">
+
+            <div class="row">
+              <div class="col-sm-8">
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">区域</label>
+                  <div class="col-sm-3">
+                    <select class="chosen-select" name="search_province" id="search_province" data-placeholder="请选择省份" style="width:100% !important;" date-sub-type="city" onchange="LoadSubRegion(this);">
+                      <option value="">请选择省份</option>
+                      <volist name="ProvinceList" id="list">
+                        <option value="{$list.province_id}" <eq name="search_province" value="$list.province_id">selected</eq> >{$list.province_name}</option>
+                      </volist>
+                    </select>
+                  </div>
+                  <div class="col-sm-3">
+                    <select class="chosen-select" name="search_city" id="search_city" data-placeholder="请选择城市" style="width:100% !important;" date-sub-type="district" onchange="LoadSubRegion(this);">
+                      <option value="">请选择城市</option>
+                      <notempty name="CityList">
+                        <volist name="CityList" id="list">
+                          <option value="{$list.city_id}" <eq name="search_city" value="$list.city_id">selected</eq> >{$list.city_name}</option>
+                        </volist>
+                      </notempty>
+                    </select>
+                  </div>
+                  <div class="col-sm-3">
+                    <select class="chosen-select" name="search_district" id="search_district" data-placeholder="请选择区县" style="width:100% !important;">
+                      <option value="">请选择区县</option>
+                      <notempty name="DistrictList">
+                        <volist name="DistrictList" id="list">
+                          <option value="{$list.district_id}" <eq name="search_district" value="$list.district_id">selected</eq> >{$list.district_name}</option>
+                        </volist>
+                      </notempty>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <eq name="AccountType" value="$AdminAccount">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">经纪公司</label>
+                    <div class="col-sm-9">
+                      <select class="chosen-select" name="search_broker_company" id="search_broker_company" autocomplete="off" style="width: 100%;" data-placeholder="全部">
+                        <option value="" <empty name='search_broker_company'>selected</empty>>全部</option>
+                        <volist name="BrokerCompanyOption" id="list">
+                          <option value="{$list.val}" <eq name="list.val" value="$search_broker_company">selected</eq> >{$list.key}</option>
+                        </volist>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </eq>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="hr-line-dashed"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
+
+                    <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-refresh"></i>&nbsp;重置表单</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--搜索 End-->
+  
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="BackIndexPage();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <a href="__URL__/BrokerCompanyStoreInfo" class="btn btn-primary"><i class="fa fa-user-plus"></i>&nbsp;添加经纪公司门店</a>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+
+          <button class="btn btn-danger" type="button" onclick="DeleteBrokerCompanyStore();"><i class="fa fa-trash-o"></i>&nbsp;删除选中的经纪公司门店</button>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>
+                <div class="checkbox checkbox-inline checkbox-info">
+                  <input type="checkbox" name="list_chk_all" id="list_chk_all_1" onclick="ListMainCheckBoxClick(this);">
+                  <label for="list_chk_all_1">编号</label>
+                </div>
+              </th>
+              <th class="text-center">门店名称</th>
+              <th class="text-center">经纪公司</th>
+              <th class="text-center">联系电话</th>
+              <th class="text-left">门店地址</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="BrokerCompanyStoreList">
+              <tr>
+                <td colspan="6" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="BrokerCompanyStoreList" id="list">
+                <tr>
+                  <td>
+                    <div class="checkbox checkbox-inline checkbox-info">
+                      <input type="checkbox" name="list_chk_sub" id="list_chk_sub_{$i}" onclick="ListSubCheckBoxClick(this);" value="{$list.id}">
+                      <label for="list_chk_sub_{$i}">{$list.id}</label>
+                    </div>
+                  </td>
+                  <td class="text-center">{$list.store_name}</td>
+                  <td class="text-center">{$list.broker_company_name}</td>
+                  <td class="text-center">{$list.phone}</td>
+                  <td class="text-left">{$list.province_name}{$list.city_name}{$list.district_name}{$list.address}</td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <a href="__URL__/BrokerCompanyStoreInfo/broker_company_store_id/{$list.id}" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+                    </div>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th>
+                <div class="checkbox checkbox-inline checkbox-info">
+                  <input type="checkbox" name="list_chk_all" id="list_chk_all_2" onclick="ListMainCheckBoxClick(this);">
+                  <label for="list_chk_all_2">编号</label>
+                </div>
+              </th>
+              <th class="text-center">门店名称</th>
+              <th class="text-center">经纪公司</th>
+              <th class="text-center">联系电话</th>
+              <th class="text-left">门店地址</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <a href="__URL__/BrokerCompanyStoreInfo" class="btn btn-primary"><i class="fa fa-user-plus"></i>&nbsp;添加经纪公司门店</a>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+
+          <button class="btn btn-danger" type="button" onclick="DeleteBrokerCompanyStore();"><i class="fa fa-trash-o"></i>&nbsp;删除选中的经纪公司门店</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/BrokerCompanyStoreList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+  
+  for (var selector in config) $(selector).chosen(config[selector]);
+
+  //region 刷新缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新经纪公司门店缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetBrokerCompanyStoreCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新缓存
+
+  //region 删除选中的经纪公司门店
+  function DeleteBrokerCompanyStore(){
+    var sSelectValue = GetListCheckBoxSelectValue();
+
+    if(IsN(sSelectValue)){
+      AlertError("请选择需要删除的经纪公司门店");
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: "确定删除选中的经纪公司门店吗？",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#F8AC59",
+        confirmButtonText: "确定删除",
+        cancelButtonText: "取消",
+        closeOnConfirm: true,
+        closeOnCancel: true
+      },
+      function(isConfirm){
+        if(isConfirm){
+          ExcuteDelete(sSelectValue);
+        }else{
+          return false;
+        }
+      }
+    );
+  }
+
+  //执行删除
+  function ExcuteDelete(id){
+    BlockWindow_ExecOp('正在删除选中的经纪公司门店', 200);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxBrokerCompanyStoreDelete",
+      dataType:"json",
+      timeout: 6000,
+      data:{"broker_company_store_id": id},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        ExcuteDeleteResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function ExcuteDeleteResponse(objJson){
+    Un_BlockWindow_ExecOp();
+    
+    if(objJson.error == 1){
+      ToastrError(objJson.info, '删除失败');
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 删除选中的经纪公司门店
+
+  //region 提交表单
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        BackIndexPage();
+      }
+    );
+  }
+
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+
+  //region 区域选择
+  function LoadSubRegion(obj){
+    var nParentID = $(obj).val();
+    var sSubType = $(obj).attr("date-sub-type");
+    var sTypeName = "";
+
+    switch(sSubType){
+      case "city":
+        sTypeName = "城市";
+        break;
+
+      case "district":
+        sTypeName = "区县";
+        break;
+    }
+
+    BlockWindow_ExecOp('正在获取'+sTypeName+'列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__MODULE__/Region/GetSubRegionOption",
+      dataType:"json",
+      data: {"parent_id": nParentID, "sub_type": sSubType},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadSubRegionResponse(data, sSubType);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadSubRegionResponse(objJson, sub_typ){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var Dom = [];
+    var SubList = objJson.data;
+    var nLen = SubList.length;
+    var Info = null;
+
+    Dom.push('<option value="">--</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = SubList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#search_'+sub_typ).html(Dom.join('')).trigger("chosen:updated");
+
+    if(sub_typ == "city"){
+      $('#search_district').html('<option value="">--</option>').trigger("chosen:updated");
+    }
+  }
+  //endregion 区域选择
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

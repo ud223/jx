@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <button class="btn btn-info" type="button" onclick="UpdateAdminGroupPermissionItem();"><i class="fa fa-refresh"></i>&nbsp;更新权限选项</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          <notempty name="PermissionList">
+            <form class="form-horizontal m-t" id="addForm" action="__URL__/AdminGroupPermissionSave/parentid/{$ParentID}/childid/{$ChildID}" method="post">
+
+              <input type="hidden" name="group_id" id="group_id" value="{$AdminGroupInfo.id}" />
+
+              <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-5">
+                  <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存{$AdminGroupInfo.group_name}组权限</button>
+                  <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                </div>
+              </div>
+
+              <volist name="PermissionList" id="list">
+                <div class="panel panel-default" id="panel_lv1_{$i}">
+                  <div class="panel-heading">
+                    <div class="checkbox checkbox-inline checkbox-success">
+                      <input type="checkbox" data-ifr-prefix="panel_lv1_" data-child-prefix="menu_lv2_all_" data-menu-code="{$i}" name="menu_lv1_all" id="menu_lv1_all_{$i}" onclick="Lv1MenuAll(this);">
+                      <label for="menu_lv1_all_{$i}">{$list.menu_name} - 所有权限 </label>
+                    </div>
+                  </div>
+                  <div class="panel-body">
+                    <volist name="list.sub" id="sublist" key="j">
+                      <div class="checkbox checkbox-inline checkbox-info">
+                        <input type="checkbox" data-parent-ifr-prefix="panel_lv1_" data-parent-id="menu_lv1_all_{$i}" data-parent-menu-code="{$i}" data-ifr-prefix="panel_lv2_" data-menu-code="{$j}" name="menu_lv2" id="menu_lv2_{$i}_{$j}" onclick="Lv2MenuCheck(this);">
+                        <label for="menu_lv2_{$i}_{$j}">{$sublist.menu_name}</label>
+                      </div>
+                    </volist>
+                  </div>
+                </div>
+              </volist>
+
+              <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-5">
+                  <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存{$AdminGroupInfo.group_name}组权限</button>
+                  <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                </div>
+              </div>
+            </form>
+          </notempty>
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <button class="btn btn-info" type="button" onclick="UpdateAdminGroupPermissionItem();"><i class="fa fa-refresh"></i>&nbsp;更新权限选项</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--添加管理员组Modal Begin-->
+  <div class="modal inmodal fade" id="modal_add_group_ifr" data-backdrop="static" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">添加管理员组</h4>
+        </div>
+
+        <div class="modal-body form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">
+              <span class="label label-info">必填</span> 管理员组
+            </label>
+            <div class="col-sm-9">
+              <input type="text" name="group_name" id="group_name" autocomplete="off" class="form-control" placeholder="输入管理员组" value="">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" onclick="SaveAdminGroup();"><i class="fa fa-save"></i>&nbsp;保存</button>
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--添加管理员组Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/AdminGroupList";
+  
+  //region 选择权限项操作
+  //设置lv2级栏目和权限节点的选中状态
+  function Lv1MenuAll(obj){
+    var sLv1IfrPrefix = $(obj).attr("data-ifr-prefix");
+    var sMenuCode = $(obj).attr("data-menu-code");
+
+    var sIfrID = sLv1IfrPrefix + sMenuCode;
+    var sLv1CheckBoxID = $(obj).attr("id");
+    var blLv1CheckBoxStatus = $('#'+sLv1CheckBoxID).prop("checked");
+
+    $('#'+ sIfrID +' input[name="menu_lv2"]').each(function(){
+      $(this).prop("checked", blLv1CheckBoxStatus);
+    });
+  }
+
+  //点击lv2级栏目，设置lv1级菜单的选中状态
+  function Lv2MenuCheck(obj){
+    //获取lv1级栏目容器id前缀
+    var sLv1IfrPrefix = $(obj).attr("data-parent-ifr-prefix");
+    
+    //获取lv1级栏目code
+    var sLv1MenuCode = $(obj).attr("data-parent-menu-code");
+
+    //获取lv1级栏目的全选checkbox的id
+    var sLv1MenuCheckBoxID = $(obj).attr('data-parent-id');
+
+    //获取当前点击的checkbox的选中状态
+    var blLv2CheckBoxStatus = $(obj).prop("checked");
+
+    if(blLv2CheckBoxStatus === false){
+      //如果当前checkbox是取消选中状态，则设置上级全选checkbox为取消选中状态
+      $('#'+sLv1MenuCheckBoxID).prop("checked", false);
+    }else{
+      //组合lv1级容器的id
+      var sIfrID = sLv1IfrPrefix + sLv1MenuCode;
+
+      //初始化lv2级栏目的状态
+      var blAllStatus = $(obj).prop("checked");
+
+      $('#'+ sIfrID +' input[name="menu_lv2"]').each(function(){
+        //如果有一个状态，与初始化的不匹配，则退出循环
+        if($(this).prop("checked") != blAllStatus){
+          blAllStatus = !blAllStatus;
+          return false;
+        }
+      });
+
+      //赋值lv1级栏目全选checkbox状态
+      $('#'+sLv1MenuCheckBoxID).prop("checked", blAllStatus);
+    }
+  }
+  //endregion 选择权限项操作
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

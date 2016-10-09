@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+
+  <link href="__PUBLIC__/crs/res/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            <empty name="CommissionInfo">
+              添加佣金
+            <else/>
+              <label class="label label-info">{$SellerManagerInfo.real_name}</label>&nbsp;<label class="label label-info">{$CommissionInfo.year}年{$CommissionInfo.month}月</label>佣金信息
+            </empty>
+          </h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/AjaxCommissionSave" method="post">
+            <input type="hidden" autocomplete="off" name="commission_id" id="commission_id" value="{$CommissionInfo.id}" />
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 经纪公司
+              </label>
+              <div class="col-sm-7">
+                <notempty name="BrokerCompanyOption">
+                  <select class="chosen-select" name="broker_company" id="broker_company" autocomplete="off" style="width: 100%;" data-placeholder="选择经纪公司" onchange="LoadSellerManagerList(this);">
+                    <option value="">选择经纪公司</option>
+                    <volist name="BrokerCompanyOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$CommissionInfo.broker_company_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                <else/>
+                  <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                </notempty>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 销售经理
+              </label>
+              <div class="col-sm-7">
+                <select class="chosen-select" name="seller_manager" id="seller_manager" autocomplete="off" style="width: 100%;" data-placeholder="<notempty name="SellerManagerOption">选择销售经理<else/>--</notempty>">
+                  <option value=""><notempty name="SellerManagerOption">选择销售经理<else/>--</notempty></option>
+                  <volist name="SellerManagerOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$CommissionInfo.seller_manager_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 佣金日期
+              </label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" autocomplete="off" name="commission_date" id="commission_date" value="{$CommissionInfo.year}-{$CommissionInfo.month}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 提成标准
+              </label>
+              <div class="col-sm-5">
+                <select class="chosen-select" name="standard" id="standard" autocomplete="off" style="width: 100%;" data-placeholder="选择提成标准">
+                  <option value="">选择提成标准</option>
+                  <volist name="CommissionStandardOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$CommissionInfo.standard_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <button class="btn btn-primary" type="button" onclick="ShowAddStandardModal();"><i class="fa fa-plus"></i>&nbsp;添加提成标准</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 本月排名
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="rank" id="rank" class="form-control" placeholder="请输入本月排名" value="{$CommissionInfo.rank}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 本月业绩
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="achievements" id="achievements" class="form-control" placeholder="请输入本月业绩" value="{$CommissionInfo.achievements}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 本月提成
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="rake" id="rake" class="form-control" placeholder="请输入本月提成" value="{$CommissionInfo.rake}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 本月奖金
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="bonus" id="bonus" class="form-control" placeholder="请输入本月奖金" value="{$CommissionInfo.bonus}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 其它补贴
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="subsidy" id="subsidy" class="form-control" placeholder="请输入其它补贴" value="{$CommissionInfo.subsidy}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                扣税金额
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="tax" id="tax" class="form-control" placeholder="请输入扣税金额" value="{$CommissionInfo.tax}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                其它扣除金额
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="other_minus" id="other_minus" class="form-control" placeholder="请输入其它扣除金额" value="{$CommissionInfo.other_minus}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 应发工资
+              </label>
+              <div class="col-sm-9">
+                <input type="text" autocomplete="off" name="should_pay" id="should_pay" class="form-control" placeholder="应发工资" value="{$CommissionInfo.should_pay}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 实发工资
+              </label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="actual_delivery" id="actual_delivery" class="form-control" placeholder="实发工资" value="{$CommissionInfo.actual_delivery}">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 发放状态
+              </label>
+              <div class="col-sm-9">
+                <div class="radio radio-inline radio-info">
+                  <input type="radio" id="status_0" name="status" value="0" <empty name="CommissionInfo">checked="checked"<else/><eq name="CommissionInfo.status" value="0">checked="checked"</eq></empty> >
+                  <label for="status_0"> 未发放 </label>
+                </div>
+                <div class="radio radio-inline radio-danger">
+                  <input type="radio" id="status_1" name="status" value="1" <eq name="CommissionInfo.status" value="1">checked="checked"</eq> >
+                  <label for="status_1"> 已发放 </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" name="remarks" id="remarks" rows="5" autocomplete="off" placeholder="备注" style="resize: none;"></textarea>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>每月佣金记录</h5>
+        </div>
+        <div class="ibox-content">
+          <notempty name="SellerManagerCommissionList">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th class="text-left">日期</th>
+                  <th class="text-center">提成标准</th>
+                  <th class="text-left">业绩</th>
+                  <th class="text-left">实发工资</th>
+                  <th class="text-right"></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <volist name="SellerManagerCommissionList" id="list">
+                  <tr>
+                    <td class="text-left">{$list.year}年{$list.month}月</td>
+                    <td class="text-center">{$list.standard_name}</td>
+                    <td class="text-left"><i class="fa fa-cny"></i>{$list.achievements}</td>
+                    <td class="text-left"><i class="fa fa-cny"></i>{$list.actual_delivery}</td>
+                    <td class="text-right">
+                      <button type="button" class="btn btn-info" data-id="{$list.id}" data-date="{$list.year}年{$list.month}月" onclick="ShowSellerManagerCommissionInfoModal(this);"><i class="fa fa-info-circle"></i>&nbsp;查看</button>
+                    </td>
+                  </tr>
+                </volist>
+              </tbody>
+
+              <tfoot>
+                <tr>
+                  <th class="text-left">日期</th>
+                  <th class="text-center">提成标准</th>
+                  <th class="text-left">业绩</th>
+                  <th class="text-left">实发工资</th>
+                  <th class="text-right"></th>
+                </tr>
+              </tfoot>
+            </table>
+          <else/>
+            <h5 class="text-center">暂无记录</h5>
+          </notempty>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--添加提成标准Modal Begin-->
+  <div class="modal inmodal fade" id="add_standard_modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title">添加提成标准</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>提成标准名称</label>
+            <input type="text" name="standard_name" id="standard_name" placeholder="请输入提成标准名称" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="AddStandard();">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--添加提成标准Modal End-->
+
+  <!--查看销售经理佣金记录Modal Begin-->
+  <div class="modal inmodal fade" id="seller_manager_commission_ifr" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="smc_modal_title">窗口标题</h4>
+        </div>
+
+        <div class="modal-body" style="height: 400px; overflow-y: scroll;">
+          
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">销售经理</label>
+                <div class="col-sm-7" id="p_seller_manage"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">所在区域</label>
+                <div class="col-sm-7" id="p_region"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">当月排名</label>
+                <div class="col-sm-7" id="p_rank"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">提成标准</label>
+                <div class="col-sm-7" id="p_standard"></div>
+              </div>
+            </div>
+            
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">业绩</label>
+                <div class="col-sm-7" id="p_achievements"></div>
+              </div>
+            </div>
+            
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">底薪</label>
+                <div class="col-sm-7" id="p_base_salary"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">提成</label>
+                <div class="col-sm-7" id="p_rake"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">奖金</label>
+                <div class="col-sm-7" id="p_bonus"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">补贴</label>
+                <div class="col-sm-7" id="p_subsidy"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">扣除个税</label>
+                <div class="col-sm-7" id="p_tax"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">其它扣费</label>
+                <div class="col-sm-7" id="p_other_minus"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"></div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">应发工资</label>
+                <div class="col-sm-7" id="p_should_pay"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">实发工资</label>
+                <div class="col-sm-7" id="p_actual_delivery"></div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">发放状态</label>
+                <div class="col-sm-7" id="p_status"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>备注</label>
+                <p class="form-control-static" id="p_remarks"></p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--查看销售经理佣金记录Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script src="__PUBLIC__/crs/res/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script>
+  var ReturnUrl = "__URL__/CommissionList";
+
+  $(document).ready(function(){
+    //region 下拉框
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框
+
+    //region 表单验证
+    $("#addForm").validate({
+      ignore: "",
+      rules: {
+        broker_company : {
+          required : true,
+          min: 1,
+          number: true
+        },
+        seller_manager : {
+          required : true,
+          min: 1,
+          number: true
+        },
+        commission_date : {
+          required : true
+        },
+        standard : {
+          required : true,
+          min: 1,
+          number: true
+        },
+        rank : {
+          required : true,
+          number:true
+        },
+        achievements : {
+          required : true,
+          number:true
+        },
+        rake : {
+          required : true,
+          number:true
+        },
+        bonus : {
+          required : true,
+          number:true
+        },
+        subsidy : {
+          required : true,
+          number:true
+        },
+        tax : {
+          number:true
+        },
+        other_minus : {
+          number:true
+        },
+        should_pay : {
+          required : true,
+          number:true
+        },
+        actual_delivery : {
+          required : true,
+          number:true
+        },
+        status : {
+          required : true,
+          range:[0,1]
+        }
+      },
+      messages: {
+        broker_company : {
+          required : "请选择经纪公司",
+          min: "经纪公司数据错误",
+          number: "经纪公司数据错误"
+        },
+        seller_manager : {
+          required : "请选择销售经理",
+          min: "销售经理数据错误",
+          number: "销售经理数据错误"
+        },
+        commission_date : {
+          required : "请选择佣金日期"
+        },
+        standard : {
+          required : "请选择提成标准",
+          min: "提成标准数据错误",
+          number: "提成标准数据错误"
+        },
+        rank : {
+          required : "请输入本月排名",
+          number: "本月排名必须是数字"
+        },
+        achievements : {
+          required : "请输入本月业绩",
+          number: "本月业绩必须是数字"
+        },
+        rake : {
+          required : "请输入本月提成",
+          number: "本月提成必须是数字"
+        },
+        bonus : {
+          required : "请输入本月奖金",
+          number: "本月奖金必须是数字"
+        },
+        subsidy : {
+          required : "请输入其它补贴",
+          number: "其它补贴必须是数字"
+        },
+        tax : {
+          required : "请输入扣税金额",
+          number: "扣税金额必须是数字"
+        },
+        other_minus : {
+          required : "请输入其它扣除金额",
+          number: "其它扣除金额必须是数字"
+        },
+        should_pay : {
+          required : "请输入应发工资",
+          number: "应发工资必须是数字"
+        },
+        actual_delivery : {
+          required : "请输入实发工资",
+          number: "实发工资必须是数字"
+        },
+        status : {
+          required : "请选择发放状态",
+          range: "发放状态错误"
+        }
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+    //endregion 表单验证
+  });
+
+  $("#commission_date").datepicker({
+    format: 'yyyy-mm',
+    minViewMode: 1,
+    keyboardNavigation: !1,
+    forceParse: !1,
+    autoclose: !0,
+    todayHighlight: !0
+  });
+  
+  //region 提交表单
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存佣金数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+
+  //region 添加提成标准
+  function ShowAddStandardModal(){
+    $('#add_standard_modal').modal();
+  }
+
+  function CloseAddStandardModal(){
+    $('#add_standard_modal').modal('hide');
+  }
+
+  function AddStandard(){
+    var sStandardName = $('#standard_name').val();
+
+    if(IsN(sStandardName)){
+      AlertError('请输入提成标准名称');
+      return false;
+    }
+
+    CloseAddStandardModal();
+
+    BlockWindow_ExecOp('正在保存提成标准名称', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxStandardAdd",
+      dataType:"json",
+      timeout: 6000,
+      data:{"standard_name": sStandardName},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        AddStandardResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function AddStandardResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var StandardInfo = objJson.data;
+    var sHtml = '<option value="'+ StandardInfo.id +'" selected>'+ StandardInfo.standard_name +'</option>';
+
+    $('#standard option:selected').prop("selected", false);
+    $('#standard').prepend(sHtml).trigger("chosen:updated");;
+
+    $('standard_name').val('');
+  }
+  //endregion 添加提成标准
+
+  //region 获取销售经理列表
+  function LoadSellerManagerList(obj){
+    var nBrokerCompanyID = $(obj).val();
+
+    if(IsN(nBrokerCompanyID)){
+      var sKey = $('#seller_manager').attr("data-placeholder");
+      $('#seller_manager').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxSellerManagerOption",
+      dataType:"json",
+      data: {"broker_company_id": nBrokerCompanyID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadSellerManagerListResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadSellerManagerListResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    var sKey = $('#seller_manager').attr("data-placeholder");
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      $('#seller_manager').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+
+      return false;
+    }
+
+    //region 销售经理
+    var Dom = [];
+    var OptionList = objJson.data;
+    var nLen = OptionList.length;
+    var Info = null;
+
+    Dom.push('<option value="">'+ sKey +'</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = OptionList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#seller_manager').html(Dom.join('')).trigger("chosen:updated");
+    //endregion 销售经理
+  }
+  //endregion 获取销售经理列表
+
+  //region 获取销售经理佣金记录信息
+  function ShowSellerManagerCommissionInfoModal(obj){
+    var nCommissionID = $(obj).attr("data-id");
+
+    if(IsN(nCommissionID)){
+      AlertError("佣金数据错误");
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCommissionInfo",
+      dataType:"json",
+      data: {"commission_id": nCommissionID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        SellerManagerCommissionInfoResponse(data, obj);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function SellerManagerCommissionInfoResponse(objJson, obj){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    //region 填充数据
+    var CommissionInfo = objJson.data;
+
+    if(IsN(CommissionInfo)){
+      AlertError("未获取到佣金数据");
+      return false;
+    }
+    
+    $('#p_seller_manage').html(CommissionInfo.seller_manager_name);
+    $('#p_region').html(CommissionInfo.region);
+    $('#p_rank').html(CommissionInfo.rank);
+    $('#p_standard').html(CommissionInfo.standard_name);
+    $('#p_achievements').html('<i class="fa fa-cny"></i>'+CommissionInfo.achievements);
+    $('#p_base_salary').html('<i class="fa fa-cny"></i>'+CommissionInfo.base_salary);
+    $('#p_rake').html('<i class="fa fa-cny"></i>'+CommissionInfo.rake);
+    $('#p_bonus').html('<i class="fa fa-cny"></i>'+CommissionInfo.bonus);
+    $('#p_subsidy').html('<i class="fa fa-cny"></i>'+CommissionInfo.subsidy);
+    $('#p_tax').html('<i class="fa fa-cny"></i>'+CommissionInfo.tax);
+    $('#p_other_minus').html('<i class="fa fa-cny"></i>'+CommissionInfo.other_minus);
+    $('#p_should_pay').html('<i class="fa fa-cny"></i>'+CommissionInfo.should_pay);
+    $('#p_actual_delivery').html('<i class="fa fa-cny"></i>'+CommissionInfo.actual_delivery);
+    $('#p_status').html(CommissionInfo.status_style);
+    $('#p_remarks').html(CommissionInfo.remarks);
+    //endregion 填充数据
+
+    var sTitle = $(obj).attr("data-date")+"佣金信息";
+
+    $('#smc_modal_title').html(sTitle);
+    $('#seller_manager_commission_ifr').modal();
+  }
+  //endregion 获取销售经理佣金记录信息
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

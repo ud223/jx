@@ -111,7 +111,7 @@
 
             if (confirm('是否删除该菜单项?')) {
                 fit.ajax({
-                    url:'/admin/manage/del_menu',
+                    url:'/manage/del_menu',
                     data:{
                         'id':id
                     },
@@ -169,7 +169,7 @@
                     };
 
                     fit.ajax({
-                        url:'/admin/manage/save_menu',
+                        url:'/manage/save_menu',
                         data: data,
                         success:function(result){
                             alert(result.msg);
@@ -214,7 +214,7 @@
                     };
 
                     fit.ajax({
-                        url:'/admin/manage/add_menu',
+                        url:'/manage/add_menu',
                         data: data,
                         success:function(result){
                             alert(result.msg);

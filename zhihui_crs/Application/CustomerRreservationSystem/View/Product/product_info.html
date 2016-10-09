@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+
+  <link href="__PUBLIC__/crs/res/js/plugins/summernote/summernote.css" rel="stylesheet">
+  <link href="__PUBLIC__/crs/res/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            <empty name="ProductInfo">
+              添加产品
+            <else/>
+              {$ProductInfo.login_name}的产品信息
+            </empty>
+          </h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/AjaxProductSave" method="post">
+            <input type="hidden" autocomplete="off" name="product_id" id="product_id" value="{$ProductInfo.id}" />
+            
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 经纪公司
+                  </label>
+                  <div class="col-sm-9">
+                    <eq name="AccountType" value="$AdminAccount">
+                      <select class="chosen-select" name="broker_company" id="broker_company" data-placeholder="请选择经纪公司" style="width:100% !important;">
+                        <option value="">请选择经纪公司</option>
+                        <volist name="BrokerCompanyOption" id="list">
+                          <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.broker_company_id">selected</eq> >{$list.key}</option>
+                        </volist>
+                      </select>
+                      <else/>
+                      <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                      <input type="hidden" name="broker_company" id="broker_company" value="{$AccountInfo.broker_company_id}" />
+                    </eq>
+
+                  </div>
+                </div>
+
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 服务商
+                  </label>
+                  <div class="col-sm-9">
+                    <select class="chosen-select" name="service_providers" id="service_providers" data-placeholder="请选择服务商" style="width:100% !important;">
+                      <option value="">请选择服务商</option>
+                      <volist name="ServiceProvidersOption" id="list">
+                        <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.service_providers_id">selected</eq> >{$list.key}</option>
+                      </volist>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 产品类别
+                  </label>
+                  <div class="col-sm-9">
+                    <select class="chosen-select" name="product_type" id="product_type" data-placeholder="请选择产品类别" style="width:100% !important;">
+                      <option value="">请选择产品类别</option>
+                      <volist name="ProductTypeOption" id="list">
+                        <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.type_id">selected</eq> >{$list.key}</option>
+                      </volist>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="hr-line-dashed"></div>
+                
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 产品名称
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" autocomplete="off" name="product_name" id="product_name" class="form-control" placeholder="产品名称" value="{$ProductInfo.product_name}">
+                  </div>
+                </div>
+
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 产品价格
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" autocomplete="off" name="product_price" id="product_price" class="form-control" placeholder="产品价格" value="{$ProductInfo.product_price}">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <span class="label label-info">必填</span>&nbsp;<b>提供服务的门店</b>
+              </div>
+
+              <div class="ibox-content">
+                <volist name="StoreOption" id="list">
+                  <div class="checkbox checkbox-inline checkbox-info">
+                    <input type="checkbox" name="store" id="store_{$list.val}" value="{$list.val}" {$list.status}>
+                    <label for="store_{$list.val}"> {$list.key} </label>
+                  </div>
+                </volist>
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <span class="label label-info">必填</span>&nbsp;<b>发布产品</b>
+              </div>
+
+              <div class="ibox-content">
+                <div class="radio radio-warning radio-inline">
+                  <input type="radio" id="status_0" value="0" name="product_status" <empty name="ProductInfo">checked="checked"<else/><eq name="ProductInfo.status" value="0">checked="checked"</eq></empty> >
+                  <label for="status_0"> 稍后发布 </label>
+                </div>
+
+                <div class="radio radio-info radio-inline">
+                  <input type="radio" id="status_1" value="1" name="product_status" <eq name="ProductInfo.status" value="1">checked="checked"</eq> >
+                  <label for="status_1"> 发布 </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <b>产品简介</b>
+              </div>
+
+              <div class="ibox-content">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <textarea class="form-control" name="product_intro" id="product_intro" rows="5" autocomplete="off" placeholder="产品简介信息">{$ProductInfo.intro}</textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <b>产品详情</b>
+              </div>
+              <div class="ibox-content">
+                <div class="summernote" id="product_content">{$ProductInfo.content}</div>
+                
+                <input type="hidden" name="hf_product_content" id="hf_product_content" />
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <b>备注</b>
+              </div>
+
+              <div class="ibox-content">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <textarea class="form-control" name="product_remarks" id="product_remarks" rows="5" autocomplete="off" placeholder="备注信息">{$ProductInfo.remarks}</textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script src="__PUBLIC__/crs/res/js/plugins/summernote/summernote.min.js"></script>
+<script src="__PUBLIC__/crs/res/js/plugins/summernote/summernote-zh-CN.js"></script>
+
+<script>
+  var ReturnUrl = "__URL__/ProductList";
+  
+  $(document).ready(function(){
+    //region 下拉框样式
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框样式
+    
+    //region 表单验证
+    $("#addForm").validate({
+      ignore: "",
+      rules: {
+        broker_company : {
+          required : true
+        },
+        product_type : {
+          required : true,
+          number:true,
+          min:1
+        },
+        product_name : {
+          required : true
+        },
+        product_price : {
+          required : true,
+          number:true,
+          min:1
+        }
+      },
+      messages: {
+        broker_company: "请选择经纪公司",
+        product_type: "请选择产品类型",
+        product_name: "请输入产品名称",
+        product_price: "请输入产品名称"
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        var Param = FormtherParam();
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          data : Param,
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+    //endregion 表单验证
+  });
+  
+  //region 提交表单
+  function FormtherParam(){
+    var JsonData = {"product_content": "", "store": ""};
+    var sStoreIdstr = GetListCheckBoxSelectValue('store');
+    
+    JsonData.store = sStoreIdstr;
+    JsonData.product_content = $('#product_content').summernote('code');
+    
+    return JsonData;
+  }
+  
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+
+  //region 内容编辑器
+  $("#product_content").summernote({
+    lang: "zh-CN",
+    minHeight : 150,
+    disableDragAndDrop : false,
+    toolbar: [
+      ['Misc', ['fullscreen', 'codeview']],
+      ['Layout', ['style', 'ul', 'ol', 'paragraph', 'height']],
+      ['Style', ['fontname', 'fontsize', 'color', 'bold', 'italic', 'underline', 'strikethrough', 'clear']],
+      ['Insert', ['table', 'picture', 'link', 'hr', 'video']]
+    ],
+    callbacks: {
+      onImageUpload: function (files) { //the onImageUpload API
+        var img = UplodaContentImage(files[0]);
+      }
+    }
+  });
+
+  function UplodaContentImage(file) {
+    BlockWindow_ExecOp('正在删除选中的服务商', 200);
+    
+    var data = new FormData();
+    data.append("ProductContentImage", file);
+    
+    $.ajax({
+      type: "POST",
+      dataType:"json",
+      timeout: 6000,
+      url: "__URL__/UploadProductContentImage",
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: data,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data) {
+        UplodaContentImageResponse(data);
+      },
+      error: function(){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求超时");
+        return false;
+      }
+    });
+  }
+  
+  function UplodaContentImageResponse(objJson){
+    Un_BlockWindow_ExecOp();
+    
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var sUrl = objJson.data.url;
+    var sOriginalName = objJson.data.original_name;
+    
+    $("#product_content").summernote('insertImage', sUrl, sOriginalName);
+  }
+  //endregion 内容编辑器
+  
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>
