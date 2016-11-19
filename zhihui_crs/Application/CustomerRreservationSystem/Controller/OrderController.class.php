@@ -333,6 +333,9 @@ class OrderController extends CommonController {
         $StoreInfo = $clsBrokerCompany->GetBrokerCompanyStoreDetails($OrderInfo["store_id"]);
         $this->assign("StoreInfo", $StoreInfo);
       }
+
+      $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption();
+      $this->assign("StoreOption", $StoreOption);
       //endregion 门店
 
       //region 服务商
@@ -347,6 +350,11 @@ class OrderController extends CommonController {
         $ProductInfo = $clsProduct->GetProductDetails($OrderInfo["product_id"]);
         $this->assign("ProductInfo", $ProductInfo);
       }
+
+      if(IsNum($OrderInfo["service_providers_id"], false, false)){
+        $ProductOption = $clsProduct->ProductOption('service_providers_id', $OrderInfo["service_providers_id"]);
+        $this->assign("ProductOption", $ProductOption);
+      }
       //endregion 产品
 
       //region 客户
@@ -354,6 +362,11 @@ class OrderController extends CommonController {
         $CustomerInfo = $clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
         $CustomerInfo["birthday"] = Time2FullDate($CustomerInfo["birthday"], "Y年m月d日");
         $this->assign("CustomerInfo", $CustomerInfo);
+      }
+
+      if(IsNum($OrderInfo["broker_company_id"], false, false)){
+        $CustomerOption = $clsCustomer->CustomerOption($OrderInfo["broker_company_id"]);
+        $this->assign("CustomerOption", $CustomerOption);
       }
       //endregion 客户
 
@@ -367,7 +380,11 @@ class OrderController extends CommonController {
     $this->assign("ReviewInfo", $ReviewInfo);
     $this->assign("ReviewList", $ReviewList);
 
-    $this->CustomDisplay("order_info_edit");
+    if(($OrderInfo["status"] == 0 || $OrderInfo["status"] == 1) && $OrderInfo["review"] == 3){
+      $this->CustomDisplay("order_info_edit2");
+    }else{
+      $this->CustomDisplay("order_info_edit");
+    }
   }
 
   /**
@@ -460,6 +477,7 @@ class OrderController extends CommonController {
    * todo: 添加工单信息
    */
   public function AjaxOrderAdd(){
+    $sOrderSn = RR("order_sn");
     $nBrokerCompanyID = RR("broker_company");
     $nSellerManagerID = RR("seller_manager");
     $nStoreID = RR("store");
@@ -470,7 +488,7 @@ class OrderController extends CommonController {
     $nAttachmentID = RR("attachment_id");
     $nSellerManagerRemarks = RR("seller_manager_remarks");
 
-    $SaveResult = $this->modOrder->OrderAdd($this->_AccountType, $nBrokerCompanyID, $nSellerManagerID, $nStoreID, $nServiceProviders, $nCustomerID, $nProductID, $fileAttachment, $nAttachmentID, $nSellerManagerRemarks);
+    $SaveResult = $this->modOrder->OrderAdd($sOrderSn, $this->_AccountType, $nBrokerCompanyID, $nSellerManagerID, $nStoreID, $nServiceProviders, $nCustomerID, $nProductID, $fileAttachment, $nAttachmentID, $nSellerManagerRemarks);
 
     AjaxReturn($SaveResult);
   }

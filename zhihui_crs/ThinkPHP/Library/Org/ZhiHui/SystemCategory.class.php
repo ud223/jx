@@ -250,6 +250,7 @@ class SystemCategory {
       'menu_name' => '工单',
       'url' => 'javascript:void(0);',
       'ico' => 'fa-file',
+      'code' => 'Order',
       'role' => array('admin','broker_company','seller_manager'),
       'sub' => array(
         array(

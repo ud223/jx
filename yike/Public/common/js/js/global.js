@@ -33,24 +33,6 @@
 
 })(jQuery);
 
-$(document).ready(function() {
-	$('.popselfrm_trigger').click(function() {
-		var $this = $(this);
-		$.popselfrm({
-			selectedtag: $this.attr('datatag'),
-			items: {
-				'mingpian': '名片',
-				'xuqiu': '需求',
-				'huiyi': '会议'
-			},
-			selectCallback: function(obj) {
-				$this.find('.n').text(obj.text);
-				$this.attr('datatag', obj.datatag);
-			}
-		});
-	});
-
-});
 
 /* POPUP (START) */
 $.extend({
@@ -407,7 +389,14 @@ $(document).ready(function() {
 		}
 
 	});
-
+	// 二级菜单悬浮
+	$(window).scroll(function() {
+		if($(window).scrollTop() <= $(window).height()) {
+			$('.yositab').removeClass('topped');
+		} else {
+			$('.yositab').addClass('topped');
+		}
+	});
 	// 顶部banner内部的hover事件
 	$('.mdcontent .uln li').mouseenter(function() {
 		var $this = $(this);
@@ -418,4 +407,45 @@ $(document).ready(function() {
 		$('.mdcontent .uln li').removeClass('ignor');
 	});
 
+
+	// 评论星级
+	$('.staritmd').mouseenter(function() {
+		var $this = $(this);
+		var score = $this.attr('score');
+		var lanp = $this.closest('.starslanp');
+		var siblings = lanp.find('.staritmd');
+		$.each(siblings, function() {
+			var i = $(this);
+			var s = i.attr('score');
+			if(s > score) {
+				i.removeClass('icon-iosstar').addClass('icon-iosstaroutline');
+			} else {
+				i.removeClass('icon-iosstaroutline').addClass('icon-iosstar');
+			}
+		});
+	});
+	$('.staritmd').click(function() {
+		var $this = $(this);
+		var s = $this.attr('score');
+		var lanp = $this.closest('.starslanp');
+		lanp.attr('score', s);
+	});
+	$('.starslanp').mouseleave(function() {
+		var $this = $(this);
+		var score = parseInt($this.attr('score'));
+		if(score > 0) {
+			var siblings = $this.find('.staritmd');
+			$.each(siblings, function() {
+				var i = $(this);
+				var s = i.attr('score');
+				if(s > score) {
+					i.removeClass('icon-iosstar').addClass('icon-iosstaroutline');
+				} else {
+					i.removeClass('icon-iosstaroutline').addClass('icon-iosstar');
+				}
+			});
+		} else {
+			$this.find('.staritmd').removeClass('icon-iosstar').addClass('icon-iosstaroutline');
+		}
+	});
 });

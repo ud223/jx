@@ -57,6 +57,7 @@
                   </select>
                 <else/>
                   <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
+                  <input type="hidden" name="broker_company" id="broker_company" value="{$BrokerCompanyInfo.id}" />
                 </notempty>
               </div>
             </div>
@@ -84,7 +85,7 @@
                 <span class="label label-info">必填</span> 佣金日期
               </label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" autocomplete="off" name="commission_date" id="commission_date" value="{$CommissionInfo.year}-{$CommissionInfo.month}">
+                <input type="text" class="form-control" autocomplete="off" name="commission_date" id="commission_date" value="<empty name="CommissionInfo">{$DefaultDate}<else/>{$CommissionInfo.year}-{$CommissionInfo.month}</empty>">
               </div>
             </div>
 
@@ -98,7 +99,7 @@
                 <select class="chosen-select" name="standard" id="standard" autocomplete="off" style="width: 100%;" data-placeholder="选择提成标准">
                   <option value="">选择提成标准</option>
                   <volist name="CommissionStandardOption" id="list">
-                    <option value="{$list.val}" <eq name="list.val" value="$CommissionInfo.standard_id">selected</eq> >{$list.key}</option>
+                    <option value="{$list.val}" <notempty name="CommissionInfo"><eq name="list.val" value="$CommissionInfo.standard_id">selected</eq><else/><notempty name="LastCommissionInfo"><eq name="list.val" value="$LastCommissionInfo.standard_id">selected</eq></notempty></notempty> >{$list.key}</option>
                   </volist>
                 </select>
               </div>
@@ -111,7 +112,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 本月排名
+                本月排名
               </label>
               <div class="col-sm-9">
                 <input type="text" autocomplete="off" name="rank" id="rank" class="form-control" placeholder="请输入本月排名" value="{$CommissionInfo.rank}">
@@ -122,7 +123,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 本月业绩
+                本月业绩
               </label>
               <div class="col-sm-9">
                 <input type="text" autocomplete="off" name="achievements" id="achievements" class="form-control" placeholder="请输入本月业绩" value="{$CommissionInfo.achievements}">
@@ -133,7 +134,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 本月提成
+                本月提成
               </label>
               <div class="col-sm-9">
                 <input type="text" autocomplete="off" name="rake" id="rake" class="form-control" placeholder="请输入本月提成" value="{$CommissionInfo.rake}">

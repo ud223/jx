@@ -24,7 +24,7 @@ define('LIB_DIR', '/Public/common/lib/');
 define('LOG_DIR', '/Public/logs/');
 define('max_customer', 5);
 
-define("TOKEN", "yike");
+define("TOKEN", "eco");
 
 // 定义应用目录
 define('APP_PATH','./Application/');

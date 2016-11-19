@@ -39,16 +39,16 @@ class Order {
     if(IsArray($Info)){
       
       //region 附件信息
-      $clsFile = new \Org\ZhiHui\File();
+      $clsPicture = new \Org\ZhiHui\Picture();
 
       if(IsNum($Info["attachment"], false, false)){
-        $FileInfo = $clsFile->GetFileDetails($Info["attachment"]);
-        $FileSizeKB = $FileInfo["file_size"]/1024;
+        $FileInfo = $clsPicture->GetPictureDetails($Info["attachment"]);
+        $FileSizeKB = $FileInfo["pic_size"]/1024;
         $FileSizeMB = $FileSizeKB/1024;
 
         $FileInfo["full_file"] = FullImageUrl($FileInfo["file"]);
-        $FileInfo["file_size_kb"] = round($FileSizeKB, 2);
-        $FileInfo["file_size_mb"] = round($FileSizeMB, 2);
+        $FileInfo["pic_size_kb"] = round($FileSizeKB, 2);
+        $FileInfo["pic_size_mb"] = round($FileSizeMB, 2);
         
         $FileInfo["add_date"] = Time2FullDate($FileInfo["add_time"], "Y-m-d");
         
@@ -268,6 +268,47 @@ class Order {
     }
 
     return $OrderSn;
+  }
+
+  /**
+   * todo: 获取未处理工单数量
+   *
+   * @param $_account_info
+   *
+   * @return int
+   */
+  public function GetUntreatedOrderNumber($_account_info, $_account_type){
+    $nUntreatedNumber = 0;
+
+    if(!IsArray($_account_info)){
+      return $nUntreatedNumber;
+    }
+
+    $clsLogin = new \Org\ZhiHui\Login();
+
+    switch($_account_type){
+      case $clsLogin->GetLoginTypeSellerManager():
+        $sWhere = "(review=1 or review=2) and (status=0 or status=1)";
+        $sWhere .= " and broker_company_id={$_account_info["broker_company_id"]}";
+        break;
+
+      case $clsLogin->GetLoginTypeBrokerCompany():
+        $sWhere = "review=0";
+        $sWhere .= " and broker_company_id={$_account_info["broker_company_id"]}";
+        break;
+
+      default:
+        $sWhere = "review=0";
+        break;
+    }
+
+    $nUntreatedNumber = $this->modOrder->where($sWhere)->count();
+
+    if(!IsNum($nUntreatedNumber, false, false)){
+      $nUntreatedNumber = 0;
+    }
+
+    return $nUntreatedNumber;
   }
   //endregion 工单
 

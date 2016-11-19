@@ -231,13 +231,11 @@
                           <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.attachment.id}">
                             <span class="corner"></span>
 
-                            <div class="icon">
-                              <i class="fa {$OrderInfo.attachment.icon}"></i>
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$OrderInfo.attachment.full_file}">
                             </div>
                             <div class="file-name">
-                              {$OrderInfo.attachment.original_name}
-                              <br/>
-                              <small>文件大小：{$OrderInfo.attachment.file_size_kb}KB</small>
+                              <span style="word-wrap:break-word;">{$OrderInfo.attachment.original_name}</span>
                               <br/>
                               <small>添加时间：{$OrderInfo.attachment.add_date}</small>
                             </div>
@@ -352,8 +350,7 @@
           required : true,
           min:1,
           number:true
-        },
-        attachment : {UploadAttachmentFile:""}
+        }
       },
       messages: {
         broker_company: {
@@ -385,9 +382,6 @@
           required : "请选择客户",
           min : "客户不存在",
           number : "客户不存在",
-        },
-        attachment: {
-          required : "请选择选择需要上传的工单附件"
         }
       },
       focusInvalid: true,
@@ -465,6 +459,10 @@
         closeOnConfirm: true
       },
       function(isConfirm) {
+        <if condition="($AccountType neq $SellerManagerAccount)">
+          window.parent.PollingUntreatedNumber();
+        </if>
+
         BackIndexPage();
       }
     );

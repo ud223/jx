@@ -185,19 +185,19 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 工单附件
+                工单附件
               </label>
               <div class="col-sm-7">
                 <notempty name="OrderInfo.attachment">
                   <p class="form-control-static">
                     <label class="label label-info">已上传的文件名：<span class="label label-default">{$OrderInfo.attachment.original_name}</span></label>&nbsp;
-                    <label class="label label-info">文件大小：<span class="label label-default">{$OrderInfo.attachment.file_size_kb} KB</span></label>
+                    <label class="label label-info">文件大小：<span class="label label-default">{$OrderInfo.attachment.pic_size_kb} KB</span></label>
                   </p>
                 </notempty>
 
                 <input type="file" name="attachment" id="attachment" class="form-control">
                 <input type="hidden" name="attachment_id" id="attachment_id" value="{$OrderInfo.attachment.id}" />
-                <span class="help-block m-b-none">只能上传zip、rar、word、excel类型的文件</span>
+                <span class="help-block m-b-none">只能上传jpg、png格式的图片</span>
               </div>
             </div>
 
@@ -408,13 +408,11 @@
                           <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.attachment.id}">
                             <span class="corner"></span>
 
-                            <div class="icon">
-                              <i class="fa {$OrderInfo.attachment.icon}"></i>
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$OrderInfo.attachment.full_file}">
                             </div>
                             <div class="file-name">
-                              {$OrderInfo.attachment.original_name}
-                              <br/>
-                              <small>文件大小：{$OrderInfo.attachment.file_size_kb}KB</small>
+                              <span style="word-wrap:break-word;">{$OrderInfo.attachment.original_name}</span>
                               <br/>
                               <small>添加时间：{$OrderInfo.attachment.add_date}</small>
                             </div>
@@ -529,8 +527,7 @@
           required : true,
           min:1,
           number:true
-        },
-        attachment : {UploadAttachmentFile:""}
+        }
       },
       messages: {
         broker_company: {
@@ -562,9 +559,6 @@
           required : "请选择客户",
           min : "客户不存在",
           number : "客户不存在",
-        },
-        attachment: {
-          required : "请选择选择需要上传的工单附件"
         }
       },
       focusInvalid: true,
@@ -642,6 +636,10 @@
         closeOnConfirm: true
       },
       function(isConfirm) {
+        <if condition="($AccountType neq $SellerManagerAccount)">
+          window.parent.PollingUntreatedNumber();
+        </if>
+
         BackIndexPage();
       }
     );

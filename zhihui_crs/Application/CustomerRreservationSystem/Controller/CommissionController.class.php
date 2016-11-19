@@ -83,7 +83,16 @@ class CommissionController extends CommonController {
     }
     //region 编辑时加载的数据
 
+    //没有数据时默认的日期
+    $sDefaultDate = date("Y")."-".(date("m")-1);
+    
+    //region 获取最后一次添加的佣金
+    $LastCommissionInfo = $this->modCommission->clsCommission->LastCommissionInfo($this->_AccountInfo["broker_company_id"]);
+    //endregion 获取最后一次添加的佣金
+
     $this->assign("CommissionInfo", $CommissionInfo);
+    $this->assign("DefaultDate", $sDefaultDate);
+    $this->assign("LastCommissionInfo", $LastCommissionInfo);
 
     $this->CustomDisplay("commission_info");
   }

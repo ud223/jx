@@ -1,0 +1,87 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">订单详细</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名</span>
+                        <input type="text" class="form-control" value="{$data[order][0].name}" readonly>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">电话</span>
+                        <input type="text" class="form-control" value="{$data[order][0].tel}" readonly>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">课程</span>
+                        <input type="text" class="form-control" value="{$data[order][0].lesson_name}" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">预约日期</span>
+                        <input type="text" class="form-control" value="{$data[order][0].run_date}" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">上课时间</span>
+                        <input type="text" class="form-control" value="{$data[order][0].start_time}" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">分配教练</span>
+                        <select class="form-control" id="coach-list">
+                            <?php foreach ($data['coach'] as $itm) :?>
+                                <?php if ($itm['id'] == $data[order][0].coach_id) :?>
+                                    <option value="<?php echo $itm['id'] ?>" selected="selected"><?php echo $itm['Name'] ?></option>
+                                <?php else :?>
+                                    <option value="<?php echo $itm['id'] ?>"><?php echo $itm['Name'] ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="order_id" value="{$data['order'][0].order_id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/admin/manage/order_list';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#order_id').val();
+            var coach_id = $('#coach-list').val();
+
+            if (confirm('是否分配该教练?')) {
+                Order.setCoach(id, coach_id);
+            }
+        }
+    </script>
+</block>

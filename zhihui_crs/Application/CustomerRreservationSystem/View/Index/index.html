@@ -45,8 +45,10 @@
           <volist name="SystemCategoryList" id="list">
             <li>
               <gt name="list.child" value="0">
-                <a href="{$list.url}"><i class="fa {$list.ico}"></i> <span class="nav-label">{$list.menu_name}</span><span class="fa arrow"></span></a>
-                
+                <a href="{$list.url}"><i class="fa {$list.ico}"></i> <span class="nav-label">{$list.menu_name}</span><eq name="list.code" value="Order">&nbsp;<span class="label label-warning" id="menu_order_number_ifr" style="display: none;"> </span>&nbsp;</eq><span class="fa arrow"></span></a>
+
+                <eq name="list.code" value="Order"><input type="hidden" id="hf_untreated_order_number" value="{$UntreatedOrderNumber}" /></eq>
+
                 <ul class="nav nav-second-level">
                   <volist name="list.sub" id="lv2list">
                     <li>
@@ -137,6 +139,76 @@
   <script src="__PUBLIC__/crs/res/js/contabs.min.js"></script>
   <script src="__PUBLIC__/crs/res/js/plugins/pace/pace.min.js"></script>
   <script src="__PUBLIC__/crs/res/js/public.js"></script>
+
+  <script>
+    var nUntreatedNumber = 0;
+//    var nIntervalMinute = (1000*60*15); //15分钟
+    var nIntervalMinute = (10000); //15分钟
+
+    $(document).ready(function(){
+      ControlUntreatedNumberIfr();
+
+      setInterval("PollingUntreatedNumber()",nIntervalMinute);
+    });
+
+    //region 页面加载时，显示未处理工单的数量
+    function ControlUntreatedNumberIfr(){
+      nUntreatedNumber = parseInt($('#hf_untreated_order_number').val());
+
+      if(nUntreatedNumber > 0){
+        ShowUntreatedNumberIfr(nUntreatedNumber);
+      }else{
+        HideUntreatedNumberIfr();
+      }
+    }
+
+    function ShowUntreatedNumberIfr(num){
+      $('#menu_order_number_ifr').text(num).show();
+    }
+
+    function HideUntreatedNumberIfr(){
+      $('#menu_order_number_ifr').text('').hide();
+    }
+    //endregion 页面加载时，显示未处理工单的数量
+
+    //region 心跳查询未处理工单的数量
+    function PollingUntreatedNumber(){
+      $.ajax({
+        type: "POST",
+        url: "__URL__/AjaxPollingUntreatedNumber",
+        dataType:"json",
+        timeout: 3000,
+        beforeSend : function (XMLHttpRequest) {
+          XMLHttpRequest.setRequestHeader("request_type","ajax");
+        },
+        success: function(data){
+          PollingUntreatedNumberResponse(data);
+        },
+        error: function(request, status, error){
+          return false;
+        }
+      });
+    }
+
+    function PollingUntreatedNumberResponse(objJson){
+      if(objJson.error != 0){
+        return false;
+      }
+
+      if(IsN(objJson.data)){
+        HideUntreatedNumberIfr();
+        return false;
+      }
+
+      if(objJson.data <= 0){
+        HideUntreatedNumberIfr();
+        return false;
+      }
+
+      ShowUntreatedNumberIfr(objJson.data);
+    }
+    //endregion 心跳查询未处理工单的数量
+  </script>
 </body>
 
 </html>

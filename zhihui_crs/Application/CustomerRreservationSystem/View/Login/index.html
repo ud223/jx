@@ -57,7 +57,7 @@
   
         <div class="form-group text-left">
           <div class="tooltip-ifr">
-            <img id="verifyImg" src="{:U('CreateVerify')}" onclick="FleshVerify();" border="0" style="cursor:pointer;" />
+            <img id="verifyImg" src="__URL__/CreateVerify" onclick="FleshVerify();" border="0" style="cursor:pointer;" />
           </div>
         </div>
       
@@ -178,7 +178,7 @@
   
   function FleshVerify(){
     var src = $('#verifyImg').attr("src");
-    $('#verifyImg').attr("src", "__MODULE__/Login/CreateVerify/v/" + Math.random());
+    $('#verifyImg').attr("src", "__URL__/CreateVerify/v/" + Math.random());
     $('#login_code').val('');
   }
 </script>

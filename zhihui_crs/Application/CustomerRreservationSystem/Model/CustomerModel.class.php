@@ -237,24 +237,18 @@ class CustomerModel extends Model {
       $SaveBaseData["idcard_no"] = $_idcard_no;
     }
     //endregion 检查证件号
-    
-    //region 检查证件照
-    if(!IsArray($_file_idcard_img_a) && !IsNum($_idcard_img_a_id, false, false)){
-      return ReturnError(L("_CUSTOMER_IDCARD_FILE_NULL_"));
-    }else{
-      //region 保存证件照图片
-      if(IsArray($_file_idcard_img_a)){
-        $nImageId = $this->UploadCustomerIdCardImage($_file_idcard_img_a);
 
-        if($nImageId["error"] != 0){
-          return $nImageId;
-        }
+    //region 保存证件照图片
+    if(IsArray($_file_idcard_img_a)){
+      $nImageId = $this->UploadCustomerIdCardImage($_file_idcard_img_a);
 
-        $SaveBaseData["idcard_img_a"] = $nImageId["data"];
+      if($nImageId["error"] != 0){
+        return $nImageId;
       }
-      //endregion 保存证件照图片
+
+      $SaveBaseData["idcard_img_a"] = $nImageId["data"];
     }
-    //endregion 检查证件照
+    //endregion 保存证件照图片
 
     //检查出生日期
     if(!IsN($_birthday)){

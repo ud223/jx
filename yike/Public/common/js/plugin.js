@@ -49,10 +49,8 @@ var fit = {
 
         args['data'] = m_data;
 
-
         $.extend(args,{
             success:function(data){
-
                 switch (data.code){
                     case 302:
                         window.location.href = data.data;
@@ -65,7 +63,6 @@ var fit = {
                 }
 
                 //data.msg && $.toastMsg(data.msg);
-
                 opts.success(data);
             }
         });

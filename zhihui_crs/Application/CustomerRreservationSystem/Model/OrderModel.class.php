@@ -40,7 +40,7 @@ class OrderModel extends Model {
   public function OrderList($_rownum=20, $_param=array()){
     $sField = "order_sn";
     $sWhere = "1=1";
-    $sOrder = "id desc";
+    $sOrder = "review asc, id desc";
 
     if(!empty($_param)){
       if(IsN($_param["search_case"])){
@@ -229,6 +229,7 @@ class OrderModel extends Model {
   /**
    * todo: 添加工单
    *
+   * @param $_order_sn 工单编号
    * @param $_account_type 账号类型
    * @param $_broker_company_id 经纪公司ID
    * @param $_seller_manager_id 销售经理ID
@@ -242,12 +243,17 @@ class OrderModel extends Model {
    *
    * @return array
    */
-  public function OrderAdd($_account_type, $_broker_company_id, $_seller_manager_id, $_store_id, $_service_providers_id, $_customer_id, $_product_id, $_attachment, $_attachment_id, $_seller_manager_remarks){
+  public function OrderAdd($_order_sn, $_account_type, $_broker_company_id, $_seller_manager_id, $_store_id, $_service_providers_id, $_customer_id, $_product_id, $_attachment, $_attachment_id, $_seller_manager_remarks){
     //region 数据检查,并赋值保存的数据
     $clsLog = new \Org\ZhiHui\Login();
     
     if($_account_type !== $clsLog->GetLoginTypeAdmin() && $_account_type !== $clsLog->GetLoginTypeBrokerCompany() && $_account_type !== $clsLog->GetLoginTypeSellerManager()){
       return ReturnError(L("_LOGIN_TYPE_ERROR_"));
+    }
+
+    $OrderInfo = array();
+    if(!IsN($_order_sn)){
+      $OrderInfo = $this->clsOrder->GetOrderDetails($_order_sn);
     }
 
     //region 检查经纪公司
@@ -333,40 +339,41 @@ class OrderModel extends Model {
       $AddData["product_id"] = $_product_id;
     }
     //endregion 检查产品
-    
-    //region 检查附件
-    if(!IsArray($_attachment) && !IsNum($_attachment_id, false, false)){
-      return ReturnError(L("_ORDER_ATTACHMENT_NULL_"));
-    }else{
-      //region 保存证件照图片
-      if(IsArray($_attachment)){
-        $FileInfo = $this->UploadAttachment($_attachment);
 
-        if($FileInfo["error"] != 0){
-          return $FileInfo;
-        }
-
-        $AddData["attachment"] = $FileInfo["data"];
+    //region 保存证件照图片
+    if(IsArray($_attachment)){
+      //$FileInfo = $this->UploadAttachment($_attachment);
+      $FileInfo = $this->UploadAttachmentImage($_attachment);
+      if($FileInfo["error"] != 0){
+        return $FileInfo;
       }
-      //endregion 保存证件照图片
+
+      $AddData["attachment"] = $FileInfo["data"];
     }
-    //endregion 检查附件
+    //endregion 保存证件照图片
     
     //endregion 数据检查,并赋值保存的数据
 
     //region 添加基本数据
-    $sOrderSn = $this->clsOrder->CreateOrderSn();
-    $AddData["order_sn"] = $sOrderSn;
     $AddData["seller_manager_remarks"] = $_seller_manager_remarks;
     $AddData["broker_company_remarks"] = "";
-    $AddData["signed_time"] = time();
-    $AddData["reservation_time"] = 0;
-    $AddData["pay_time"] = 0;
-    $AddData["visit_time"] = 0;
-    $AddData["review"] = 0;
-    $AddData["status"] = 0;
-    
-    $AddResult = $this->modOrder->add($AddData);
+
+    if(IsArray($OrderInfo)){
+      $AddData["id"] = $OrderInfo["id"];
+      $AddData["review"] = 0;
+      $AddResult = $this->modOrder->save($AddData);
+    }else{
+      $sOrderSn = $this->clsOrder->CreateOrderSn();
+      $AddData["order_sn"] = $sOrderSn;
+      $AddData["signed_time"] = time();
+      $AddData["reservation_time"] = 0;
+      $AddData["pay_time"] = 0;
+      $AddData["visit_time"] = 0;
+      $AddData["review"] = 0;
+      $AddData["status"] = 0;
+
+      $AddResult = $this->modOrder->add($AddData);
+    }
 
     if($AddResult === false){
       return ReturnError(L("_SAVE_DATA_FAILURE_"));
@@ -709,6 +716,53 @@ class OrderModel extends Model {
     $SaveFileData["type"] = $UploadImageInfo["type"];
 
     $SaveResult = $clsUploadFile->SaveFileInfoToDb($SaveFileData);
+
+    if($SaveResult["error"] == 1){
+      return ReturnError(L("_UPLOAD_FAILURE_"));
+    }else{
+      if(!IsNum($SaveResult["data"], false)){
+        return ReturnError(L("_UPLOAD_FAILURE_"));
+      }
+    }
+
+    return $SaveResult;
+  }
+
+  /**
+   * todo: 上传图片
+   */
+  private function UploadAttachmentImage($_file){
+    if(!IsArray($_file)){
+      return ReturnError(L("_UPLOAD_FILE_NOT_EXIST_"));
+    }
+
+    $clsUploadFile = new \Org\ZhiHui\UploadFile();
+    $clsUploadFile->FilePathType = "order_attachment";
+    $clsUploadFile->FileNameType = "time";
+
+    $UploadResult = $clsUploadFile->UploadImage($_file);
+
+    if($UploadResult["error"] !=0){
+      return $UploadResult;
+    }
+
+    $UploadImageInfo = $UploadResult["data"]["attachment"];
+    $nTime = time();
+
+    $SaveImageData["original_name"] = $UploadImageInfo["name"];
+    $SaveImageData["name"] = $UploadImageInfo["savename"];
+    $SaveImageData["path"] = $UploadImageInfo["savepath"];
+    $SaveImageData["file"] = $UploadImageInfo["file"];
+    $SaveImageData["ext"] = $UploadImageInfo["ext"];
+    $SaveImageData["size"] = $UploadImageInfo["size"];
+    $SaveImageData["width"] = $UploadImageInfo["width"];
+    $SaveImageData["height"] = $UploadImageInfo["height"];
+    $SaveImageData["mime"] = $UploadImageInfo["mime"];
+    $SaveImageData["type"] = $UploadImageInfo["type"];
+    $SaveImageData["add_time"] = $nTime;
+    $SaveImageData["update_time"] = $nTime;
+
+    $SaveResult = $clsUploadFile->SaveImgInfoToDb($SaveImageData);
 
     if($SaveResult["error"] == 1){
       return ReturnError(L("_UPLOAD_FAILURE_"));

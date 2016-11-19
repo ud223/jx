@@ -34,8 +34,10 @@ return array(
   'UPLOAD_ORDER_ATTACHMENT_CONFIG' => array(
     'size' => 5242880,//文件大小，单位：字节
     'size_desc' => '5M',
-    'type' => 'application/zip,application/x-rar,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/octet-stream,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document', //允许上传的mini type
-    'desc' => 'zip,rar,doc,docx,xlsx,xls', //运行上传的mini描述
+    //'type' => 'application/zip,application/x-rar,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/octet-stream,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document', //允许上传的mini type
+    //'desc' => 'zip,rar,doc,docx,xlsx,xls', //运行上传的mini描述
+    'type' => 'image/jpeg,image/png', //允许上传的mini type
+    'desc' => 'jpg,png', //运行上传的mini描述
   ),
   //endregion 图片上传配置
 );

@@ -1,0 +1,95 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">用户明细</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">名字</span>
+                        <input type="text" class="form-control" readonly="readonly" name="name_field" id="name_field" value="{$data.user.Name}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">昵称</span>
+                        <input type="text" class="form-control" readonly="readonly" name="nick_name_field" id="nick_name_field" value="{$data.user.NickName}" maxlength="50">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">vip等级</span>
+                        <input type="text" class="form-control" readonly="readonly" name="vip_field" id="vip_field" value="{$data.user.vip}" maxlength="50">
+                        <!--<select>-->
+                            <!--<option value="0">普通用户</option>-->
+                            <!--<volist name="data.vip" id="itm">-->
+                                <!--<option value="{$itm.id}">{$itm.name}</option>-->
+                            <!--</volist>-->
+                        <!--</select>-->
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">账户余额</span>
+                        <input type="text" class="form-control" readonly="readonly" name="amount_field" id="amount_field" value="{$data.user.amount}" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="vip_type_id" value="{$data.user.id}">
+                <!--<span id="btn_save" class="am-modal-btn">提交</span>-->
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        var tmp_pic = null;
+
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/admin/manage/vip_type_list';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#vip_type_id').val();
+
+            var name = $('#name_field').val();
+
+            var data = { 'id':id, 'name':name };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存该vip类型?')) {
+                fit.ajax({
+                    url:'/admin/manage/save_vip_type',
+                    data:data,
+                    success:function(result){
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/admin/manage/vip_type_edit?id=' + result.data;
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+</block>

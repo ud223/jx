@@ -198,6 +198,29 @@ class Commission {
 
     return $CommissionList;
   }
+
+  /**
+   * todo: 获取最后一条佣金信息
+   * @param $_broker_company_id 经纪公司ID
+   */
+  public function LastCommissionInfo($_broker_company_id){
+    $sField = "id";
+    $sWhere = "1=1";
+    $sOrder = "add_time desc";
+    
+    if(IsNum($_broker_company_id, false, false)){
+      $sWhere .= " and broker_company_id={$_broker_company_id}";
+    }
+
+    $CommissionID = $this->modCommission->where($sWhere)->order($sOrder)->getField($sField);
+    $CommissionInfo = array();
+
+    if(IsNum($CommissionID, false, false)){
+      $CommissionInfo = $this->GetCommissionDetails($CommissionID);
+    }
+
+    return $CommissionInfo;
+  }
   //endregion 佣金
 
   //region 提成标准

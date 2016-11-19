@@ -1,0 +1,81 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">充值历史</h3>
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 100px">姓名</th>
+                        <th style="width: 200px">昵称</th>
+                        <th style="width: 250px">时间</th>
+                        <th style="width: 100px">充值金额</th>
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.name}</td>
+                            <td>{$itm.nickname}</td>
+                            <td>{$itm.create_at}</td>
+                            <td>{$itm.amount}</td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-del').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('是否删除该配置?')) {
+                    fit.ajax({
+                        url:'/admin/manage/del_lesson_config',
+                        data:{
+                            'id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+
+            //编辑课程
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/admin/manage/lesson_config_edit?id='+ id;
+            });
+
+            $('.add_lesson_config_btn').click(function(){
+                location.href = '/admin/manage/lesson_config_edit?id=0';
+            });
+        });
+    </script>
+</block>

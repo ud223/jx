@@ -2,7 +2,7 @@
 return array(
   'DEFAULT_MODULE' => 'CustomerRreservationSystem',    //默认模块
   'URL_CASE_INSENSITIVE' => false,
-  'URL_MODEL' => '1', //URL模式：普通模式 0；PATHINFO模式 1；REWRITE模式 2；兼容模式 3
+  'URL_MODEL' => '2', //URL模式：普通模式 0；PATHINFO模式 1；REWRITE模式 2；兼容模式 3
   'APP_DEBUG' => true,
   'DEFAULT_CHARSET' => 'utf-8',
 

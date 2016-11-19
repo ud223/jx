@@ -280,7 +280,7 @@ class UploadFile {
         $sSavePath = "Public/images/customer/idcard";
         break;
       case "order_attachment" :
-        $sSavePath = "Public/upload/file/order/attachment";
+        $sSavePath = "Public/images/order/attachment";
         break;
     }
 

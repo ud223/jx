@@ -87,3 +87,41 @@ function fit_api($result,$code,$msg,$data){
     return $str;
 }
 
+function Rad($d)  {
+    return $d * 3.1415926535898 / 180.0;
+}
+
+function GetDistance($lat1, $lng1, $lat2, $lng2) {
+    $EARTH_RADIUS = 6378.137;
+    $radLat1 = Rad($lat1);
+    //echo $radLat1;
+    $radLat2 = Rad($lat2);
+    $a = $radLat1 - $radLat2;
+    $b = Rad($lng1) - Rad($lng2);
+    $s = 2 * asin(sqrt(pow(sin($a/2),2) +
+            cos($radLat1)*cos($radLat2)*pow(sin($b/2),2)));
+    $s = $s *$EARTH_RADIUS;
+    $s = round($s * 10000) / 10000;
+    return $s;
+}
+
+//检查短信码
+function CheckCode($phone_number, $checkcode, $msg_type)
+{
+    //检查短信验证码
+    $sms = M('Sms');
+
+    $condition = array(
+        "phone_number" => $phone_number,
+        "msg_type" => $msg_type,
+        "code" => $checkcode
+    );
+
+    $smsCode = $sms->where($condition)->order('create_at desc')->limit(1)->select();
+
+    if ($smsCode && $checkcode == $smsCode[0]["code"]) {
+        return 1;
+    } else {
+        return 2;
+    }
+}

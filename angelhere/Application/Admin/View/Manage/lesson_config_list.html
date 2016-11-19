@@ -1,0 +1,100 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">课程管理</h3>
+            </div>
+
+            <div class="col-md-2" style="padding: 20px;">
+                <a class="btn btn-block btn-primary add_lesson_config_btn" href="javascript:void(0)">添加课程配置</a>
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 100px">星期</th>
+                        <th style="width: 200px">课程名称</th>
+                        <th style="width: 250px">开始时间</th>
+                        <th style="width: 100px">结束时间</th>
+                        <th style="width: 100px">试练价格</th>
+                        <th style="width: 100px">金卡价格</th>
+                        <th style="width: 100px">白金卡价格</th>
+                        <th style="width: 100px">黑卡价格</th>
+                        <th style="width: 100px">最大人数</th>
+                        <th style="width: 100px">操作</th>
+                        <th>删除</th>
+                    </tr>
+
+                    <volist name="data.lesson_config" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.week_num}</td>
+                            <td>{$itm.name}</td>
+                            <td>{$itm.start_time}</td>
+                            <td>{$itm.end_time}</td>
+                            <td>{$itm.price}</td>
+                            <td>{$itm.vip_price_1}</td>
+                            <td>{$itm.vip_price_2}</td>
+                            <td>{$itm.vip_price_3}</td>
+                            <td>{$itm.max_count}</td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">编辑</a></td>
+                            <td><a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-del').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('是否删除该配置?')) {
+                    fit.ajax({
+                        url:'/admin/manage/del_lesson_config',
+                        data:{
+                            'id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+
+            //编辑课程
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/admin/manage/lesson_config_edit?id='+ id;
+            });
+
+            $('.add_lesson_config_btn').click(function(){
+                location.href = '/admin/manage/lesson_config_edit?id=0';
+            });
+        });
+    </script>
+</block>

@@ -147,12 +147,11 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 工单附件
+                工单附件
               </label>
               <div class="col-sm-7">
                 <input type="file" name="attachment" id="attachment" class="form-control">
-                
-                <span class="help-block m-b-none">只能上传zip、rar、word、excel类型的文件</span>
+                <span class="help-block m-b-none">只能上传jpg、png格式的图片</span>
               </div>
             </div>
 
@@ -243,9 +242,6 @@
           required : true,
           min:1,
           number:true
-        },
-        attachment : {
-          required : true
         }
       },
       messages: {
@@ -278,9 +274,6 @@
           required : "请选择客户",
           min : "客户不存在",
           number : "客户不存在",
-        },
-        attachment: {
-          required : "请选择选择需要上传的工单附件"
         }
       },
       focusInvalid: true,
@@ -322,7 +315,11 @@
         confirmButtonText: "确定",
         closeOnConfirm: true
       },
-      function(isConfirm) {
+      function(isConfirm){
+        <if condition="($AccountType neq $SellerManagerAccount)">
+          window.parent.PollingUntreatedNumber();
+        </if>
+
         BackIndexPage();
       }
     );

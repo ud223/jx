@@ -14,8 +14,7 @@ class IndexController extends CommonController {
     $clsSystemCategory = new \Org\ZhiHui\SystemCategory();
     $SystemCategoryList = $clsSystemCategory->GetSystemCategoryTree();
     //endregion 系统栏目菜单
-//p($this->_AccountInfo);
-    
+
     $clsLogin = new \Org\ZhiHui\Login();
     $sAccountType = GetLoginAccountTypeCookeis();
     $sGroupName = "";
@@ -33,12 +32,25 @@ class IndexController extends CommonController {
         $sGroupName = "销售经理";
         break;
     }
-    
+
+    //region 获取未处理工单数量
+    $clsOrder = new \Org\ZhiHui\Order();
+    $UntreatedOrderNumber = $clsOrder->GetUntreatedOrderNumber($this->_AccountInfo, $this->_AccountType);
+    $this->assign("UntreatedOrderNumber", $UntreatedOrderNumber);
+    //endregion 获取未处理工单数量
+
     $this->assign("GroupName", $sGroupName);
     $this->assign("AccountInfo", $this->_AccountInfo);
     $this->assign("SystemCategoryList", $SystemCategoryList);
     
     $this->CustomDisplay();
+  }
+
+  public function AjaxPollingUntreatedNumber(){
+    $clsOrder = new \Org\ZhiHui\Order();
+    $UntreatedOrderNumber = $clsOrder->GetUntreatedOrderNumber($this->_AccountInfo, $this->_AccountType);
+
+    AjaxReturnCorrect("", $UntreatedOrderNumber);
   }
 
   /**

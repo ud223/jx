@@ -368,21 +368,21 @@ $.extend({
             .css('text-align', $popupsettings.textAlign);
 
         popupFrame.show();
-        var clsbtn = $('<span>').addClass('P_closebtn').html("<i class='iconfont icon-iconfontclose'></i>");
+        var clsbtn = $('<span>').addClass('P_closebtn').html("<i class=''>&times;</i>");
         $($popupsettings.containerBoxSelector).append(popupFrame.append($(content).append(clsbtn)));
         var mt = "-" + $(content).outerHeight() / 2 + "px";
         $(content).css('margin-top', mt);
 
         if (!$popupsettings.modal) {
-            popupFrame.children().tap(function(e) {
+            popupFrame.children().tapQuick(function(e) {
                 e.stopPropagation();
             });
-            popupFrame.tap(function(e) {
+            popupFrame.tapQuick(function(e) {
                 $.popupclose();
             });
         }
 
-        clsbtn.tap(function() {
+        clsbtn.tapQuick(function() {
             $.popupclose();
         });
 
@@ -412,7 +412,7 @@ $.extend({
             wp = $('<div>').addClass('P_wp').html(msg);
         if ($popupsettings.exitbtn) {
             var okdesubtn = $('<button>').addClass('P_okbtn').html($popupsettings.exitText);
-            okdesubtn.tap(function() {
+            okdesubtn.tapQuick(function() {
                 $.popupclose();
                 if (typeof($popupsettings.exitCallback) === 'function') {
                     $popupsettings.exitCallback();
@@ -464,14 +464,14 @@ $.extend({
             wp = $('<div>').addClass('P_wp_msg').css('padding', 15).html(msg);
 
         var cancel = $('<button>').attr('class', 'P_confirm_btn').attr('action', 'cancel').attr('type', 'button').html($popupsettings.cancelText);
-        cancel.tap(function() {
+        cancel.tapQuick(function() {
             $.popupclose();
             if ($popupsettings.cancelCallback) {
                 $popupsettings.cancelCallback();
             }
         });
         var confirm = $('<button>').attr('class', 'P_confirm_btn').attr('action', 'confirm').attr('type', 'button').html($popupsettings.confirmText);
-        confirm.tap(function() {
+        confirm.tapQuick(function() {
             $.popupclose();
             if ($popupsettings.confirmCallback) {
                 $popupsettings.confirmCallback();
@@ -495,80 +495,6 @@ $.extend({
 
 /* POPUP (END) */
 
-/* POPSELFRM (START) */
-$.extend({
-    POPSELEFRM_SETTINGSTMP: {
-        id: "popselefrm",
-        title: "请选择分类",
-        datatag: 'item_id',
-        selectedtag: false,
-        item_height: '50',
-        containerBoxSelector: 'body',
-        selectCallback: false,
-        items: {
-            'id001': 'id1 option',
-            'id002': 'id2 option'
-        }
-
-    },
-    popselend: function() {
-        var id = $.POPSELEFRM_SETTINGSTMP.id;
-        var pop = $('#' + id);
-        pop.fadeOut(200, function() {
-            pop.remove();
-        })
-    },
-    popselfrm: function(options) {
-        var $popupsettings = $.extend({}, $.POPSELEFRM_SETTINGSTMP, options);
-        var id = $popupsettings.id;
-        var popselefrm = $('#' + id);
-        if (!popselefrm.length) {
-            $('body').append($('<div id="popselefrm"><div class="inner"><div class="tt"></div><div class="itms"></div></div></div>'));
-            popselefrm = $('#' + id);
-        }
-        popselefrm.click(function() {
-            $.popselend();
-        });
-        var itms = popselefrm.find('.itms');
-        itms.empty();
-        popselefrm.find('.tt').text($popupsettings.title);
-        $.each($popupsettings.items, function(i, j) {
-            var itm = $('<div>').addClass('itm');
-            itm.text(j);
-            itm.attr($popupsettings.datatag, i);
-            itm.append($('<span>').addClass('ico'));
-            if ($popupsettings.selectedtag && $popupsettings.selectedtag === i) {
-                itm.addClass('selected');
-            }
-
-            itm.click(function() {
-                var datatag = $(this).attr($popupsettings.datatag);
-                var param = {};
-                param.datatag = datatag;
-
-                $(this).siblings('.itm').removeClass('selected');
-                $(this).addClass('selected');
-
-                if ($popupsettings.selectCallback) {
-                    var selectedObj = {
-                        'datatag': i,
-                        'text': j
-                    }
-                    $popupsettings.selectCallback(selectedObj)
-                }
-            });
-
-            itms.append(itm);
-        });
-        popselefrm.find('.inner').append(itms);
-        popselefrm.show();
-
-        //		var w = $(window);
-
-    }
-});
-
-/* POPSELFRM (END) */
 
 /* LOADING (END) */
 $.toastMsg = function(msg, duration, direction) {

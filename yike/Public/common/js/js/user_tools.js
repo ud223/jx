@@ -17,7 +17,6 @@ var User = {
     },
 
     validateInfo: function(order_id) {
-        //alert(JSON.stringify(User.data));
         //如果电话为空 请初始化用户信息
         if (!User.data.Tel || User.data.Tel == 'null') {
             User.toInit(order_id);
@@ -48,7 +47,6 @@ var User = {
     },
 
     getData: function(id) {
-        //alert(id);
         var data = { 'id': id };
 
         fit.ajax({

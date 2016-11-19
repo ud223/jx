@@ -17,13 +17,12 @@ Order = {
     create : function(type, amount, pay_amount) {
         var user_id = localStorage.getItem('user_id');
         var lesson_id = $('#lesson_id').val();
-        var run_date = $('#date').attr('val');
 
         if (!lesson_id) {
             lesson_id = 0;
         }
 
-        var data = { 'user_id': user_id, 'lesson_id': lesson_id, 'run_date': run_date, 'amount': amount, 'pay_amount': pay_amount, 'type': type };
+        var data = { 'user_id': user_id, 'lesson_id': lesson_id, 'run_date': Order.date, 'amount': amount, 'pay_amount': pay_amount, 'type': type };
         //alert(JSON.stringify(data)); return;
         fit.ajax({
             url:'/api/createOrder',
@@ -88,7 +87,7 @@ Order = {
 
     setAmount : function(order_id, amount, vip_amount) {
         var data = { 'order_id': order_id, 'amount': amount, 'vip_amount': vip_amount };
-        //alert(JSON.stringify(data)); return;
+        //alert(JSON.stringify(data));
         fit.ajax({
             url:'/api/updatePayAmount',
             data:data,
@@ -115,6 +114,7 @@ Order = {
     },
 
     toPay : function(order_id) {
+        localStorage.setItem('is_back', 0);
         var url =  '/show/order_pay?id='+ order_id;
 
         if (order_id == '10000') {

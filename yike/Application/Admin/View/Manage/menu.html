@@ -7,13 +7,13 @@
                 <h3 class="box-title">菜单管理</h3>
             </div>
 
-            <div class="col-md-2" style="padding: 20px;">
-                <a class="btn btn-block btn-primary add_menu_btn" href="/product/manage">添加菜单</a>
-            </div>
-
+            <!--           <div style="padding:20px 20px 10px 20px;"></div>-->
 
             <!-- /.box-header -->
             <div class="box-body">
+                <div class="col-md-2" style="padding: 20px;">
+                    <a class="btn add_menu_btn btn-primary" href="/manage/menu_edit?id=0">添加菜单</a>
+                </div>
                 <table class="table table-bordered">
                     <tr>
                         <th style="width: 10px">id</th>
@@ -47,7 +47,7 @@
         </div><!-- /.box -->
     </div>
 
-    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+    <div class="am-modal am-modal-prompt" style="position:fixed" tabindex="-1" id="my-prompt">
         <div class="am-modal-dialog">
             <div class="am-modal-hd">添加菜单</div>
             <div class="am-modal-bd">
@@ -126,110 +126,113 @@
         //保存菜单
         $('.itm-edit').click(function() {
             var id = $(this).attr('val');
-            //初始化编辑面板
-            clearModal();
 
-            //获取当前行的菜单信息
-            var tr = $(this).closest('tr');
-
-            var name = tr.find('.menu-name').html();
-            var url = tr.find('.menu-url').html();
-            var pid = tr.find('.menu-pid').html();
-            var sort = tr.find('.menu-sort').html();
-            var enable = tr.find('.menu-enable').html();
-
-            //获取行的值赋值到编辑面板
-            $('#name_field').val(name);
-            $('#url_field').val(url);
-            $('#pid_field').val(pid);
-            $('#sort_field').val(sort);
-
-            if (enable == 0) {
-                $('input:radio[name="enable_field"][value="1"]').prop('checked', false);
-                $('input:radio[name="enable_field"][value="0"]').prop('checked', true);
-            }
-
-            $('#my-prompt').modal({
-                relatedTarget: this,
-                onConfirm: function(e) {
-                    //alert('你输入的是：' + e.data || '');
-                    var name = $('#name_field').val();
-                    var url = $('#url_field').val();
-                    var pid = $('#pid_field').val();
-                    var sort = $('#sort_field').val();
-                    var enable = $('input:radio[name="enable_field"]:checked').val();
-
-                    var data = {
-                        'id': id,
-                        'name': name,
-                        'url': url,
-                        'pid': pid,
-                        'sort': sort,
-                        'enable': enable
-                    };
-
-                    fit.ajax({
-                        url:'/manage/save_menu',
-                        data: data,
-                        success:function(result){
-                            alert(result.msg);
-
-                            window.location.reload();
-                        }
-                    });
-
-                },
-                onCancel: function(e) {
-
-                }
-            });
-
-            return false;
+            location.href = '/manage/menu_edit?id='+ id;
+//            //初始化编辑面板
+//            clearModal();
+//
+//            //获取当前行的菜单信息
+//            var tr = $(this).closest('tr');
+//
+//            var name = tr.find('.menu-name').html();
+//            var url = tr.find('.menu-url').html();
+//            var pid = tr.find('.menu-pid').html();
+//            var sort = tr.find('.menu-sort').html();
+//            var enable = tr.find('.menu-enable').html();
+//
+//            //获取行的值赋值到编辑面板
+//            $('#name_field').val(name);
+//            $('#url_field').val(url);
+//            $('#pid_field').val(pid);
+//            $('#sort_field').val(sort);
+//
+//            if (enable == 0) {
+//                $('input:radio[name="enable_field"][value="1"]').prop('checked', false);
+//                $('input:radio[name="enable_field"][value="0"]').prop('checked', true);
+//            }
+//
+//            $('#my-prompt').modal({
+//                relatedTarget: this,
+//                onConfirm: function(e) {
+//                    //alert('你输入的是：' + e.data || '');
+//                    var name = $('#name_field').val();
+//                    var url = $('#url_field').val();
+//                    var pid = $('#pid_field').val();
+//                    var sort = $('#sort_field').val();
+//                    var enable = $('input:radio[name="enable_field"]:checked').val();
+//
+//                    var data = {
+//                        'id': id,
+//                        'name': name,
+//                        'url': url,
+//                        'pid': pid,
+//                        'sort': sort,
+//                        'enable': enable
+//                    };
+//
+//                    fit.ajax({
+//                        url:'/manage/save_menu',
+//                        data: data,
+//                        success:function(result){
+//                            alert(result.msg);
+//
+//                            window.location.reload();
+//                        }
+//                    });
+//
+//                },
+//                onCancel: function(e) {
+//
+//                }
+//            });
+//
+//            return false;
         })
 
         $('.add_menu_btn').click(function(){
+            location.href = '/manage/menu_edit?id=0';
 //            var id = $(this).closest('tr').data('id');
 //            var level = $(this).closest('tr').data('level');
 //
 //            $('#my-prompt').data('id',id);
 //            $('#my-prompt').data('level',level);
-            clearModal();
-
-            $('#my-prompt').modal({
-                relatedTarget: this,
-                onConfirm: function(e) {
-                    //alert('你输入的是：' + e.data || '');
-                    var name = $('#name_field').val();
-                    var url = $('#url_field').val();
-                    var pid = $('#pid_field').val();
-                    var sort = $('#sort_field').val();
-                    var enable = $('input:radio[name="enable_field"]:checked').val();
-
-                    var data = {
-                        'name': name,
-                        'url': url,
-                        'pid': pid,
-                        'sort': sort,
-                        'enable': enable
-                    };
-
-                    fit.ajax({
-                        url:'/manage/add_menu',
-                        data: data,
-                        success:function(result){
-                            alert(result.msg);
-
-                            window.location.reload();
-                        }
-                    });
-
-                },
-                onCancel: function(e) {
-                    //alert('不想说!');
-                }
-            });
-
-            return false;
+//            clearModal();
+//
+//            $('#my-prompt').modal({
+//                relatedTarget: this,
+//                onConfirm: function(e) {
+//                    //alert('你输入的是：' + e.data || '');
+//                    var name = $('#name_field').val();
+//                    var url = $('#url_field').val();
+//                    var pid = $('#pid_field').val();
+//                    var sort = $('#sort_field').val();
+//                    var enable = $('input:radio[name="enable_field"]:checked').val();
+//
+//                    var data = {
+//                        'name': name,
+//                        'url': url,
+//                        'pid': pid,
+//                        'sort': sort,
+//                        'enable': enable
+//                    };
+//
+//                    fit.ajax({
+//                        url:'/manage/add_menu',
+//                        data: data,
+//                        success:function(result){
+//                            alert(result.msg);
+//
+//                            window.location.reload();
+//                        }
+//                    });
+//
+//                },
+//                onCancel: function(e) {
+//                    //alert('不想说!');
+//                }
+//            });
+//
+//            return false;
         });
     });
 
