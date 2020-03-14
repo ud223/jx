@@ -1,0 +1,142 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="page-container">
+        <div class="container" style="margin-top:50px;margin-bottom:50px;">
+            <div class="row">
+                <div class="span8 page-content">
+                    <div class="row separator">
+                        <section class="span8 articles-list">
+                    <div class="box-body">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="am-modal-bd">
+                            <div>
+                                <div class="line">
+                                    <p><span>帖子列表</span><span> &gt; </span><span>发新贴</span>
+                                        <a id="my_post"
+                                           style="cursor:pointer;float:right;margin-right:0px;margin-bottom: 10px">我的贴子</a>
+                                    </p>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">版块：</span>
+                                    <select id="sel_section" name="sel_section" required="required">
+                                        <option value="">请选择主题分类</option>
+                                        <volist name="data" id="itm">
+                                            <option value="{$itm.Id}">{$itm.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">标题：</span>
+                                    <input type="text" class="form-control" placeholder="50字以内..." name="title"
+                                           id="title"
+                                           required="required" maxlength="50">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">正文：</span>
+                                    <input type="hidden" id="content" name="content">
+                                    <script type="text/plain" id="editor_content" name="editor_content"
+                                            style="width:100%;height:240px;"></script>
+                                </div>
+                                <span id="btn_cancle" class="btn btn-primary add_item_btn"
+                                      style="float:right;margin-top: 25px;margin-right: 80px"
+                                      onclick="history.go(-1);">取消</span>
+                                <input type="submit" id="submit" class="btn btn-primary add_item_btn"
+                                       style="float:right;margin-top: 25px;margin-right: 40px;" value="提交"/>
+                            </div>
+                        </div>
+                    </div><!-- /.box -->
+                        </section>
+                    </div>
+                </div>
+
+                <!-- start of sidebar -->
+                <aside class="span4 page-sidebar">
+
+                    <section class="widget">
+                        <div class="support-widget">
+                            <h3 class="title">Support</h3>
+                            <p class="intro">Need more support? If you did not found an answer, contact us for further help.</p>
+                        </div>
+                    </section>
+
+                    <include file="Base/section"/>
+                </aside>
+                <!-- end of sidebar -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</block>
+
+<block name="style">
+    <link href="__PUBLIC__/common/js/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+    <script src="__PUBLIC__/common/js/umeditor/umeditor.config.js"></script>
+    <script src="__PUBLIC__/common/js/umeditor/umeditor.min.js"></script>
+    <script src="__PUBLIC__/common/js/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <style>
+        .input-group {
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+            var user_id = localStorage.getItem('user_id');
+
+            if (!user_id) {
+                location.href = 'http://mall.ecomoter.com/index/login';
+                return;
+            }
+
+            $('.search-area-wrapper').hide();
+            //实例化编辑器
+            var um = UM.getEditor('editor_content');
+
+            $('#my_post').click(function () {
+                location.href = '/index/my_post.html?access=' + localStorage.user_id;
+            });
+
+            $('.sindex').click(function () {
+                if (localStorage.user_id == undefined) {
+                    location.href = 'http://mall.ecomoter.com/index/login';
+                }
+                location.href = '/index/sindex?id='+$(this).attr("val") +'&access=' + localStorage.user_id;
+            });
+
+            $('#form1').on('submit', function (ev) {
+                ev.preventDefault();
+                saveItem();
+            });
+        });
+
+        function saveItem() {
+            var html_description = UM.getEditor('editor_content').getContent()
+            var content = html_description;
+
+            if (content == '') {
+                alert('请输入内容');
+                return;
+            }
+            var data = {
+                'content': content,
+                'title': $('#title').val(),
+                'section': $('#sel_section').val(),
+                'access': localStorage.user_id
+            };
+
+            fit.ajax({
+                url: '/index/post_save',
+                data: data,
+                success: function (result) {
+                    alert(result.msg);
+                    if (result.code == 200) {
+                        location.href = 'http://bbs.ecomoter.com';
+                    }
+                }
+            });
+        }
+    </script>
+</block>

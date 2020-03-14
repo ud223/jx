@@ -1,0 +1,92 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">车辆列表</h3>
+            </div>
+
+            <div class="col-md-2" style="padding: 20px;z-index: 100">
+                <a class="btn btn-block btn-primary add_btn" href="javascript:void(0)">添加车辆</a>
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 120px">SN码</th>
+                        <th style="width: 120px">车型</th>
+                        <th style="width: 150px">车架号</th>
+                        <th style="width: 200px">电机号</th>
+                        <th style="width: 100px">操作</th>
+                        <th>记录</th>
+                        <!--<th>删除</th>-- style="width: 100px">-->
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.car_sn}</td>
+                            <td>{$itm.class_name}</td>
+                            <td>{$itm.car_frame_no}</td>
+                            <td>{$itm.car_engine_no}</td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">编辑</a></td>
+                            <td><a href="/manage/lose_log?id={$itm.id}">失窃记录</a> | <a href="/manage/repair_log?id={$itm.id}">修理记录</a></td>
+                            <!--<td><a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>-->
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-del').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('是否删除该车辆?')) {
+                    fit.ajax({
+                        url:'/manage/cart_del',
+                        data:{
+                            'id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            location.href = '/manage/cart_edit?id='+ result.data;
+                        }
+                    });
+                }
+            })
+
+            //编辑颜色
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/manage/cart_edit?id='+ id;
+            });
+
+            $('.add_btn').click(function(){
+                location.href = '/manage/cart_add';
+            });
+        });
+    </script>
+</block>

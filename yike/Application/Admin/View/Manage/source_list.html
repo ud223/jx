@@ -1,0 +1,87 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">素材管理</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-md-2" style="padding: 20px;">
+                    <a class="btn btn-block btn-primary add_btn" href="javascript:void(0)">添加素材</a>
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 200px">素材名称</th>
+                        <th style="width: 200px">素材类型</th>
+                        <th style="width: 100px">顺序</th>
+                        <th style="width: 400px">描述</th>
+                        <th style="width: 100px">操作</th>
+                        <th>删除</th>
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.text}</td>
+                            <td>{$itm.source_class_text}</td>
+                            <td>{$itm.sort}</td>
+                            <td>{$itm.description}</td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">编辑</a></td>
+                            <td><a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-del').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('是否删除该素材?')) {
+                    fit.ajax({
+                        url:'/manage/source_del',
+                        data:{
+                            'id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+
+            //编辑素材
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/manage/source_edit?id='+ id;
+            });
+
+            $('.add_btn').click(function(){
+                location.href = '/manage/source_edit?id=0';
+            });
+        });
+    </script>
+</block>

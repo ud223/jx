@@ -1,0 +1,74 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div class="shicbtbar">
+        <div class="col-xs-10 itme rt">
+            <?php $index = 0;?>
+            <?php foreach ($data['list'] as $itm) :?>
+                <?php if ($itm['text']) :?>
+                    <?php if ($index == 0) :?>
+                        <a href="#photo_<?php echo $itm['id'] ?>" class="model hitim selected" val="<?php echo $itm['text'] ?>"><?php echo $itm['text'] ?></a>
+                    <?php else :?>
+                        <a href="#photo_<?php echo $itm['id'] ?>" class="model hitim" val="<?php echo $itm['text'] ?>"><?php echo $itm['text'] ?></a>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php $index++;?>
+            <?php endforeach; ?>
+        </div>
+        <!--<a href="#" class="hitim">工艺</a>-->
+        <!--<a href="#" class="hitim">设计</a>-->
+        <!--<a href="#" class="hitim">电力</a>-->
+        <!--<a href="#" class="hitim">电力系统</a>-->
+        <!--<a href="#" class="hitim">灯光系统</a>-->
+        <!--<a href="#" class="hitim">参数</a>-->
+        <!--<a href="#" class="hitim">说明书</a>-->
+    </div>
+
+    <div class="shicbtbarcover"></div>
+    <div class="shicbtbartrigger">
+        <div class="wp">
+            <span class="ticg"><?php echo $data['list'][0]['text'] ?></span><span class="iconfont icon-gengduo"></span>
+        </div>
+    </div>
+
+    <?php foreach ($data['list'] as $itm) :?>
+        <div><img id="photo_<?php echo $itm['id']?>" class="lazy" src="<?php echo $itm['url']?>" width="100%" /></div>
+    <?php endforeach; ?>
+
+
+    <!--<div>-->
+        <!--<img class="lazy" src="http://m.niucache.com/static/m/widget/product_detail/n1s/images/1_03_9909596.jpg" width="100%" />-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<img class="lazy" data-original="http://m.niucache.com/static/m/widget/product_detail/n1s/images/1_04_49e41b5.jpg" width="100%" />-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<img class="lazy" data-original="http://m.niucache.com/static/m/widget/product_detail/n1s/images/1_05_10ef522.jpg" width="100%" />-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<img class="lazy" data-original="http://m.niucache.com/static/m/widget/product_detail/n1s/images/1_06_86adff2.jpg" width="100%" />-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<img class="lazy" data-original="http://m.niucache.com/static/m/widget/product_detail/n1s/images/1_07_48d46bb.jpg" width="100%" />-->
+    <!--</div>-->
+</block>
+<block name="script">
+    <script>
+        $('document').ready(function() {
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+
+            $('.model').click(function () {
+                $('.model').removeClass('selected');
+
+                $(this).addClass('selected');
+
+                $('.ticg').html($(this).attr('val'));
+            })
+        });
+    </script>
+</block>

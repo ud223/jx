@@ -1,0 +1,52 @@
+
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <title>爱心企业</title>
+        <!-- Unresponsive -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+        <link rel="shortcut icon" href="__IMG__/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="__CSS__/global.css" />
+        <link rel="stylesheet" href="/Public/Home/frontend.css?v=1200.01" />
+    </head>
+
+    <body>
+
+    <div class="aix_title">
+        <div class="wpx">
+            <img src="{$item['logo_photo']['img']}" class="aix_logo" />
+            <div class="t1">{$item['name']}</div>
+            <div class="desc">{$item['name_vice']}</div>
+            <div class="addr"><img class="add_ico" src="__IMG__/round_location.png"/>{$item['address']}</div>
+            <div class="mob"><img class="add_ico" src="__IMG__/round_phone.png"/>{$item['phone']}</div>
+            <div class="aix_aut">
+                <img src="__IMG__/aix_badge.png" class="cico" />
+                <span>爱心企业认证</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="myat_feed">
+        <div class="timg multi">
+            <img src="{$item['img_photo']['img']}" alt="" />
+        </div>
+    </div>
+
+    <div class="myat_article_body">
+        <div class="text_content nopadding">
+            {$item['content']}
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+
+    </body>
+
+    </html>

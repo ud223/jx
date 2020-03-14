@@ -6,7 +6,7 @@ var User = {
         User.id  = localStorage.getItem('user_id');
 
         if (!User.id)  {
-            //alert('请先微信授权!');
+            // alert('请先微信授权!');
             //
             location.href = '/show/index';
 

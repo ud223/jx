@@ -1,0 +1,24 @@
+[ 2015-07-28T15:14:32+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Host 'deanluServer.lan' is not allowed to connect to this MySQL server
+
+[ 2015-07-28T15:15:00+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Host 'deanluServer.lan' is not allowed to connect to this MySQL server
+
+[ 2015-07-28T15:15:24+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Can't connect to MySQL server on '127.0.0.1' (111)
+
+[ 2015-07-28T15:16:00+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Can't connect to MySQL server on '127.0.0.1' (111)
+
+[ 2015-07-28T15:16:17+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Host 'deanluServer.lan' is not allowed to connect to this MySQL server
+
+[ 2015-07-28T15:50:32+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Can't connect to MySQL server on '127.0.0.1' (111)
+
+[ 2015-07-28T15:50:47+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+[ 2015-07-28T16:16:25+08:00 ] 192.168.0.148 /install.php?m=Install&c=Install&a=step2
+ERR: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+

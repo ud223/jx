@@ -1,0 +1,43 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div style="height:120px;"></div>
+    <div class="container apply-hdchtdm">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="clearfix dh1">
+                    <div class="lt">
+                        <a style="color:#03A9F4;font-weight:bold;margin-right:20px;" href="javascript:void(0)">常见问题</a>
+                        <a style="font-weight:bold;margin-right:20px;" href="/index/test_self">自助检测</a>
+                        <a style="font-weight:bold;margin-right:20px;" href="/index/cart_query">网点服务</a>
+                        <a style="font-weight:bold;margin-right:20px;" href="/index/buy_question">购买须知及运费说明</a>
+                    </div>
+                    <!--<div class="rt">-->
+                        <!--<div class="dhchddlwo" id="dropdownMenu1" data-toggle="dropdown">-->
+                            <!---->
+                            <!--<i class="iconfont icon-angledown"></i>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10">
+                <div>
+                    <?php echo $data['content']['content']?>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        })
+    </script>
+</block>

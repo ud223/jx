@@ -1,0 +1,40 @@
+<div class="form-group {$region_city.css}" id="{$region_city.id}Tip">
+    <label  class="col-md-{$region_city.title_width} control-label" style="text-align: {$region_city.title_align}; line-height: 30px;">
+        {$region_city.title}<eq name="region_city.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-3" id="{$region_city.id}_item">
+        <select class="sidebar-option form-control input-large" name="{$region_city.name}" id="{$region_city.id}">
+            <option value="">--</option>
+        </select>
+        <span class="help-block">{$region_city.tips}</span>
+    </div>
+ </div>
+<script>
+var {$region_city.id}_JsonCity = {$City};
+
+$('#{$region_city.id}').val('{$region_city.value}');
+
+$('#{$region_city.id}').change(function(){
+    var arrList = {$region_province.prefix}{$region_city.extend.child}_JsonArea;
+    var nCount = arrList.length;
+    var info = null;
+    var arrOption = [];
+    var parentid = $('#{$region_city.id}').val();
+    
+    for(var i=0; i<nCount; i++){
+        info = arrList[i];
+        
+        if(info.cityid == parentid){
+            arrOption.push('<option value="'+ info.areaid +'">'+ info.area +'</option>');
+        }
+    }
+
+    $sOption = arrOption.join('');
+    
+    if(btten.IsN($sOption)){
+        $sOption = '<option value="">--</option>';
+    }
+    
+    $('#{$region_city.prefix}{$region_city.extend.child}').html($sOption).change();
+});
+</script>

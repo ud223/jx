@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {:W('Page/wapPageMeta')}
+  
+  {:W('Page/wapPageTitle')}
+  
+  {:W('Page/wapPageHeadInclude')}
+</head>
+<body>
+<div class="mui-content">
+  <ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+    <volist name="ProductList" id="list">
+      <li class="mui-table-view-cell">
+        <div class="mui-table">
+          <div class="mui-table-cell mui-col-xs-12">
+            <p class="mui-ellipsis-2 list-title">
+              {$list.product_name}
+              <span class="mui-badge mui-badge-primary mui-pull-right">{$list.type_name}</span>
+              <span class="mui-badge mui-badge-primary mui-pull-right" style="margin-right: 3px;">{$list.status_style}</span>
+            </p>
+            
+            <div class="hr-line-dashed"></div>
+            
+            <div class="mui-row">
+              <div class="mui-col-xs-6 mui-h6">缴费方式：{$list.pay_type}</div>
+              <div class="mui-col-xs-6 mui-h6 mui-text-right">投保年龄：{$list.min_age}</div>
+            </div>
+            
+            <div class="hr-line-dashed"></div>
+            
+            <div class="mui-row">
+              <div class="mui-col-xs-6 mui-h6">保险期间：{$list.validity_year}</div>
+              <div class="mui-col-xs-6 mui-h6 mui-text-right">销售数量：{$list.sell_number}</div>
+            </div>
+            
+            <div class="hr-line-dashed"></div>
+  
+            <if condition="($AccountType neq $SellerMemberAccountType) AND ($AccountType neq $SpecialAccountType) ">
+              <div class="mui-row">
+                <div class="mui-col-xs-12 mui-h6">
+                  <span class="mui-badge mui-badge-info">团队长提成比例</span>
+                </div>
+                <div class="mui-col-xs-6 mui-h6">首年：{$list.captain_first_rate}%</div>
+                <div class="mui-col-xs-6 mui-h6 mui-text-right">次年：{$list.captain_next_rate}%</div>
+              </div>
+              
+              <div class="hr-line-dashed"></div>
+            </if>
+            
+            <div class="mui-row">
+              <div class="mui-col-xs-12 mui-h6">
+                <span class="mui-badge mui-badge-info">客户经理提成比例</span>
+              </div>
+              <div class="mui-col-xs-6 mui-h6">首年：{$list.member_first_rate}%</div>
+              <div class="mui-col-xs-6 mui-h6 mui-text-right">次年：{$list.member_next_rate}%</div>
+            </div>
+            
+            <div class="hr-line-dashed"></div>
+  
+            <div class="mui-row">
+              <div class="mui-col-xs-12 mui-text-center">
+                <button type="button" class="mui-btn mui-btn-primary" data-id="{$list.id}" onclick="GetProductInfo(this);">
+                  <span class="mui-icon iconfont icon-text"></span>&nbsp;查看详情
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </volist>
+  </ul>
+</div>
+
+{:W('Page/wapPageFootInclude')}
+
+<script type="text/javascript">
+  mui.init();
+  
+  //region 显示商品详情
+  function GetProductInfo(obj) {
+    var nProductID = $(obj).attr("data-id");
+  
+    //BlockWindow_ExecOp('正在获取产品信息', 180);
+  
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxProductInfo",
+      dataType:"json",
+      timeout: 6000,
+      data: {"product_id": nProductID},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        GetProductInfoResponse(data);
+      },
+      error: function(request, status, error){
+        //Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function GetProductInfoResponse(objJson) {
+    //Un_BlockWindow_ExecOp();
+  
+    if(objJson.error != 0){
+      //AlertError(objJson.info);
+      return false;
+    }
+  
+    if(IsN(objJson.data)){
+      //AlertError("没有发现产品数据");
+      return false;
+    }
+  
+    var ProductInfo = objJson.data;
+    var sStatus = "";
+    var AttachmentHtml = [];
+  
+    $('#p_category_name').html(ProductInfo.type_name);
+    $('#p_product_name').html(ProductInfo.product_name);
+    $('#p_pay_type').html(ProductInfo.pay_type);
+    $('#p_payment_type').html(ProductInfo.payment_type);
+    $('#p_min_age').html(ProductInfo.min_age);
+    $('#p_max_age').html(ProductInfo.max_age);
+    $('#p_validity_year').html(ProductInfo.validity_year);
+  
+    if(!IsN(ProductInfo.captain_first_rate) && !IsN(ProductInfo.captain_next_rate)){
+      $('#p_captain_first_rate').html(ProductInfo.captain_first_rate+"%");
+      $('#p_captain_next_rate').html(ProductInfo.captain_next_rate+"%");
+      $('#div_captain_rate_ifr').show();
+    }
+  
+    $('#p_member_first_rate').html(ProductInfo.member_first_rate+"%");
+    $('#p_member_next_rate').html(ProductInfo.member_next_rate+"%");
+  
+  
+    if(ProductInfo.status == 1){
+      sStatus = "已发布";
+    }else{
+      sStatus = "未发布";
+    }
+    $('#p_product_status').html(sStatus);
+    $('#p_product_intro').html(ProductInfo.intro);
+    $('#div_product_desc').html(ProductInfo.content);
+    $('#p_product_remark').html(ProductInfo.remarks);
+  
+    if(!IsN(ProductInfo.attachment)){
+      switch(ProductInfo.attachment_type){
+        case "image":
+          AttachmentHtml.push('<div class="file-box">');
+          AttachmentHtml.push('<div class="file">');
+          AttachmentHtml.push('<a href="__MODULE__/Download/OriginalNameImage/image_id/'+ ProductInfo.attachment.id +'">');
+          AttachmentHtml.push('<span class="corner"></span>');
+          AttachmentHtml.push('<div class="image">');
+          AttachmentHtml.push('<img alt="image" class="img-responsive" src="'+ ProductInfo.attachment.full_file +'">');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('<div class="file-name">');
+          AttachmentHtml.push(ProductInfo.attachment.original_name);
+          AttachmentHtml.push('<br/>');
+          AttachmentHtml.push('<small>添加时间：'+ ProductInfo.attachment.add_date +'</small>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</a>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</div>');
+          break;
+      
+        case "file":
+          AttachmentHtml.push('<div class="file-box">');
+          AttachmentHtml.push('<div class="file">');
+          AttachmentHtml.push('<a href="__MODULE__/Download/OriginalNameFile/file_id/'+ ProductInfo.attachment.id +'">');
+          AttachmentHtml.push('<span class="corner"></span>');
+          AttachmentHtml.push('<div class="icon">');
+          AttachmentHtml.push('<i class="fa '+ ProductInfo.attachment.icon +'"></i>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('<div class="file-name">');
+          AttachmentHtml.push(ProductInfo.attachment.original_name);
+          AttachmentHtml.push('<br/>');
+          AttachmentHtml.push('<small>文件大小：'+ ProductInfo.attachment.icon +'KB</small>');
+          AttachmentHtml.push('<br/>');
+          AttachmentHtml.push('<small>添加时间：'+ ProductInfo.attachment.add_date +'</small>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</a>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</div>');
+          break;
+      }
+    }
+  
+    $('#div_attachment').html(AttachmentHtml.join(''));
+  
+    //ShowProductInfo();
+  }
+  //endregion 显示商品详情
+</script>
+</body>
+</html>

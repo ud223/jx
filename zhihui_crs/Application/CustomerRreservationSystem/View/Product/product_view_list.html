@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+
+  <style>
+    .product-content img{width: 100% !important; height: auto !important;}
+  </style>
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!-- 搜索 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>搜索产品</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="searchForm" action="__URL__/ProductList" method="get">
+
+            <div class="row">
+              
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">查询条件</label>
+                  <div class="col-sm-5">
+                    <select class="chosen-select" name="search_case" id="search_case" autocomplete="off" style="width: 100%;" data-placeholder="不指定条件">
+                      <option value="">不指定条件</option>
+                      <option value="id" <eq name="search_case" value="id">selected</eq>>产品编号</option>
+                      <option value="product_name" <eq name="search_case" value="product_name">selected</eq>>产品名称</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-5">
+                    <input type="text" name="search_key" class="form-control" placeholder="查询关键字" value="{$search_key}">
+                    <span class="help-block m-b-none"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">产品类型</label>
+                  <div class="col-sm-9">
+                    <select class="chosen-select" name="search_product_type" id="search_product_type" autocomplete="off" style="width: 100%;" data-placeholder="全部类型">
+                      <option value="" <empty name="search_product_type">selected</empty> >全部类型</option>
+                      <volist name="ProductTypeOption" id="list">
+                        <option value="{$list.val}" <eq name="list.val" value="$search_product_type">selected</eq> >{$list.key}</option>
+                      </volist>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="hr-line-dashed"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">产品状态</label>
+                  <div class="col-sm-9">
+                    <select class="chosen-select" name="search_status" id="search_status" autocomplete="off" style="width: 100%;" data-placeholder="全部发布状态">
+                      <option value="" <empty name="search_status">selected</empty> >全部发布状态</option>
+                      <option value="0" <eq name="search_status" value="0">selected</eq> >未发布</option>
+                      <option value="1" <eq name="search_status" value="1">selected</eq> >已发布</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="hr-line-dashed"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
+
+                    <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-refresh"></i>&nbsp;重置表单</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--搜索 End-->
+  
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>产品类别</th>
+              <th>产品名称</th>
+              <th class="text-center">缴费方式</th>
+              <th class="text-center">投保年龄</th>
+              <th class="text-center">保险期间</th>
+              <th class="text-center">销售数量</th>
+
+              <if condition="($AccountType neq $SellerMemberAccountType) AND ($AccountType neq $SpecialAccountType) ">
+                <th class="text-center">团队长提成比例</th>
+              </if>
+
+              <th class="text-center">客户经理提成比例</th>
+              <th class="text-center">状态</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="ProductList">
+              <tr>
+                <if condition="($AccountType neq $SellerMemberAccountType) AND ($AccountType neq $SpecialAccountType) ">
+                  <td colspan="11" class="text-center">暂无数据</td>
+                <else/>
+                  <td colspan="10" class="text-center">暂无数据</td>
+                </if>
+
+              </tr>
+              <else />
+              <volist name="ProductList" id="list">
+                <tr>
+                  <td>{$list.type_name}</td>
+                  <td>{$list.product_name}</td>
+                  <td class="text-center">{$list.pay_type}</td>
+                  <td class="text-center">{$list.min_age}</td>
+                  <td class="text-center">{$list.validity_year}</td>
+                  <td class="text-center">{$list.sell_number}</td>
+
+                  <if condition="($AccountType neq $SellerMemberAccountType) AND ($AccountType neq $SpecialAccountType) ">
+                    <td class="text-center">
+                      <p class="form-control-static">首年：{$list.captain_first_rate}%</p>
+                      <p class="form-control-static">次年：{$list.captain_next_rate}%</p>
+                    </td>
+                  </if>
+
+                  <td class="text-center">
+                    <p class="form-control-static">首年：{$list.member_first_rate}%</p>
+                    <p class="form-control-static">次年：{$list.member_next_rate}%</p>
+                  </td>
+                  <td class="text-center">{$list.status_style}</td>
+                  <td class="text-right">
+                    <button class="btn btn-primary" type="button" data-id="{$list.id}" onclick="GetProductInfo(this);"><i class="fa fa-eye"></i>&nbsp;查看详情</button>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th>产品类别</th>
+              <th>产品名称</th>
+              <th class="text-center">缴费方式</th>
+              <th class="text-center">投保年龄</th>
+              <th class="text-center">保险期间</th>
+              <th class="text-center">销售数量</th>
+
+              <if condition="($AccountType neq $SellerMemberAccountType) AND ($AccountType neq $SpecialAccountType) ">
+                <th class="text-center">团队长提成比例</th>
+              </if>
+
+              <th class="text-center">客户经理提成比例</th>
+              <th class="text-center">状态</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--查看产品信息Modal Begin-->
+  <div class="modal inmodal fade" id="modal_product_info_ifr" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">产品详情</h4>
+        </div>
+
+        <div class="modal-body form-horizontal">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  产品类别
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_category_name"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  产品名称
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_product_name"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  缴费方式
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_pay_type"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  付款方式
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_payment_type"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  投保年龄
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_min_age"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  保险期间
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_validity_year"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="display: none;" id="div_captain_rate_ifr">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  团队长首年提成比例
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_captain_first_rate"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  团队长次年提成比例
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_captain_next_rate"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  客户经理首年提成比例
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_member_first_rate"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  客户经理次年提成比例
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_member_next_rate"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-5 control-label">
+                  产品状态
+                </label>
+                <div class="col-sm-7">
+                  <p class="form-control-static" id="p_product_status"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+          </div>
+
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <b>产品简介</b>
+            </div>
+
+            <div class="ibox-content">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <p class="form-control-static" id="p_product_intro"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <b>产品附件</b>
+            </div>
+
+            <div class="ibox-content">
+             <div class="form-group">
+                <div class="col-sm-12" id="div_attachment">
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <b>产品详情</b>
+            </div>
+            <div class="ibox-content product-content" id="div_product_desc">
+
+            </div>
+          </div>
+
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <b>备注</b>
+            </div>
+
+            <div class="ibox-content">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <p class="form-control-static" id="p_product_remark"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--查看产品信息Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/ProductList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+
+  for (var selector in config) $(selector).chosen(config[selector]);
+  
+  //region 刷新产品缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新产品缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetProductCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新产品缓存
+
+  //region 显示商品详情
+  function ShowProductInfo() {
+    $('#modal_product_info_ifr').modal();
+  }
+
+  function GetProductInfo(obj) {
+    var nProductID = $(obj).attr("data-id");
+
+    BlockWindow_ExecOp('正在获取产品信息', 180);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxProductInfo",
+      dataType:"json",
+      timeout: 6000,
+      data: {"product_id": nProductID},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        GetProductInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function GetProductInfoResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      AlertError("没有发现产品数据");
+      return false;
+    }
+
+    var ProductInfo = objJson.data;
+    var sStatus = "";
+    var AttachmentHtml = [];
+
+    $('#p_category_name').html(ProductInfo.type_name);
+    $('#p_product_name').html(ProductInfo.product_name);
+    $('#p_pay_type').html(ProductInfo.pay_type);
+    $('#p_payment_type').html(ProductInfo.payment_type);
+    $('#p_min_age').html(ProductInfo.min_age);
+    $('#p_max_age').html(ProductInfo.max_age);
+    $('#p_validity_year').html(ProductInfo.validity_year);
+
+    if(!IsN(ProductInfo.captain_first_rate) && !IsN(ProductInfo.captain_next_rate)){
+      $('#p_captain_first_rate').html(ProductInfo.captain_first_rate+"%");
+      $('#p_captain_next_rate').html(ProductInfo.captain_next_rate+"%");
+      $('#div_captain_rate_ifr').show();
+    }
+
+    $('#p_member_first_rate').html(ProductInfo.member_first_rate+"%");
+    $('#p_member_next_rate').html(ProductInfo.member_next_rate+"%");
+
+
+    if(ProductInfo.status == 1){
+      sStatus = "已发布";
+    }else{
+      sStatus = "未发布";
+    }
+    $('#p_product_status').html(sStatus);
+    $('#p_product_intro').html(ProductInfo.intro);
+    $('#div_product_desc').html(ProductInfo.content);
+    $('#p_product_remark').html(ProductInfo.remarks);
+
+    if(!IsN(ProductInfo.attachment)){
+      switch(ProductInfo.attachment_type){
+        case "image":
+          AttachmentHtml.push('<div class="file-box">');
+          AttachmentHtml.push('<div class="file">');
+          AttachmentHtml.push('<a href="__MODULE__/Download/OriginalNameImage/image_id/'+ ProductInfo.attachment.id +'">');
+          AttachmentHtml.push('<span class="corner"></span>');
+          AttachmentHtml.push('<div class="image">');
+          AttachmentHtml.push('<img alt="image" class="img-responsive" src="'+ ProductInfo.attachment.full_file +'">');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('<div class="file-name">');
+          AttachmentHtml.push(ProductInfo.attachment.original_name);
+          AttachmentHtml.push('<br/>');
+          AttachmentHtml.push('<small>添加时间：'+ ProductInfo.attachment.add_date +'</small>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</a>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</div>');
+          break;
+
+        case "file":
+          AttachmentHtml.push('<div class="file-box">');
+          AttachmentHtml.push('<div class="file">');
+          AttachmentHtml.push('<a href="__MODULE__/Download/OriginalNameFile/file_id/'+ ProductInfo.attachment.id +'">');
+          AttachmentHtml.push('<span class="corner"></span>');
+          AttachmentHtml.push('<div class="icon">');
+          AttachmentHtml.push('<i class="fa '+ ProductInfo.attachment.icon +'"></i>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('<div class="file-name">');
+          AttachmentHtml.push(ProductInfo.attachment.original_name);
+          AttachmentHtml.push('<br/>');
+          AttachmentHtml.push('<small>文件大小：'+ ProductInfo.attachment.icon +'KB</small>');
+          AttachmentHtml.push('<br/>');
+          AttachmentHtml.push('<small>添加时间：'+ ProductInfo.attachment.add_date +'</small>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</a>');
+          AttachmentHtml.push('</div>');
+          AttachmentHtml.push('</div>');
+          break;
+      }
+    }
+
+    $('#div_attachment').html(AttachmentHtml.join(''));
+
+    ShowProductInfo();
+  }
+  //endregion 显示商品详情
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

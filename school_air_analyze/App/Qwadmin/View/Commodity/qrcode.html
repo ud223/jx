@@ -1,0 +1,64 @@
+<include file="Public/qrcode_head"/>
+<body class="no-skin">
+
+                   <div class="qrcode_div" style="width:100px; height:100px;margin:auto;right:800px;top:100px;position: absolute;"  val="{$currentcategory.id}"></div>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    function init_QRcode() {
+        var divs =$('.qrcode_div');
+        $.each(divs, function(){
+            var div = this;
+            // console.log(div);
+            var text =$(div).attr("val");
+            console.log(text);
+            var qrcode = new QRCode(div, {
+                width : 400,
+                height : 400
+            });
+
+            makeCode(qrcode, text);
+
+             $(div).click(function () {
+                  var img = $(this).children(img)[1];
+                  console.log(img.length);
+                  console.log(img);
+
+                  // var img = document.querySelector(selector)
+                  // 将图片的src属性作为URL地址
+                  var url = img.src
+                  var a = document.createElement('a')
+                  var event = new MouseEvent('click')
+
+                  a.download = name || '123.jpg'
+                  a.href = url
+
+                  a.dispatchEvent(event)
+            })
+        });
+    }
+
+    init_QRcode();
+
+    function makeCode (qrcode, text) {
+        if (!text) {
+            alert("Input a text");
+            // elText.focus();
+            return;
+        }
+
+        qrcode.makeCode(text);
+    }
+
+    // on("blur", function () {
+    //     makeCode();
+    // }).
+    // on("keydown", function (e) {
+    //     if (e.keyCode == 13) {
+    //         makeCode();
+    //     }
+    // });
+
+</script>
+</body>
+</html>

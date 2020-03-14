@@ -1,0 +1,387 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" id="form" method="post" action="{:U('update')}">
+
+                            <!-- PAGE CONTENT BEGINS -->
+
+                            <input type="hidden" name="aid" value="{$item.id}" id="aid"/>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1">
+                                    经纬度: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="lng" id="lng" placeholder="经度" style="width:150px;" value="{$item['lng']}">
+                                    <!--<span class="help-inline col-xs-1 col-sm-1">-->
+                                        <span class="middle">-</span>
+                                    <!--</span>-->
+                                    <input type="text" name="lat" id="lat" placeholder="纬度" style="width:150px;" value="{$item['lat']}">
+                                    <span class="help-inline"  style="width:150px;">
+                                        <span class="middle">经纬度不能为空, <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">获取百度经纬度网址</a> | <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">获取谷歌经纬度网址(国内需代理)</a></span>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-1 control-label no-padding-right" for="form-field-1">-->
+                                    <!--地区表示 </label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" name="code" id="code" placeholder="内容标题"-->
+                                           <!--class="col-xs-10 col-sm-5" value="{$article['title']}">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+                                        <!--<span class="middle">标识不能为空。</span>-->
+                                    <!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    所属国家 </label>
+                                <div class="col-sm-9">
+                                    <select id="country_id" name="country_id" class="col-xs-4 col-sm-4">
+                                        <option value="0">--选择国家--</option>
+                                        <?php foreach ($country_list as $itm) :?>
+                                            <?php if ($itm['id'] == $item['country_id']) :?>
+                                                <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name_cn'] ?></option>
+                                            <?php else :?>
+                                                <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name_cn'] ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+
+                                    <span class="help-inline col-xs-4 col-sm-4">
+                                        <input type="checkbox" name="not_for_country" id="not_for_country" <if condition="$item.not_for_country eq 1">checked</if>><label class="middle" for="not_for_country">不属于国家</label>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    所属省份 </label>
+                                <div class="col-sm-9">
+                                    <select id="province_id" name="province_id" class="col-xs-4 col-sm-4">
+                                        <option value="0">--选择省份--</option>
+                                        <?php foreach ($province_list as $itm) :?>
+                                            <?php if ($itm['id'] == $item['province_id']) :?>
+                                                <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name_cn'] ?></option>
+                                            <?php else :?>
+                                                <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name_cn'] ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+
+                                    <span class="help-inline col-xs-7 col-sm-7">
+                                        <input type="checkbox" name="not_for_province" id="not_for_province" <if condition="$item.not_for_province eq 1">checked</if>> <label class="middle" for="not_for_province">不属于省份</label>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1">
+                                    中文名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name_cn" id="name_cn" placeholder="中文名称"
+                                           class="col-xs-10 col-sm-5" value="{$item['name_cn']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <span class="middle">中文名称不能为空</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1">
+                                    英文名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name_en" id="name_en" placeholder="英文名称"
+                                           class="col-xs-10 col-sm-5" value="{$item['name_en']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <span class="middle">英文名称不能为空</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1">
+                                    日文名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name_jp" id="name_jp" placeholder="日文名称"
+                                           class="col-xs-10 col-sm-5" value="{$item['name_jp']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1">
+                                    德文名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name_ger" id="name_ger" placeholder="德文名称"
+                                           class="col-xs-10 col-sm-5" value="{$item['name_ger']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="col-md-offset-2 col-md-9">
+                                <button class="btn btn-info submit" type="button">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="icon-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </div>
+
+                            <!-- PAGE CONTENT ENDS -->
+
+                        </form>
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div><!-- /.main-content -->
+<include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    $(function () {
+        $(".submit").click(function () {
+            if (!validate())
+                return;
+
+            $("#form").submit();
+        });
+
+
+        $('#country_id').change(function () {
+            var value = $(this).val();
+
+            $('#province_id').empty();
+
+            $("#province_id").append("<option value='0'>--选择省份--</option>");
+
+            if (value != 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/qwadmin/point/getProvince?country_id='+ value,
+                    success: function (json) {
+//                        console.log(JSON.stringify(json));
+
+                        if (json.code == '200') {
+                            $.each(json.data,function () {
+                                $("#province_id").append("<option value='"+ this.id +"'>"+ this.name_cn +"</option>");
+                            })
+                        }
+                        else {
+                            bootbox.dialog({
+                                title: '友情提示：',
+                                message: json.msg,
+                                buttons: {
+                                    "success": {
+                                        "label": "确定",
+                                        "className": "btn-danger"
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        bootbox.dialog({
+                            title: '友情提示：',
+                            message: "悲剧了，网络故障，请稍后再试！",
+                            buttons: {
+                                "success": {
+                                    "label": "确定",
+                                    "className": "btn-danger"
+                                }
+                            }
+                        });
+                    },
+                    dataType: 'json'
+                });
+            }
+        })
+    });
+
+    function validate() {
+        var lng = $("#lng").val();
+        var lat = $("#lat").val();
+        var country_id = $("#country_id").val();
+        var province_id = $("#province_id").val();
+
+        var not_for_country = 0;
+
+        if ($("#not_for_country").get(0).checked) {
+            not_for_country = 1;
+        }
+
+        var not_for_province = 0;
+
+        if ($("#not_for_province").get(0).checked) {
+            not_for_province = 1;
+        }
+
+        var name_cn = $("#name_cn").val();
+        var name_en = $("#name_en").val();
+
+        if (!lng || !lat) {
+            bootbox.dialog({
+                title: '友情提示：',
+                message: "地点经纬度不能为空",
+                buttons: {
+                    "success": {
+                        "label": "确定",
+                        "className": "btn-danger"
+                    }
+                }
+            });
+
+            return false;
+        }
+
+        if (!not_for_country) {
+            if (country_id == 0) {
+                bootbox.dialog({
+                    title: '友情提示：',
+                    message: "所属国家必须选择",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+
+                return false;
+            }
+        }
+        else {
+//            if (country_id != 0) {
+//                bootbox.dialog({
+//                    title: '友情提示：',
+//                    message: "当前选择无法选择所属任何国家",
+//                    buttons: {
+//                        "success": {
+//                            "label": "确定",
+//                            "className": "btn-danger"
+//                        }
+//                    }
+//                });
+//
+//                return false;
+//            }
+        }
+
+        if (!not_for_province && !not_for_country) {
+            if (province_id == 0) {
+                bootbox.dialog({
+                    title: '友情提示：',
+                    message: "所属省份必须选择",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+
+                return false;
+            }
+        }
+        else {
+//            console.log(province_id)
+//            if (province_id != 0) {
+//                bootbox.dialog({
+//                    title: '友情提示：',
+//                    message: "当前选择无法选择所属任何省份",
+//                    buttons: {
+//                        "success": {
+//                            "label": "确定",
+//                            "className": "btn-danger"
+//                        }
+//                    }
+//                });
+//
+//                return false;
+//            }
+        }
+
+        if (!name_cn) {
+            bootbox.dialog({
+                title: '友情提示：',
+                message: "地点中文名称不能为空",
+                buttons: {
+                    "success": {
+                        "label": "确定",
+                        "className": "btn-danger"
+                    }
+                }
+            });
+
+            return false;
+        }
+
+        if (!name_en) {
+            bootbox.dialog({
+                title: '友情提示：',
+                message: "地点英文名称不能为空",
+                buttons: {
+                    "success": {
+                        "label": "确定",
+                        "className": "btn-danger"
+                    }
+                }
+            });
+
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</body>
+</html>

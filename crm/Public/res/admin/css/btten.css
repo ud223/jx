@@ -1,0 +1,16 @@
+.bt_uploadify_thumb_ifr{width:100%; overflow: hidden;}
+.bt_uploadify_thumb_ifr .item{margin: 0 20px 20px 0; float:left; overflow: hidden;}
+.bt_uploadify_thumb_ifr .item .btn_ifr{margin: 5px 0 0 0; float:left; overflow: hidden;}
+
+.btten_file_ifr{padding:0;}
+.btten_file_ifr li{overflow: hidden;}
+.btten_file_ifr li a.remove{overflow: hidden; float: left;}
+.btten_file_ifr li div{float: left; margin-left: 10px; height: 23px; line-height: 23px;}
+.btten_file_margin{margin:0 0 10px 0;}
+.btten_file_no_margin{ margin: 0;}
+
+.uploadify_ifr{clear: both; margin: 0 0 10px 0;}
+
+.daterangepicker{z-index: 10055 !important;}
+
+.table_vertical tr td{vertical-align: middle !important;}

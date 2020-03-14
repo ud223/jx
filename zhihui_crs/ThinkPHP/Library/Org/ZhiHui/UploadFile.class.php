@@ -94,7 +94,7 @@ class UploadFile {
 
     $upload = new \Think\Upload();// 实例化上传类
     $upload->maxSize = $ImageConfig["size"];// 设置附件上传大小
-    $upload->exts = explode(',', $ImageConfig["desc"]);// 设置附件上传大小
+    $upload->exts = explode('、', $ImageConfig["desc"]);// 设置附件上传大小
     $upload->rootPath = $sFileRoot["root"];
     $upload->savePath = $sFileRoot["path"] . $_otherfolder; // 设置附件上传目录
     $upload->saveName = $sFileName;
@@ -229,7 +229,7 @@ class UploadFile {
 
     $upload = new \Think\Upload();// 实例化上传类
     $upload->maxSize = $FileConfig["size"];// 设置附件上传大小
-    $upload->exts = explode(',', $FileConfig["desc"]);// 设置附件上传大小
+    $upload->exts = explode('、', $FileConfig["desc"]);// 设置附件上传大小
     $upload->rootPath = $sFileRoot["root"];
     $upload->savePath = $sFileRoot["path"] . $_otherfolder; // 设置附件上传目录
     $upload->saveName = $sFileName;
@@ -276,6 +276,12 @@ class UploadFile {
       case "product_content" :
         $sSavePath = "Public/images/product/content";
         break;
+      case "product_attachment_image" :
+        $sSavePath = "Public/images/product/attachment/images";
+        break;
+      case "product_attachment_file" :
+        $sSavePath = "Public/images/product/attachment/file";
+        break;
       case "customer_idcard" :
         $sSavePath = "Public/images/customer/idcard";
         break;
@@ -299,6 +305,14 @@ class UploadFile {
     switch($sType){
       case "product_content" :
         $Config = GetProductContentImgCfg();
+        break;
+
+      case "product_attachment_image" :
+        $Config = GetProductAttachmentImgCfg();
+        break;
+
+      case "product_attachment_file" :
+        $Config = GetProductAttachmentFileCfg();
         break;
 
       case "customer_idcard" :

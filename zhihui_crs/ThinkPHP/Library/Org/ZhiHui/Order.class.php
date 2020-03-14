@@ -18,10 +18,10 @@ class Order {
   }
   
   //region 缓存
-  //region 工单信息缓存
+  //region 预约信息缓存
   /**
-   * 获取工单信息
-   * @param $_order_sn 工单sn
+   * 获取预约信息
+   * @param $_order_sn 预约sn
    * @return mixed
    */
   public function GetOrderDetails($_order_sn){
@@ -37,10 +37,13 @@ class Order {
     }
 
     if(IsArray($Info)){
+      $clsUser = new \Org\ZhiHui\User();
+      $clsPicture = new \Org\ZhiHui\Picture();
+      $clsFile = new \Org\ZhiHui\File();
+      $clsProduct = new \Org\ZhiHui\Product();
+      $clsCustomer = new \Org\ZhiHui\Customer();
       
       //region 附件信息
-      $clsPicture = new \Org\ZhiHui\Picture();
-
       if(IsNum($Info["attachment"], false, false)){
         $FileInfo = $clsPicture->GetPictureDetails($Info["attachment"]);
         $FileSizeKB = $FileInfo["pic_size"]/1024;
@@ -106,15 +109,138 @@ class Order {
         }
       }
       //endregion 附件信息
+
+      //region 先锋审核的附件信息
+      if(IsNum($Info["attachment_id"], false, false)){
+        
+        switch($Info["attachment_type"]){
+          case $clsProduct->_AttachmentType["image"]:
+            $FileInfo = $clsPicture->GetPictureDetails($Info["attachment_id"]);
+            $FileSizeKB = $FileInfo["pic_size"]/1024;
+            $FileSizeMB = $FileSizeKB/1024;
+
+            $FileInfo["full_file"] = FullImageUrl($FileInfo["file"]);
+            $FileInfo["icon"] = "";
+            break;
+
+          case $clsProduct->_AttachmentType["file"]:
+            $FileInfo = $clsFile->GetFileDetails($Info["attachment_id"]);
+            $FileSizeKB = $FileInfo["file_size"]/1024;
+            $FileSizeMB = $FileSizeKB/1024;
+
+            $FileInfo["full_file"] = FullImageUrl($FileInfo["file_path"]);
+
+            //region 获取文件图标
+            switch($FileInfo["file_ext"]){
+              case "docx":
+                $sIcon = "fa-file-word-o";
+                break;
+
+              case "doc":
+                $sIcon = "fa-file-word-o";
+                break;
+
+              case "xls":
+                $sIcon = "fa-file-excel-o";
+                break;
+
+              case "xlsx":
+                $sIcon = "fa-file-excel-o";
+                break;
+
+              case "rar":
+                $sIcon = "fa-file-zip-o";
+                break;
+
+              case "zip":
+                $sIcon = "fa-file-zip-o";
+                break;
+
+              case "pdf":
+                $sIcon = "fa-file-pdf-o";
+                break;
+
+              default:
+                $sIcon = "fa-file-o";
+                break;
+            }
+
+            $FileInfo["icon"] = $sIcon;
+            //endregion 获取文件图标
+            break;
+        }
+
+        $FileInfo["file_size_kb"] = round($FileSizeKB, 2);
+        $FileInfo["file_size_mb"] = round($FileSizeMB, 2);
+
+        $FileInfo["add_date"] = Time2FullDate($FileInfo["add_time"], "Y-m-d");
+
+        $Info["xf_attachment"] = $FileInfo;
+      }else{
+        $Info["xf_attachment"] = array();
+      }
+      //endregion 先锋审核的附件信息
+      
+      //region 团队长姓名
+      if(IsNum($Info["seller_captain_id"], false, false)){
+        $CaptainInfo = $clsUser->GetUserDetails($Info["seller_captain_id"]);
+        $Info["seller_captain_name"] = $CaptainInfo["real_name"];
+      }else{
+        $Info["seller_captain_name"] = "";
+      }
+      //endregion 团队长姓名
+  
+      //region 客户经理姓名
+      if(IsNum($Info["seller_member_id"], false, false)){
+        $MemberInfo = $clsUser->GetUserDetails($Info["seller_member_id"]);
+        $Info["seller_member_name"] = $MemberInfo["real_name"];
+        $Info["seller_id"] = $MemberInfo["id"];
+        $Info["seller_name"] = $MemberInfo["real_name"];
+      }else{
+        $Info["seller_member_name"] = "";
+        $Info["seller_id"] = $CaptainInfo["id"];
+        $Info["seller_name"] = $CaptainInfo["real_name"];
+      }
+      //endregion 客户经理姓名
+      
+      //region 客户
+      if(IsNum($Info["customer_id"], false, false)){
+        $Info["customer"] = $clsCustomer->GetCustomerDetails($Info["customer_id"]);
+      }
+      //endregion 客户
+  
+      //region 产品
+      if(IsNum($Info["product_snapshots_id"], false, false)){
+        $Info["product_snapshots"] = $clsProduct->GetProductSnapshotsDetails($Info["product_snapshots_id"]);
+      }else{
+        $Info["product_snapshots"] = array();
+      }
+      //endregion 产品
+      
+      if(IsNum($Info["signed_time"], false, false)){
+        $Info["signed_date"] = Time2FullDate($Info["signed_time"], "Y-m-d H:i");
+      }
+  
+      if(IsNum($Info["reservation_time"], false, false)){
+        $Info["reservation_date"] = Time2FullDate($Info["reservation_time"], "Y-m-d H:i");
+      }
+  
+      if(IsNum($Info["pay_time"], false, false)){
+        $Info["pay_date"] = Time2FullDate($Info["pay_time"], "Y-m-d H:i");
+      }
+      
+      $StatusInfo = $this->OrderStatusGetOrderStatusConfig($Info["status"]);
+  
+      $Info["status_info"] = $StatusInfo;
     }
 
     return $Info;
   }
 
   /**
-   * 设置工单信息数据缓存
-   * @param $_order_sn 工单sn
-   * @param array $_data 工单信息数据，默认值为NULL，传空参数时，表示删除缓存
+   * 设置预约信息数据缓存
+   * @param $_order_sn 预约sn
+   * @param array $_data 预约信息数据，默认值为NULL，传空参数时，表示删除缓存
    * @return mixed
    */
   public function SetOrderDetailsCache($_order_sn, $_data=NULL){
@@ -122,8 +248,8 @@ class Order {
   }
 
   /**
-   * 获取工单信息数据缓存
-   * @param $_order_sn 工单sn
+   * 获取预约信息数据缓存
+   * @param $_order_sn 预约sn
    * @return mixed
    */
   private function GetOrderDetailsCache($_order_sn){
@@ -131,8 +257,8 @@ class Order {
   }
 
   /**
-   * 获取工单信息缓存Key
-   * @param $_order_sn 工单sn
+   * 获取预约信息缓存Key
+   * @param $_order_sn 预约sn
    * @return mixed
    */
   private function GetOrderDetailsCacheKey($_order_sn){
@@ -140,8 +266,8 @@ class Order {
   }
 
   /**
-   * todo:从数据库中获取工单信息数据
-   * @param $_order_sn 工单sn
+   * todo:从数据库中获取预约信息数据
+   * @param $_order_sn 预约sn
    *
    * @return mixed
    */
@@ -161,12 +287,12 @@ class Order {
 
     return $OrderDetails;
   }
-  //endregion 工单信息缓存
+  //endregion 预约信息缓存
 
-  //region 工单审批信息缓存
+  //region 预约审批信息缓存
   /**
-   * 获取工单审批信息
-   * @param $_order_review_id 工单审核id
+   * 获取预约审批信息
+   * @param $_order_review_id 预约审核id
    * @return mixed
    */
   public function GetOrderReviewDetails($_order_review_id){
@@ -202,9 +328,9 @@ class Order {
   }
 
   /**
-   * 设置工单审批信息数据缓存
-   * @param $_order_review_id 工单审核id
-   * @param array $_data 工单审批信息数据，默认值为NULL，传空参数时，表示删除缓存
+   * 设置预约审批信息数据缓存
+   * @param $_order_review_id 预约审核id
+   * @param array $_data 预约审批信息数据，默认值为NULL，传空参数时，表示删除缓存
    * @return mixed
    */
   public function SetOrderReviewDetailsCache($_order_review_id, $_data=NULL){
@@ -212,8 +338,8 @@ class Order {
   }
 
   /**
-   * 获取工单审批信息数据缓存
-   * @param $_order_review_id 工单审核id
+   * 获取预约审批信息数据缓存
+   * @param $_order_review_id 预约审核id
    * @return mixed
    */
   private function GetOrderReviewDetailsCache($_order_review_id){
@@ -221,8 +347,8 @@ class Order {
   }
 
   /**
-   * 获取工单审批信息缓存Key
-   * @param $_order_review_id 工单审核id
+   * 获取预约审批信息缓存Key
+   * @param $_order_review_id 预约审核id
    * @return mixed
    */
   private function GetOrderReviewDetailsCacheKey($_order_review_id){
@@ -230,8 +356,8 @@ class Order {
   }
 
   /**
-   * todo:从数据库中获取工单审批信息数据
-   * @param $_order_review_id 工单审核id
+   * todo:从数据库中获取预约审批信息数据
+   * @param $_order_review_id 预约审核id
    *
    * @return mixed
    */
@@ -251,12 +377,258 @@ class Order {
 
     return $OrderReviewDetails;
   }
-  //endregion 工单审批信息缓存
+  //endregion 预约审批信息缓存
   //endregion 缓存
 
-  //region 工单
+  //region 预约状态
   /**
-   * 创建工单号
+   * todo: 预约状态配置
+   * @return array
+   */
+  public function OrderStatusConfig(){
+    $StatusConfig = array(
+      array(
+        "status"=>10,
+        "desc"=>"等待处理",
+        "desc_style"=>'<span class="label label-info">等待处理</span>',
+      ),
+      array(
+        "status"=>11,
+        "desc"=>"已处理",
+        "desc_style"=>'<span class="label label-success">已处理</span>',
+      ),
+      array(
+        "status"=>12,
+        "desc"=>"已拒绝",
+        "desc_style"=>'<span class="label label-danger">已拒绝</span>',
+      ),
+      array(
+        "status"=>20,
+        "desc"=>"预约中",
+        "desc_style"=>'<span class="label label-info">预约中</span>',
+      ),
+      array(
+        "status"=>21,
+        "desc"=>"预约成功",
+        "desc_style"=>'<span class="label label-success">预约成功</span>',
+      ),
+      array(
+        "status"=>22,
+        "desc"=>"预约失败",
+        "desc_style"=>'<span class="label label-danger">预约失败</span>',
+      ),
+      array(
+        "status"=>30,
+        "desc"=>"完成预约",
+        "desc_style"=>'<span class="label label-primary">完成预约</span>',
+      ),
+      array(
+        "status"=>40,
+        "desc"=>"已回访",
+        "desc_style"=>'<span class="label label-primary">已回访</span>',
+      ),
+    );
+
+    return $StatusConfig;
+  }
+
+  /**
+   * todo: 通过预约状态获取预约状态配置信息
+   * @param $_status
+   *
+   * @return array|mixed
+   */
+  public function OrderStatusGetOrderStatusConfig($_status){
+    if(!IsNum($_status, false, false)){
+      return array();
+    }
+
+    $StatusConfig = $this->OrderStatusConfig();
+    $StatusInfo = array();
+
+    foreach($StatusConfig as $key=>$val){
+      if($val["status"] == $_status){
+        $StatusInfo = $val;
+        break;
+      }
+    }
+
+    return $StatusInfo;
+  }
+
+  //region 签约
+  /**
+   * todo: 订单签约状态
+   * @return mixed
+   */
+  public function OrderStatusSignatoryInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[0];
+  }
+
+  /**
+   * todo: 订单签约状态值
+   * @return mixed
+   */
+  public function OrderStatusSignatoryStatus(){
+    $StatusInfo = $this->OrderStatusSignatoryInfo();
+
+    return $StatusInfo["status"];
+  }
+
+  /**
+   * todo: 订单签约批准状态
+   * @return mixed
+   */
+  public function OrderStatusSignatoryApproveInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[1];
+  }
+
+  /**
+   * todo: 订单签约批准状态值
+   * @return mixed
+   */
+  public function OrderStatusSignatoryApproveStatus(){
+    $StatusInfo = $this->OrderStatusSignatoryApproveInfo();
+
+    return $StatusInfo["status"];
+  }
+
+  /**
+   * todo: 订单签约拒绝状态
+   * @return mixed
+   */
+  public function OrderStatusSignatoryRejectInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[2];
+  }
+
+  /**
+   * todo: 订单签约拒绝状态值
+   * @return mixed
+   */
+  public function OrderStatusSignatoryRejectStatus(){
+    $StatusInfo = $this->OrderStatusSignatoryRejectInfo();
+
+    return $StatusInfo["status"];
+  }
+  //endregion 签约
+
+  //region 预约
+  /**
+   * todo: 订单预约状态
+   * @return mixed
+   */
+  public function OrderStatusSubscribeInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[3];
+  }
+
+  /**
+   * todo: 订单预约状态值
+   * @return mixed
+   */
+  public function OrderStatusSubscribeStatus(){
+    $StatusInfo = $this->OrderStatusSubscribeInfo();
+
+    return $StatusInfo["status"];
+  }
+
+  /**
+   * todo: 订单预约批准状态
+   * @return mixed
+   */
+  public function OrderStatusSubscribeApproveInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[4];
+  }
+
+  /**
+   * todo: 订单预约批准状态值
+   * @return mixed
+   */
+  public function OrderStatusSubscribeApproveStatus(){
+    $StatusInfo = $this->OrderStatusSubscribeApproveInfo();
+
+    return $StatusInfo["status"];
+  }
+
+  /**
+   * todo: 订单预约拒绝状态
+   * @return mixed
+   */
+  public function OrderStatusSubscribeRejectInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[5];
+  }
+
+  /**
+   * todo: 订单预约拒绝状态值
+   * @return mixed
+   */
+  public function OrderStatusSubscribeRejectStatus(){
+    $StatusInfo = $this->OrderStatusSubscribeRejectInfo();
+
+    return $StatusInfo["status"];
+  }
+  //endregion 预约
+
+  //region 消费
+  /**
+   * todo: 订单消费状态
+   * @return mixed
+   */
+  public function OrderStatusPayInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[6];
+  }
+
+  /**
+   * todo: 订单消费状态值
+   * @return mixed
+   */
+  public function OrderStatusPayStatus(){
+    $StatusInfo = $this->OrderStatusPayInfo();
+
+    return $StatusInfo["status"];
+  }
+  //endregion 消费
+
+  //region 回访
+  /**
+   * todo: 订单回访状态
+   * @return mixed
+   */
+  public function OrderStatusReturnVisitInfo(){
+    $StatusConfig = $this->OrderStatusConfig();
+
+    return $StatusConfig[7];
+  }
+
+  /**
+   * todo: 订单回访状态值
+   * @return mixed
+   */
+  public function OrderStatusReturnVisitStatus(){
+    $StatusInfo = $this->OrderStatusReturnVisitInfo();
+
+    return $StatusInfo["status"];
+  }
+  //endregion 回访
+
+  //endregion 预约状态
+
+  //region 预约
+  /**
+   * 创建预约号
    */
   public function CreateOrderSn(){
     mt_srand((double) microtime() * 1000000);
@@ -271,7 +643,7 @@ class Order {
   }
 
   /**
-   * todo: 获取未处理工单数量
+   * todo: 获取未处理预约数量
    *
    * @param $_account_info
    *
@@ -285,24 +657,23 @@ class Order {
     }
 
     $clsLogin = new \Org\ZhiHui\Login();
-
+    $clsOrder = new \Org\ZhiHui\Order();
     switch($_account_type){
-      case $clsLogin->GetLoginTypeSellerManager():
-        $sWhere = "(review=1 or review=2) and (status=0 or status=1)";
-        $sWhere .= " and broker_company_id={$_account_info["broker_company_id"]}";
+      case $clsLogin->GetLoginTypeSpecial():
+        $sWhere = "(status={$clsOrder->OrderStatusSignatoryStatus()} or status={$clsOrder->OrderStatusSignatoryStatus()})";
         break;
 
-      case $clsLogin->GetLoginTypeBrokerCompany():
-        $sWhere = "review=0";
-        $sWhere .= " and broker_company_id={$_account_info["broker_company_id"]}";
-        break;
-
-      default:
-        $sWhere = "review=0";
-        break;
+//      case $clsLogin->GetLoginTypeSellerMember():
+//        $sWhere = "review=0";
+//        $sWhere .= " and broker_company_id={$_account_info["broker_company_id"]}";
+//        break;
+//
+//      default:
+//        $sWhere = "review=0";
+//        break;
     }
 
-    $nUntreatedNumber = $this->modOrder->where($sWhere)->count();
+    //$nUntreatedNumber = $this->modOrder->where($sWhere)->count();
 
     if(!IsNum($nUntreatedNumber, false, false)){
       $nUntreatedNumber = 0;
@@ -310,13 +681,13 @@ class Order {
 
     return $nUntreatedNumber;
   }
-  //endregion 工单
+  //endregion 预约
 
-  //region 工单审批
+  //region 预约审批
   /**
-   * todo: 工单编号获取审批数据列表
+   * todo: 预约编号获取审批数据列表
    *
-   * @param $_order_sn 工单编号
+   * @param $_order_sn 预约编号
    *
    * @return array
    */
@@ -342,7 +713,7 @@ class Order {
   }
 
   /**
-   * todo: 根据工单编号获取最后一条审核信息
+   * todo: 根据预约编号获取最后一条审核信息
    * @param $_order_sn
    */
   public function OrderSnGetLastReviewInfo($_order_sn, $_status){
@@ -369,5 +740,5 @@ class Order {
 
     return $ReviewInfo;
   }
-  //endregion 工单审批
+  //endregion 预约审批
 }

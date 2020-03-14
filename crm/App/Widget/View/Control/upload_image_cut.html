@@ -1,0 +1,93 @@
+<div class="form-group {$upload_image_cut.css}" id="{$upload_image_cut.id}Tip">
+    <label class="control-label col-md-{$upload_image_cut.title_width}">
+        {$upload_image_cut.title}<eq name="upload_image_cut.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$upload_image_cut.input_width}">
+        <div class="fileupload fileupload-new">
+            <div class="bt_uploadify_thumb_ifr" id="div_{$upload_image_cut.id}_thumb_ifr"></div>
+
+            <div class="uploadify_ifr" style="clear: both;" id="{$upload_image_cut.id}_item">
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>浏览图片...</span>
+                    <!-- The file input field used as target for the file upload widget -->
+                    <input id="file_{$upload_image_cut.id}" type="file" name="Filedata" accept="{$upload_image_cut.extend.fileTypeDesc}" <eq name="upload_image_cut.extend.multi" value="true">multiple</eq>>
+                </span>
+                
+                <span class="help-block">{$upload_image_cut.tips}</span>
+
+                <input id="{$upload_image_cut.id}" name="{$upload_image_cut.name}" type="hidden" value='{$upload_image_cut.value}'>
+            </div>
+            
+            
+                <!-- The global progress bar -->
+                <div id="div_{$upload_image_cut.id}_loading" style="display:none;">
+                    <span class="help-block"><img src="__PUBLIC__/res/admin/assets/img/input-spinner.gif" align="" width="16" height="16"> 正在上传图片……</span>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div id="upload_image_cut_show_cut" class="modal fade" tabindex="-1" data-width="400">
+     <div class="modal-dialog">
+         <div class="modal-content">
+             <div class="modal-body">
+                 <form action="{$PageSearchUrl}" method="POST" class="form-horizontal form-bordered">
+                     <div class="row">
+                         <div class="col-md-12">
+                             <div class="portlet">
+                                 <div class="portlet-title">
+                                      <div class="caption"><i class="icon-search"></i>搜索</div>
+                                  </div>
+
+                                 <div class="portlet-body form">
+                                     <div class="form-body">
+                                         <?php CreateHtmlWidget($listdata["search"]); ?>
+
+                                         <input id="hide_act_123" name="act" type="hidden" value="search">
+                                         <!--input id="hide_navmid" name="hide_navmid" type="hidden" value="<?php echo $_GET["navmid"]; ?>"-->
+                                         <!--input id="hide_navsid" name="hide_navsid" type="hidden" value="<?php echo $_GET["navsid"]; ?>"-->
+                                     </div>
+                                  </div>
+                             </div>
+                         </div>
+                     </div>
+
+                     <button type="submit" class="btn btn-info">搜索</button>
+                     <button type="submit" class="btn btn-warning" onclick="$('#hide_act').val('reset')">重置</button>
+                     <button type="button" data-dismiss="modal" class="btn">关闭</button>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+
+<script>
+btten.LoadDataImage('div_{$upload_image_cut.id}_thumb_ifr', {$upload_image_cut.extend.multi}, '{$upload_image_cut.id}');
+<?php echo $upload_image_cut["extend"]["fileSizeLimit"];?>
+$(function () {
+    $('#file_{$upload_image_cut.id}').fileupload({
+        url : '__MODULE__/{$upload_image_cut.extend.url}',
+        dataType : 'json',
+        acceptFileTypes : /(\.|\/)({$upload_image_cut.extend.fileTypeExts})$/i,
+        maxFileSize : {$upload_image_cut.extend.fileSizeLimit}, // 5 MB
+        formData:{ fieldname : '{$upload_image_cut.extend.fieldname}', crop : {$upload_image_cut.extend.crop}, thumbsize : '{$upload_image_cut.extend.thumbsize|json_encode}' },//如果需要额外添加参数可以在这里添加
+        done: function (e, data) {
+            $('#div_{$upload_image_cut.id}_loading').hide();
+            
+            if(data.result.status == 0){
+                btten.Warning(data.result.info);
+                return;
+            }else{
+                $('#upload_image_cut_show_cut').show();
+                var sJson = '{"imageid":'+ data.result.imageid +',"image":"'+ data.result.image +'","path":"'+ data.result.path +'","width":'+ data.result.width +',"height":'+ data.result.height +',"url":"'+ data.result.url +'","thumb_image":"'+ data.result.thumb_image +'","thumb_path":"'+ data.result.thumb_path +'","thumb_width":'+ data.result.thumb_width +',"thumb_height":'+ data.result.thumb_height +',"thumb_type":"'+ data.result.thumb_type +'","thumb_mime":"'+ data.result.thumb_mime +'","thumb_size":'+ data.result.thumb_size +',"thumb_url":"'+ data.result.thumb_url +'"}';
+
+                btten.ThumbHtml("div_{$upload_image_cut.id}_thumb_ifr", {$upload_image_cut.extend.multi}, sJson, '{$upload_image_cut.id}');
+            }
+        },
+        submit : function (e, data) {
+            $('#div_{$upload_image_cut.id}_loading').show();
+        }
+    });
+});
+</script>

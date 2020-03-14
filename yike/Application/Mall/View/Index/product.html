@@ -1,0 +1,393 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!-- 页面部分 -->
+    <div class="container ecbreadcrumb">
+        <div class="row">
+            <div class="col-xs-12">
+                <div>
+                    <a href="/" class="itm">E客电动</a>
+                    <span class="spliter">/</span>
+                    <a href="/index/mall" class="itm">商城</a>
+                    <span class="spliter">/</span>
+                    <span class="itm">{$data.product.item_name}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background: #f4f4f4;
+        }
+
+        body:after {
+            display:block;
+            content: ' ';
+            width:100%;
+            height:100%;
+            z-index:-1;
+            position:fixed;
+            left:0;
+            top:0;
+            background-image: -webkit-radial-gradient(circle farthest-corner at 100% 0, #fcfcfc, #f4f4f4 80%);
+            background-image: -moz-radial-gradient(circle farthest-corner at 100% 0, #fcfcfc, #f4f4f4 80%);
+            background-image: radial-gradient(circle farthest-corner at 100% 0, #fcfcfc, #f4f4f4 80%);
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <style>
+                    .ecp-detail {
+                        padding: 60px;
+                        background: #FFF;
+                        border-radius: 3px;
+                    }
+
+                    .ecp-detail .inner {
+                        display: table;
+                        width: 100%;
+                    }
+
+                    .ecp-thumbnail {
+                        display: table-cell;
+                        width: 110px;
+                        vertical-align: middle;
+                    }
+
+                    .ecp-thumbnail .itm {
+                        /*background: url(/Public/common/js/img/slide/Jsm1.jpg) center center no-repeat;*/
+                        background-size: cover;
+                        width: 80px;
+                        height: 80px;
+                        margin-top: 10px;
+                        cursor: pointer;
+                        transition: all .3s;
+                        border-radius: 8px;
+                        display: inline-block;
+                    }
+
+                    .ecp-thumbnail .itm:hover {
+                        box-shadow: 0 0 0 1px rgba(0, 0, 0, .1)
+                    }
+
+                    .ecp-thumbnail .itm.selected, .ctxitm.selected {
+                        box-shadow: 0 0 0 1px rgba(3, 169, 212, .5);
+                    }
+
+                    .ecp-thumbnail .itm:first-child {
+                        margin-top: 0;
+                    }
+
+                    .ecp-bodyimg {
+                        /*background: url(/Public/common/js/img/slide/J1.jpg) center center no-repeat;*/
+                        display: table-cell;
+                        height: 420px;
+                        width: 420px;
+                        background-size: cover;
+                        border-radius: 10px;
+                    }
+
+                    .ecp-desc {
+                        display: table-cell;
+                        padding-left: 30px;
+                    }
+
+                    .ecp-desc .tt {
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid rgba(0, 0, 0, .07);
+                    }
+
+                    .ecp-desc .tt .t1 {
+                        font-size: 24px;
+                        color: #444;
+                        font-weight: 300;
+                        margin-bottom: 10px;
+                    }
+
+                    .ecp-desc .tt .t2 {
+                        color: #bbb;
+                    }
+
+                    .ecp-desc .dt .inntbl {
+                        line-height: 60px;
+                    }
+
+                    .ecp-desc .dt .inntbl td {
+                        vertical-align: middle;
+                    }
+
+                    .ecp-desc .dt {
+                        padding: 15px 0;
+                    }
+
+                    .ecp-desc .dt .inntbl .col1 {
+                        width: 120px;
+                    }
+
+                    .ecp-desc .dt .inntbl .ctxitm {
+                        display: inline-block;
+                        margin-right: 10px;
+                        border: 1px solid #EEE;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        line-height: 30px;
+                    }
+
+                    .ecp-desc .dt .inntbl .price {
+                        font-size: 30px;
+                        color: #03A9D4;
+                    }
+
+                    .ecp-desc .dt .inntbl .sim {
+                        font-size: 16px;
+                    }
+
+                    .ecp-desc .dt .buybtn {
+                        height: 40px;
+                        width: 120px;
+                        margin-right: 10px;
+                    }
+                </style>
+                <div class="ecp-detail">
+                    <div class="inner">
+                        <div class="ecp-thumbnail">
+                            <?php $index = '0'; ?>
+                            <volist name="data.product.show_photo" id="sp">
+                                <?php if ($index == '0') :?>
+                                    <div class="photo-small itm selected" val="{$sp.url}" style='background-image:url({$sp.url});'></div>
+                                    <?php $index++; ?>
+                                <?php else :?>
+                                    <div class="photo-small itm" val="{$sp.url}" style='background-image:url({$sp.url});'></div>
+                                <?php endif; ?>
+                            </volist>
+                        </div>
+                        <div class="ecp-bodyimg" style="background-image:url({$data['product']['show_photo'][0]['url']})">
+                        </div>
+                        <div class="ecp-desc">
+                            <div class="tt">
+                                <div class="t1">{$data.product.item_name}</div>
+                                <div class="t2">{$data.product.sub_name}</div>
+                            </div>
+                            <div class="dt">
+                                <table class="inntbl">
+                                    <tr>
+                                        <td class="col1">颜色</td>
+                                        <td class="col2">
+                                            <volist name="data.product.color" id="c">
+                                                <span class="ctxitm product-color">{$c.color}</span>
+                                            </volist>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col1">价格</td>
+                                        <td class="col2">
+                                            <div class="price">
+                                                <sup class="sim">￥</sup>
+                                                <span class="val">{$data.product.price}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php if ((int)$data['is_sale'] == '0') :?>
+                                        <tr>
+                                            <td class="col1">购买</td>
+                                            <td class="col2">
+                                                <button class="btn btn-primary buybtn add-cart" disabled="disabled">已售完</button>
+                                                <button class="btn btn-default buybtn add-order" disabled="disabled">已售完</button>
+                                            </td>
+                                        </tr>
+                                    <?php else :?>
+                                        <tr>
+                                            <td class="col1">购买</td>
+                                            <td class="col2">
+                                                <button class="btn btn-primary buybtn add-cart" disabled="disabled">加入购物车</button>
+                                                <button class="btn btn-default buybtn add-order" disabled="disabled">直接购买</button>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <tr>
+                                        <td class="col1"></td>
+                                        <!--<td class="col2" style="font-size:12px;color:#bbb;">-->
+                                            <!--* 7 天无理由退货，周边产品满 500 元免运费。-->
+                                        <!--</td>-->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="sunnytct">
+                    <span class="t1">产品信息</span>
+                    <span class="t2">Product Detail</span>
+                </div>
+                <div class="sunnydetailc">
+                    <volist name="data.product.content_photo" id="cp">
+                        <img class="lazy prodimghc" data-original="{$cp.url}" />
+                    </volist>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div ui-shopping-service="" class="shopping-service">-->
+                    <!--<ul class="shopping-info gray-box">-->
+                        <!--<li class="online-services">-->
+                            <!--<span class="online"></span>-->
+                            <!--<h5>在线客服</h5>-->
+                            <!--<h6>周一至周日 8:00-17:00</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="return-goods"></span>-->
+                            <!--<h5>7 天无理由退货</h5>-->
+                            <!--<h6>7 天无理由退货 请放心购买</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="delivery-goods"></span>-->
+                            <!--<h5 class="ng-binding">周边产品满 500 元免运费</h5>-->
+                            <!--<h6>全场使用德邦或顺丰快递</h6>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="btfixprodthumb">
+        <div class="td tx1">
+            <div class="thumbimgbt" style="background-image:url({$data['product']['show_photo'][0]['url']})"></div>
+        </div>
+        <div class="td">
+            <div style="padding:0 15px;">{$data.product.item_name}</div>
+        </div>
+        <div class="td tx3">
+            <div style="padding-right:15px;">
+                <button class="btn btn-primary add-cart">加入购物车</button>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="item_id" value="{$data.product.id}">
+    <input type="hidden" id="item_name" value="{$data.product.item_name}">
+    <input type="hidden" id="price" value="{$data.product.price}">
+    <input type="hidden" id="num" value="1">
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 600) {
+                    $('.btfixprodthumb').removeClass('displayed');
+                } else {
+                    $('.btfixprodthumb').addClass('displayed');
+                }
+            });
+
+            $('.photo-small').click(function () {
+                var url = $(this).attr('val');
+
+                $('.photo-small').removeClass('selected');
+
+                $(this).addClass('selected');
+
+                $('.ecp-bodyimg').css("backgroundImage","url("+ url +")");
+            })
+
+            $('.product-color').click(function() {
+                 $('.product-color').removeClass('selected');
+
+                $(this).addClass('selected');
+            })
+
+            $('.add-cart').click(function() {
+                if(User.validate())
+                    addCart();
+            })
+
+            $('.add-order').click(function() {
+                if(User.validate())
+                    addOrder();
+            })
+        });
+
+        function addCart() {
+            var item_id = $('#item_id').val();
+            var item_name = $('#item_name').val();
+            var price = $('#price').val();
+            var num = $('#num').val();
+            var color = $('.product-color.selected').html();
+
+            if (!color) {
+                $.alertbox({
+                    msg:'<span class="orange">请选择颜色!</span>'
+                });
+
+                return;
+            }
+
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'item_id': item_id, 'num':num, 'color':color, 'price': price };
+//            alert(JSON.stringify(data)); return;
+            fit.ajax({
+                url:'/user/add_shopping_cart',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+                }
+            });
+        }
+
+        function addOrder() {
+            var item_id = $('#item_id').val();
+            var item_name = $('#item_name').val();
+            var price = $('#price').val();
+            var num = $('#num').val();
+            var color = $('.product-color.selected').html();
+
+            if (!color) {
+                $.alertbox({
+                    msg:'<span class="orange">请选择颜色!</span>'
+                });
+
+                return;
+            }
+
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'item_id': item_id, 'num':num, 'color':color, 'price': price };
+//            alert(JSON.stringify(data)); return;
+            fit.ajax({
+                url:'/user/add_order',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        location.href = '/index/checkout?id='+ result.data +'&access='+ user_id;
+                    }
+                }
+            });
+        }
+    </script>
+</block>

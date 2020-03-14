@@ -5,23 +5,19 @@ use Think\Model;
 //管理员模型
 class LoginModel extends Model {
   private $modAdmin = null;
-  private $modBrokerCompanyAccount = null;
-  private $modSellerManager = null;
+  private $modUser = null;
 
   private $clsLogin = null;
   private $clsAdmin = null;
-  private $clsBrokerCompany = null;
-  private $clsSellerManager = null;
-  
+  private $clsUser = null;
+
   function __construct() {
     $this->modAdmin = M("admin_user");
-    $this->modBrokerCompanyAccount = M("broker_company_account");
-    $this->modSellerManager = M("seller_manager");
-    
+    $this->modUser = M("users");
+
     $this->clsLogin = new \Org\ZhiHui\Login();
     $this->clsAdmin = new \Org\ZhiHui\Admin();
-    $this->clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $this->clsSellerManager = new \Org\ZhiHui\SellerManager();
+    $this->clsUser = new \Org\ZhiHui\User();
   }
 
   //region 登陆
@@ -45,7 +41,7 @@ class LoginModel extends Model {
 
     //region 获取账号信息
     switch($_type){
-      case $this->clsLogin->GetLoginTypeAdmin():
+      case $this->clsUser->GetAdminTypeName():
         $sField = "admin_id";
         $sWhere = "login_name='{$_name}'";
         $sWhere .= " and disable=0";
@@ -56,46 +52,29 @@ class LoginModel extends Model {
         }
 
         $AccountInfo = $this->clsAdmin->GetAdminDetails($nAdminUserId);
-
-        if(!IsArray($AccountInfo)){
-          return ReturnError(L("_LOGIN_PASSWORD_ERROR_"));
-        }
         break;
-      
-      case $this->clsLogin->GetLoginTypeBrokerCompany():
+
+      default:
         $sField = "id";
         $sWhere = "login_name='{$_name}'";
         $sWhere .= " and disable=0";
-        $nBrokerCompanyAccountId = $this->modBrokerCompanyAccount->where($sWhere)->getField($sField);
+        $nUserId = $this->modUser->where($sWhere)->getField($sField);
 
-        if(!IsNum($nBrokerCompanyAccountId, false, false)){
+        if(!IsNum($nUserId, false, false)){
           return ReturnError(L("_LOGIN_PASSWORD_ERROR_"));
         }
 
-        $AccountInfo = $this->clsBrokerCompany->GetBrokerCompanyAccountDetails($nBrokerCompanyAccountId);
+        $AccountInfo = $this->clsUser->GetUserDetails($nUserId);
+        $UserGroupInfo = $this->clsUser->GroupIdGetGroupInfo($AccountInfo["group_id"]);
 
-        if(!IsArray($AccountInfo)){
-          return ReturnError(L("_LOGIN_PASSWORD_ERROR_"));
-        }
-        
-        break;
-      
-      case $this->clsLogin->GetLoginTypeSellerManager():
-        $sField = "id";
-        $sWhere = "login_name='{$_name}'";
-        $sWhere .= " and disable=0";
-        $nSellerManagerId = $this->modSellerManager->where($sWhere)->getField($sField);
-
-        if(!IsNum($nSellerManagerId, false, false)){
-          return ReturnError(L("_LOGIN_PASSWORD_ERROR_"));
-        }
-
-        $AccountInfo = $this->clsSellerManager->GetSellerManagerDetails($nSellerManagerId);
-
-        if(!IsArray($AccountInfo)){
-          return ReturnError(L("_LOGIN_PASSWORD_ERROR_"));
+        if($AccountInfo["group_id"] != $UserGroupInfo["group_id"]){
+          return ReturnError(L("_LOGIN_TYPE_ERROR_"));
         }
         break;
+    }
+
+    if(!IsArray($AccountInfo)){
+      return ReturnError(L("_LOGIN_PASSWORD_ERROR_"));
     }
     //endregion 获取账号信息
 
@@ -111,7 +90,7 @@ class LoginModel extends Model {
     $NewPassword = PasswordMd5($_pwd);
 
     switch($_type){
-      case $this->clsLogin->GetLoginTypeAdmin():
+      case $this->clsUser->GetAdminTypeName():
         $SaveData = array(
           "user_id" => $AccountInfo["admin_id"],
           "password" => $NewPassword["pwd"],
@@ -127,12 +106,12 @@ class LoginModel extends Model {
 
         //缓存新的管理员数据
         $this->clsAdmin->GetAdminDetails($AccountInfo["admin_id"]);
-        
+
         $nAccountID = $AccountInfo["admin_id"];
-        $sAccountType = $this->clsLogin->GetLoginTypeAdmin();
+        $sAccountType = $this->clsUser->GetAdminTypeName();
         break;
 
-      case $this->clsLogin->GetLoginTypeBrokerCompany():
+      default:
         $SaveData = array(
           "id" => $AccountInfo["id"],
           "password" => $NewPassword["pwd"],
@@ -141,34 +120,16 @@ class LoginModel extends Model {
           "last_ip" => get_client_ip(),
         );
 
-        $this->modBrokerCompanyAccount->save($SaveData);
+        $this->modUser->save($SaveData);
 
         //清除登录前的缓存
-        $this->clsBrokerCompany->SetBrokerCompanyAccountDetailsCache($AccountInfo["id"]);
+        $this->clsUser->SetUserDetailsCache($AccountInfo["id"]);
 
         //缓存新的管理员数据
-        $this->clsBrokerCompany->GetBrokerCompanyAccountDetails($AccountInfo["id"]);
+        $this->clsUser->GetUserDetails($AccountInfo["id"]);
 
         $nAccountID = $AccountInfo["id"];
-        $sAccountType = $this->clsLogin->GetLoginTypeBrokerCompany();
-        break;
-
-      case $this->clsLogin->GetLoginTypeSellerManager():
-        $SaveData = array(
-          "id" => $AccountInfo["id"],
-          "password" => $NewPassword["pwd"],
-          "salt" => $NewPassword["salt"],
-          "last_login" => time(),
-          "last_ip" => get_client_ip(),
-        );
-
-        $this->modSellerManager->save($SaveData);
-        
-        $this->clsSellerManager->SetSellerManagerDetailsCache($AccountInfo["id"]);
-        $this->clsSellerManager->GetSellerManagerDetails($AccountInfo["id"]);
-
-        $nAccountID = $AccountInfo["id"];
-        $sAccountType = $this->clsLogin->GetLoginTypeSellerManager();
+        $sAccountType = $this->clsUser->UserGroupGetAccountTypeName($AccountInfo["group_id"]);
         break;
     }
 
@@ -186,8 +147,12 @@ class LoginModel extends Model {
 
   /**
    * todo:检查登陆参数
+   *
    * @param $_name 登陆账号
-   * @param $_pwd 登录密码
+   * @param $_type
+   * @param $_pwd  登录密码
+   *
+   * @param $_code
    *
    * @return array
    */
@@ -196,7 +161,7 @@ class LoginModel extends Model {
       return ReturnError(L('_ADMIN_ACCOUNT_NULL_'));
     }
     
-    if($_type != $this->clsLogin->GetLoginTypeAdmin() && $_type != $this->clsLogin->GetLoginTypeBrokerCompany() && $_type != $this->clsLogin->GetLoginTypeSellerManager()){
+    if(IsN($_type)){
       return ReturnError(L('_LOGIN_TYPE_ERROR_'));
     }
 
@@ -231,18 +196,14 @@ class LoginModel extends Model {
     $this->clsLogin->SetAccountLoginStatusCache($nAccountID, $nAccoutType);
 
     switch($nAccoutType){
-      case $this->clsLogin->GetLoginTypeAdmin():
+      case $this->clsUser->GetAdminTypeName():
         //清除登录前的缓存
         $this->clsAdmin->SetAdminDetailsCache($nAccountID);
         break;
 
-      case $this->clsLogin->GetLoginTypeBrokerCompany():
+      default:
         //清除登录前的缓存
-        $this->clsBrokerCompany->SetBrokerCompanyAccountDetailsCache($nAccountID);
-        break;
-
-      case $this->clsLogin->GetLoginTypeSellerManager():
-        $this->clsSellerManager->SetSellerManagerDetailsCache($nAccountID);
+        $this->clsUser->SetUserDetailsCache($nAccountID);
         break;
     }
     

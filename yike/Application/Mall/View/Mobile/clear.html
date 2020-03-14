@@ -1,0 +1,14 @@
+<extend name="Base/mobile_tools"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    微信缓存清理中...
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            localStorage.clear();
+        });
+    </script>
+</block>

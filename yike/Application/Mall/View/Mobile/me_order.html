@@ -1,0 +1,144 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <ul class="ylchmul">
+        <li class="choose-state selected" val="0"><span>全部订单</span></li>
+
+        <li class="choose-state" val="10"><span>待付款</span></li>
+        <li class="choose-state" val="20"><span>已支付</span></li>
+        <li class="choose-state" val="30"><span>已完成</span></li>
+        <li class="choose-state" val="80"><span>已关闭</span></li>
+    </ul>
+    <style>
+        body {
+            padding-top: 100px;
+        }
+    </style>
+
+    <!--没有数据时显示（互斥出现）-->
+    <div class="pad-20 emptybox">
+        <span class="iconfont icon-empty"></span>
+        <div class="txt">暂无订单</div>
+        <div>
+            <button class="confirmbtn tapquick" url="/mobile/index">随便逛逛</button>
+        </div>
+    </div>
+    <!--有数据时显示列表（互斥出现）-->
+    <div class="ftlistbox" style="display:none">
+    </div>
+    <div id="order-itm" style="display:none">
+        <div class="itm np paid">
+            <div class="t1">
+                <span class="item-text"></span>
+            </div>
+            <div class="t1">
+                <span>订单总额：<span class="amount"></span>元</span>
+            </div>
+            <div class="t3">
+                <span class="iconfont icon-time"></span>
+                <span class="buy-date"></span>
+            </div>
+            <div class="xtag state">已支付</div>
+        </div>
+    </div>
+    <a class="bottombackbtn" href="javascript:void(0)">返回个人中心</a>
+</block>
+<block name="script">
+    <script>
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+            $('.choose-state').click(function () {
+                var state = $(this).attr('val');
+
+                $('.choose-state').removeClass('selected');
+
+                $(this).addClass('selected');
+
+                getOrder(state);
+            })
+
+            $('.bottombackbtn').click(function() {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me?access='+ user_id;
+            })
+
+            getOrder(0);
+        });
+
+        function getOrder(state) {
+            var user_id = localStorage.getItem('user_id');
+            $('.ftlistbox').html('');
+
+            var data = { 'user_id':user_id, 'state': state };
+
+            fit.ajax({
+                url:'/user/get_order',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                    console.log(JSON.stringify(result));
+
+                    loadOrder(result.data);
+                }
+            });
+        }
+
+        function loadOrder(data) {
+            var user_id = localStorage.getItem('user_id');
+//            alert(JSON.stringify(data));
+            if (data.length > 0) {
+                $('.emptybox').hide();
+                $('.ftlistbox').show();
+            }
+
+            $.each(data, function () {
+                var node = $('#order-itm').find('.itm').clone();
+                var itm_id = this.id;
+//                alert(JSON.stringify(this.address));
+
+                node.find('.name').html(this.address.name);
+
+                var buy_date = new Date(this.create_at).Format("MM月dd日 hh:mm");
+
+                node.find('.buy-date').html(buy_date);
+                node.find('.order-id').html(this.id);
+                node.find('.amount').html(this.amount);
+
+                switch (this.state) {
+                    case '10':
+                        node.find('.state').html('待付款');
+                        break;
+                    case '20':
+                        node.find('.state').html('已付款');
+                        break;
+                    case '30':
+                        node.find('.state').html('已完成');
+                        break;
+                    case '80':
+                        node.find('.state').html('已关闭');
+                        break;
+                    default:
+                        node.find('.state').html('已关闭');
+                        break;
+                }
+
+                node.find('.item-name').html(this.details[0].product.item_name);
+
+                node.click(function() {
+                    location.href = '/mobile/me_order_detail?id='+ itm_id + '&access='+ user_id
+                });
+
+                $('.ftlistbox').append(node);
+            });
+        }
+    </script>
+</block>

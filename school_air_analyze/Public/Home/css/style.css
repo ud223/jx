@@ -1,0 +1,76 @@
+/*自适应屏幕*/
+ @media (max-width:768px) {  
+    .container {  
+        width: 750px;
+		width:100%;
+    } 
+        .sp-a{ height:110px; }
+	.theme-popover{ margin:-195px 0 0 -169px; width:350px;}
+	.jiaru{ padding-left:0;}
+	.news ul li{padding:0;}
+	.news ul li a h1{ width:100%;}
+	.article{ width:100%; margin:0;}
+	.works{ overflow:hidden; padding-top:0px; padding-bottom:20px;}
+	.baner{ margin-bottom:0px; margin-top:15px;}
+	.shipin embed{ width:100%; height:auto; display:block;}
+	.sosuo{ position:relative; margin-top:0px; margin-bottom:20px;}
+	.news{padding:0 0 20px 0;}
+	.about{ width:100%; margin:0 auto; margin-top:-20px; overflow:hidden;}
+	.banner{ margin-left:-15px; margin-right:-15px;}
+	.sp h3{ width:100px;}
+	.navwidth{ margin-top:0px;}
+ 	.about ul li a{ font-size:14px; padding:5px 5px 12px 5px;}
+	.neirong{ width:100%;}
+	.jiaru,.bianji{width:100%; margin:0; padding-top:30px;}
+	.lianxi{margin:60px 18% 20px 18%;}
+	.hzqd img{ margin:45px auto; display:block; width:100%;}
+	.db{ margin-top:60px;}
+	.wen{width:100%;float:left}
+	
+	.collapse.in{ height:50px !important; padding-top:10px; padding-bottom:0px;}
+
+@-webkit-keyframes myfirst 
+        {100% { height:80px;}
+        }
+	
+	}
+ @media (min-width:768px) {  
+    .container {  
+        width: 750px;
+    }  
+
+	}
+/*	.logo{ padding-top:40px;}*/
+}  
+  
+@media (max-width:992px) {  
+    .container {  
+        width: 970px  
+    }  
+}  
+  
+@media (min-width:1200px) {  
+    .container {  
+        width: 1400px;
+    }  
+/*.logo{ left:45%; top:20px;}*/
+	
+}  
+
+@media (min-width: 1200px) {
+	#willesPlay {
+		height:630px
+	}
+}
+
+@media (max-width: 1100px) {
+	#willesPlay {
+		height:440px
+	}
+}
+
+@media (max-width: 550px) {
+    #willesPlay {
+		height:250px
+	}
+} 

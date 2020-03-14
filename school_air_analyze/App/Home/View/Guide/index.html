@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>办事指南详情</title>
+    <!-- Unresponsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link rel="shortcut icon" href="__IMG__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__CSS__/global.css" />
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+</head>
+
+<body>
+
+<div class="myat_optitle01 p20">
+    {$item['name']}
+</div>
+<div class="myat_article_body">
+    <div class="text_content nopadding">
+        {$item['introduce']}
+    </div>
+</div>
+<input name="id" id="id" value="{$item['id']}" type="hidden">
+<input name="file" id="file" value="{$item['file_2_photo'][src]}" type="hidden">
+<input name="filel" id="filel" value="{$item['file_1_photo'][src]}" type="hidden">
+<input name="file3" id="file3" value="{$item['file_3_photo'][src]}" type="hidden">
+<input name="file4" id="file4" value="{$item['file_4_photo'][src]}" type="hidden">
+<input name="file5" id="file5" value="{$item['file_5_photo'][src]}" type="hidden">
+<input name="file6" id="file6" value="{$item['file_6_photo'][src]}" type="hidden">
+<input name="file7" id="file7" value="{$item['file_7_photo'][src]}" type="hidden">
+<input name="file8" id="file8" value="{$item['file_8_photo'][src]}" type="hidden">
+<input name="file9" id="file9" value="{$item['file_9_photo'][src]}" type="hidden">
+<input name="file10" id="file10" value="{$item['file_10_photo'][src]}" type="hidden">
+
+<div class="myat_gmd_tblks">
+    <div class="myat_gmd_tblk">
+        <if condition="$item.file_1 eq 'null'">
+            <else />
+            <div class="tt">相关文档下载</div>
+        </if>
+        <div class="itms">
+            <if condition="$item.file_1 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_1_photo'][src]}"  onclick="sa_submit()">{$item['file_1_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_2 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_2_photo'][src]}" onclick="ss_submit()">{$item['file_2_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_3 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_3_photo'][src]}" onclick="sb_submit()">{$item['file_3_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_4 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_4_photo'][src]}" onclick="sc_submit()">{$item['file_4_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_5 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_5_photo'][src]}" onclick="sd_submit()">{$item['file_5_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_6 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_6_photo'][src]}" onclick="se_submit()">{$item['file_6_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_7 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_7_photo'][src]}" onclick="sf_submit()">{$item['file_7_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_8 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_8_photo'][src]}" onclick="sg_submit()">{$item['file_8_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_9 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_9_photo'][src]}" onclick="sl_submit()">{$item['file_9_photo'][file_name]}</a>
+                </div>
+            </if>
+
+            <if condition="$item.file_10 eq 'null'">
+                <else />
+                <div class="itm lnk doc">
+                    <img src="__IMG__/clips_sm.png" class="coimg"/>
+                    <a href="{$item['file_10_photo'][src]}" onclick="sq_submit()">{$item['file_10_photo'][file_name]}</a>
+                </div>
+            </if>
+        </div>
+    </div>
+    <div class="myat_gmd_tblk">
+        <div class="tt">联系方式</div>
+        <div class="htxts">
+            <a href="tel:{$item['phone']}" style="color:#000000">
+                <div class="htxt">{$item['phone']}</div>
+            </a>
+
+            <div class="htxt">{$item['workshift']}</div>
+        </div>
+    </div>
+
+
+</div>
+<style>
+    .mys_popbg {
+        background: rgba(0, 0, 0, .2);
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 11;
+    }
+
+    .mys_popfrm {
+        width: 80%;
+        left: 50%;
+        margin-left: -40%;
+        top: 120px;
+        position: fixed;
+        z-index: 12;
+        background:#FFF;
+        box-shadow: 0 10px 50px rgba(0,0,0,.5);
+        border-radius:5px;
+    }
+    .mys_pop {
+        display: none;
+    }
+    .mys_popfrm .inn .tt {
+        font-weight: bold;
+        margin-bottom:15px;
+    }
+    .mys_popfrm .r {
+
+    }
+    .mys_popfrm .inn {
+        padding:30px 15px;
+    }
+    .mys_popfrm .inn .r input {
+        display: block;
+        width:100%;
+        box-sizing: border-box;
+        height:36px;
+        padding:0 15px;
+        margin-bottom: 10px;
+    }
+    .mys_popfrm .inn .r button {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding:10px;
+        border:none;
+        background:#43B6A3;
+        color:#FFF;
+        border-radius: 3px;
+        font-size: 16px;
+    }
+    .mys_popfrm .cls {
+        position: absolute;
+        right:15px;
+        top:5px;
+        color: #666;
+        font-size: 32px;
+        z-index:2;
+    }
+</style>
+
+
+<script type="text/javascript">
+    function ss_submit(){
+        var a=document.getElementById("file").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+a+'&id='+id});
+            }
+        });
+    }
+    function sa_submit(){
+        var b=document.getElementById("filel").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+b+'&id='+id});
+
+            }
+        });
+    }
+
+    function sb_submit(){
+        var c=document.getElementById("file3").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+c+'&id='+id});
+
+            }
+        });
+    }
+
+    function sc_submit(){
+        var d=document.getElementById("file4").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+d+'&id='+id});
+
+            }
+        });
+    }
+
+    function sd_submit(){
+        var e=document.getElementById("file5").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+e+'&id='+id});
+
+            }
+        });
+    }
+
+    function se_submit(){
+        var f=document.getElementById("file6").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+f+'&id='+id});
+
+            }
+        });
+    }
+
+    function sf_submit(){
+        var g=document.getElementById("file7").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+g+'&id='+id});
+
+            }
+        });
+    }
+
+    function sg_submit(){
+        var h=document.getElementById("file8").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+h+'&id='+id});
+
+            }
+        });
+    }
+
+    function sl_submit(){
+        var l=document.getElementById("file9").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+l+'&id='+id});
+
+            }
+        });
+    }
+
+    function sq_submit(){
+        var t=document.getElementById("file10").value;
+        var id=document.getElementById("id").value;
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // wx.miniProgram.navigateTo({url: '/pages/preview/preview?file='+t+'&id='+id});
+
+            }
+        });
+    }
+
+
+</script>
+</body>
+
+</html>

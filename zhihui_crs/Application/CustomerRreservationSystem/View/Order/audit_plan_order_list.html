@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!-- 搜索 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>搜索保险计划书</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="searchForm" action="__URL__/AuditPlanList" method="get">
+
+            <div class="row">
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">查询条件</label>
+                  <div class="col-sm-5">
+                    <select class="chosen-select" name="search_case" id="search_case" autocomplete="off" style="width: 100%;" data-placeholder="全部">
+                      <option value="">不指定条件</option>
+                      <option value="order_sn" <eq name="search_case" value="id">selected</eq>>保险计划书编号</option>
+                      <option value="produc" <eq name="search_case" value="real_name">selected</eq>>产品名称</option>
+                      <option value="customer" <eq name="search_case" value="phone">selected</eq> >客户名称</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-5">
+                    <input type="text" name="search_key" class="form-control" placeholder="查询关键字" value="{$search_key}">
+                    <span class="help-block m-b-none"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <?php if(IsArray($SellerCaptainOption) || IsArray($SellerMemberOption)){?>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">销售人员</label>
+
+                  <notempty name="SellerCaptainOption">
+                    <div class="col-sm-5">
+                      <select class="chosen-select" name="search_seller_captain" id="search_seller_captain" autocomplete="off" style="width: 100%;" data-placeholder="全部团队长">
+                        <option value="" <empty name='search_seller_captain'>selected</empty>>全部团队长</option>
+                        <volist name="SellerManagerOption" id="list">
+                          <option value="{$list.val}" <eq name="search_seller_captain" value="$list.val">selected</eq> >{$list.key}</option>
+                        </volist>
+                      </select>
+                    </div>
+                  </notempty>
+
+                  <notempty name="SellerMemberOption">
+                    <div class="col-sm-5">
+                      <select class="chosen-select" name="search_seller_member" id="search_seller_member" autocomplete="off" style="width: 100%;" data-placeholder="全部客户经理">
+                        <option value="" <empty name='search_seller_member'>selected</empty>>全部客户经理</option>
+                        <volist name="SellerMemberOption" id="list">
+                          <option value="{$list.val}" <eq name="search_seller_member" value="$list.val">selected</eq> >{$list.key}</option>
+                        </volist>
+                      </select>
+                    </div>
+                  </notempty>
+                </div>
+                <?php }?>
+              </div>
+                  
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="hr-line-dashed"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
+
+                    <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-refresh"></i>&nbsp;重置表单</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--搜索 End-->
+  
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+          
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>
+                <div class="checkbox checkbox-inline checkbox-info">
+                  <input type="checkbox" name="list_chk_all" id="list_chk_all_1" onclick="ListMainCheckBoxClick(this);">
+                  <label for="list_chk_all_1"></label>
+                </div>
+              </th>
+              <th class="text-left">保险计划书编号</th>
+              <th class="text-left">客户姓名</th>
+              <th class="text-left">产品</th>
+              <th class="text-left">发起人</th>
+              <th>发起日期</th>
+              <th class="text-center">当前状态</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="OrderList">
+              <tr>
+                <td colspan="10" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="OrderList" id="list">
+                <tr>
+                  <td>
+                    <div class="checkbox checkbox-inline checkbox-info">
+                      <input type="checkbox" name="list_chk_sub" id="list_chk_sub_{$i}" onclick="ListSubCheckBoxClick(this);" value="{$list.order_sn}">
+                      <label for="list_chk_sub_{$i}"></label>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    <a href="__URL__/AuditPlanInfo/order_sn/{$list.order_sn}">{$list.order_sn}</a>
+                  </td>
+                  <td class="text-left">{$list.customer_name}</td>
+                  <td class="text-left">{$list.product_name}</td>
+                  <td>{$list.seller_name}</td>
+                  <td>{$list.signed_time}</td>
+                  <td class="text-center">
+                    <p class="form-control-static">{$list.status_desc}</p>
+                  </td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <switch name="list.status">
+                        <case value="11">
+                          <switch name="list.attachment_type">
+                            <case value="file">
+                              <a href="__MODULE__/Download/OriginalNameFile/file_id/{$list.attachment_id}" class="btn btn-success">
+                                <i class="fa fa-download"></i>&nbsp;下载计划书
+                              </a>
+                            </case>
+                            <case value="image">
+                              <a href="__MODULE__/Download/OriginalNameImage/image_id/{$list.attachment_id}" class="btn btn-success">
+                                <i class="fa fa-download"></i>&nbsp;下载计划书
+                              </a>
+                            </case>
+                          </switch>
+                          <a href="__URL__/AuditPlanInfo/order_sn/{$list.order_sn}" class="btn btn-warning"><i class="fa fa-edit"></i>&nbsp;回复</a>
+                        </case>
+
+                        <default /><button class="btn btn-info" type="button" data-sn="{$list.order_sn}" onclick="GetAuditPlanInfo(this);"><i class="fa fa-eye"></i>&nbsp;查看详情</button>
+                        <a href="__URL__/AuditPlanInfo/order_sn/{$list.order_sn}" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;回复</a>
+                      </switch>
+                    </div>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th>
+                <div class="checkbox checkbox-inline checkbox-info">
+                  <input type="checkbox" name="list_chk_all" id="list_chk_all_2" onclick="ListMainCheckBoxClick(this);">
+                  <label for="list_chk_all_2"></label>
+                </div>
+              </th>
+              <th class="text-left">保险计划书编号</th>
+              <th class="text-left">客户姓名</th>
+              <th class="text-left">产品</th>
+              <th class="text-left">发起人</th>
+              <th>发起日期</th>
+              <th class="text-center">当前状态</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();">
+            <i class="fa fa-refresh"></i>&nbsp;刷新页面
+          </button>
+          
+          <button class="btn btn-info" type="button" onclick="RefreshCache();">
+            <i class="fa fa-refresh"></i>&nbsp;刷新缓存
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--客户信息Modal Begin-->
+  <div class="modal inmodal fade" id="modal_plan_info_ifr" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">计划书详情</h4>
+        </div>
+
+        <div class="modal-body form-horizontal">
+          <div class="ibox float-e-margins">
+            <div class="ibox-title"><h5>计划书编号：<span id="span_order_sn"></span></h5></div>
+            <div class="ibox-content">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                      客户经理
+                    </label>
+                    <div class="col-sm-9">
+                      <p class="form-control-static" id="p_seller_member"></p>
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                      客户
+                    </label>
+                    <div class="col-sm-9">
+                      <p class="form-control-static" id="p_customer"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                      拟购产品
+                    </label>
+                    <div class="col-sm-9">
+                      <p class="form-control-static" id="p_product"></p>
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                      备注
+                    </label>
+                    <div class="col-sm-9">
+                      <p class="form-control-static" id="p_remark"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="ibox float-e-margins">
+            <div class="ibox-title"><h5>附件信息</h5></div>
+            <div class="ibox-content">
+              <div class="row">
+                <div class="col-sm-12" id="div_attachment_ifr">
+                  <notempty name="OrderInfo.attachment">
+                    <div class="file-box">
+                      <div class="file">
+                        <a href="__MODULE__/Download/OriginalNameImage/image_id/{$OrderInfo.attachment.id}">
+                          <span class="corner"></span>
+                  
+                          <div class="image">
+                            <img alt="image" class="img-responsive" src="{$OrderInfo.attachment.full_file}">
+                          </div>
+                          <div class="file-name">
+                            <span style="word-wrap:break-word;">{$OrderInfo.attachment.original_name}</span>
+                            <br/>
+                            <small>添加时间：{$OrderInfo.attachment.add_date}</small>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </notempty>
+          
+                  <notempty name="CustomerInfo.idcard_img_a">
+                    <div class="file-box">
+                      <div class="file">
+                        <!--<a href="javascript:void(0);">-->
+                        <a href="__MODULE__/Download/OriginalNameImage/image_id/{$CustomerInfo.idcard_img_a.id}">
+                  
+                          <span class="corner"></span>
+                  
+                          <div class="image">
+                            <img alt="image" class="img-responsive" src="{$CustomerInfo.idcard_img_a.full_file}">
+                          </div>
+                          <div class="file-name">
+                            {$CustomerInfo.idcard_img_a.original_name}
+                            <br/>
+                            <small>添加时间：{$CustomerInfo.idcard_img_a.add_date}</small>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </notempty>
+          
+                  <notempty name="OrderInfo.xf_attachment">
+                    <eq name="OrderInfo.attachment_type" value="$AttachmentFileType">
+                      <div class="file-box">
+                        <div class="file">
+                          <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.xf_attachment.id}">
+                            <span class="corner"></span>
+                    
+                            <div class="icon">
+                              <i class="fa {$OrderInfo.xf_attachment.icon}"></i>
+                            </div>
+                            <div class="file-name">
+                              {$OrderInfo.xf_attachment.original_name}
+                              <br/>
+                              <small>文件大小：{$OrderInfo.xf_attachment.file_size_kb}KB</small>
+                              <br/>
+                              <small>添加时间：{$OrderInfo.xf_attachment.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </eq>
+            
+                    <eq name="OrderInfo.attachment_type" value="$AttachmentImageType">
+                      <div class="file-box">
+                        <div class="file">
+                          <a href="__MODULE__/Download/OriginalNameImage/image_id/{$OrderInfo.xf_attachment.id}">
+                            <span class="corner"></span>
+                    
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$OrderInfo.xf_attachment.full_file}">
+                            </div>
+                    
+                            <div class="file-name">
+                              {$OrderInfo.xf_attachment.original_name}
+                              <br/>
+                              <small>添加时间：{$OrderInfo.xf_attachment.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </eq>
+                  </notempty>
+        
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="form-control-static" id="p_birthday"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--客户信息Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/AuditPlanList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+  
+  for (var selector in config) $(selector).chosen(config[selector]);
+
+  //region 刷新缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新保险计划书缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetOrderCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新缓存
+
+  //region 获取计划书详情
+  function GetAuditPlanInfo(obj) {
+    var sOrderSn = $(obj).attr('data-sn');
+
+    if(IsN(sOrderSn)){
+      AlertError("计划书数据错误");
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取客户信息', 180);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxAuditPlanInfo",
+      dataType:"json",
+      timeout: 6000,
+      data: {"order_sn": sOrderSn},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        $('#span_order_sn').html('');
+        $('#p_seller_member').html('');
+        $('#p_customer').html('');
+        $('#p_product').html('');
+        $('#p_remark').html('');
+        $('#div_attachment_ifr').html('');
+        
+        GetAuditPlanInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function GetAuditPlanInfoResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+    
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+    
+    var AuditPlanInfo = objJson.data;
+    var DomAttachment = [];
+    var DomXfAttachment = [];
+    
+    $('#span_order_sn').html(AuditPlanInfo.order_sn);
+    $('#p_seller_member').html(AuditPlanInfo.seller_name);
+    $('#p_customer').html(AuditPlanInfo.customer.real_name);
+    $('#p_product').html(AuditPlanInfo.product_snapshots.type_name +" - "+ AuditPlanInfo.product_snapshots.product_name);
+    $('#p_remark').html(AuditPlanInfo.seller_manager_remarks);
+    
+    if(!IsN(AuditPlanInfo.attachment)){
+      DomAttachment.push('<div class="file-box">');
+      DomAttachment.push('<div class="file">');
+      DomAttachment.push('<a href="__MODULE__/Download/OriginalNameImage/image_id/'+ AuditPlanInfo.attachment.id +'">');
+      DomAttachment.push('<span class="corner"></span>');
+      DomAttachment.push('<div class="image">');
+      DomAttachment.push('<img alt="image" class="img-responsive" src="'+ AuditPlanInfo.attachment.full_file +'">');
+      DomAttachment.push('</div>');
+      DomAttachment.push('<div class="file-name">');
+      DomAttachment.push('<span style="word-wrap:break-word;">'+ AuditPlanInfo.attachment.original_name +'</span>');
+      DomAttachment.push('<br/>');
+      DomAttachment.push('<small>添加时间：'+ AuditPlanInfo.attachment.add_date +'</small>');
+      DomAttachment.push('</div>');
+      DomAttachment.push('</a>');
+      DomAttachment.push('</div>');
+      DomAttachment.push('</div>');
+  
+      $('#div_attachment_ifr').append(DomAttachment.join(''));
+    }
+    
+    if(!IsN(AuditPlanInfo.xf_attachment)){
+      switch(AuditPlanInfo.attachment_type){
+        case "image":
+          DomXfAttachment.push('<div class="file-box">');
+          DomXfAttachment.push('<div class="file">');
+          DomXfAttachment.push('<a href="__MODULE__/Download/OriginalNameImage/image_id/'+ AuditPlanInfo.attachment.id +'">');
+          DomXfAttachment.push('<span class="corner"></span>');
+          DomXfAttachment.push('<div class="image">');
+          DomXfAttachment.push('<img alt="image" class="img-responsive" src="'+ AuditPlanInfo.attachment.full_file +'">');
+          DomXfAttachment.push('</div>');
+          DomXfAttachment.push('<div class="file-name">');
+          DomXfAttachment.push('<span style="word-wrap:break-word;">'+ AuditPlanInfo.attachment.original_name +'</span>');
+          DomXfAttachment.push('<br/>');
+          DomXfAttachment.push('<small>添加时间：'+ AuditPlanInfo.attachment.add_date +'</small>');
+          DomXfAttachment.push('</div>');
+          DomXfAttachment.push('</a>');
+          DomXfAttachment.push('</div>');
+          DomXfAttachment.push('</div>');
+  
+          $('#div_attachment_ifr').append(DomXfAttachment.join(''));
+          break;
+          
+        case "file":
+          DomXfAttachment.push('<div class="file-box">');
+          DomXfAttachment.push('<div class="file">');
+          DomXfAttachment.push('<a href="__MODULE__/Download/OriginalNameFile/file_id/'+ AuditPlanInfo.xf_attachment.id +'">');
+          DomXfAttachment.push('<span class="corner"></span>');
+          DomXfAttachment.push('<div class="icon">');
+          DomXfAttachment.push('<i class="fa '+ AuditPlanInfo.xf_attachment.icon +'"></i>');
+          DomXfAttachment.push('</div>');
+          DomXfAttachment.push('<div class="file-name">');
+          DomXfAttachment.push(AuditPlanInfo.xf_attachment.original_name);
+          DomXfAttachment.push('<br/>');
+          DomXfAttachment.push('<small>文件大小：'+ AuditPlanInfo.xf_attachment.file_size_kb +'KB</small>');
+          DomXfAttachment.push('<br/>');
+          DomXfAttachment.push('<small>添加时间：'+ AuditPlanInfo.xf_attachment.add_date +'</small>');
+          DomXfAttachment.push('</div>');
+          DomXfAttachment.push('</a>');
+          DomXfAttachment.push('</div>');
+          DomXfAttachment.push('</div>');
+  
+          $('#div_attachment_ifr').append(DomXfAttachment.join(''));
+          break;
+      }
+    }
+    
+    ShowPlanModal();
+  }
+  
+  function ShowPlanModal() {
+    $('#modal_plan_info_ifr').modal();
+  }
+  //Endregion 获取计划书详情
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+
+<script>
+  //region 删除选中的保险计划书
+  function DeleteOrder(){
+    var sSelectValue = GetListCheckBoxSelectValue();
+
+    if(IsN(sSelectValue)){
+      AlertError("请选择需要删除的保险计划书");
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: "确定删除选中的保险计划书吗？",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#F8AC59",
+        confirmButtonText: "确定删除",
+        cancelButtonText: "取消",
+        closeOnConfirm: true,
+        closeOnCancel: true
+      },
+      function(isConfirm){
+        if(isConfirm){
+          ExcuteDelete(sSelectValue);
+        }else{
+          return false;
+        }
+      }
+    );
+  }
+
+  //执行删除
+  function ExcuteDelete(id){
+    BlockWindow_ExecOp('正在删除选中的保险计划书', 200);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxOrderDelete",
+      dataType:"json",
+      timeout: 6000,
+      data:{"order_sn": id},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        ExcuteDeleteResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function ExcuteDeleteResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      ToastrError(objJson.info, '删除失败');
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 删除选中的保险计划书
+</script>
+</body>
+
+</html>

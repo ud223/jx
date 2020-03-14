@@ -1,0 +1,187 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div style="height:120px;"></div>
+    <div class="container apply-hdchtdm">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="clearfix dh1">
+                    <div class="lt"><strong>进度查询</strong></div>
+                    <div class="rt">
+                        <div class="dhchddlwo" id="dropdownMenu1" data-toggle="dropdown">
+                            <span>服务商加盟</span>
+                            <i class="iconfont icon-angledown"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+                            <li>
+                                <a href="/index/apply">加盟商申请</a>
+                            </li>
+                            <li>
+                                <a href="/index/expstore_search">进度查询</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>请输入公司法人姓名与身份证号</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding-top:50px;">
+        <div class="row">
+            <div class="col-xs-2" style="text-align:right;line-height:45px;">
+                法人姓名 <strong style="color:red;">*</strong>
+            </div>
+            <div class="col-xs-2">
+                <input id="req_owner" type="text" req="yes" title='请填写法人姓名' data-trigger="manual" />
+            </div>
+            <div class="col-xs-2" style="text-align:right;line-height:45px;">
+                法人身份证号码 <strong style="color:red;">*</strong>
+            </div>
+            <div class="col-xs-2">
+                <input id="req_owner_card_id" type="text" req="yes" title='请填写法人身份证号码' data-trigger="manual" />
+            </div>
+            <div class="col-xs-2" style="text-align: right;">
+                <button class="btn btn-primary" style="height:45px;width:120px;" id="gotosearch">查询</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                &nbsp;
+            </div>
+            <div class="col-xs-6">
+
+            </div>
+        </div>
+    </div>
+    <style>
+        table.hdi {
+            line-height:25px;
+            width:100%;
+        }
+        table.hdi .col1 {
+            color:#aaa;
+            width:30%;
+        }
+    </style>
+    <div class="modal fade" id="queryResult" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">查询结果</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <table class="hdi">
+                        <tr>
+                            <td class="col1">
+                                公司名称
+                            </td>
+                            <td id="company_name"></td>
+                        </tr>
+                        <tr>
+                            <td class="col1">法人名称</td>
+                            <td id="owner"></td>
+                        </tr>
+                        <tr>
+                            <td class="col1">门店名称</td>
+                            <td id="store_name"></td>
+                        </tr>
+                        <tr>
+                            <td class="col1">审核状态</td>
+                            <td id="state"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#gotosearch').click(function() {
+
+                if(validateInput()) {
+                    var req_owner = $('#req_owner').val();
+                    var req_owner_card_id = $('#req_owner_card_id').val();
+
+                    var data = { 'req_owner': req_owner, 'req_owner_card_id': req_owner_card_id };
+
+//                    alert(JSON.stringify(data)); return;
+
+                    fit.ajax({
+                        url:'/user/company_query',
+                        data:data,
+                        success:function(result){
+                            console.log(JSON.stringify(result));
+                            if (result.code == 200) {
+                                $('#company_name').html(result.data.company_name);
+                                $('#owner').html(result.data.owner);
+                                $('#store_name').html(result.data.store_name);
+
+                                if (result.data.state == 1)
+                                    $('#state').html('审核通过');
+                                else
+                                    $('#state').html('审核中');
+
+                                $('#queryResult').modal({
+                                    keyboard: false
+                                })
+                            }
+
+                        }
+                    });
+
+                } else {
+
+                }
+            });
+        });
+
+        var validateInput = function() {
+            var result = true;
+            $('.warningframe').removeClass('warningframe');
+            $('.stores').find('*[req="yes"]').each(function() {
+                var $this = $(this);
+                var typeoftag = typeof($this);
+                if(this.tagName.toLowerCase() === 'input') {
+                    console.log($this.val().length);
+                    if($this.val().length == 0) {
+//                            alert($this.attr('name') + ":" + $this.val());
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    } else {
+                        $this.tooltip('destroy');
+                    }
+                } else if(this.tagName.toLowerCase() === 'select') {
+                    if(!$this.val() || $this.val() == '-1') {
+//                            alert($this.attr('name'));
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    } else {
+                        $this.tooltip('destroy');
+                    }
+                }
+            });
+            return result;
+        }
+    </script>
+</block>

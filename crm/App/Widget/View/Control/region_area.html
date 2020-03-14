@@ -1,0 +1,18 @@
+<div class="form-group {$region_area.css}" id="{$region_area.id}Tip">
+    <label  class="col-md-{$region_area.title_width} control-label" style="text-align: {$region_area.title_align}; line-height: 30px;">
+        {$region_area.title}<eq name="region_area.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-3" id="{$region_area.id}_item">
+        <select  class="sidebar-option form-control input-large" name="{$region_area.name}" id="{$region_area.id}">
+            <option value="">--</option>
+        </select>
+        <span class="help-block">{$region_area.tips}</span>
+    </div>
+ </div>
+<script>
+var {$region_area.id}_JsonArea = {$Area};
+
+$('#{$region_area.id}').ready(function(){
+    $('#{$region_area.id}').val('{$region_area.value}').change();
+});
+</script>

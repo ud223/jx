@@ -1,0 +1,23 @@
+<div class="form-group  {$dateselect.css}" id="{$dateselect.id}Tip">
+    <label class="control-label col-md-{$dateselect.title_width}">
+        {$dateselect.title}<eq name="dateselect.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-4" id="{$dateselect.id}_item">
+        <div id="div_{$dateselect.id}" class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+            <input id="{$dateselect.id}" name="{$dateselect.name}" type="text" class="form-control" value="" readonly="readonly">
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button"><i class="icon-calendar"></i></button>
+            </span>
+        </div>
+        <span class="help-block">{$dateselect.tips}</span>                           
+    </div>
+ </div>
+
+<script>
+    $('#div_{$dateselect.id}').datepicker({
+        rtl: App.isRTL(),
+        autoclose: true,
+        todayBtn: true,
+        clearBtn: true
+    });
+</script>

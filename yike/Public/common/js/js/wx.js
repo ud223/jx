@@ -1,4 +1,4 @@
-var appid = 'wx1547fb23c014a9a0';
+var appid = 'wxf044a5c986c9aa5a';
 
 function validEnvironment() {
     var ua = window.navigator.userAgent.toLowerCase();
@@ -18,7 +18,7 @@ function userLogin() {
     //var url = encodeURIComponent("http://www.yujiaqu.com/reg");
     var tmp_url = location.href;
 
-    var url = encodeURI("http://fit.webetter100.com/show/reg");
+    var url = encodeURI("http://mall.ecomoter.com/mobile/reg");
 
     if (!user_id) {
         var toUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid +"&redirect_uri="+ url +"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";

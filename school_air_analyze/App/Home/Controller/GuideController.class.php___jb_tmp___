@@ -1,0 +1,36 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2018/9/6/006
+ * Time: 10:50
+ */
+
+namespace Home\Controller;
+
+use Think\Controller;
+
+class GuideController extends Controller
+{
+
+    public  function index($id = 0){
+        $id = isset($_REQUEST['id']) ? $_REQUEST['id'] : false;
+        $item =  D('guide')->where("id='$id'")->find();
+
+        $fileu_id = $item["file_1"];
+
+        $fileu = D('guide_fileu')->where("id='$fileu_id'")->find();
+
+        $item['file_1_photo'] = $fileu;
+
+        $fileu2_id = $item["file_2"];
+
+        $fileu2 = D('guide_fileu')->where("id='$fileu2_id'")->find();
+
+        $item['file_2_photo'] = $fileu2;
+
+        $this->assign('item', $item);
+        $this->display();
+    }
+
+}

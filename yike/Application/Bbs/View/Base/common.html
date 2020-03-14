@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>E客智慧</title>
+    <!-- Unresponsive -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--[if (lte IE 8) ]>
+    <script type="text/javascript">location.href = "upgrade.html";</script> <![endif]-->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <include file="Base/pagestyle"/>
+    <include file="Base/script"/>
+    <block name="style"></block>
+    <![endif]-->
+    <style>.carousel-inner img {
+        width:100%;
+    }</style>
+</head>
+
+<body>
+<form id="form1">
+    <!-- Start of Header -->
+    <div class="header-wrapper">
+        <header>
+            <div class="container">
+                <div class="logo-container">
+                    <!-- Website Logo -->
+                    <a href="http://mall.ecomoter.com/index/index.html" title="E客智慧" class="ltlogo">
+                        <img src="/Public/common/js/img/logo.png" alt="E客智慧" style="height: 25px">
+                    </a>
+                </div>
+
+                <!-- Start of Main Navigation -->
+                <nav class="main-nav">
+                    <div class="menu-top-menu-container">
+                        <ul id="menu-top-menu" class="clearfix">
+                            <!-- class="current-menu-item" -->
+                            <li><a href="http://mall.ecomoter.com/index/scooter">E客智慧</a></li>
+                            <li><a href="http://mall.ecomoter.com/index/mall">商城</a></li>
+                            <li><a href="http://mall.ecomoter.com/index/authorized">合作伙伴</a></li>
+                            <li><a href="http://mall.ecomoter.com/index/server">服务</a></li>
+                            <li><a id="bbs" href="javascript:tobbs()">社区</a></li>
+                            <li><a id="my-cart" href="javascript:void(0)"><span
+                                    class="iconfont icon-gouwuche"></span></a>
+                                <!--
+                                <ul class="sub-menu">
+                                        <li><a href="full-width.html">Full Width</a></li>
+                                </ul>
+                                -->
+                            </li>
+                            <li><a id="my-index" href="javascript:void(0)"><span
+                                    class="iconfont icon-user icon-white"></span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- End of Main Navigation -->
+
+            </div>
+        </header>
+    </div>
+    <!-- End of Header -->
+
+    <!-- Start of Search Wrapper -->
+    <block name="queue"></block>
+    <!-- End of Search Wrapper -->
+
+    <block name="body"></block>
+
+    <block name="script"></block>
+
+    <!-- Start of Footer -->
+    <footer id="footer-wrapper">
+        <!-- Footer Bottom -->
+        <div id="footer-bottom-wrapper">
+            <div id="footer-bottom" class="container">
+                <div class="pagebottom">
+                    <div>
+                        粤ICP备16104906号 Copyright 2014-2016 ECO Inc. All rights reserved.
+                    </div>
+                    <div style="float:right">
+                        <div class="t1">全国服务热线</div>
+                        <div class="qgrx">400-009-2909</div>
+                    </div>
+                    <div style="float:right;margin-right: 20px">
+                        <div class="t1">周一至周日</div>
+                        <div class="qgrx">8:00-17:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Footer Bottom -->
+    </footer>
+    <!-- End of Footer -->
+
+    <a href="#top" id="scroll-top"></a>
+
+    <!-- /container -->
+    <script type="text/javascript">
+        function tobbs(){
+
+            var user_id = localStorage.getItem('user_id');
+            if (!user_id) {
+                location.href = 'http://mall.ecomoter.com/index/login';
+                return;
+            }
+
+            location.href = 'http://bbs.ecomoter.com?access='+ user_id;
+        }
+        $(function () {
+            $('#my-index').click(function () {
+                var user_id = localStorage.getItem('user_id');
+                if (!user_id) {
+                    location.href = 'http://mall.ecomoter.com/index/login';
+                    return;
+                }
+
+                location.href = 'http://mall.ecomoter.com/index/user_info?access='+ user_id;
+            });
+        });
+    </script>
+</form>
+</body>
+
+</html>

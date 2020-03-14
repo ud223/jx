@@ -1,0 +1,134 @@
+<include file="Public:page_header" />
+         
+<!-- BEGIN 主体区域-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>{$pagetitle}</div>
+            </div>        
+
+            <div class="portlet-body">
+                <?php
+                if(!empty($BtnCustom)){
+                ?>
+                <div class="table-toolbar">
+                    <div class="btn-group">
+                        <volist name="BtnCustom" id="btn">
+                            <a href="{$btn.href}" class="btn {$btn.css}" <notempty name="btn.event">onclick="{$btn.event}"</notempty>><i class="{$btn.icon}"></i> {$btn.title}</a>
+                        </volist>
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
+
+                <table class="table table-striped table-bordered table-hover table_vertical" id="table_menu_list">
+                    <thead>
+                        <tr style=" border-bottom: 1px solid #e6e6e6;">
+                            <th class="table-checkbox" style="width:18px;">
+                                <input type="checkbox" class="group-checkable" data-set="#table_menu_list .checkboxes" />
+                            </th>
+
+                            <volist name="listdata.field" id="field">
+                                <eq name="field.ishide" value="false">
+                                    <th style="{$field.style}" class="{$field.css}">{$field.val}</th>
+                                </eq>
+                            </volist>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php
+                        $nCount = sizeof($listdata["data"]["data"]);
+
+                        for($i=0; $i<$nCount; $i++){
+                            $NewsInfo = $listdata["data"]["data"][$i];
+                        ?>
+                        <tr class="odd gradeX">
+                            <td style="width:18px;"><input type="checkbox" name="list_cb_ids" class="checkboxes" value="{$NewsInfo.selectid}" /></td>
+                        <?php
+                        $nFieldCount = sizeof($listdata["field"]);
+
+                        for($k=0; $k<$nFieldCount; $k++){
+                            $FieldInfo = $listdata["field"][$k];
+                            $sFieldValue = $NewsInfo[$FieldInfo["key"]];
+
+                            if($FieldInfo["type"] == "date"){
+                                $sFieldValue = date('Y-m-d', $sFieldValue);
+                            }
+
+                            if($FieldInfo["ishide"] == "false"){
+                                echo '<td class="'. $FieldInfo["css"] .'" style="'. $FieldInfo["style"] .'">' . $sFieldValue . '</td>';
+                            }
+                        }
+                        ?>
+                            <td style="width:103px;">
+                                <div class="btn-group">
+                                    <a class="btn btn-default dropdown-toggle" href="#" data-toggle="dropdown">
+                                        <i class="icon-cogs"></i> 操作
+                                        <i class="icon-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                       <li><a href="{$PageListEditUrl}/selectid/{$NewsInfo.selectid}"><i class="icon-pencil"></i> 编辑</a></li>
+                                       <li><a href="javascript:void(0);" onclick="btten.DeleteData({$NewsInfo.selectid}, '{$PageListDeleteUrl}')"><i class="icon-trash"></i> 删除</a></li>
+                                    </ul>
+                                 </div>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+
+                <!--Begin 分页-->
+                {$listdata.data.paging.html}
+                <!--End 分页-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END 主体区域-->
+    
+<div id="search_fir" class="modal fade" tabindex="-1" data-width="400">
+     <div class="modal-dialog">
+         <div class="modal-content">
+             <div class="modal-body">
+                 <form action="{$PageSearchUrl}" method="POST" class="form-horizontal form-bordered">
+                     <div class="row">
+                         <div class="col-md-12">
+                             <div class="portlet">
+                                 <div class="portlet-title">
+                                      <div class="caption"><i class="icon-search"></i>搜索</div>
+                                  </div>
+
+                                 <div class="portlet-body form">
+                                     <div class="form-body">
+                                         <?php CreateHtmlWidget($listdata["search"]); ?>
+
+                                         <input id="hide_act" name="act" type="hidden" value="search">
+                                         <!--input id="hide_navmid" name="hide_navmid" type="hidden" value="<?php echo $_GET["navmid"]; ?>"-->
+                                         <!--input id="hide_navsid" name="hide_navsid" type="hidden" value="<?php echo $_GET["navsid"]; ?>"-->
+                                     </div>
+                                  </div>
+                             </div>
+                         </div>
+                     </div>
+
+                     <button type="submit" class="btn btn-info">搜索</button>
+                     <button type="submit" class="btn btn-warning" onclick="$('#hide_act').val('reset')">重置</button>
+                     <button type="button" data-dismiss="modal" class="btn">关闭</button>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+   
+<script>
+    btten.ListPageCheckBoxSelectAll('table_menu_list');
+    btten.ListPageCheckBoxSelect('table_menu_list');
+</script>
+<include file="Public:page_footer" />

@@ -1,0 +1,182 @@
+<extend name="Base/pc"/>
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="glaxkblock usr-lft">
+                    <div class="pad-20">
+                        <div style="background-image:url(/Public/common/js/img/eco_new.jpg);background-position: center center;background-repeat: no-repeat;background-size: cover;width:100%;height:200px;border-radius:2px;"></div>
+                    </div>
+                    <ul>
+                        <li><a id="li-my-order" href="javascript:void(0)">我的订单</a></li>
+                        <li><a id="li-my-address" href="javascript:void(0)">我的地址</a></li>
+                        <li class="selected"><a id="li-my-pwd" href="javascript:void(0)">修改密码</a></li>
+                        <li><a id="li-my-info" href="javascript:void(0)">资料设置</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-9">
+
+                <div class="glaxkblock" style="margin-bottom:30px;">
+                    <div class="main_tt">
+                        <span>修改密码</span>
+                    </div>
+                    <style>
+                        .glaxkblock td {
+                            vertical-align: middle;
+                        }
+                        .glaxkblock input[type='password'] {
+                            width:50%;
+                            box-sizing: border-box;
+                        }
+                        .glaxkblock label {
+                            color:#f65177;
+                            margin-left:40px;
+                            font-weight: normal;
+                        }
+                        .glaxkblock .subbtn {
+                            width:50%;
+                            height:36px;
+                        }
+                    </style>
+                    <div class="inner">
+                        <table class="chitmutb">
+                            <tr>
+                                <td>原始密码</td>
+                                <td>
+                                    <input id="old_password" type="password" />
+                                    <label id="old_label" style="display: none;">密码不正确</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>新密码</td>
+                                <td>
+                                    <input id="password" type="password" />
+                                    <label id="confirm_label" style="display: none;">两次密码不一致</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>再次输入</td>
+                                <td>
+                                    <input id="confirm_password" type="password" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-primary subbtn">提交</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            User.validate();
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_order?access='+ user_id;
+            });
+
+            $('#li-my-info').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_info?access='+ user_id;
+            });
+
+            $('#li-my-address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_address?access='+ user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+//                var user_id = localStorage.getItem('user_id');
+//
+//                if (!user_id) {
+//                    location.href = '/index/login';
+//
+//                    return;
+//                }
+//
+//                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('.btn-primary').click(function () {
+                $('#old_label').hide();
+                $('#confirm_label').hide();
+
+                changePwd();
+            })
+        });
+
+        function changePwd() {
+            var user_id = localStorage.getItem('user_id');
+            var old_password = $('#old_password').val();
+            var password = $('#password').val();
+            var confirm_password = $('#confirm_password').val();
+
+            if (password != confirm_password) {
+                $('#confirm_label').show();
+
+                return;
+            }
+
+            var data = { 'user_id':user_id, 'old_password': old_password, 'password': password, 'password': password }
+
+            fit.ajax({
+                url:'/user/change_pwd',
+                data:data,
+                success:function(result){
+//                alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 103) {
+                        $('#old_label').show();
+
+                        return;
+                    }
+
+                    if (result.code == 200) {
+//                        localStorage.setItem('user_id', result.data);
+                    }
+                }
+            });
+        }
+    </script>
+</block>

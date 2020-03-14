@@ -16,12 +16,14 @@ class LoginController extends Controller {
    */
   public function index(){
     $clsSystemConfig = new \Org\ZhiHui\SystemConfig();
-    $clsLogin = new \Org\ZhiHui\Login();
+    $clsUser = new \Org\ZhiHui\User();
     
-    $this->assign("AdminType", $clsLogin->GetLoginTypeAdmin());
-    $this->assign("BrokerCompanyType", $clsLogin->GetLoginTypeBrokerCompany());
-    $this->assign("SellerManagerType", $clsLogin->GetLoginTypeSellerManager());
-    
+    $this->assign("AdminType", $clsUser->GetAdminTypeName());
+    $this->assign("SpecialType", $clsUser->GetAccountTypeSpecial());
+    $this->assign("BrokerCompanyType", $clsUser->GetAccountTypeBrokerCompany());
+    $this->assign("SellerCaptainType", $clsUser->GetAccountTypeSellerCaptain());
+    $this->assign("SellerMemberType", $clsUser->GetAccountTypeSellerMember());
+
     $this->assign("EnAbbrName", $clsSystemConfig->_EnAbbrName);
     $this->assign("SystemName", $clsSystemConfig->_SystemName);
     

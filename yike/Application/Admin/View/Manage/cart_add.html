@@ -1,0 +1,96 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">新增车辆备案</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">SN码</span>
+                        <input type="text" class="form-control" placeholder="请输入SN码..." name="car_sn" id="car_sn" value="{$data['item'].car_sn}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">车架号</span>
+                        <input type="text" class="form-control" placeholder="请输入车架号..." name="car_frame_no" id="car_frame_no" value="{$data['item'].car_frame_no}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">电机号</span>
+                        <input type="text" class="form-control" placeholder="请输入电机号..." name="car_engine_no" id="car_engine_no" value="{$data['item'].car_engine_no}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">型号</span>
+                        <!--<input type="text" class="form-control" placeholder="请输入型号..." name="car_name" id="car_name" value="{$data['item'].car_class}" maxlength="50">-->
+                        <select class="form-control" name="car_class" id="car_class">
+                            <?php foreach ($data['class'] as $itm) :?>
+                                <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/cart_list';
+            });
+        });
+
+        function saveItem() {
+            var cart = {};
+
+            cart.id = $('#exp_id').val();
+            cart.car_sn = $('#car_sn').val();
+            cart.car_frame_no = $('#car_frame_no').val();
+            cart.car_engine_no = $('#car_engine_no').val();
+            cart.car_name = $('#car_name').val();
+            cart.car_class = $('#car_class').val();
+
+            var data = { 'cart':cart };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存该车辆信息?')) {
+                fit.ajax({
+                    url:'/manage/cart_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/manage/cart_edit?id=' + result.data;
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

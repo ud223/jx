@@ -1,0 +1,221 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <?php
+        $index = 0;
+        $imgs_json = '';
+
+        foreach ($data['product']['show_photo'] as $sp) {
+            if ($index > 0) {
+                $imgs_json = $imgs_json . ',';
+            }
+
+            $imgs_json = $imgs_json . '{ url: "'. $sp['url'] . '"}';
+
+            $index++;
+        }
+    ?>
+    <div class="pad-10">
+        <script type="text/javascript">
+            // 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
+
+            var imgs_json = [<?php echo $imgs_json; ?>];
+        </script>
+        <!--此段为滑动多图的html部分，写死在这里-->
+        <div id="cd_mentor_img_slider" class="swipe">
+            <div class="swipe-wrap">
+                <!--<div class="figure"></div>-->
+            </div>
+            <!-- 放置索引标签的地方 -->
+            <div class="gl">
+                <!--<div class="pgitm"></div>-->
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            background: #FFF;
+        }
+
+        .swipe-wrap> .figure {
+            height: 270px !important;
+        }
+
+    </style>
+
+    <div class="prdtt">
+        <div class="t1">{$data.product.item_name}</div>
+        <div class="t2">
+            <span class="s">￥</span>
+            <span class="v">{$data.product.price}</span>
+        </div>
+    </div>
+    <div class="qtytt">
+        <div class="qtytbl">
+            <div class="qtytr">
+                <div class="td col1">颜色</div>
+                <div class="td col2">
+                    <volist name="data.product.color" id="c">
+                        <div class="attrmgitm product-color">{$c.color}</div>
+                    </volist>
+                </div>
+            </div>
+            <div class="qtytr">
+                <div class="td col1">数量</div>
+                <div class="td col2">
+                    <div class="numbtbr">
+                        <div class="cl sub">-</div>
+                        <div class="cl qtty">
+                            1
+                        </div>
+                        <div class="cl add">+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding:20px 10px 0 10px;">
+        <button class="confirmbtn full add-cart" style="height:50px;font-size:16px;">
+            <span class="iconfont icon-cart"></span>
+            加入购物车
+        </button>
+    </div>
+
+    <div class="conttte">
+        <div class="t1d">产品信息</div>
+        <div class="t2d">Product Detail</div>
+        <div class="l lt"></div>
+        <div class="l rt"></div>
+    </div>
+    <div class="contholder">
+        <volist name="data.product.content_photo" id="cp">
+            <img class="lazy" data-original="{$cp.url}" />
+        </volist>
+    </div>
+    <input type="hidden" id="item_id" value="{$data.product.id}">
+    <input type="hidden" id="item_name" value="{$data.product.item_name}">
+    <input type="hidden" id="price" value="{$data.product.price}">
+    <input type="hidden" id="num" value="1">
+</block>
+<block name="script">
+    <script>
+        $('document').ready(function() {
+            // 初始化轮动广告部分（Start）
+            if(imgs_json.length) {
+                // 根据imgs_json的长度和内容循环加载图片
+                $.each(imgs_json, function() {
+                    var new_img = $('<div>').addClass('figure');
+                    new_img.css('background-image', 'url(' + this.url + ')');
+                    /*
+                     * 9月26日更新：
+                     * 新增了可链接的情况，插入一个a标签
+                     */
+                    if(this.link) {
+                        var new_link = $('<a>').addClass('sw-inner-link');
+                        new_link.attr('href', this.link);
+                        new_img.append(new_link);
+                    }
+                    $('#cd_mentor_img_slider .swipe-wrap').append(new_img);
+                });
+                // 初始化swipe
+                var slider = Swipe(document.getElementById('cd_mentor_img_slider'), {
+                    startSlide: 0,
+                    speed: 400,
+                    auto: false,
+                    continuous: false,
+                    disableScroll: false,
+                    stopPropagation: false,
+                    callback: function(index, elem) {},
+                    transitionEnd: function(index, elem) {
+                        $('.gl .pgitm.selected').removeClass('selected');
+                        $('.gl .pgitm[index="' + index + '"]').addClass('selected');
+                    }
+                });
+                // 初始化pager
+                var n = slider.getNumSlides();
+                for(var i = 0; i < n; i++) {
+                    var new_pager = $('<div>').addClass('pgitm').attr('index', i);
+                    if(i === 0) {
+                        new_pager.addClass('selected');
+                    }
+                    $('.swipe .gl').append(new_pager);
+                }
+            }
+            // 设置广告栏比例：
+            $('.swipe-wrap > .figure').height(($('.swipe').width() / 16) * 8 + 'px');
+            // 初始化轮动广告部分（End）
+
+            // 迟加载图片
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+
+            $('.product-color').click(function() {
+                $('.product-color').removeClass('selected');
+
+                $(this).addClass('selected');
+            })
+
+            $('.add-cart').click(function() {
+//                User.validate();
+
+                addCart();
+            })
+
+            $('.qtytt').find('.sub').click(function () {
+                var num = parseInt($('#num').val());
+
+                if (num == 1)
+                    return;
+
+                num = num - 1;
+
+                $('#num').val(num);
+                $('.qtytt').find('.qtty').html(num);
+            })
+
+            $('.qtytt').find('.add').click(function () {
+                var num = parseInt($('#num').val());
+
+                num = num + 1;
+
+                $('#num').val(num);
+                $('.qtytt').find('.qtty').html(num);
+            })
+        });
+
+        function addCart() {
+            var item_id = $('#item_id').val();
+            var item_name = $('#item_name').val();
+            var price = $('#price').val();
+            var num = $('#num').val();
+            var color = $('.product-color.selected').html();
+
+            if (!color) {
+                $.alertbox({
+                    msg:'<span class="orange">请选择颜色!</span>'
+                });
+
+                return;
+            }
+
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'item_id': item_id, 'num':num, 'color':color, 'price': price };
+//            alert(JSON.stringify(data)); return;
+            fit.ajax({
+                url:'/user/add_shopping_cart',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+                }
+            });
+        }
+    </script>
+</block>

@@ -1,0 +1,148 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        .starslanp .staritmd {
+            font-size: 30px;
+            cursor: pointer;
+            margin-right: 5px;
+            float: left;
+            color: #ccc;
+            transition: all .4s;
+        }
+
+        .starslwp {
+            margin-bottom: 15px;
+        }
+
+        .starslanp .icon-iosstar {
+            color: #03A9F4;
+        }
+        .starslwp .whtt {
+            font-size:16px;
+            color:#444;
+            margin-bottom:5px;
+        }
+    </style>
+    <div>
+        <div style="padding:20px 0 0 10px;">
+            请为本次服务评价，谢谢
+        </div>
+        <div class="ftlistbox">
+            <div class="pad-20">
+                <div class="starslwp">
+                    <div class="whtt">
+                        商品质量
+                    </div>
+                    <div class="starslanp">
+                        <span class="iconfont staritmd icon-iosstaroutline product" score="1"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline product" score="2"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline product" score="3"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline product" score="4"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline product" score="5"></span>
+                    </div>
+                </div>
+                <div class="starslwp">
+                    <div class="whtt">
+                        物流情况
+                    </div>
+                    <div class="starslanp">
+                        <span class="iconfont staritmd icon-iosstaroutline logistics" score="1"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline logistics" score="2"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline logistics" score="3"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline logistics" score="4"></span>
+                        <span class="iconfont staritmd icon-iosstaroutline logistics" score="5"></span>
+                    </div>
+                </div>
+                <input id="comment_text" type="text" class="lineinput" placeholder="意见和建议" style="margin-bottom:20px;" maxlength="150">
+
+
+                <button id="btn_submit" class="confirmbtn green full">提交评价</button>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="order_id" value="{$data.order_id}" >
+    <a class="bottombackbtn" href="me_orderdetail.html">返回订单详情</a>
+    <style>
+        .ftlistbox .itm .t3 * {
+            color: #444;
+            font-weight: bold;
+        }
+    </style>
+</block>
+<block name="script">
+    <script>
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+            $('#btn_login').click(function(){
+                login();
+            });
+
+            $('.product').click(function() {
+                $('.product').removeClass('icon-iosstar');
+
+                var val = $(this).attr('score');
+
+                var product_score = $('.product');
+
+                var count = parseInt(val);
+
+                for (var i = 0; i < count; i++) {
+                    $(product_score[i]).addClass('icon-iosstar');
+                }
+            })
+
+            $('.logistics').click(function() {
+                $('.logistics').removeClass('icon-iosstar');
+
+                var val = $(this).attr('score');
+
+                var logistics_score = $('.logistics');
+
+                var count = parseInt(val);
+
+                for (var i = 0; i < count; i++) {
+                    $(logistics_score[i]).addClass('icon-iosstar');
+                }
+            })
+
+            $('#btn_submit').click(function () {
+                comment();
+            })
+        });
+
+        function comment() {
+            var order_id = $('#order_id').val();
+            var user_id = localStorage.getItem('user_id');
+            var logistics_score = $('.logistics.icon-iosstar').length;
+            var product_score = $('.product.icon-iosstar').length;
+            var comment_text = $('#comment_text').val();
+
+            var data = { 'order_id': order_id, 'user_id': user_id, 'logistics_score': logistics_score, 'product_score':product_score, 'comment_text': comment_text }
+//            alert(JSON.stringify(data)); return;
+            fit.ajax({
+                url:'/user/comment',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                    console.log(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        location.href = '/mobile/me?access='+ user_id;
+                    }
+                }
+            });
+        }
+    </script>
+</block>

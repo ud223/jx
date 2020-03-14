@@ -1,0 +1,78 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">颜色编辑</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">颜色名称</span>
+                        <input type="text" class="form-control" placeholder="请输入颜色名称..." name="color_field" id="color_field" value="{$data['item'].color}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">颜色编码</span>
+                        <input type="text" class="form-control" placeholder="请输入颜色编码..." name="code_field" id="code_field" value="{$data['item'].code}" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="color_id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/color_list';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#color_id').val();
+            var code = $('#code_field').val();
+            var color = $('#color_field').val();
+
+            var data = { 'id': id, 'color':color, 'code':code };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存该颜色?')) {
+                fit.ajax({
+                    url:'/manage/color_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/manage/color_edit?id=' + result.data;
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

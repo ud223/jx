@@ -40,9 +40,9 @@ class PublicController extends Controller {
         if(is_login()){
             D('Member')->logout();
             session('[destroy]');
-            $this->success('退出成功！', U('login'));
+            $this->success('退出成功！', U('Public/login'));
         } else {
-            $this->redirect('login');
+            $this->redirect('Public/login');
         }
     }
 }

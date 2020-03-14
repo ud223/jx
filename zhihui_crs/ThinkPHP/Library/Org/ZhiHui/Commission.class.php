@@ -11,7 +11,10 @@ namespace Org\ZhiHui;
 class Commission {
   private $modCommission = null;
   private $modCommissionStandard = null;
-  
+
+  const ConstMaxRate = 0.1;
+  const ConstSellMemberRate = 0.06;
+
   function __construct() {
     $this->modCommission = M("commission");
     $this->modCommissionStandard = M("commission_standard");
@@ -225,6 +228,31 @@ class Commission {
 
   //region 提成标准
   /**
+   * todo: 销售提成最大比例
+   * @return float
+   */
+  public function CommissionTotalRate(){
+    return self::ConstMaxRate;
+  }
+
+  /**
+   * todo: 客户经理提成比例
+   * @return float
+   */
+  public function CommissionSellerMemberRate(){
+    return self::ConstSellMemberRate;
+  }
+  /**
+   * todo: 团队长提成比例
+   * @return float
+   */
+  public function CommissionSellerCaptainRate(){
+    $nRate = (self::ConstMaxRate - self::ConstSellMemberRate);
+
+    return $nRate;
+  }
+  
+  /**
    * todo: 提成标准Option
    * @return array
    */
@@ -245,4 +273,16 @@ class Commission {
     return $OptionList;
   }
   //endregion 提成标准
+
+  //region 提成金额
+  /**
+   * todo: 客户经理提成比例
+   * @return float
+   */
+  public function CalcCommissionAmount($_year_premium_amount, $_first_rate, $_last_rate){
+    //客户经理佣金 =首年保费*客户经理首年佣金+次年保费*客户经理次年佣金
+    $Amount = (($_year_premium_amount * $_first_rate) + ($_year_premium_amount * $_last_rate));
+    return $Amount;
+  }
+  //endregion 提成金额
 }

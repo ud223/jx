@@ -1,0 +1,11 @@
+<ul class="page-sidebar-menu">
+    {$menu}
+    <notempty name="AppMenu">  
+    <li <?php if(!empty($navappmid)){ echo ' class="active"'; } ?>>
+        <a href="javascript:;"><span class="title">内容管理</span><span class="arrow "></span></a>
+        <ul class="sub-menu">
+            {$AppMenu}
+        </ul>
+    </li>
+    </notempty>
+</ul>

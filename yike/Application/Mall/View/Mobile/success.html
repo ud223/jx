@@ -1,0 +1,72 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        .cgutt1 {
+            padding:30px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, .1);
+            text-align: center;
+            color:#40CF76;
+            background: #f8f8f8;
+        }
+        .cgutt1.fail {
+            color:#C9302C;
+        }
+        .cgutt1 * {
+            font-size:24px;
+        }
+        .cgutt1 .iconfont {
+            margin-right: 20px;
+        }
+        .cgutt2 {
+            padding:30px 10px;
+            font-size:16px;
+        }
+    </style>
+    <div>
+        <div id="success" class="cgutt1 success" style="display:none">
+            <span class="iconfont icon-iconfontcheck"></span><span>操作成功</span>
+        </div>
+        <div id="fail" class="cgutt1 fail" style="display:none">
+            <span class="iconfont icon-iconfontclose"></span><span>操作失败</span>
+        </div>
+
+        <div id="msg" class="cgutt2" style="display:none">
+
+        </div>
+    </div>
+    <a id="url" class="bottombackbtn" href="javascript:void(0);">返回</a>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            var code = localStorage.getItem('tmp_code');
+            var msg = localStorage.getItem('tmp_msg');
+            var order_id = localStorage.getItem('tmp_order_id');
+            var user_id = localStorage.getItem('user_id');
+            var url = localStorage.getItem('tmp_url');
+
+            if (code == '200') {
+                $('#success').show();
+            }
+            else {
+                $('#msg').show();
+                $('#fail').show();
+            }
+
+            $('#msg').html(msg);
+
+            $('#url').click(function () {
+                localStorage.getItem('tmp_code', null);
+                localStorage.getItem('tmp_msg', null);
+                localStorage.getItem('tmp_order_id', null);
+                localStorage.getItem('user_id', null);
+                localStorage.getItem('tmp_url', null);
+
+                location.href = url;
+            })
+        });
+    </script>
+</block>

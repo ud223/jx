@@ -1,0 +1,82 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">退款申请管理</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 120px">姓名</th>
+                        <th style="width: 150px">电话</th>
+                        <!--<th style="width: 150px">订单金额</th>-->
+                        <!--<th style="width: 150px">邮费</th>-->
+                        <th style="width: 150px">金额</th>
+                        <th style="width: 100px">状态</th>
+                        <th style="width: 200px">下单日期</th>
+                        <th style="width: 200px">支付宝号</th>
+                        <th style="width:80px">操作</th>
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.address.name}</td>
+                            <td>{$itm.address.phone}</td>
+                            <!--<td>{$itm.amount}</td>-->
+                            <!--<td>{$itm.freight}</td>-->
+                            <td>{$itm.vip_amount}</td>
+                            <td>
+                                退款申请
+                            </td>
+                            <td>{$itm.create_at}</td>
+                            <td>{$itm.alipay_id}</td>
+                            <!--<td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">查看</a></td>-->
+                            <td><a href="javascript:void(0)" class="itm-over" val="{$itm.id}">同意退款</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-over').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('请确认是否同意退款?')) {
+                    fit.ajax({
+                        url:'/manage/order_refund',
+                        data:{
+                            'order_id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+</block>

@@ -1,0 +1,33 @@
+<div class="form-group {$radio.css}" id="{$radio.id}Tip">
+    <label  class="col-md-{$radio.title_width} control-label">
+        {$radio.title}<eq name="radio.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$radio.input_width}" id="{$radio.id}_item">
+        <div class="radio-list">
+            <?php
+            if(!empty($radio["option"])){
+                $nCount = sizeof($radio["option"]);
+
+                for($i=0; $i<$nCount; $i++){
+                    $radioInfo = $radio["option"][$i];
+
+                    if((string)$radioInfo["val"] == (string)$radio["value"]){
+                        $sSelected = 'checked';
+                    }else{
+                        $sSelected = '';
+                    }
+                    
+                    if($radioInfo["readonly"] == "true"){
+                        $sRead = 'disabled="disabled"';
+                    }else{
+                        $sRead='';
+                    }
+
+                    echo '<label class="radio-inline"><input type="radio" name="'. $radio["name"] .'" id="'. $radio["id"] . '_' . $i .'" value="'. $radioInfo["val"] .'" '. $sSelected . ' ' . $sRead .'>' . $radioInfo["key"] . '</label>';
+                }
+            }
+            ?>
+        </div>
+        <span class="help-block">{$radio.tips}</span>
+    </div>
+</div>

@@ -1,0 +1,303 @@
+
+p{
+	margin: 0;
+}
+.nav>li>a{
+	padding: 0;
+}
+.nav>li>a:hover{
+	background: none;
+}
+#header .btn{
+	vertical-align: top;
+}
+
+#header-logo-en{
+	height: 60px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+
+#header{
+	position: fixed;
+	height: 120px;
+	width: 100%;
+	z-index: 1;
+	background: url("../img/blank.png");
+}
+#header-room{
+	height: 80px;
+	background: #fff;
+}
+#header-1{
+	height: 35px;
+	background: #1d1d1d;
+	line-height: 35px;
+}
+#header-1-search{
+	width: 115px;
+	height: 35px;
+	background: none;
+	margin-right: 0;
+	margin-bottom: 0;
+}
+#header-1-search input{
+	height: 20px;
+	border-radius: 20px 0 0 20px;
+	margin-top: 8px;
+	color: #e5e5e5;
+	background: #272727;
+	border: solid 1px #141313;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#header-1-search a{
+	color: #cccccc;
+}
+
+#header-1-search span button{
+	height: 20px;
+	background: #272727;
+	border-color: #141313;
+	border-left: 0;
+	color: #fff;
+	padding-right: 2px;
+	margin-top: 7px;
+}
+#header-1-phone{
+	font-size: 12px;
+	color: #ccc;
+}
+#header-1-phone em{
+	font-style: normal;
+	color: #e5e5e5;
+}
+#loginOk{
+	display: none;
+}
+#loginOk em{
+	font-style: normal;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#header-1-login{
+	/*display: none;*/
+}
+#header-2{
+	height: 80px;
+
+}
+
+#logo-mb{
+	position: absolute;
+	top: 0;
+	left: 40%;
+	width: 105px;
+	margin-top: 12.5px;
+}
+
+#logo-mb-en{
+	position: absolute;
+	top: 0;
+	left: 47%;
+	width: 44px;
+	margin-top: 10.5px;
+}
+
+#header-logo{
+	width: 156px;
+	margin-top: 12px;
+	cursor: pointer;
+}
+
+#header-nav-pc{
+	color: #fff;
+	margin-left: 0px;
+}
+#header-nav-pc li{
+	height: 85px;
+	line-height: 80px;
+	margin-left: 60px;
+}
+#header a:hover{
+	color: #dfb578;
+	text-decoration: none;
+}
+#header-nav-pc li img{
+	position: absolute;
+	width: 37px;
+	top: 80px;
+	left: 50%;
+	margin-left: -18px;
+}
+.header-nav-curr{
+	background: url("../img/global/nav-jiantou.png") center bottom no-repeat;
+}
+#showNavBtn{
+	position: relative;
+	margin-top: 15px;
+	margin-left: 20px;
+	padding-top: 10px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
+#showNavBtn1{
+	position: relative;
+	margin-top: 13.5px;
+	margin-left: 92.5%;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+}
+#versions-mb{
+	color: #cccccc;
+	font-size: 16.5px;
+}
+#showNavBtn-show{
+	position: absolute;
+	left: 50%;
+	margin-left: -8px;
+	width: 16px;
+}
+#showNavBtn-hide{
+	position: absolute;
+	left: 50%;
+	margin-left: -6px;
+	width: 12px;
+	opacity: 0;
+}
+#showNavBtn span{
+	display: block;
+	width: 16px;
+	height: 1px;
+	background: #fff;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+#header-nav-mb{
+	width: 100%;
+	position: absolute;
+	height: 60px;
+	z-index: 3;
+	background: #202020;
+	padding-left: 20px;
+	padding-right: 20px;
+	overflow: auto;
+}
+#header-nav-mb-box{
+	/*margin-top: 90px;*/
+	margin-bottom: 40px;
+}
+#header-nav-mb-box li{
+	color: #fff;
+	line-height: 50px;
+	border-bottom: solid 1px #505050;
+}
+#header-nav-mb-box>li>a{
+	display: block;
+}
+#header-2-search{
+	height: 45px;
+	margin-top: 75px;
+	background: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+#header-2-search a{
+	color: #cccccc;
+	font-size: 17.5px;
+}
+#header-2-search input{
+	height: 45px;
+	border-radius: 20px 0 0 20px;
+	margin-top: 1px;
+	color: #e5e5e5;
+	background: #262626;
+}
+#header-2-search span button{
+	height: 45px;
+	background: #262626;
+	border-left: 0;
+	color: #fff;
+	padding-right: 2px;
+	border: 0;
+	width: 60px;
+}
+#header-zhcx{
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin-top: 22px;
+}
+#header-zhcx-pc{
+	height: 31px;
+	line-height: 31px;
+	color: #c39768;
+}
+#header-zhcx-pc img{
+	width: 31px;
+	margin-right: 8px;
+}
+#header-zhcx-pc p{
+	margin-bottom: 0;
+}
+#header-zhcx-mb{
+	text-align: right;
+	height: 30px;
+	width: 30px;
+	line-height: 31px;
+	margin-right: 20px;
+	color: #c99f63;
+	margin-top: -8px;
+}
+#header-zhcx-mb img{
+	width: 15px;
+}
+
+@media only screen and (max-width: 768px){
+
+	#header-room{
+		height: 25px;
+		background: #fff;
+	}
+	#header{
+		position: absolute;
+		height: 60px;
+		background-color: #202020;
+	}
+
+	#header-2{
+		height: 60px;
+		background: #202020;
+	}
+	#header-logo{
+		position: absolute;
+		width: 100px;
+		margin-top: 13px;
+		left: 50%;
+		margin-left: -50px;
+	}
+
+}
+.banner{ overflow: hidden; height: 540px;}
+.banner img{ position: absolute; left: 50%; margin-left: -960px;}
+.content{position: relative; width: 100%; max-width: 980px; margin: 0 auto;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

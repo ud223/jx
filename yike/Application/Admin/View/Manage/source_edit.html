@@ -1,0 +1,196 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">素材编辑</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">素材名称</span>
+                        <input type="text" class="form-control" placeholder="请输入素材名称..." name="text_field" id="text_field" value="{$data['item'].text}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">素材类型</span>
+                        <select class="form-control" name="source_class_field" id="source_class_field">
+                            <?php foreach ($data['source_class'] as $c) :?>
+                                <?php if ($data['item']['source_class'] == $c['id']) :?>
+                                    <option value="<?php echo $c['id'] ?>" selected="selected"><?php echo $c['text']?></option>
+                                <?php else :?>
+                                    <option value="<?php echo $c['id'] ?>"><?php echo $c['text']?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">顺序</span>
+                        <input type="tel" class="form-control" placeholder="请输入素材顺序..." name="sort_field" id="sort_field" value="{$data['item'].sort}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">描述</span>
+                        <input type="tel" class="form-control" placeholder="请输入素材描述..." name="description_field" id="description_field" value="{$data['item'].description}" style="height: 100px" maxlength="1000">
+                    </div>
+                    <div class="input-group">
+                        <input id="file_upload" name="file_upload" type="file" multiple="false"> <button id="btn_upload" class='btn-primary'>上传文件</button>
+                        <?php if ($data['item']['photo']) :?>
+                            <?php if ($data['item']['photo']['pic_class'] == 1) :?>
+                                <img id="tmp_photo" style="height:150px" src="<?php echo $data['item']['photo']['url']?>">
+                            <?php else :?>
+                                <img id="tmp_photo" style="height:150px" src="/Public/common/js/img/moive.jpg">
+                            <?php endif; ?>
+                        <?php else :?>
+                            <img id="tmp_photo" style="height:150px" style="display:none" >
+                        <?php endif; ?>
+                        <input type="hidden" id="photo_id" value="{$data.item.photo_id}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">内容</span>
+                        <!--<script type="text/plain" id="editor_content" name="editor_content" style="width:1000px;height:240px;">-->
+                            <!--<?php echo $data['item']['content']?>-->
+                        <!--</script>-->
+                        <textarea  class="form-control" id="editor_content" rows="120" cols="100" style="height:350px; text-align: left">
+                            <?php echo $data['item']['content']?>
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#file_upload').uploadify({
+                'formData'     : {
+                    'timestamp' : '<?php echo $timestamp;?>',
+                    'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+                },
+                'swf'      : '/Public/common/uploadify/uploadify.swf',
+                'uploader' : '/manage/upload',
+                'buttonText': '选择图片',
+                'auto':false,
+                'multi':false,
+                'fileSizeLimit' : 10000000,
+                'fileType':'image/*',
+                'onInit':function () {
+                    $('#btn_upload').attr("disabled", true);
+                },
+                'onSelect':function (queue) {
+                    $('#btn_upload').attr("disabled", false);
+                },
+                'onUploadSuccess' : function(file, data, response) {
+                    $('#btn_upload').attr("disabled", true);
+                    //alert(JSON.stringify(data));
+                    var result = JSON.parse(data);
+
+//                    alert(result.msg);
+
+                    if (result.code == 200) {
+                        var strtype= result.data.path.substring(result.data.path.length - 3, result.data.path.length);
+                        strtype=strtype.toLowerCase();
+
+                        if (strtype == 'mp4' || strtype == 'swf') {
+                            $('#tmp_photo').attr('src', '/Public/common/js/img/moive.jpg');
+                        }
+                        else {
+                            $('#tmp_photo').attr('src', result.data.url);
+                        }
+                        $('#tmp_photo').show();
+
+                        saveImage(result.data.url, result.data.path, 2, '', getPhotoId)
+                    }
+                    else {
+                        alert(result.msg)
+                    }
+                }
+            });
+
+            $('#btn_upload').click(function () {
+                $('#file_upload').uploadify('upload');
+            });
+
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/source_list';
+            });
+
+//            //实例化编辑器
+//            var um = UM.getEditor('editor_content');
+//
+//            um.addListener('blur',function(){
+//                $('#focush2').html('编辑器失去焦点了')
+//            });
+//            um.addListener('focus',function(){
+//                $('#focush2').html('')
+//            });
+//
+//            um.addListener("ready", function () {
+//                // editor准备好之后才可以使用
+////                um.execCommand( 'inserthtml', $('#content').val());
+//            });
+        });
+
+        function getPhotoId(photo_id) {
+            if (!photo_id) {
+                alert('上传图片失败!');
+
+                return;
+            }
+
+            $('#photo_id').val(photo_id);
+        }
+
+        function saveItem() {
+            var id = $('#id').val();
+            var text = $('#text_field').val();
+            var source_class = $('#source_class_field').val();
+            var photo_id = $('#photo_id').val();
+            var sort = $('#sort_field').val();
+            var description = $('#description_field').val();
+
+//            var html_description = UM.getEditor('editor_content').getContent()
+            var content = $('#editor_content').val();
+
+            var data = { 'id': id, 'source_class':source_class, 'text': text, 'photo_id':photo_id, 'content':content, 'sort': sort, 'description': description };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存该素材?')) {
+                fit.ajax({
+                    url:'/manage/source_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/manage/source_edit?id=' + result.data;
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

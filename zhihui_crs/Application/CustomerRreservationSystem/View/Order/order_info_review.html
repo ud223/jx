@@ -19,7 +19,7 @@
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>
-            <label class="label label-info">审核工单</label>&nbsp;{$OrderInfo.order_sn}
+            <label class="label label-info">回复预约</label>&nbsp;{$OrderInfo.order_sn}
           </h5>
         </div>
 
@@ -29,8 +29,8 @@
 
             <div class="form-group">
               <div class="col-sm-10 col-sm-offset-1">
-                <label>审批意见</label>
-                <textarea class="form-control" name="review_remarks" id="review_remarks" rows="5" autocomplete="off" placeholder="审批意见" style="resize: none;">{$ReviewInfo.review_remarks}</textarea>
+                <label>回复内容</label>
+                <textarea class="form-control" name="review_remarks" id="review_remarks" rows="5" autocomplete="off" placeholder="回复内容" style="resize: none;">{$ReviewInfo.review_remarks}</textarea>
               </div>
             </div>
 
@@ -40,7 +40,7 @@
               <div class="col-sm-12 col-sm-offset-4">
                 <input type="hidden" name="review_status" id="review_status" value="" />
                 
-                <button class="btn btn-primary" type="button" data-review="2" onclick="SetReviewForm(this);"><i class="fa fa-check"></i>&nbsp;同意</button>
+                <button class="btn btn-primary" type="button" data-review="2" onclick="SetReviewForm(this);"><i class="fa fa-check"></i>&nbsp;回复</button>
                 <button class="btn btn-danger" type="button" data-review="3" onclick="SetReviewForm(this);"><i class="fa fa-remove"></i>&nbsp;驳回</button>
 
                 <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
@@ -157,7 +157,7 @@
 
               <div class="col-sm-6">
                 <div class="ibox float-e-margins">
-                  <div class="ibox-title"><h5>工单信息</h5></div>
+                  <div class="ibox-title"><h5>预约信息</h5></div>
                   <div class="ibox-content">
                     <div class="row">
 
@@ -316,7 +316,7 @@
       }
 
       return blResult;
-    },"请选择选择需要上传的工单附件");
+    },"请选择选择需要上传的预约附件");
     
     $("#editForm").validate({
       ignore: "",
@@ -359,9 +359,9 @@
           number : "经纪公司不存在",
         },
         seller_manager: {
-          required : "请选择销售经理",
-          min : "销售经理不存在",
-          number : "销售经理不存在",
+          required : "请选择客户经理",
+          min : "客户经理不存在",
+          number : "客户经理不存在",
         },
         store: {
           required : "请选择门店",
@@ -410,7 +410,7 @@
         }
       },
       messages: {
-        broker_company: "请输入审批意见"
+        broker_company: "请输入回复内容"
       },
       focusInvalid: true,
       submitHandler: function(form) {
@@ -439,7 +439,7 @@
   }
   
   function SubmitBefore(){
-    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+    BlockWindow_ExecOp('正在保存预约数据', 140);
   }
 
   function SubmitResponse(responseText){
@@ -476,7 +476,7 @@
   }
   //endregion 提交表单
   
-  //region 获取销售经理及门店列表
+  //region 获取客户经理及门店列表
   function LoadOptionList(obj){
     var nBrokerCompanyID = $(obj).val();
     
@@ -523,7 +523,7 @@
       return false;
     }
 
-    //region 销售经理
+    //region 客户经理
     var Dom = [];
     var OptionList = objJson.data.seller_manage_option;
     var nLen = OptionList.length;
@@ -538,7 +538,7 @@
     }
 
     $('#seller_manager').html(Dom.join('')).trigger("chosen:updated");
-    //endregion 销售经理
+    //endregion 客户经理
     
     //region 门店
     sKey = $('#store').attr("data-placeholder");
@@ -574,7 +574,7 @@
     $('#customer').html(Dom.join('')).trigger("chosen:updated");
     //endregion 客户
   }
-  //endregion 获取销售经理及门店列表
+  //endregion 获取客户经理及门店列表
   
   //region 获取产品列表
   function LoadProductOptionList(obj){

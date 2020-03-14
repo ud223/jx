@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {:W('Page/wapPageMeta')}
+  
+  {:W('Page/wapPageTitle')}
+  
+  {:W('Page/wapPageHeadInclude')}
+  
+  <style>
+    .mui-table-view{margin-top: 45px !important;}
+    .mui-views,
+    .mui-view,
+    .mui-pages,
+    .mui-page,
+    .mui-page-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #efeff4;
+    }
+    
+    .mui-pages {
+      /*top: 46px;*/
+      height: auto;
+    }
+    
+    .mui-page.mui-transitioning {
+      -webkit-transition: -webkit-transform 300ms ease;
+      transition: transform 300ms ease;
+    }
+    
+    .mui-page-left {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+    
+    .mui-ios .mui-page-left {
+      -webkit-transform: translate3d(-20%, 0, 0);
+      transform: translate3d(-20%, 0, 0);
+    }
+    
+    .mui-navbar {
+      position: fixed;
+      right: 0;
+      left: 0;
+      z-index: 10;
+      height: 44px;
+      background-color: #f7f7f8;
+    }
+    
+    .mui-navbar .mui-bar {
+      position: absolute;
+      background: transparent;
+      text-align: center;
+    }
+    
+    .mui-android .mui-navbar-inner.mui-navbar-left {
+      opacity: 0;
+    }
+    
+    .mui-ios .mui-navbar-left .mui-left,
+    .mui-ios .mui-navbar-left .mui-center,
+    .mui-ios .mui-navbar-left .mui-right {
+      opacity: 0;
+    }
+    
+    .mui-navbar .mui-btn-nav {
+      -webkit-transition: none;
+      transition: none;
+      -webkit-transition-duration: .0s;
+      transition-duration: .0s;
+    }
+    
+    .mui-navbar .mui-bar .mui-title {
+      display: inline-block;
+      width: auto;
+    }
+    
+    .mui-page-shadow {
+      position: absolute;
+      right: 100%;
+      top: 0;
+      width: 16px;
+      height: 100%;
+      z-index: -1;
+      content: '';
+    }
+    
+    .mui-page-shadow {
+      background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+      background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+    }
+    
+    .mui-navbar-inner.mui-transitioning,
+    .mui-navbar-inner .mui-transitioning {
+      -webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+      transition: opacity 300ms ease, transform 300ms ease;
+    }
+    
+    .mui-page {
+      display: none;
+    }
+    
+    .mui-pages .mui-page {
+      display: block;
+    }
+    
+    .mui-page .mui-table-view:first-child {
+      margin-top: 15px;
+    }
+    
+    .mui-page .mui-table-view:last-child {
+      margin-bottom: 30px;
+    }
+    
+    .mui-table-view {
+      margin-top: 20px;
+    }
+    
+    .head-img {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .mui-fullscreen {
+      position: fixed;
+      /*z-index: 20;*/
+      /*background-color: #000;*/
+    }
+    
+    .mui-ios .mui-navbar .mui-bar .mui-title {
+      position: static;
+    }
+  </style>
+</head>
+
+<body>
+<!--页面主结构开始-->
+<div id="app" class="mui-views mui-fullscreen mui-control-content mui-active">
+  <div class="mui-view">
+    <div class="mui-navbar"></div>
+    <div class="mui-pages"></div>
+  </div>
+</div>
+<!--页面主结构结束-->
+
+<!--单页面开始-->
+<div id="setting" class="mui-page">
+  <!--页面标题栏开始-->
+  <div class="mui-navbar-inner mui-bar mui-bar-nav">
+    <h1 class="mui-center mui-title">预约浏览</h1>
+  </div>
+  <!--页面标题栏结束-->
+  
+  <!--页面主内容区开始-->
+  <div class="mui-content mui-scroll-wrapper" id="order_list_ifr">
+    <div class="mui-scroll">
+      <ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" id="ul_order_list">
+        
+      </ul>
+    </div>
+  </div>
+  <!--页面主内容区结束-->
+</div>
+<!--单页面结束-->
+
+<div id="account" class="mui-page">
+  <div class="mui-navbar-inner mui-bar mui-bar-nav">
+    <button type="button" class=" mui-navbar-left mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+      <span class="mui-icon mui-icon-left-nav"></span>
+    </button>
+    <h1 class="mui-center mui-title">预约详情</h1>
+  </div>
+  <div class="mui-page-content">
+    <div class="mui-scroll-wrapper">
+      <div class="mui-scroll">
+        <ul class="mui-table-view">
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">预约编号</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_order_sn"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">客户姓名</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_customer_name"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">客户性别</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_customer_sex"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">出生日期</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_customer_birthday_date"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">国籍</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_customer_nationality"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">产品类别</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_product_type_name"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">拟购产品</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_product_name"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">支付方式</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_payment_type"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">缴费方式</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_pay_type"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">年缴保费</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_year_premium_amount"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">缴费年限</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_payment_years"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">保障额度</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_guarantee_amount"></div>
+            </div>
+          </li>
+          <li class="mui-table-view-cell">
+            <div class="mui-row">
+              <div class="mui-col-xs-4 mui-h5">描述及备注</div>
+              <div class="mui-col-xs-8 mui-h5" id="p_seller_manager_remarks"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{:W('Page/wapPageFootInclude')}
+</body>
+
+</html>
+<script>
+  var nCurrPage = 1;
+  
+  mui.init({
+    pullRefresh : {
+      container: '#order_list_ifr',//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+      up : {
+        height:50,//可选.默认50.触发上拉加载拖动距离
+        auto:true,//可选,默认false.自动上拉加载一次
+        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+        callback : GetNextPageOrderList //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+      }
+    }
+  });
+  
+  //region 获取下一页产品
+  function GetNextPageOrderList() {
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxSubscribeOrderList",
+      dataType:"json",
+      timeout: 6000,
+      data: {"page": nCurrPage},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        GetNextPageOrderListResponse(data);
+      },
+      error: function(request, status, error){
+        mui.toast("请求服务器时发生错误");
+        mui('#order_list_ifr').pullRefresh().endPullupToRefresh(false);
+      }
+    });
+  }
+  
+  function GetNextPageOrderListResponse(objJson) {
+    if(objJson.error != 0){
+      mui.toast(objJson.info);
+      mui('#order_list_ifr').pullRefresh().endPullupToRefresh(false);
+      return false;
+    }
+    
+    var PaginInfo = objJson.data.PageInfo;
+    var OrderList = objJson.data.DataList;
+    var nLen = OrderList.length;
+    var Dom = [];
+    var Info = null;
+    
+    if(nLen < 1){
+      mui('#order_list_ifr').pullRefresh().endPullupToRefresh(true);
+      return false;
+    }
+    
+    for(var i=0; i<nLen; i++){
+      Info = OrderList[i];
+      
+      Dom.push('<li class="mui-table-view-cell">');
+      Dom.push('<div class="mui-table">');
+      Dom.push('<div class="mui-table-cell mui-col-xs-12">');
+      Dom.push('<p class="mui-ellipsis-2 list-title">');
+      Dom.push(Info.order_sn);
+      
+      if(Info.status == 20){
+        Dom.push('<span class="mui-badge mui-badge-info mui-pull-right" style="margin-right: 3px;">'+ Info.status_info.desc +'</span>');
+      }else if(Info.status == 21){
+        Dom.push('<span class="mui-badge mui-badge-success mui-pull-right" style="margin-right: 3px;">'+ Info.status_info.desc +'</span>');
+      }else if(Info.status == 22){
+        Dom.push('<span class="mui-badge mui-badge-danger mui-pull-right" style="margin-right: 3px;">'+ Info.status_info.desc +'</span>');
+      }else if(Info.status == 30){
+        Dom.push('<span class="mui-badge mui-badge-primary mui-pull-right" style="margin-right: 3px;">'+ Info.status_info.desc +'</span>');
+      }
+      
+      Dom.push('</p>');
+      
+      Dom.push('<div class="hr-line-dashed"></div>');
+      
+      Dom.push('<div class="mui-row">');
+      
+      //region 产品
+      Dom.push('<div class="mui-col-xs-6 mui-h6">产品：');
+      
+      if(IsN(Info.product_snapshots)){
+        Dom.push('--');
+      }else{
+        Dom.push(Info.product_snapshots.type_name +" - "+ Info.product_snapshots.product_name);
+      }
+      
+      Dom.push('</div>');
+      //endregion 产品
+      
+      Dom.push('<div class="mui-col-xs-6 mui-h6 mui-text-right">客户：'+ Info.customer.real_name +'</div>');
+      
+      Dom.push('</div>');
+      
+      Dom.push('<div class="hr-line-dashed"></div>');
+      
+      Dom.push('<div class="mui-row">');
+      Dom.push('<div class="mui-col-xs-6 mui-h6">发起人：'+ Info.seller_name +'</div>');
+      Dom.push('<div class="mui-col-xs-6 mui-h6 mui-text-right">发起日期：'+ Info.signed_date +'</div>');
+      Dom.push('</div>');
+      
+      Dom.push('<div class="hr-line-dashed"></div>');
+      
+      Dom.push('<div class="mui-row">');
+      Dom.push('<div class="mui-col-xs-12 mui-text-center">');
+      Dom.push('<a href="#account" class="mui-btn mui-btn-primary" id="look_'+ Info.order_sn +'" data-sn="'+ Info.order_sn +'">');
+      Dom.push('<span class="mui-icon iconfont icon-text"></span>&nbsp;查看详情');
+      Dom.push('</a>');
+      
+      Dom.push('<script>');
+      Dom.push('document.getElementById("look_'+ Info.order_sn +'").addEventListener("tap", function(){');
+      Dom.push('GetOrderInfo(this);');
+      Dom.push('});');
+      Dom.push('<\/script>');
+      Dom.push('</div>');
+      Dom.push('</div>');
+      Dom.push('</div>');
+      Dom.push('</div>');
+      Dom.push('</li>');
+    }
+    
+    $('#ul_order_list').append(Dom.join(''));
+    
+    if(PaginInfo.more == 0){
+      mui('#order_list_ifr').pullRefresh().endPullupToRefresh(true);
+    }else{
+      mui('#order_list_ifr').pullRefresh().endPullupToRefresh(false);
+    }
+    
+    nCurrPage++;
+  }
+  //endregion 获取下一页产品
+  
+  //region 页面控制
+  var viewApi = mui('#app').view({
+    defaultPage: '#setting',
+  });
+  
+  mui('.mui-scroll-wrapper').scroll({
+    deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+  });
+  
+  var view = viewApi.view;
+  
+  (function($) {
+    //处理view的后退与webview后退
+    var oldBack = $.back;
+    $.back = function() {
+      if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+        viewApi.back();
+      } else { //执行webview后退
+        oldBack();
+      }
+    };
+    //监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+    //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+    view.addEventListener('pageBeforeShow', function(e) {
+      //console.log(e.detail.page.id + ' beforeShow');
+      //console.log(e);
+    });
+    view.addEventListener('pageShow', function(e) {
+      //console.log(e.detail.page.id + ' show');
+      //console.log(e);
+    });
+    view.addEventListener('pageBeforeBack', function(e) {
+      //console.log(e.detail.page.id + ' beforeBack');
+    });
+    view.addEventListener('pageBack', function(e) {
+      //console.log(e.detail.page.id + ' back');
+    });
+  })(mui);
+  //endregion 页面控制
+  
+  //region 显示商品详情
+  function GetOrderInfo(obj) {
+    var sOrderSn = $(obj).attr('data-sn');
+    
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxOrderViewInfo",
+      dataType:"json",
+      timeout: 6000,
+      data: {"order_sn": sOrderSn},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        GetOrderInfoResponse(data);
+      },
+      error: function(request, status, error){
+        //Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+  
+  function GetOrderInfoResponse(objJson) {
+    if(objJson.error != 0){
+      mui.toast(objJson.info);
+      return false;
+    }
+    
+    if(IsN(objJson.data)){
+      mui.toast("没有发现产品数据");
+      return false;
+    }
+    
+    var OrderInfo = objJson.data;
+    
+    $('#p_order_sn').html(OrderInfo.order_sn);
+    $('#p_customer_name').html(OrderInfo.customer.real_name);
+    $('#p_customer_sex').html(OrderInfo.customer.gender);
+    $('#p_customer_birthday_date').html(OrderInfo.customer.birthday_date);
+    $('#p_customer_nationality').html(OrderInfo.customer.nationality);
+    
+    if(IsN(OrderInfo.product_snapshots)){
+      $('#p_product_type_name').html("--");
+      $('#p_product_name').html("--");
+      $('#p_payment_type').html("--");
+      $('#p_pay_type').html("--");
+    }else{
+      $('#p_product_type_name').html(OrderInfo.product_snapshots.type_name);
+      $('#p_product_name').html(OrderInfo.product_snapshots.product_name);
+      $('#p_payment_type').html(OrderInfo.product_snapshots.payment_type);
+      $('#p_pay_type').html(OrderInfo.product_snapshots.pay_type);
+    }
+    
+    $('#p_year_premium_amount').html("&yen;"+OrderInfo.year_premium_amount);
+    $('#p_payment_years').html(OrderInfo.payment_years);
+    $('#p_guarantee_amount').html("&yen;"+OrderInfo.guarantee_amount);
+    $('#p_seller_manager_remarks').html(OrderInfo.seller_manager_remarks);
+    
+    //ShowProductInfo();
+  }
+  //endregion 显示商品详情
+</script>

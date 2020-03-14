@@ -1,0 +1,102 @@
+<extend name="Base/common"/>
+<form id="form1">
+    <block name="body">
+
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">新增版主</h3>
+                </div>
+                <div class="am-modal-bd">
+                    <div style="width: 60%;margin: auto;">
+                        <div class="input-group">
+                            <span class="input-group-addon">请选择版块</span>
+                            <select class="form-control" name="section_field" id="section_field">
+                                <volist name="data.section" id="itm">
+                                    <option value="{$itm.Id}">{$itm.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">请选择版主</span>
+                            <input type="text" id="user_name" value="" class="form-control" placeholder="请输入昵称..."/>
+                        </div>
+                        <div class="input-group">
+                            <input type=button" value="查找" class="btn btn-primary" style="width:80px"
+                                   onclick="search()"/>
+                        </div>
+
+                            <table id="tb_user" border="1" style="display:none;width:100%;">
+                                <tr id="tr_user">
+                                    <td>昵称</td>
+                                    <td>帐号</td>
+                                    <td>手机号</td>
+                                    <td>设置版主</td>
+                                </tr>
+                            </table>
+
+                            </div>
+                        </div>
+                        <div class="am-modal-footer">
+                            <span id="btn_save" class="am-modal-btn">提交</span>
+                            <span id="btn_return" class="am-modal-btn">返回</span>
+                        </div>
+                    </div><!-- /.box -->
+                </div>
+    </block>
+</form>
+<block name="style">
+    <style>
+        .input-group {
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+            $('#btn_return').click(function () {
+                location.href = '/manage/bbs_section_admin';
+            });
+
+            $('#btn_save').click(function () {
+                saveItem();
+            });
+        });
+
+        function search() {
+            $('#tb_user').show();
+            $('#tr_user').nextAll().remove();
+            var user_name = $('#user_name').val();
+            fit.ajax({
+                url: '/manage/search_bbs_section_admin',
+                data: {'user_name': user_name, 'section': $('#section_field').val()},
+                success: function (result) {
+                    $('#tr_user').after(result.data);
+                }
+            });
+        }
+
+        function saveItem() {
+            var section = $('#section_field').val();
+
+            var uid = '';
+            $("input[name='ck_user']:checked").each(function (i) {
+                uid += $(this).attr("val") + ",";
+            });
+
+            var data = {'section': section, 'user': uid};
+
+            fit.ajax({
+                url: '/manage/save_bbs_section_admin',
+                data: data,
+                success: function (result) {
+                    alert(result.msg);
+
+                    location.href = '/manage/bbs_section_admin'
+                }
+            });
+        }
+    </script>
+</block>

@@ -1,0 +1,115 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div id="cst-space">
+        <div class="sid-bts lt">
+            <span class="iconfont icon-left"></span>
+        </div>
+        <div class="sid-bts rt">
+            <span class="iconfont icon-right"></span>
+        </div>
+        <div id="btc-lst">
+            <?php $index = 1; ?>
+            <?php foreach ($data['list_1'] as $itm) : ?>
+                <?php if ($index == 1) :?>
+                    <div class="itm selected"></div>
+                <?php else :?>
+                    <div class="itm"></div>
+                <?php endif; ?>
+
+                <?php $index++; ?>
+            <?php endforeach; ?>
+        </div>
+        <div id="gall-wp">
+            <div id="gall-list">
+                <?php foreach ($data['list_1'] as $itm) : ?>
+                    <div class="gall-itm" style="background-image:url(<?php echo $itm['url'] ?>)">
+                        <?php echo $itm['content']?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <!--
+        cst-space：大型slide (END)
+    -->
+
+
+
+    <!-- 页面部分 -->
+    <style>
+        body {
+            background: #f4f4f4;
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:20px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="sunnytct">
+                    <span class="t1">新品上架</span>
+                    <span class="t2">New Products</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <volist name="data.list" id="itm">
+                <div class="col-xs-3">
+                    <div class="ecproditm">
+                        <a href="/index/product?id={$itm.id}" class="crv"></a>
+                        <div class="imghod">
+                            <img src="{$itm['show_photo'][0]['url']}" />
+                        </div>
+                        <div class="txtcht">
+                            <div class="ts1">{$itm.item_name}</div>
+                            <div class="ts2">{$itm.sub_name}</div>
+                        </div>
+                        <div class="tprice">
+                            <div class="core">￥{$itm.price}</div>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+    </div>
+
+
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div ui-shopping-service="" class="shopping-service">-->
+                    <!--<ul class="shopping-info gray-box">-->
+                        <!--<li class="online-services">-->
+                            <!--<span class="online"></span>-->
+                            <!--<h5>在线客服</h5>-->
+                            <!--<h6>周一至周日 8:00-17:00</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="return-goods"></span>-->
+                            <!--<h5>7 天无理由退货</h5>-->
+                            <!--<h6>7 天无理由退货 请放心购买</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="delivery-goods"></span>-->
+                            <!--<h5 class="ng-binding">周边产品满 500 元免运费</h5>-->
+                            <!--<h6>全场使用德邦或顺丰快递</h6>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var options = {
+                height: 400
+            }
+            adfunc(options);
+        });
+    </script>
+</block>

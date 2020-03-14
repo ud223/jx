@@ -1,0 +1,103 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">服务网点管理</h3>
+            </div>
+
+            <div class="col-md-2" style="padding: 20px;z-index: 100">
+                <a class="btn btn-block btn-primary add_btn" href="javascript:void(0)">添加网点</a>
+            </div>
+
+            <div class="col-md-5" style="padding: 20px;z-index: 100">
+                <input type="text" id="condition" style="width:250px">&nbsp;<a class="btn btn-primary btn_query" href="javascript:void(0)">搜索</a>
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 120px">省</th>
+                        <th style="width: 120px">市</th>
+                        <th style="width: 120px">区</th>
+                        <th style="width: 200px">网点名称</th>
+                        <th style="width: 150px">联系人</th>
+                        <th style="width: 150px">联系电话</th>
+                        <th style="width: 250px">地址</th>
+                        <th style="width: 100px">操作</th>
+                        <th>删除</th>
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.province}</td>
+                            <td>{$itm.city}</td>
+                            <td>{$itm.region}</td>
+                            <td>{$itm.point_text}</td>
+                            <td>{$itm.name}</td>
+                            <td>{$itm.phone}</td>
+                            <td>{$itm.address}</td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">编辑</a></td>
+                            <td><a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-del').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('是否删除该网点?')) {
+                    fit.ajax({
+                        url:'/manage/color_del',
+                        data:{
+                            'id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+
+            //编辑
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/manage/point_edit?id='+ id;
+            });
+
+            $('.add_btn').click(function(){
+                location.href = '/manage/point_edit?id=0';
+            });
+
+            $('.btn_query').click(function() {
+                location.href = '/manage/point_list?key='+ $('#condition').val();
+            })
+        });
+    </script>
+</block>

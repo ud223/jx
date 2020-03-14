@@ -1,0 +1,315 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <form class="form-horizontal" role="form" id="form" method="post" action="{:U('update')}">
+                            <input name="id" id="id" value="{$currentcategory.id}" type="hidden">
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="name"> 姓名 </label>
+                            <div class="col-sm-9">
+                            <input type="text" name="name" id="name" placeholder="请填写姓名"
+                                   class="col-xs-10 col-sm-5" value="{$currentcategory.name}">
+                            <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle">必填项</span>
+                            </span>
+                            </div>
+                            </div>
+
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-1 control-label no-padding-right" for="form-field-0">-->
+                                    <!--性别</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<select id="u_sex" name="u_sex" class="multiselect">-->
+                                        <!--<?php foreach ($sex as $itm) :?>-->
+                                        <!--<?php if ($itm['id'] == $currentcategory['u_sex']) :?>-->
+                                        <!--<option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name'] ?></option>-->
+                                        <!--<?php else :?>-->
+                                        <!--<option value="<?php echo $itm['id'] ?>"><?php echo $itm['name'] ?></option>-->
+                                        <!--<?php endif; ?>-->
+                                        <!--<?php endforeach; ?>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="name">义工号</label>
+                            <div class="col-sm-9">
+                            <input type="text" name="account_number" id="account_number" placeholder="请填义工号"
+                                   class="col-xs-10 col-sm-5" value="{$currentcategory.account_number}">
+                            <span class="help-inline col-xs-12 col-sm-7">
+                            </span>
+                            </div>
+                            </div>
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-sm-1 control-label no-padding-right" for="name">名族</label>-->
+                            <!--<div class="col-sm-9">-->
+                            <!--<input type="text" name="nation" id="nation" placeholder="请填写名族"-->
+                                   <!--class="col-xs-10 col-sm-5" value="{$currentcategory.nation}">-->
+                            <!--<span class="help-inline col-xs-12 col-sm-7">-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-sm-1 control-label no-padding-right" for="id-date-picker-1">出生日期</label>-->
+                            <!--<div class="col-xs-9 col-sm-9">-->
+                            <!--<div class="input-group col-xs-5">-->
+                            <!--<input class="form-control" id="birth" name="birth"-->
+                            <!--value="{$member['birth']|date=" Y-m-d",###}" type="text"-->
+                            <!--data-date-format="dd-mm-yyyy" />-->
+                            <!--<span class="input-group-addon">-->
+                            <!--<i class="ace-icon fa fa-calendar bigger-110"></i>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-sm-1 control-label no-padding-right" for="name"> 居住地址</label>-->
+                            <!--<div class="col-sm-9">-->
+                            <!--<input type="text" name="address" id="address" placeholder="居住地址"-->
+                            <!--class="col-xs-10 col-sm-5" value="{$currentcategory.address}">-->
+                            <!--<span class="help-inline col-xs-12 col-sm-7">-->
+                            <!--<span class="middle">必填项</span>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="name"> 身份证号码</label>
+                            <div class="col-sm-9">
+                            <input type="text" name="id_number" id="id_number" placeholder="身份证号码"
+                            class="col-xs-10 col-sm-5" value="{$currentcategory.id_number}">
+                            <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle">必填项</span>
+                            </span>
+                            </div>
+                            </div>
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-sm-1 control-label no-padding-right" for="name"> 用户账号</label>-->
+                            <!--<div class="col-sm-9">-->
+                            <!--<input type="text" name="account_number" id="account_number" placeholder="用户账号"-->
+                            <!--class="col-xs-10 col-sm-5" value="{$currentcategory.account_number}">-->
+                            <!--<span class="help-inline col-xs-12 col-sm-7">-->
+                            <!--<span class="middle">必填项</span>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-sm-1 control-label no-padding-right" for="name"> 用户密码</label>-->
+                            <!--<div class="col-sm-9">-->
+                            <!--<input type="text" name="password" id="password" placeholder="用户密码"-->
+                            <!--class="col-xs-10 col-sm-5" value="{$currentcategory.password}">-->
+                            <!--<span class="help-inline col-xs-12 col-sm-7">-->
+                            <!--<span class="middle">必填项</span>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="name"> 联系电话</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="phone" id="phone" placeholder="联系电话"
+                                           class="col-xs-10 col-sm-5" value="{$currentcategory.phone}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle">必填项</span>
+                            </span>
+                                </div>
+                            </div>
+
+                            <!--<div class="space-4"></div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-sm-1 control-label no-padding-right" for="form-field-4">-->
+                            <!--头像 </label>-->
+                            <!--<div class="col-sm-9">-->
+                            <!--<div class="col-xs-10 col-sm-5">-->
+                            <!--{:UpImage("img",100,100,$currentcategory['logo_photo']['img'])}-->
+                            <!--</div>-->
+                            <!--<span class="help-inline col-xs-12 col-sm-7">-->
+                            <!--<span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。（尺寸为1400*550px）</span>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="col-md-offset-2 col-md-9">
+                            <button class="btn btn-info submit" type="button">
+                            <i class="icon-ok bigger-110"></i>
+                            提交
+                            </button>
+                                &nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset">
+                            <i class="icon-undo bigger-110"></i>
+                            重置
+                            </button>
+                </div>
+                </form>
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+</div><!-- /.main-content -->
+<include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+<!-- inline scripts related to this page -->
+<script src="__PUBLIC__/qwadmin/js/date-time/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#birth').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'cn'
+        });
+    });
+
+    $(function () {
+        var editor = KindEditor.create('textarea[name="content"]', {
+            uploadJson: '__PUBLIC__/kindeditor/php/upload_json.php',
+            fileManagerJson: '__PUBLIC__/kindeditor/php/file_manager_json.php',
+            allowFileManager: true,
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+        $("#type").change(function () {
+
+            if ($(this).val() == 1) {
+                $("#type1").removeClass('hidden');
+                $("#type2").addClass('hidden');
+            } else if ($(this).val() == 2) {
+                $("#type2").removeClass('hidden');
+                $("#type1").addClass('hidden');
+            } else {
+                $("#type1").addClass('hidden');
+                $("#type2").addClass('hidden');
+            }
+        });
+        $(".btn.btn-info.submit").click(function () {
+            var name = $("#name").val();
+            var address = $("#address").val();
+            var id_card_no = $("#id_card_no").val();
+            var account_number = $("#account_number").val();
+            var password = $("#password").val();
+            var phone = $("#phone").val();
+
+            if (name == '') {
+                bootbox.dialog({
+                    message: "抱歉，姓名不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+            if (address == '') {
+                bootbox.dialog({
+                    message: "抱歉，住宿地址不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+            if (id_card_no == '') {
+                bootbox.dialog({
+                    message: "抱歉，身份证号不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+            if (account_number == '') {
+                bootbox.dialog({
+                    message: "抱歉，用户账号不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+            if (password == '') {
+                bootbox.dialog({
+                    message: "抱歉，用户密码不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+            if (phone == '') {
+                bootbox.dialog({
+                    message: "抱歉，联系电话不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+
+            $("#form").submit();
+        })
+    })
+</script>
+
+
+
+</body>
+</html>

@@ -10,9 +10,7 @@ namespace Org\ZhiHui;
 
 class Login {
   Const ConstLoginType_Admin = "admin";
-  Const ConstLoginType_BrokerCompany = "broker_company";
-  Const ConstLoginType_SellerManager = "seller_manager";
-  
+
   function __construct() {
     
   }
@@ -64,7 +62,7 @@ class Login {
   
   //region 获取登录帐号的类型
   /**
-   * todo: 获取Admin登录帐号类型
+   * todo: 获取管理员登录帐号类型
    * @return string
    */
   public function GetLoginTypeAdmin(){
@@ -72,19 +70,43 @@ class Login {
   }
 
   /**
-   * todo: 获取BrokerCompany登录帐号类型
+   * todo: 获取团队长帐号类型
    * @return string
    */
-  public function GetLoginTypeBrokerCompany(){
-    return self::ConstLoginType_BrokerCompany;
+  public function GetLoginTypeSellerCaptain(){
+    $clsUser = new \Org\ZhiHui\User();
+
+    return $clsUser->_UserType["captain"];
   }
 
   /**
-   * todo: 获取SellerManager登录帐号类型
+   * todo: 获取客户经理帐号类型
    * @return string
    */
-  public function GetLoginTypeSellerManager(){
-    return self::ConstLoginType_SellerManager;
+  public function GetLoginTypeSellerMember(){
+    $clsUser = new \Org\ZhiHui\User();
+
+    return $clsUser->_UserType["member"];
+  }
+
+  /**
+   * todo: 获取特殊帐号类型
+   * @return string
+   */
+  public function GetLoginTypeSpecial(){
+    $clsUser = new \Org\ZhiHui\User();
+
+    return $clsUser->_UserType["special"];
+  }
+
+  /**
+   * todo: 获取经纪公司类型
+   * @return string
+   */
+  public function GetLoginTypeBrokerCompany(){
+    $clsUser = new \Org\ZhiHui\User();
+
+    return $clsUser->_UserType["broker_company"];
   }
   //endregion 获取登录帐号的类型
 }

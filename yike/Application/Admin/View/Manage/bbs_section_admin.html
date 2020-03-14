@@ -1,0 +1,73 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">版主管理</h3>
+            </div>
+
+            <!--           <div style="padding:20px 20px 10px 20px;"></div>-->
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-md-2" style="padding: 20px;">
+                    <a class="btn add_bbs_section_btn btn-primary" href="/manage/bbs_section_admin_add">添加版主</a>
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 300px">版块名称</th>
+                        <th style="width: 100px">版主昵称</th>
+                        <th>删除</th>
+                    </tr>
+
+                    <volist name="data.section" id="itm">
+                        <tr>
+                            <td class="menu-id">{$itm.Id}</td>
+                            <td class="menu-name">{$itm.section_name}</td>
+                            <td class="menu-pid">{$itm.nick_name}</td>
+                            <td><a href="javascript:void(0)" class="itm-del" val="{$itm.Id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+<script>
+    $(function(){
+        $('.itm-del').click(function() {
+            var id = $(this).attr('val');
+
+            if (confirm('是否删除该版主?')) {
+                fit.ajax({
+                    url:'/manage/del_bbs_section_admin',
+                    data:{
+                        'id':id
+                    },
+                    success:function(result){
+                        alert(result.msg);
+
+                        window.location.reload();
+                    }
+                });
+            }
+        })
+    });
+</script>
+</block>

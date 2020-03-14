@@ -1,0 +1,44 @@
+<header id="top" class="navbar navbar-default nav-common" role="banner">
+    <a class="center-block logo" href="{:U('Index/index')}"><img src="{$logo.img}"></a>
+    <div class="container">
+        <form class="order" action="{:U('Index/search')}" id="form" method="post" enctype="multipart/form-data">
+        <div class="input-group col-md-2 pull-right sosuo">
+            <input type="text" class="form-control" name="pian" placeholder="请输入片名" required="required" />  
+                <span class="input-group-btn">  
+                <button type="submit" class="btn btn-info btn-search"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></button>  
+            </span>  
+        </div>  
+        </form>
+    </div>
+
+    <nav id="navbar" role="navigation">
+        <div class="navwidth">
+            <ul class="nav visible-lg "><!--pc端导航-->
+                <li class="ienav"><a href="{:U('Index/index')}">{$indexinfo.name}</a></li>
+                <li><a href="{:U('Mogul/index')}">{$indexinfo1.name}</a></li>
+                <li><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" >{$indexinfo2.name}</a></li>
+                <li><a href="{:U('News/index')}">{$indexinfo3.name}</a></li>
+                <li><a href="{:U('About/index')}">{$indexinfo4.name}</a></li>
+                <li><a href="{:U('Feeds/index')}">{$indexinfo5.name}</a></li>
+                <li><a href="{:U('House/index')}">房子管理</a></li>
+            </ul>
+            <ul class="nav visible-xs visible-sm"><!--移动端导航-->
+                <li class="ienav"><a href="{:U('Index/index')}">{$indexinfo.name}</a></li>
+                <li><a href="{:U('Mogul/index')}">{$indexinfo1.name}</a></li>
+                <li><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" >{$indexinfo2.name}</a></li>
+                <li><a href="{:U('News/index')}">{$indexinfo3.name}</a></li>
+                <li><a href="{:U('About/index')}">{$indexinfo4.name}</a></li>
+            </ul>
+            <div id="collapseOne" class="collapse" style="height: 0px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-3 zl"><a href="{:U('Work/index?zid=10')}"><img src="{$filmcate}"></a></div>
+                        <div class="col-xs-3 zl"><a href="{:U('Work/index?zid=11')}"><img src="{$wangcate}"></a></div>
+                        <div class="col-xs-3 zl"><a href="{:U('Work/index?zid=12')}"><img src="{$adcate}"></a></div>
+                        <div class="col-xs-3 zl"><a href="{:U('Work/index?zid=13')}"><img src="{$yugaocate}"></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,129 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div class="loginbldtt">修改密码</div>
+    <div class="tbrform">
+        <div class="rs">
+            <div class="r">
+                <div>
+                    <input id="old_password" type="password" class="lineinput" placeholder="原密码">
+                </div>
+            </div>
+            <div class="r">
+                <div>
+                    <input id="password" type="password" class="lineinput" placeholder="新密码">
+                </div>
+            </div>
+            <div class="r">
+                <div>
+                    <input id="confirm_password" type="password" class="lineinput" placeholder="再次输入">
+                </div>
+            </div>
+        </div>
+        <button class="btn-primary confirmbtn full">保存</button>
+
+    </div>
+    <a class="bottombackbtn" href="javascript:void(0)">返回个人中心</a>
+</block>
+<block name="script">
+    <script>
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+//            User.validate();
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_order?access='+ user_id;
+            });
+
+            $('#li-my-address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_address?access='+ user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+//                var user_id = localStorage.getItem('user_id');
+//
+//                if (!user_id) {
+//                    location.href = '/index/login';
+//
+//                    return;
+//                }
+//
+//                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('.btn-primary').click(function () {
+                $('#old_label').hide();
+                $('#confirm_label').hide();
+
+                changePwd();
+            })
+
+            $('.bottombackbtn').click(function() {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me?access='+ user_id;
+            })
+        });
+
+        function changePwd() {
+            var user_id = localStorage.getItem('user_id');
+            var old_password = $('#old_password').val();
+            var password = $('#password').val();
+            var confirm_password = $('#confirm_password').val();
+
+            if (password != confirm_password) {
+                $('#confirm_label').show();
+
+                return;
+            }
+
+            var data = { 'user_id':user_id, 'old_password': old_password, 'password': password, 'password': password }
+
+            fit.ajax({
+                url:'/user/change_pwd',
+                data:data,
+                success:function(result){
+//                alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 103) {
+                        $('#old_label').show();
+
+                        return;
+                    }
+
+                    if (result.code == 200) {
+//                        localStorage.setItem('user_id', result.data);
+                    }
+                }
+            });
+        }
+
+    </script>
+</block>

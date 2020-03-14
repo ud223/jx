@@ -15,42 +15,39 @@ class IndexController extends CommonController {
     $SystemCategoryList = $clsSystemCategory->GetSystemCategoryTree();
     //endregion 系统栏目菜单
 
-    $clsLogin = new \Org\ZhiHui\Login();
-    $sAccountType = GetLoginAccountTypeCookeis();
-    $sGroupName = "";
-    
-    switch($sAccountType){
-      case $clsLogin->GetLoginTypeAdmin():
-        $sGroupName = $this->_AccountInfo["group_name"];
-        break;
-      
-      case $clsLogin->GetLoginTypeBrokerCompany():
-        $sGroupName = "经纪公司";
-        break;
-      
-      case $clsLogin->GetLoginTypeSellerManager():
-        $sGroupName = "销售经理";
-        break;
-    }
-
-    //region 获取未处理工单数量
-    $clsOrder = new \Org\ZhiHui\Order();
-    $UntreatedOrderNumber = $clsOrder->GetUntreatedOrderNumber($this->_AccountInfo, $this->_AccountType);
-    $this->assign("UntreatedOrderNumber", $UntreatedOrderNumber);
-    //endregion 获取未处理工单数量
+    $sGroupName = $this->_AccountInfo["group_name"];
 
     $this->assign("GroupName", $sGroupName);
     $this->assign("AccountInfo", $this->_AccountInfo);
     $this->assign("SystemCategoryList", $SystemCategoryList);
-    
+  
+//    if($this->_MobileClient){
+//      $this->CustomDisplay("WapPage/index");
+//    }else{
+//      $this->CustomDisplay();
+//    }
+  
     $this->CustomDisplay();
   }
 
-  public function AjaxPollingUntreatedNumber(){
-    $clsOrder = new \Org\ZhiHui\Order();
-    $UntreatedOrderNumber = $clsOrder->GetUntreatedOrderNumber($this->_AccountInfo, $this->_AccountType);
+  public function AjaxPollingUntreatedNumber($_is_ajax=true){
+    $clsUser = new \Org\ZhiHui\User();
+    $clsPolling = new \Org\ZhiHui\Polling();
 
-    AjaxReturnCorrect("", $UntreatedOrderNumber);
+    if($this->_AccountID == $clsUser->ConstInsuranceCompanyUserID()){
+      $OrderStatusCount = $clsPolling->GetSpecialOrderCount();
+    }else{
+      $OrderStatusCount = $clsPolling->GetSellerMemberOrderCount($this->_AccountID);
+    }
+
+    $OrderStatusCount["user_type"] = $this->_AccountType;
+
+    if($_is_ajax){
+      AjaxReturnCorrect("", $OrderStatusCount);
+    }else{
+      return $OrderStatusCount;
+    }
+
   }
 
   /**

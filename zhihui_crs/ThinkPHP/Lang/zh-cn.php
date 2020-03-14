@@ -143,6 +143,36 @@ return array(
   '_ADMIN_GROUP_NAME_EQ_OLD_NAME_'  => '管理员组名称与原名称相同',
   //endregion 管理员组
   
+  //region 用户账号
+  '_USER_ID_NULL_' => '用户账号ID不能为空',
+  '_USER_ID_ERROR_' => '用户账号ID错误',
+  '_USER_PARENT_ID_NULL_' => '父级用户账号ID不能为空',
+  '_USER_PARENT_ID_ERROR_' => '父级用户账号ID错误',
+  '_USER_PARENT_NOT_EXIST_' => '父级用户账号不存在',
+  '_USER_NOT_EXIST_' => '用户账号不存在',
+  '_USER_ACCOUNT_NAME_NULL_' => '必须输入用户账号名',
+  '_USER_ACCOUNT_NAME_EXIST_' => '用户账号名已存在',
+  '_USER_ACCOUNT_MAX_LENGTH_ERROR_'  => '用户账号长度不能超过%d个字符',
+  '_USER_REAL_NAME_NULL_'  => '必须输入用户的真实姓名',
+  '_USER_REAL_NAME_MAX_LENGTH_ERROR_'  => '真实姓名长度不能超过%d个字符',
+  '_USER_PASSWORD_NULL_'  => '密码不能为空',
+  '_USER_PASSWORD_LENGTH_NULL_'  => '密码长度不能小于6位',
+  '_USER_BASE_SALARY_ERROR_'  => '基本薪资错误',
+
+  '_USER_GROUP_NOT_SELLER_CAPTAIN_'  => '用户不属于团队长组',
+  '_USER_GROUP_NOT_SELLER_MEMBER_'  => '用户不属于客户经理组',
+
+  '_SELLER_CAPTAIN_ID_NULL_' => '团队长ID不能为空',
+  '_SELLER_CAPTAIN_ID_ERROR_' => '团队长ID错误',
+  '_SELLER_CAPTAIN_NOT_EXIST_' => '团队长不存在',
+
+  '_SELLER_MEMBER_ID_NULL_' => '客户经理ID不能为空',
+  '_SELLER_MEMBER_ID_ERROR_' => '客户经理ID错误',
+  '_SELLER_MEMBER_NOT_EXIST_' => '客户经理不存在',
+  '_SELLER_MEMBER_NOT_SELLER_CAPTAIN_USER_' => '客户经理不属于此团队长',
+
+  //endregion 用户账号
+  
   //region 经纪公司
   '_BROKER_COMPANY_ID_NULL_' => '经纪公司ID不能为空',
   '_BROKER_COMPANY_ID_ERROR_' => '经纪公司ID错误',
@@ -253,26 +283,47 @@ return array(
   '_PRODUCT_NAME_NULL_'  => '产品名称不能为空',
   '_PRODUCT_NAME_EXIST_'  => '产品名称已经存在',
   '_PRODUCT_PRICE_ERROR_'  => '产品价格错误',
+  '_PRODUCT_PAYMENT_TYPE_ERROR_'  => '产品支付方式错误',
+  '_PRODUCT_PAY_TYPE_ERROR_'  => '产品缴费方式错误',
+  '_PRODUCT_MIN_AGE_NULL_'  => '投保年龄不能为空',
+  '_PRODUCT_MIN_AGE_ERROR_'  => '投保最小年龄必须是大于0的数字',
+  '_PRODUCT_MAX_AGE_ERROR_'  => '投保最大年龄必须是大于0的数字',
+  '_PRODUCT_MAX_MIN_ERROR_'  => '投保最大年龄必须大于最小年龄',
+  '_PRODUCT_CAPTAIN_FIRST_RATE_ERROR_'  => '团队长首年提成比例错误',
+  '_PRODUCT_CAPTAIN_NEXT_RATE_ERROR_'  => '团队长次年提成比例错误',
+  '_PRODUCT_MEMBER_FIRST_RATE_ERROR_'  => '客户经理首年提成比例错误',
+  '_PRODUCT_MEMBER_NEXT_RATE_ERROR_'  => '客户经理次年提成比例错误',
+  '_PRODUCT_VALIDITY_YEAR_ERROR_'  => '产品保险期间错误',
   //endregion 产品
   
-  //region 工单
-  '_ORDER_SN_NULL_'  => '工单编号不能为空',
-  '_ORDER_NOT_EXIST_'  => '工单不存在',
-  '_ORDER_ATTACHMENT_NULL_'  => '必须上传工单的附件',
+  //region 预约
+  '_ORDER_SN_NULL_'  => '预约编号不能为空',
+  '_ORDER_NOT_EXIST_'  => '预约不存在',
+  '_ORDER_STATUS_ERROR_'  => '预约状态错误',
+  '_ORDER_SIGNATORY_STATUS_CHNAGED_'  => '预约签约状态已改变',
+  '_ORDER_ATTACHMENT_NULL_'  => '必须上传预约的附件',
   '_ORDER_RESERVATION_TIME_ERROR_'  => '预约时间错误',
   '_ORDER_RESERVATION_TIME_MIN_ERROR_'  => '预约时间必须大于当前时间',
   '_ORDER_PAY_TIME_ERROR_'  => '消费时间错误',
   '_ORDER_PAY_AMOUNT_ERROR_'  => '消费金额错误',
   '_ORDER_VISIT_TIME_ERROR_'  => '访问时间错误',
   
-  '_ORDER_REVIEW_NOT_EDIT_'  => '工单被驳回，无法进行编辑修改！',
+  '_ORDER_PRODUCT_SNAPSHOTS_SAVE_FAILURE_'  => '产品快照保存失败',
+  '_ORDER_PRODUCT_SNAPSHOTS_SAVE_SUCCEED_'  => '产品快照保存成功',
+  
+  '_ORDER_PAYMENT_YEARS_ERROR_'  => '缴费年限错误',
+  '_ORDER_GUARANTEE_AMOUNT_ERROR_'  => '保障额度错误',
+  '_ORDER_YEAR_PREMIUM_AMOUNT_ERROR_'  => '年缴保费错误',
+  '_ORDER_PLAN_ATTACHMENT_NULL_'  => '必须上传计划书附件',
+  
+  '_ORDER_REVIEW_NOT_EDIT_'  => '预约被驳回，无法进行编辑修改！',
 
-  '_ORDER_REVIEW_REMARKS_NULL_'  => '工单审批意见不能为空',
-  '_ORDER_REVIEW_STATUS_ERROR_'  => '工单审批状态错误',
-  //region 工单
+  '_ORDER_REVIEW_REMARKS_NULL_'  => '预约审批意见不能为空',
+  '_ORDER_REVIEW_STATUS_ERROR_'  => '预约审批状态错误',
+  //endregion 预约
   
   //region 佣金
-  '_COMMISSION_ID_ERROR_'  => '佣金编号不能为空',
+  '_COMMISSION_ID_ERROR_'  => '佣金编号错误',
   '_COMMISSION_DATE_ERROR_'  => '佣金日期错误',
   '_COMMISSION_NOT_EXIST_'  => '佣金数据不存在',
   '_COMMISSION_RANK_ERROR_'  => '本月排名错误',
@@ -292,7 +343,7 @@ return array(
   '_COMMISSION_STANDARD_ID_ERROR_'  => '佣金提成标准编号错误',
   '_COMMISSION_STANDARD_NAME_NULL_'  => '佣金提成标准编名称不能为空',
   '_COMMISSION_STANDARD_NAME_EXIST_'  => '佣金提成标准已经存在',
-  //region 佣金
+  //endregion 佣金
   
   //endregion 自定义语言变量
 );

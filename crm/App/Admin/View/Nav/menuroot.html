@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">{$page_title}</h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                <a href="__MODULE__/Index/index" class="unline">系统首页</a>
+                <notempty name="main_name"><i class="icon-angle-right"></i></notempty>
+            </li>
+            <notempty name="main_name">
+                <li>{$main_name}<notempty name="sub_name"><i class="icon-angle-right"></i></notempty></li>
+            </notempty>
+            <notempty name="sub_name"><li>{$sub_name}</li></notempty>
+        </ul>
+    </div>
+</div>

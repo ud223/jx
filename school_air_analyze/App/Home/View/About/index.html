@@ -1,0 +1,261 @@
+<layout name="layout" />
+<style type="text/css">
+    .flex-item{
+        max-height:240px;
+    }
+</style>
+<div class="container" style="padding-top:11px;">
+    <div class="works"><a href="#"><img src="{$zonglei.pic}"/></a></div>		
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="about">
+                <h3>关于我们</h3>
+                <ul>
+                    <volist name="zilei" id="vo" key="k">
+                        <if condition="$vo.id == $zileiid">
+                            <li><a href="{:U('About/index?zid='.$vo['id'])}#m{$k}" class="about-active">{$vo.name}</a></li>                                              
+                            <else /> 
+                            <li><a href="{:U('About/index?zid='.$vo['id'])}#m{$k}">{$vo.name}</a></li>
+                        </if>                    
+                    </volist>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <?php if($zileiid == 14){ ?>
+    <div class="aboutmain">
+        <div class="neirong">
+            <div class="jianjie" id="m1">
+                {$zileiinfo['zlinfo']['content']}
+<!--                <img src="__IMG__/jianjie.jpg">
+                <p>深圳市梦想光谱传媒文化发展有限公司，成立于2013年。公司主干成员具有多年的电视媒体经验：曾在湖南卫视，深圳广电，南方卫视等电视台就职。
+                    公司涉及影视广告及微电影的拍摄和制作，广告宣传推广，演唱会执行及制作，活动策划执行等。</p>
+                <p>公司拥有强大的导演团队和制作团队，成立公司之初团队已经执行连续两届深圳卫视跨年音乐季，连续三届国家广电总局中国国际新媒体短片节金鹏奖开幕式，深圳市第二十六届世界大学生运动会闭幕式，微电影，产品广告，宣传广告片等。公司具有强大的专业影视后期制作能力，连续制作近30部热门网剧、网络大电影等优秀作品。</p>
+                <p>期待与您的会面！</p>-->
+            </div>
+        </div>
+    </div>
+    <?php }else if($zileiid == 15){ ?>
+    <div class="aboutmain">
+        <div class="col-xs-12" style="padding-top:25px;">
+            <div class="carousel-example" id="m2">
+                <div id="simple-content-carousel" class="carousel flexible slide" data-ride="carousel" data-interval="5000" data-wrap="true">
+                    <div class="items">
+                        <volist name="zileiinfo.zlinfo" id="vo" key="k">       
+                            <div class="flex-item teampc">
+                                <a href="#"><img class="img-responsive" src="{$vo.thumbnail}"/></a><p>{$vo.title}</p><span>{$vo.description}</span>
+                            </div>
+                        </volist>
+                    </div>
+                    <div class="carousel-inner" role="listbox">	</div>
+
+                    <a class="left carousel-control" href="#simple-content-carousel" role="button" data-slide="prev">
+                        <!-- <span class="fa fa-angle-left" aria-hidden="true"></span> -->
+                        <span><img id="place1" src="__PUBLIC__/Home/img/left.png"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#simple-content-carousel" role="button" data-slide="next">
+                        <!-- <span class="fa fa-angle-right" aria-hidden="true"></span> -->
+                        <span><img id="place2" src="__PUBLIC__/Home/img/right.png"></span>                       
+                         <span class="sr-only">Next</span>
+                    </a>
+                    <script type="text/javascript">
+                         $("#place1").mouseover(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/left2.jpg")
+                        })
+
+                         $("#place1").mouseout(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/left.png")
+                        }) 
+
+                         $("#place2").mouseover(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/right2.jpg")
+                        })
+
+                         $("#place2").mouseout(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/right.png")
+                        })                      
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php }else if($zileiid == 16){ ?>
+    <div class="row">
+        <div class="partner" id="m3">
+            <ul>
+                <volist name="zileiinfo.zlinfo" id="vo" key="k">    
+                    <li class="col-lg-2 col-xs-3"><a href="#"><img src="{$vo.thumbnail}"></a></li>
+                </volist>
+            </ul>
+        </div> 
+    </div>
+    <?php }else if($zileiid == 17){ ?>
+    <div class="aboutmain" id="m4">
+        <div class="neirong">
+            <div class="jiaru">
+                <ul>
+                    <li>
+                        <h4>诚聘英才！</h4>
+                        <strong>我们希望你有良好的团队精神及团队协作能力；做事认真，仔细，责任心强；有理想，有抱负；在这里你将会得到持续成长的环境和空间；持续提升个人素养和技能，<br/>
+                            我们期待你的加入！</strong>
+                    </li>
+                    <volist name="zileiinfo.zlinfo" id="vo" key="k">   
+                    <li>
+                        <span>{$vo.title}</span>
+                        {$vo.content}
+<!--                        <p>
+                            1、负责网站的日常更新与维护，包括定期的策划活动，每日更新软文。<br>
+                            2、负责网站的日常更新与维护，包括定期的策划活动，每日更新软文。<br>
+                            3、负责网站的日常更新与维护，包括定期的策划活动，每日更新软文。<br>
+                            4、负责网站的日常更新与维护，包括定期的策划活动，每日更新软文。<br>
+                        </p>-->
+                    </li>
+                    </volist>
+                </ul>
+            </div>
+            <div class="lianxi" style="float:left;">
+                <div class="gonggao"><a href="#">加入我们</a></div>
+                <div class="disanf">
+                    <ul>
+                        <li><a href="#"><img src="__IMG__/guangpu_3.jpg"></a></li>
+                        <li><a href="#"><img src="__IMG__/guangpu_1.jpg"></a></li>
+                        <li class="disanfli"><a href="#"><img src="__IMG__/guangpu_2.jpg"></a></li>
+                    </ul>
+                </div>
+                <div class="fashi">
+                    <h1>联系方式</h1>
+                    <p>0755-26917851</p>
+                    <p>kefu@mengxiangguangpu.com</p>
+                    <p>深圳市南山区马家龙一街CTB创意工厂107室</p>
+                </div>
+            </div>	
+        </div>
+    </div>
+    <?php }else if($zileiid == 18){ ?>
+    <div class="aboutmain" id="m5">
+        <div class="neirong">
+            <div class="bianji col-md-6">
+                <div style="width:600px;height:450px;border:#ccc solid 1px;" id="dituContent"></div>
+            </div>
+            <div class="lianxi col-md-6" style="float:left;">
+                <div class="gonggao">联系我们</div>
+                <div class="disanf">
+                    <ul>
+                        <li><a href="#"><img src="__IMG__/guangpu_3.jpg"></a></li>
+                        <li><a href="#"><img src="__IMG__/guangpu_1.jpg"></a></li>
+                        <li class="disanfli"><a href="#"><img src="__IMG__/guangpu_2.jpg"></a></li>
+                    </ul>
+                </div>
+                <div class="fashi">
+                    <h1>联系方式</h1>
+                    <p>0755-26917851</p>
+                    <p>kefu@mengxiangguangpu.com</p>
+                    <p>深圳市南山区马家龙一街CTB创意工厂107室</p>
+                </div>
+            </div>	
+        </div>
+    </div>
+    <?php } ?>
+</div>
+<script type="text/javascript">
+    //创建和初始化地图函数：
+    function initMap() {
+        createMap();//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+        addMarker();//向地图中添加marker
+    }
+
+    //创建地图函数：
+    function createMap() {
+        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(113.938541, 22.555956);//定义一个中心点坐标
+        map.centerAndZoom(point, 17);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
+    }
+
+    //地图事件设置函数：
+    function setMapEvent() {
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
+    }
+
+    //地图控件添加函数：
+    function addMapControl() {
+        //向地图中添加缩放控件
+        var ctrl_nav = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_LARGE});
+        map.addControl(ctrl_nav);
+        //向地图中添加缩略图控件
+        var ctrl_ove = new BMap.OverviewMapControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: 1});
+        map.addControl(ctrl_ove);
+        //向地图中添加比例尺控件
+        var ctrl_sca = new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT});
+        map.addControl(ctrl_sca);
+    }
+
+    //标注点数组
+    var markerArr = [{title: "光谱传媒", content: "深圳市梦想光谱传媒文化发展有限公司，成立于2013年。公司主干成员具有多年的电视媒体经验：曾在湖南卫视，深圳广电，南方卫视等电视台就职。<br/>公司涉及影视广告及微电影的拍摄和制作，广告宣传推广，演唱会执行及制作，活动策划执行等。", point: "113.937732|22.556774", isOpen: 0, icon: {w: 21, h: 21, l: 0, t: 0, x: 6, lb: 5}}
+    ];
+    //创建marker
+    function addMarker() {
+        for (var i = 0; i < markerArr.length; i++) {
+            var json = markerArr[i];
+            var p0 = json.point.split("|")[0];
+            var p1 = json.point.split("|")[1];
+            var point = new BMap.Point(p0, p1);
+            var iconImg = createIcon(json.icon);
+            var marker = new BMap.Marker(point, {icon: iconImg});
+            var iw = createInfoWindow(i);
+            var label = new BMap.Label(json.title, {"offset": new BMap.Size(json.icon.lb - json.icon.x + 10, -20)});
+            marker.setLabel(label);
+            map.addOverlay(marker);
+            label.setStyle({
+                borderColor: "#808080",
+                color: "#333",
+                cursor: "pointer"
+            });
+
+            (function () {
+                var index = i;
+                var _iw = createInfoWindow(i);
+                var _marker = marker;
+                _marker.addEventListener("click", function () {
+                    this.openInfoWindow(_iw);
+                });
+                _iw.addEventListener("open", function () {
+                    _marker.getLabel().hide();
+                })
+                _iw.addEventListener("close", function () {
+                    _marker.getLabel().show();
+                })
+                label.addEventListener("click", function () {
+                    _marker.openInfoWindow(_iw);
+                })
+                if (!!json.isOpen) {
+                    label.hide();
+                    _marker.openInfoWindow(_iw);
+                }
+            })()
+        }
+    }
+    //创建InfoWindow
+    function createInfoWindow(i) {
+        var json = markerArr[i];
+        var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>" + json.content + "</div>");
+        return iw;
+    }
+    //创建一个Icon
+    function createIcon(json) {
+        var icon = new BMap.Icon("__IMG__/icon.png", new BMap.Size(json.w, json.h), {imageOffset: new BMap.Size(-json.l, -json.t), infoWindowOffset: new BMap.Size(json.lb + 5, 1), offset: new BMap.Size(json.x, json.h)})
+        return icon;
+    }
+
+    initMap();//创建和初始化地图
+</script>

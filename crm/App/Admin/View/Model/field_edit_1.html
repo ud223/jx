@@ -1,0 +1,537 @@
+<include file="Public:page_header" />
+
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-sidebar-fixed">
+    <!-- BEGIN 页头 --> 
+    {~W('Topbar/index')}
+    <!-- END 页头 -->
+    
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN 左侧栏 -->
+        <div class="page-sidebar navbar-collapse collapse">
+            <!-- BEGIN 菜单 -->
+            {~W('Nav/leftmenu')}
+            <!-- END 菜单 -->
+        </div>
+        <!-- END 左侧栏 -->
+      
+        <!-- BEGIN 内容区-->
+        <div class="page-content">
+            <!-- BEGIN 内容区域头部-->
+            {~W('Nav/menuroot')}
+            <!-- END 内容区域头部-->
+         
+            <!-- BEGIN 主体区域-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="icon-reorder"></i>{$pagetitle}</div>
+                            <div class="tools">
+                                <a href="" class="collapse"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <form action="#" class="form-horizontal form-bordered">
+                                <div class="form-body">
+                                    <input id="fieldid" name="fieldid" type="hidden" value="{$datainfo.fieldid}">
+                                    <input id="mdlid" name="mdlid" type="hidden" value="{$datainfo.mdlid}">
+                                    
+                                    <div class="form-group " id="tablenameTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 所属表 </label>
+                                        <div class="col-md-9" id="tablename_item">
+                                            <input id="tablename" name="tablename" type="text" class="form-control"  placeholder="" value="{$datainfo.tablename}" disabled>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group " id="fieldnameTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 字段名 </label>
+                                        <div class="col-md-9" id="fieldname_item">
+                                            <input id="fieldname" name="fieldname" type="text" class="form-control"  placeholder="" value="{$datainfo.fieldname}" disabled>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group " id="fieldtitleTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 字段标题 <span class="required">*</span></label>
+                                        <div class="col-md-9" id="fieldtitle_item">
+                                            <input id="fieldtitle" name="fieldtitle" type="text" class="form-control"  placeholder="" value="{$datainfo.fieldtitle}">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group " id="islistTip">
+                                        <label  class="col-md-3 control-label"> 列表页字段 </label>
+                                        <div class="col-md-9" id="islist_item">
+                                            <div class="radio-list"> 
+                                                <label class="radio-inline"><input type="radio" name="islist" id="islist_0" value="false" <eq name="datainfo.islist" value="false">checked</eq>>否 </label>
+                                                <label class="radio-inline"><input type="radio" name="islist" id="islist_1" value="true" <eq name="datainfo.islist" value="true"> checked</eq>>是 </label>
+                                            </div>
+                                            <span class="help-block">是否作为列表页字段显示</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group " id="iseditTip">
+                                        <label  class="col-md-3 control-label"> 输入字段 </label>
+                                        <div class="col-md-9" id="isedit_item">
+                                            <div class="radio-list"> 
+                                                <label class="radio-inline"><input type="radio" name="isedit" id="islist_0" value="false" <eq name="datainfo.isedit" value="false">checked</eq>>否 </label>
+                                                <label class="radio-inline"><input type="radio" name="isedit" id="islist_1" value="true" <eq name="datainfo.isedit" value="true"> checked</eq>>是 </label>
+                                            </div>
+                                            <span class="help-block">是否作为编辑页面的输入字段显示，针对于非后台管理员录入的数据。</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group  " id="controlTip">
+                                        <label  class="col-md-3 control-label"> 使用控件 <span class="required">*</span></label>
+                                        <div class="col-md-9" id="control_item">
+                                            <select  class="sidebar-option form-control input-large" name="control" id="control">
+                                                <option value="">选择控件</option>
+                                                <option value="hidden" <eq name="datainfo.control" value="hidden"> selected="selected"</eq>>隐藏文本框</option>
+                                                <option value="textbox" <eq name="datainfo.control" value="textbox"> selected="selected"</eq>>单行文本框</option>
+                                                <option value="textarea" <eq name="datainfo.control" value="textarea"> selected="selected"</eq>>多行文本框</option>
+                                                <option value="radio" <eq name="datainfo.control" value="radio"> selected="selected"</eq>>单选按钮</option>
+                                                <option value="checkbox" <eq name="datainfo.control" value="checkbox"> selected="selected"</eq>>复选框</option>
+                                                <option value="dropdownlist" <eq name="datainfo.control" value="dropdownlist"> selected="selected"</eq>>下拉框</option>
+                                                <option value="app_category" <eq name="datainfo.control" value="app_category"> selected="selected"</eq>>下拉框--应用栏目分类</option>
+                                                <option value="system_category" <eq name="datainfo.control" value="system_category"> selected="selected"</eq>>下拉框--系统栏目分类</option>
+                                                <option value="daterange" <eq name="datainfo.control" value="daterange"> selected="selected"</eq>>日期范围</option>
+                                                <option value="dateselect" <eq name="datainfo.control" value="dateselect"> selected="selected"</eq>>日期选择</option>
+                                                <option value="kindeditor" <eq name="datainfo.control" value="kindeditor"> selected="selected"</eq>>kindeditor文本编辑器</option>
+                                                <option value="upload_file" <eq name="datainfo.control" value="upload_file"> selected="selected"</eq>>文件上传</option>
+                                                <option value="upload_image" <eq name="datainfo.control" value="upload_image"> selected="selected"</eq>>图片上传</option>
+                                            </select>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div id="option_expand" style="display: none;"></div>
+                
+                                    <div class="form-group " id="tipsTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 默认提示文字 </label>
+                                        <div class="col-md-9" id="tips_item">
+                                            <input id="tips" name="tips" type="text" class="form-control"  placeholder="" value="{$datainfo.tips}">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="defaultvalueTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 默认值 </label>
+                                        <div class="col-md-9" id="defaultvalue_item">
+                                            <input id="defaultvalue" name="defaultvalue" type="text" class="form-control"  placeholder="" value="{$datainfo.defaultvalue}">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="cssTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> CSS类名 </label>
+                                        <div class="col-md-9" id="css_item">
+                                            <input id="css" name="css" type="text" class="form-control"  placeholder="" value="{$datainfo.css}">
+                                            <span class="help-block">附加的css，多个css类，用空格隔开</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="styleTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> Style代码 </label>
+                                        <div class="col-md-9" id="style_item">
+                                            <input id="style" name="style" type="text" class="form-control"  placeholder="" value="{$datainfo.style}">
+                                            <span class="help-block">附加的style样式代码，多个样式用 ; 号隔开</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="eventTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> JS调用 </label>
+                                        <div class="col-md-9" id="event_item">
+                                            <input id="event" name="event" type="text" class="form-control"  placeholder="" value="{$datainfo.event}">
+                                            <span class="help-block">js事件，完成的包括触发类型。例如：alert('test');</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="isrequiredTip">
+                                        <label  class="col-md-3 control-label"> 必填项 </label>
+                                        <div class="col-md-9" id="isrequired_item">
+                                            <div class="radio-list">
+                                                <label class="radio-inline"><input type="radio" name="isrequired" id="isrequired_0" value="false" <eq name="datainfo.isrequired" value="false"> checked</eq>>否 </label>
+                                                <label class="radio-inline"><input type="radio" name="isrequired" id="isrequired_1" value="true" <eq name="datainfo.isrequired" value="true"> checked</eq>>是 </label>
+                                            </div>
+                                            <span class="help-block">设置成唯一性，会对字段进行唯一性验证。</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="regexpTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 验证规则 </label>
+                                        <div class="col-md-3" id="regexp_item">
+                                            <input id="regexp" name="regexp" type="text" class="form-control"  placeholder="" value="{$datainfo.regexp}">
+                                        </div>
+                                        <div class="col-md-6" id="regexp_item">
+                                            <select  class="sidebar-option form-control input-large" name="regexp_rule" id="regexp_rule" style="margin-bottom: 5px;">
+                                                <option value="">自定义正则</option>
+                                                <option value="^[0-9.-]+$" <eq name="datainfo.regexp" value="^[0-9.-]+$"> selected="selected"</eq>>数字</option>
+                                                <option value="^[0-9-]+$" <eq name="datainfo.regexp" value="^[0-9-]+$"> selected="selected"</eq>>整数</option>
+                                                <option value="^[a-z]+$i" <eq name="datainfo.regexp" value="^[a-z]+$i"> selected="selected"</eq>>字母</option>
+                                                <option value="^[0-9a-z]+$i" <eq name="datainfo.regexp" value="^[0-9a-z]+$i"> selected="selected"</eq>>数字+字母</option>
+                                                <option value="^[\w\-\.]+@[\w\-\.]+(\.\w+)+$" <eq name="datainfo.control" value="^[\w\-\.]+@[\w\-\.]+(\.\w+)+$"> selected="selected"</eq>>E-Mail</option>
+                                                <option value="^[0-9]{5,20}$" <eq name="datainfo.regexp" value="^[0-9]{5,20}$"> selected="selected"</eq>>QQ</option>
+                                                <option value="^http:\/\/" <eq name="datainfo.regexp" value="^http:\/\/"> selected="selected"</eq>>超级链接</option>
+                                                <option value="^(1)[0-9]{10}$" <eq name="datainfo.regexp" value="^(1)[0-9]{10}$"> selected="selected"</eq>>手机号码</option>
+                                                <option value="^[0-9-]{6,13}$" <eq name="datainfo.regexp" value="^[0-9-]{6,13}$"> selected="selected"</eq>>电话号码</option>
+                                                <option value="^[0-9]{6}$" <eq name="datainfo.regexp" value="^[0-9]{6}$"> selected="selected"</eq>>邮政编码</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group " id="errortipsTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 错误提示 </label>
+                                        <div class="col-md-9" id="errortips_item">
+                                            <input id="errortips" name="errortips" type="text" class="form-control"  placeholder="" value="{$datainfo.errortips}">
+                                            <span class="help-block">正则验证的错误提示</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="minlenTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 最小长度 </label>
+                                        <div class="col-md-9" id="minlen_item">
+                                            <input id="minlen" name="minlen" type="text" class="form-control"  placeholder="" value="{$datainfo.minlen}">
+                                            <span class="help-block">输入字符的数的最小长度</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="maxlenTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 最大长度 </label>
+                                        <div class="col-md-9" id="maxlen_item">
+                                            <input id="maxlen" name="maxlen" type="text" class="form-control"  placeholder="" value="{$datainfo.maxlen}">
+                                            <span class="help-block">输入字符的数的最大长度</span>
+                                        </div>
+                                    </div>
+                
+                                    <!--<div class="form-group " id="minvalTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 最小值 </label>
+                                        <div class="col-md-9" id="minval_item">
+                                            <input id="minval" name="minval" type="text" class="form-control"  placeholder="" value="{$datainfo.minval}">
+                                            <span class="help-block">输入的数字最小值</span>
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group " id="maxvalTip">
+                                        <label  class="col-md-3 control-label" style="text-align: right;"> 最大值 </label>
+                                        <div class="col-md-9" id="maxval_item">
+                                            <input id="maxval" name="maxval" type="text" class="form-control"  placeholder="" value="{$datainfo.maxval}">
+                                            <span class="help-block">输入的数字的最大值</span>
+                                        </div>
+                                    </div>-->
+                
+                                    <!--<div class="form-group " id="isuniqueTip">
+                                        <label  class="col-md-3 control-label"> 唯一性 </label>
+                                        <div class="col-md-9" id="isunique_item">
+                                            <div class="radio-list">
+                                                <label class="radio-inline"><input type="radio" name="isunique" id="isunique_0" value="false" <eq name="datainfo.isunique" value="false"> checked</eq>>否 </label>
+                                                <label class="radio-inline"><input type="radio" name="isunique" id="isunique_1" value="true" <eq name="datainfo.isunique" value="true"> checked</eq>>是 </label>
+                                            </div>
+                                            <span class="help-block">设置成唯一性，会对字段进行唯一性验证。</span>
+                                        </div>
+                                    </div>-->
+                
+                                    <div class="form-group last" id="issearchTip">
+                                        <label  class="col-md-3 control-label"> 搜索项 </label>
+                                        <div class="col-md-9" id="issearch_item">
+                                            <div class="radio-list">
+                                                <label class="radio-inline"><input type="radio" name="issearch" id="issearch_0" value="false" <eq name="datainfo.issearch" value="false"> checked</eq>>否 </label>
+                                                <label class="radio-inline"><input type="radio" name="issearch" id="issearch_1" value="true" <eq name="datainfo.issearch" value="true"> checked</eq>>是 </label>
+                                            </div>
+                                            <span class="help-block">设置为搜索项时，在列表页的搜索功能项</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <button type="button" id="btnSave" data-url="" style="margin-right: 5px;" class="btn btn-info" onclick="checkdata();"> <i class="icon-ok"></i>&nbsp;保存 </button>
+                                                <button type="button" id="" data-url="javascript:void(0);" style="margin-right: 5px;" class="btn btn-default" onclick="history.go(-1);"> 取消 </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END 主体区域-->
+      </div>
+      <!-- BEGIN 内容区-->
+   </div>
+   <!-- END CONTAINER -->
+    
+   <include file="Public:page_footer" />
+   
+   <script>
+    $(document).ready(function(){
+        var nSelectControl = $('#control').val();
+        ExpandConfig(nSelectControl);
+    });
+    
+    $('#control').change(function(){
+        ExpandConfig($(this).val());
+    });
+    
+    $('#regexp_rule').change(function(){
+        var sRegexp = $(this).val();
+        
+        $('#regexp').val(sRegexp);
+    });
+    
+    function ExpandConfig(){
+        var _cnttype = arguments[0] ? arguments[0] : '';
+        var sCaseType = _cnttype;
+        
+        var OptionHtml = [];
+
+        if(_cnttype == 'radio' || _cnttype == 'checkbox' || _cnttype == 'dropdownlist'){
+            _cnttype = 'option';
+        }
+        
+        switch(_cnttype){
+            case 'textbox' :
+                OptionHtml.push('<?php R('Widget/ControlSetting/textbox', array($datainfo["setting"]));?>');
+                break;
+                
+            case 'textarea' :
+                OptionHtml.push('<?php R('Widget/ControlSetting/textarea', array($datainfo["setting"]));?>');
+                break;
+                
+            case 'option' :
+                OptionHtml.push('<?php R('Widget/ControlSetting/option', array($datainfo["setting"]));?>');
+                break;
+                
+            case 'kindeditor' :
+                OptionHtml.push('<?php R('Widget/ControlSetting/kindeditor', array($datainfo["setting"]));?>');
+                break;
+                
+            case 'upload_image' :
+                OptionHtml.push('<?php R('Widget/ControlSetting/upload_image', array($datainfo["setting"]));?>');
+                break;
+                
+            case 'upload_file' :
+                OptionHtml.push('<?php R('Widget/ControlSetting/upload_file', array($datainfo["setting"]));?>');
+                break;
+        }
+        
+        var sHtml = OptionHtml.join('');
+        
+        if(btten.IsN(sHtml)){
+            $('#option_expand').html('').hide();
+        }else{
+            $('#option_expand').html(sHtml).show();
+        }
+    }
+       
+    function checkdata(){
+        var sFieldTitle = $('#fieldtitle').val();
+        var IsList = $("input[name='islist']:checked").val();
+        var IsEdit = $("input[name='isedit']:checked").val();
+        var sControl = $('#control').val();
+        var sTips = $('#tips').val();
+        var sDefaultValue = $('#defaultvalue').val();
+        var sCss = $('#css').val();
+        var sStyle = $('#style').val();
+        var sEvent = $('#event').val();
+        var IsRequired = $("input[name='isrequired']:checked").val();
+        var sRegexp = $("#regexp").val();
+        var sErrorTips = $("#errortips").val();
+        var nMinLen = $("#minlen").val();
+        var nMaxLen = $("#maxlen").val();
+        //var nMinVal = $("#minval").val();
+        //var nMaxVal = $("#maxval").val();
+        //var IsUnique = $("input[name='isunique']:checked").val();
+        var IsSearch = $("input[name='issearch']:checked").val();
+        
+        var arrJsonStr = [];
+        var arrExpand = [];
+        
+        arrJsonStr.push('"fieldid":"'+ $('#fieldid').val() +'"');
+        arrJsonStr.push('"mdlid":"'+ $('#mdlid').val() +'"');
+        
+        if(!btten.IsN(sFieldTitle)){
+            arrJsonStr.push('"fieldtitle":"'+ sFieldTitle +'"');
+        }else{
+            arrJsonStr.push('"fieldtitle":""');
+        }
+        
+        if(!btten.IsN(IsList)){
+            arrJsonStr.push('"islist":"'+ IsList +'"');
+        }else{
+            arrJsonStr.push('"islist":""');
+        }
+        
+        if(!btten.IsN(IsEdit)){
+            arrJsonStr.push('"isedit":"'+ IsEdit +'"');
+        }else{
+            arrJsonStr.push('"isedit":""');
+        }
+        
+        if(!btten.IsN(sControl)){
+            arrJsonStr.push('"control":"'+ sControl +'"');
+        }else{
+            arrJsonStr.push('"control":""');
+        }
+        
+        if(!btten.IsN(sTips)){
+            arrJsonStr.push('"tips":"'+ sTips +'"');
+        }else{
+            arrJsonStr.push('"tips":""');
+        }
+        
+        if(!btten.IsN(sDefaultValue)){
+            arrJsonStr.push('"defaultvalue":"'+ sDefaultValue +'"');
+        }else{
+            arrJsonStr.push('"defaultvalue":""');
+        }
+        
+        if(!btten.IsN(sCss)){
+            arrJsonStr.push('"css":"'+ sCss +'"');
+        }else{
+            arrJsonStr.push('"css":""');
+        }
+        
+        if(!btten.IsN(sStyle)){
+            arrJsonStr.push('"style":"'+ sStyle +'"');
+        }else{
+            arrJsonStr.push('"style":""');
+        }
+        
+        if(!btten.IsN(sEvent)){
+            arrJsonStr.push('"event":"'+ sEvent +'"');
+        }else{
+            arrJsonStr.push('"event":""');
+        }
+
+        if(!btten.IsN(IsRequired)){
+            arrJsonStr.push('"isrequired":"'+ IsRequired +'"');
+        }else{
+            arrJsonStr.push('"isrequired":""');
+        }
+        
+        if(!btten.IsN(sRegexp)){
+            arrJsonStr.push('"regexp":"'+ sRegexp +'"');
+        }else{
+            arrJsonStr.push('"regexp":""');
+        }
+        
+        if(!btten.IsN(sErrorTips)){
+            arrJsonStr.push('"errortips":"'+ sErrorTips +'"');
+        }else{
+            arrJsonStr.push('"errortips":""');
+        }
+        
+        if(!btten.IsN(nMinLen)){
+            arrJsonStr.push('"minlen":"'+ nMinLen +'"');
+        }else{
+            arrJsonStr.push('"minlen":""');
+        }
+        
+        if(!btten.IsN(nMaxLen)){
+            arrJsonStr.push('"maxlen":"'+ nMaxLen +'"');
+        }else{
+            arrJsonStr.push('"maxlen":""');
+        }
+        
+        /*
+        if(!btten.IsN(nMinVal)){
+            arrJsonStr.push('"minval":"'+ nMinVal +'"');
+        }
+        
+        if(!btten.IsN(nMaxVal)){
+            arrJsonStr.push('"maxval":"'+ nMaxVal +'"');
+        }
+        
+        if(!btten.IsN(IsUnique)){
+            arrJsonStr.push('"isunique":"'+ IsUnique +'"');
+        }
+        */
+        
+        if(!btten.IsN(IsSearch)){
+            arrJsonStr.push('"issearch":"'+ IsSearch +'"');
+        }else{
+            arrJsonStr.push('"issearch":""');
+        }
+
+        $("input[name=setting]").each(function () {
+            var sValue = $(this).val();
+            var sKey = $(this).attr('data-type');
+            
+            if(!btten.IsN(sValue)){
+                arrExpand.push('"'+ sKey +'":"'+ sValue +'"');
+            }else{
+                arrExpand.push('"'+ sKey +'":""');
+            }
+        });
+        
+        $("select[name='setting']").each(function(){
+            var sValue = $(this).val();
+            var sKey = $(this).attr('data-type');
+
+            if(!btten.IsN(sValue)){
+                arrExpand.push('"'+ sKey +'":"'+ sValue +'"');
+            }else{
+                arrExpand.push('"'+ sKey +'":""');
+            }
+        });
+        
+        $("textarea[name='setting']").each(function(){
+            var sValue = $(this).val();
+            var sKey = $(this).attr('data-type');
+
+            if(!btten.IsN(sValue)){
+                arrExpand.push('"'+ sKey +'":"'+ sValue +'"');
+            }else{
+                arrExpand.push('"'+ sKey +'":""');
+            }
+        });
+
+        var sJson = arrJsonStr.join(',');
+        var sExpandJson = arrExpand.join(',');
+
+        if(btten.IsN(sExpandJson)){
+            sExpandJson = "";
+        }else{
+            sExpandJson = '{' + sExpandJson + '}';
+        }
+   
+        if(!btten.IsN(sJson)){
+            sJson = {"data":"{"+ sJson +"}", "expand":sExpandJson};
+            
+            $.ajax({
+                type: "POST",
+                url:  _MODULE_ + '/Model/field_edit',
+                dataType: "json",
+                data: sJson,
+                timeout : 100000,
+                cache: false,
+                async: false,
+                success: function(result){
+                    if(btten.IsN(result)){
+                        btten.Error("没有获取到服务器返回消息！");
+                        return;
+                    }
+
+                    if(!result.status){
+                        btten.Error(result.info);
+                    }else{
+                        //btten.F5();
+                        //alert('添加成功！');
+                        window.location.href = "{$PostBackUrl}/mdlid/" + $('#mdlid').val(); 
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    btten.Error("无法加载请求的内容！");
+                }
+            });
+        }
+    }
+   </script>
+</body>
+</html>

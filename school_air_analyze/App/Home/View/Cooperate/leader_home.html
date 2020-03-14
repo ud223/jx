@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>幸福龙光</title>
+    <!-- Unresponsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Public/Home/css/global.css" />
+    <link rel="stylesheet" href="/Public/Home/css/leader.css" />
+
+</head>
+
+<body>
+<div class="myat_article_body">
+    <div class="ldr_d01">
+        <div>工作列表</div>
+    </div>
+</div>
+
+<div class="ldr_meblk">
+    <div>
+        当前用户 <strong>{$list['name']}</strong>
+        <a href="login.html">登出</a>
+    </div>
+</div>
+
+<div>
+    <volist name="consult" id="val">
+    <div class="ldr_qustiwp" onclick="location.href='question.html?optid={$val['optid']}'">
+        <div class="ldr_qusti">
+            <span class="t1">{$val['user']['name']}</span>提出
+            <span class="t2">{$val['cooperate_type']['name']}</span>
+            <span class="t3">{$val['cooperate_state']['name']}</span>
+        </div>
+        <div>
+            {$val['timel']}
+        </div>
+    </div>
+    </volist>
+</div>
+</body>
+
+</html>

@@ -8,429 +8,1232 @@ class OrderController extends CommonController {
   function __construct() {
     parent::__construct();
 
-    $this->_Model = "工单";
+    $this->_Model = "预约";
 
     $this->modOrder = D("Order");
   }
-  
-  //region 工单
+
+  //region 申请
+  //region 等待审批的预约
   /**
-   * todo: 工单列表
+   * todo: 等待审批的预约列表
    */
-  public function OrderList(){
+  public function SignatoryOrderList(){
     $SearchParam = $this->GetOrderListSearchParam();
 
-    if($this->_AccountType != $this->_AdminAccountType){
-      $SearchParam["search_broker_company"] = $this->_AccountInfo["broker_company_id"];
-    }
-    
-    $OrderList = $this->modOrder->OrderList($this->_PagingRowCount, $SearchParam);
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
 
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $clsSellerManager = new \Org\ZhiHui\SellerManager();
-    
-    //region 经纪公司
-    if($this->_AccountType === $this->_AdminAccountType){
-      $BrokerCompanyOption = $clsBrokerCompany->BrokerCompanyOption();
-      $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
     }
-    //endregion 经纪公司
-    
-    switch($this->_AccountType){
-      case $this->_AdminAccountType:
-        $SellerManagerOption = $clsSellerManager->SellerManagerOption();
-        break;
+
+    $OrderList = $this->modOrder->SignatoryOrderList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("signatory_order_list");
+  }
+
+  /**
+   * todo: 等待审批的预约信息
+   */
+  public function OrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    if(IsArray($OrderInfo)){
+      //region 客户经理
+      $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($OrderInfo["seller_captain_id"]);
+      $this->assign("SellerMemberOption", $SellMemberOption);
+      //endregion 客户经理
+
+      //region 客户
+      if(IsNum($OrderInfo["seller_member_id"], false, false)){
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($OrderInfo["seller_member_id"]);
+      }else{
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption(0, $OrderInfo["seller_captain_id"]);
+      }
+
+      $this->assign("CustomerOption", $CustomerOption);
+
+      $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+      $this->assign("CustomerInfo", $CustomerInfo);
+      //endregion 客户
       
-      case $this->_BrokerCompanyAccountType:
-        $SellerManagerOption = $clsSellerManager->SellerManagerOption($this->_AccountInfo["broker_company_id"]);
+      //region 产品
+      $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+      $this->assign("ProductInfo", $ProductSnapshotsInfo);
 
-        $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption($this->_AccountInfo["broker_company_id"]);
-        break;
+      $ProductOption = $this->modOrder->clsProduct->ProductOption("type_id", $ProductSnapshotsInfo["type_id"]);
+      $this->assign("ProductOption", $ProductOption);
+      //endregion 产品
     }
 
-    //region 销售经理
-    $this->assign("SellerManagerOption", $SellerManagerOption);
-    //endregion 销售经理
-    
-    //region 服务商
-    $ServiceProvidersOption = $clsServiceProviders->ServiceProvidersOption();
-    $this->assign("ServiceProvidersOption", $ServiceProvidersOption);
-    //endregion 服务商
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
 
-    //region 门店
+        //region 客户经理
+        if(!IsArray($SellMemberOption)){
+          $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+          $this->assign("SellerMemberOption", $SellMemberOption);
+        }
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+        $this->assign("SellerMemberInfo", $SellerMemberInfo);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+
+      //region 客户
+      $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($SellerMemberInfo["id"], $OrderInfo["seller_captain_id"]);
+      $this->assign("CustomerOption", $CustomerOption);
+      //endregion 客户
+    }
+
+    //region 产品类别
+    $ProductTypeOption = $this->modOrder->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+    //endregion 产品类别
+
+    //p($OrderInfo);
+
+
+    $this->CustomDisplay("order_info");
+  }
+
+  /**
+   * todo: 保存销售经理创建的预约信息
+   */
+  public function AjaxOrderSave(){
+    $sOrderSn = RR("order_sn");
+    $nSellerCaptainID = RR("seller_captain_id");
+    $sSellerMemberID = RR("seller_member_id");
+    $nCustomerID = RR("customer");
+    $nProductID = RR("product");
+    $nPaymentYear = RR("payment_years");
+    $nGuaranteeAmount = RR("guarantee_amount");
+    $nYearPremiumAmount = RR("year_premium_amount");
+    $sSellerManagerRemarks = RR("seller_manager_remarks");
+
+    $fileAttachment = $_FILES["attachment"];
+
+    $Result = $this->modOrder->OrderInfoSave($sOrderSn, $nSellerCaptainID, $sSellerMemberID, $nCustomerID, $nProductID, $nPaymentYear, $nGuaranteeAmount, $nYearPremiumAmount, $sSellerManagerRemarks, $fileAttachment);
+
+    AjaxReturn($Result);
+  }
+
+  /**
+   * todo: Ajax获取客户经理option
+   */
+  public function AjaxGetSellerMemberOption(){
+    $nSellerCaptainID = RR("seller_captain_id");
+
+    $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($nSellerCaptainID);
+
+    AjaxReturnCorrect("", $SellMemberOption);
+  }
+
+  /**
+   * todo: Ajax获取客户option
+   */
+  public function AjaxGetCustomerOption(){
+    $nSellerCaptainID = RR("seller_captain_id");
+    $nSellerMemberID = RR("seller_member_id");
+    $SellMemberOption = $this->modOrder->clsCustomer->CustomerOption($nSellerMemberID, $nSellerCaptainID);
+
+    AjaxReturnCorrect("", $SellMemberOption);
+  }
+
+  //endregion 等待审批的预约
+
+  //region 签约预约
+  /**
+   * todo: 签约预约列表
+   */
+  public function SubscribeOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    }
+
+    $OrderList = $this->modOrder->SubscribeOrderList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $this->_PagingRowCount, $SearchParam);
     
-    $this->assign("StoreOption", $StoreOption);
-    //endregion 门店
+    $OrderStatusConfig = $this->modOrder->clsOrder->OrderStatusConfig();
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+    $this->assign("OrderStatusConfig", $OrderStatusConfig);
+  
+    if($this->_MobileClient){
+      $this->CustomDisplay("wap_subscribe_order_list");
+    }else{
+      $this->CustomDisplay("subscribe_order_list");
+    }
+  }
+  
+  /**
+   * todo: 签约预约列表
+   */
+  public function AjaxSubscribeOrderList(){
+    $nPage = RR("page");
+    
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+        
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+      
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    }
+    
+    $OrderList = $this->modOrder->AjaxSubscribeOrderList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $nPage, $this->_PagingRowCount);
+  
+    AjaxReturnCorrect("", $OrderList);
+  }
+  
+  /**
+   * todo: 添加预约预约
+   */
+  public function SubscribeOrderInfoAdd(){
+    $OrderSn = RR("order_sn");
+    
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    if(IsArray($OrderInfo)){
+      //region 客户经理
+      $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($OrderInfo["seller_captain_id"]);
+      $this->assign("SellerMemberOption", $SellMemberOption);
+      //endregion 客户经理
+    
+      //region 客户
+      if(IsNum($OrderInfo["seller_member_id"], false, false)){
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($OrderInfo["seller_member_id"]);
+      }else{
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption(0, $OrderInfo["seller_captain_id"]);
+      }
+    
+      $this->assign("CustomerOption", $CustomerOption);
+    
+      $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+      $this->assign("CustomerInfo", $CustomerInfo);
+      //endregion 客户
+    
+      //region 产品
+      $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+      $this->assign("ProductInfo", $ProductSnapshotsInfo);
+    
+      $ProductOption = $this->modOrder->clsProduct->ProductOption("type_id", $ProductSnapshotsInfo["type_id"]);
+      $this->assign("ProductOption", $ProductOption);
+      //endregion 产品
+    }
+  
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+      
+        //region 客户经理
+        if(!IsArray($SellMemberOption)){
+          $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+          $this->assign("SellerMemberOption", $SellMemberOption);
+        }
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+        $this->assign("SellerMemberInfo", $SellerMemberInfo);
+      }
+    
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    
+      //region 客户
+      $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($SellerMemberInfo["id"], $OrderInfo["seller_captain_id"]);
+      $this->assign("CustomerOption", $CustomerOption);
+      //endregion 客户
+    }
+  
+    //region 产品类别
+    $ProductTypeOption = $this->modOrder->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+    //endregion 产品类别
+    
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+    
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+    
+    $this->CustomDisplay("subscribe_order_info_add");
+  }
+
+  /**
+   * todo: 预约预约时间
+   */
+  public function SubscribeOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    //region 产品
+    $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+    $this->assign("ProductInfo", $ProductSnapshotsInfo);
+    //endregion 产品
+
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+
+    $this->CustomDisplay("subscribe_order_info");
+  }
+  
+  public function AjaxOrderViewInfo(){
+    $OrderSn = RR("order_sn");
+  
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    
+    AjaxReturnCorrect("", $OrderInfo);
+  }
+  
+  /**
+   * todo: 保存预约预约时间
+   */
+  public function SubscribeOrderInfoSave(){
+    $sOrderSn = RR("order_sn");
+    $nSellerCaptainID = RR("seller_captain_id");
+    $sSellerMemberID = RR("seller_member_id");
+    $nCustomerID = RR("customer");
+    $nProductID = RR("product");
+    $sReservationDate = RR("reservation_time");
+    $nPaymentYear = RR("payment_years");
+    $nGuaranteeAmount = RR("guarantee_amount");
+    $nYearPremiumAmount = RR("year_premium_amount");
+    $sSellerManagerRemarks = RR("seller_manager_remarks");
+    
+    $fileAttachment = $_FILES["attachment"];
+    
+    $Result = $this->modOrder->SubscribeOrderInfoSave($sOrderSn, $nSellerCaptainID, $sSellerMemberID, $nCustomerID, $nProductID, $sReservationDate, $nPaymentYear, $nGuaranteeAmount, $nYearPremiumAmount, $sSellerManagerRemarks, $fileAttachment);
+    
+    AjaxReturn($Result);
+  }
+
+  /**
+   * todo: 保存预约预约时间
+   */
+  public function ChangeReservationTime(){
+    $sOrderSn = RR("order_sn");
+    $sReservationDate = RR("reservation_time");
+
+    $Result = $this->modOrder->ChangeReservationTime($sOrderSn, $sReservationDate);
+
+    AjaxReturn($Result);
+  }
+  
+  /**
+   * todo: 保存预约预约时间
+   */
+  public function SubscribeOrderInfoSaveBak(){
+    $sOrderSn = RR("order_sn");
+    $nSellerCaptainID = RR("seller_captain_id");
+    $sSellerMemberID = RR("seller_member_id");
+    $nCustomerID = RR("customer");
+    $nProductID = RR("product");
+    $sReservationDate = RR("reservation_time");
+    $nPaymentYear = RR("payment_years");
+    $nGuaranteeAmount = RR("guarantee_amount");
+    $nYearPremiumAmount = RR("year_premium_amount");
+    $sSellerManagerRemarks = RR("seller_manager_remarks");
+    
+    $fileAttachment = $_FILES["attachment"];
+    
+    $Result = $this->modOrder->SubscribeOrderInfoSave($sOrderSn, $nSellerCaptainID, $sSellerMemberID, $nCustomerID, $nProductID, $sReservationDate, $nPaymentYear, $nGuaranteeAmount, $nYearPremiumAmount, $sSellerManagerRemarks, $fileAttachment);
+    
+    AjaxReturn($Result);
+  }
+  
+  public function AjaxSubscribeOrderInfo(){
+    $sOrderSn = RR("order_sn");
+  
+    $OrderInfo = $this->modOrder->PlanInfo($sOrderSn);
+  
+    AjaxReturnCorrect("", $OrderInfo);
+  }
+  
+  public function AjaxPlanList(){
+    $AuditedPlanList = $this->modOrder->AuditedPlanList($this->_AccountID);
+    
+    AjaxReturnCorrect("", $AuditedPlanList);
+  }
+  //endregion 签约预约
+
+  //region 消费预约
+  /**
+   * todo: 消费预约列表
+   */
+  public function PayOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    }
+
+    $OrderList = $this->modOrder->PayOrderList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("pay_order_list");
+  }
+
+  /**
+   * todo: 消费预约时间
+   */
+  public function PayOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    //region 产品
+    $ProductInfo = $this->modOrder->clsProduct->GetProductDetails($OrderInfo["product_id"]);
+    $this->assign("ProductInfo", $ProductInfo);
+    //endregion 产品
+
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+
+    $this->CustomDisplay("pay_order_info");
+  }
+
+  /**
+   * todo: 保存预约预约时间
+   */
+  public function PayOrderInfoSave(){
+    $OrderSn = RR("order_sn");
+    $nPayAmount = RR("pay_amount");
+    $nPayTime = RR("pay_time");
+
+    $Result = $this->modOrder->PayOrderInfoSave($OrderSn, $nPayAmount, $nPayTime);
+
+    AjaxReturn($Result);
+  }
+
+  /**
+   * todo: 确认消费预约
+   */
+  public function AjaxConfirmPaymentOrderInfo(){
+    $sOrderSn = RR("order_sn");
+    $nYearPremiumAmount = RR("year_premium_amount");
+    $nPaymentYears = RR("payment_years");
+    $nGuaranteeAmount = RR("guarantee_amount");
+    $nProductID = RR("product_id");
+    $Attachment = $_FILES["attachment"];
+
+    $Result = $this->modOrder->ConfirmPaymentOrderInfoSave($sOrderSn, $nYearPremiumAmount, $nPaymentYears, $nGuaranteeAmount, $nProductID, $Attachment);
+
+    AjaxReturn($Result);
+  }
+  //endregion 消费预约
+
+  //region 回访预约
+  /**
+   * todo: 回访预约列表
+   */
+  public function ReturnVisitOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    }
+
+    $OrderList = $this->modOrder->ReturnVisitOrderList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("return_visit_order_list");
+  }
+
+  /**
+   * todo: 回访预约时间
+   */
+  public function ReturnVisitOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    //region 产品
+    $ProductInfo = $this->modOrder->clsProduct->GetProductDetails($OrderInfo["product_id"]);
+    $this->assign("ProductInfo", $ProductInfo);
+    //endregion 产品
+
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+
+    $this->CustomDisplay("return_visit_order_info");
+  }
+
+  /**
+   * todo: 保存预约预约时间
+   */
+  public function ReturnVisitOrderInfoSave(){
+    $OrderSn = RR("order_sn");
+    $nVisitTime = RR("visit_time");
+
+    $Result = $this->modOrder->ReturnVisitOrderInfoSave($OrderSn, $nVisitTime);
+
+    AjaxReturn($Result);
+  }
+  //endregion 回访预约
+
+  //region 保险计划书
+  public function PlanList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    }
+
+    $OrderList = $this->modOrder->PlanList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("AccountType", $this->_AccountType);
+    $this->assign("SellerMemberAccountType", $this->_SellerMemberAccountType);
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("plan_order_list");
+  }
+  
+  public function AjaxPlanInfo(){
+    $sOrderSn = RR("order_sn");
+  
+    $OrderInfo = $this->modOrder->PlanInfo($sOrderSn);
+    
+    AjaxReturnCorrect("", $OrderInfo);
+  }
+
+  /**
+   * todo: 计划书信息
+   */
+  public function PlanInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->PlanInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    if(IsArray($OrderInfo)){
+      //region 客户经理
+      $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($OrderInfo["seller_captain_id"]);
+      $this->assign("SellerMemberOption", $SellMemberOption);
+      //endregion 客户经理
+
+      //region 客户
+      if(IsNum($OrderInfo["seller_member_id"], false, false)){
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($OrderInfo["seller_member_id"]);
+      }else{
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption(0, $OrderInfo["seller_captain_id"]);
+      }
+
+      $this->assign("CustomerOption", $CustomerOption);
+
+      $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+      $this->assign("CustomerInfo", $CustomerInfo);
+      //endregion 客户
+
+      //region 产品
+      $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+      $this->assign("ProductInfo", $ProductSnapshotsInfo);
+
+      $ProductOption = $this->modOrder->clsProduct->ProductOption("type_id", $ProductSnapshotsInfo["type_id"]);
+      $this->assign("ProductOption", $ProductOption);
+      //endregion 产品
+    }
+
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+
+        //region 客户经理
+        if(!IsArray($SellMemberOption)){
+          $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+          $this->assign("SellerMemberOption", $SellMemberOption);
+        }
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+        $this->assign("SellerMemberInfo", $SellerMemberInfo);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+
+      //region 客户
+      $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($SellerMemberInfo["id"], $OrderInfo["seller_captain_id"]);
+      $this->assign("CustomerOption", $CustomerOption);
+      //endregion 客户
+    }
+
+    //region 产品类别
+    $ProductTypeOption = $this->modOrder->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+    //endregion 产品类别
+
+    //p($OrderInfo);
+
+
+    $this->CustomDisplay("plan_info");
+  }
+  
+  /**
+   * todo: 保存计划书信息
+   */
+  public function AjaxPlanSave(){
+    $sOrderSn = RR("order_sn");
+    $nSellerCaptainID = RR("seller_captain_id");
+    $sSellerMemberID = RR("seller_member_id");
+    $nCustomerID = RR("customer");
+    $nProductID = RR("product");
+    $nPaymentYear = RR("payment_years");
+    $nGuaranteeAmount = RR("guarantee_amount");
+    $nYearPremiumAmount = RR("year_premium_amount");
+    $sSellerManagerRemarks = RR("seller_manager_remarks");
+    
+    $fileAttachment = $_FILES["attachment"];
+    
+    $Result = $this->modOrder->PlanInfoSave($sOrderSn, $nSellerCaptainID, $sSellerMemberID, $nCustomerID, $nProductID, $nPaymentYear, $nGuaranteeAmount, $nYearPremiumAmount, $sSellerManagerRemarks, $fileAttachment);
+    
+    AjaxReturn($Result);
+  }
+  //endregion 保险计划书
+
+  //endregion 申请
+
+  //region 审核
+  //region 待审核的签约预约
+  /**
+   * todo: 待审核的签约预约列表
+   */
+  public function UnauditSignatoryOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+
+    $OrderStatus = $this->modOrder->clsOrder->OrderStatusSignatoryStatus();
+    $OrderList = $this->modOrder->OrderList(0, 0, $OrderStatus, $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("unaudit_signatory_order_list");
+  }
+
+  /**
+   * todo: 签约预约信息
+   */
+  public function AuditSignatoryOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    //region 产品快照
+    $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+    $this->assign("ProductInfo", $ProductSnapshotsInfo);
+    //endregion 产品快照
+
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+
+    //region 附件上传配置
+    $ProductAttachmentImgCfg = GetProductAttachmentImgCfg();
+    $this->assign("ProductAttachmentImgCfg", $ProductAttachmentImgCfg);
+
+    $ProductAttachmentFileCfg = GetProductAttachmentFileCfg();
+    $this->assign("ProductAttachmentFileCfg", $ProductAttachmentFileCfg);
+
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+    //endregion 附件上传配置
+
+    $this->CustomDisplay("audit_signatory_order_info");
+  }
+
+  /**
+   * todo: 保存预约审核
+   */
+  public function AuditSignatoryOrderInfoSave(){
+    $sOrderSn = RR("order_sn");
+    $sReviewRemarks = RR("review_remarks");
+    $nReviewStatus = RR("review_status");
+    $Attachment = $_FILES["attachment"];
+
+    $Result = $this->modOrder->AuditSignatoryOrderInfoSave($this->_AccountID, $sOrderSn, $sReviewRemarks, $nReviewStatus, $Attachment);
+
+    AjaxReturn($Result);
+  }
+  //endregion 待审核的签约预约
+
+  //region 待审核的预约预约
+  /**
+   * todo: 待审核的预约预约列表
+   */
+  public function UnauditSubscribeOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+    $OrderList = $this->modOrder->AuditSubscribeOrderList($this->_PagingRowCount, $SearchParam);
+
+    $ProductTypeOption = $this->modOrder->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+  
+    $ProductAttachmentImgCfg = GetProductAttachmentImgCfg();
+    $this->assign("ProductAttachmentImgCfg", $ProductAttachmentImgCfg);
+  
+    $ProductAttachmentFileCfg = GetProductAttachmentFileCfg();
+    $this->assign("ProductAttachmentFileCfg", $ProductAttachmentFileCfg);
     
     $this->assign("OrderList", $OrderList["DataList"]);
     $this->assign("Page", $OrderList["PageInfo"]);
 
-    $this->CustomDisplay("order_list");
+    $this->CustomDisplay("unaudit_subscribe_order_list");
   }
 
   /**
-   * todo: 创建工单
+   * todo: 待审核的预约预约信息
    */
-  public function OrderAddInfo(){
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsProduct = new \Org\ZhiHui\Product();
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $clsSellerManager = new \Org\ZhiHui\SellerManager();
-    $clsCustomer = new \Org\ZhiHui\Customer();
+  public function AuditSubscribeOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->SubscribeOrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
     
-    switch($this->_AccountType){
-      case $this->_AdminAccountType:
-        $BrokerCompanyOption = $clsBrokerCompany->BrokerCompanyOption();
-        
-        $SellerManagerOption = $clsSellerManager->SellerManagerOption($this->_AccountInfo["broker_company_id"]);
-        
-        $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption();
-
-        $CustomerOption = $clsCustomer->CustomerOption();
-        break;
-
-      case $this->_BrokerCompanyAccountType:
-        $BrokerCompanyInfo = $clsBrokerCompany->GetBrokerCompanyDetails($this->_AccountInfo["broker_company_id"]);
-        
-        $SellerManagerOption = $clsSellerManager->SellerManagerOption($this->_AccountInfo["broker_company_id"]);
-
-        $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption($this->_AccountInfo["broker_company_id"]);
-
-        $CustomerOption = $clsCustomer->CustomerOption($this->_AccountInfo["broker_company_id"]);
-        break;
-
-      case $this->_SellerManagerAccountType:
-        $BrokerCompanyInfo = $clsBrokerCompany->GetBrokerCompanyDetails($this->_AccountInfo["broker_company_id"]);
-
-        $SellerManagerInfo = $this->_AccountInfo;
-
-        $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption($this->_AccountInfo["broker_company_id"]);
-
-        $CustomerOption = $clsCustomer->CustomerOption($this->_AccountInfo["broker_company_id"]);
-        break;
-    }
-
-    //region 经纪公司
-    $this->assign("BrokerCompanyInfo", $BrokerCompanyInfo);
-    $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
-    //endregion 经纪公司
-
-    //region 销售经理
-    $this->assign("SellerManagerInfo", $SellerManagerInfo);
-    $this->assign("SellerManagerOption", $SellerManagerOption);
-    //endregion 销售经理
-
-    //region 门店
-    $this->assign("StoreOption", $StoreOption);
-    //endregion 门店
-
-    //region 服务商
-    $ServiceProvidersOption = $clsServiceProviders->ServiceProvidersOption();
-    $this->assign("ServiceProvidersOption", $ServiceProvidersOption);
-    //endregion 服务商
-    
-    //region 产品类别
-    $ProductTypeOption = $clsProduct->ProductTypeOption();
-    $this->assign("ProductTypeOption", $ProductTypeOption);
-    //endregion 产品类别
+    //region 产品快照
+    $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+    $this->assign("ProductInfo", $ProductSnapshotsInfo);
+    //endregion 产品快照
 
     //region 客户
-    $this->assign("CustomerOption", $CustomerOption);
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
     //endregion 客户
-    
-    $this->CustomDisplay("order_info_add");
+
+    //region 附件上传配置
+    $ProductAttachmentImgCfg = GetProductAttachmentImgCfg();
+    $this->assign("ProductAttachmentImgCfg", $ProductAttachmentImgCfg);
+
+    $ProductAttachmentFileCfg = GetProductAttachmentFileCfg();
+    $this->assign("ProductAttachmentFileCfg", $ProductAttachmentFileCfg);
+    //endregion 附件上传配置
+  
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+
+    $this->CustomDisplay("audit_subscribe_order_info");
   }
 
   /**
-   * todo: 编辑/审核工单
+   * todo: 保存预约审核
    */
-  public function OrderInfoEditReview(){
-    $sOrderSn = RR("order_sn");
-
-    $OrderInfo = $this->modOrder->OrderInfo($sOrderSn);
-
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsProduct = new \Org\ZhiHui\Product();
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $clsSellerManager = new \Org\ZhiHui\SellerManager();
-    $clsCustomer = new \Org\ZhiHui\Customer();
-
-    //region 经纪公司
-    if($this->_AccountType !== $this->_AdminAccountType){
-      $BrokerCompanyInfo = $clsBrokerCompany->GetBrokerCompanyDetails($this->_AccountInfo["broker_company_id"]);
-      $this->assign("BrokerCompanyInfo", $BrokerCompanyInfo);
-    }else{
-      $BrokerCompanyOption = $clsBrokerCompany->BrokerCompanyOption();
-      $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
-    }
-    //endregion 经纪公司
-
-    if(IsArray($OrderInfo)){
-      //region 销售经理
-      if(IsNum($OrderInfo["broker_company_id"], false, false)){
-        $SellerManagerOption = $clsSellerManager->SellerManagerOption($OrderInfo["broker_company_id"]);
-        $this->assign("SellerManagerOption", $SellerManagerOption);
-      }
-      //endregion 销售经理
-      
-      //region 服务商
-      if(IsNum($OrderInfo["service_providers_id"], false, false)){
-        $ServiceProvidersInfo = $clsServiceProviders->GetServiceProvidersDetails($OrderInfo["service_providers_id"]);
-        $this->assign("ServiceProvidersInfo", $ServiceProvidersInfo);
-      }
-      //endregion 服务商
-
-      //region 门店
-      if(IsNum($OrderInfo["store_id"], false, false)){
-        $StoreInfo = $clsBrokerCompany->GetBrokerCompanyStoreDetails($OrderInfo["store_id"]);
-        $this->assign("StoreInfo", $StoreInfo);
-      }
-      //endregion 门店
-      
-      //region 产品
-      if(IsNum($OrderInfo["service_providers_id"], false, false)){
-        $ProductOption = $clsProduct->ProductOption('service_providers_id', $OrderInfo["service_providers_id"]);
-        $this->assign("ProductOption", $ProductOption);
-      }
-
-      if(IsNum($OrderInfo["product_id"], false, false)){
-        $ProductInfo = $clsProduct->GetProductDetails($OrderInfo["product_id"]);
-        $this->assign("ProductInfo", $ProductInfo);
-      }
-      //endregion 产品
-
-      //region 客户
-      if(IsNum($OrderInfo["broker_company_id"], false, false)){
-        $CustomerOption = $clsCustomer->CustomerOption($OrderInfo["broker_company_id"]);
-        $this->assign("CustomerOption", $CustomerOption);
-      }
-
-      if(IsNum($OrderInfo["customer_id"], false, false)){
-        $CustomerInfo = $clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
-        $CustomerInfo["birthday"] = Time2FullDate($CustomerInfo["birthday"], "Y年m月d日");
-        $this->assign("CustomerInfo", $CustomerInfo);
-      }
-      //endregion 客户
-    }
-    
-    //region 门店
-    $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption();
-    $this->assign("StoreOption", $StoreOption);
-    //endregion 门店
-
-    //region 服务商
-    $ServiceProvidersOption = $clsServiceProviders->ServiceProvidersOption();
-    $this->assign("ServiceProvidersOption", $ServiceProvidersOption);
-    //endregion 服务商
-
-    //region 产品类别
-    $ProductTypeOption = $clsProduct->ProductTypeOption();
-    $this->assign("ProductTypeOption", $ProductTypeOption);
-    //endregion 产品类别
-    
-    //region 审批信息
-    $ReviewInfo = $this->modOrder->OrderLastReviewInfo($OrderInfo["order_sn"], $OrderInfo["status"]);
-    //endregion 审批信息
-
-    $this->assign("OrderInfo", $OrderInfo);
-    $this->assign("ReviewInfo", $ReviewInfo);
-
-    $this->CustomDisplay("order_info_edit_review");
-  }
-
-  /**
-   * todo: 保存工单审核
-   */
-  public function OrderInfoReviewSave(){
+  public function AuditSubscribeOrderInfoSave(){
     $sOrderSn = RR("order_sn");
     $sReviewRemarks = RR("review_remarks");
     $nReviewStatus = RR("review_status");
-    
-    $Result = $this->modOrder->OrderInfoReviewSave($this->_AccountID, $this->_AccountType, $sOrderSn, $sReviewRemarks, $nReviewStatus);
-    
+    $Attachment = $_FILES["attachment"];
+
+    $Result = $this->modOrder->AuditSubscribeOrderInfoSave($this->_AccountID, $sOrderSn, $sReviewRemarks, $nReviewStatus, $Attachment);
+
     AjaxReturn($Result);
   }
-
-  /**
-   * todo: 审核工单
-   */
-  public function OrderInfoReview(){
-    $sOrderSn = RR("order_sn");
-
-    $OrderInfo = $this->modOrder->OrderInfo($sOrderSn);
-
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsProduct = new \Org\ZhiHui\Product();
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $clsCustomer = new \Org\ZhiHui\Customer();
-
-    if(IsArray($OrderInfo)){
-      //region 服务商
-      if(IsNum($OrderInfo["service_providers_id"], false, false)){
-        $ServiceProvidersInfo = $clsServiceProviders->GetServiceProvidersDetails($OrderInfo["service_providers_id"]);
-        $this->assign("ServiceProvidersInfo", $ServiceProvidersInfo);
-      }
-      //endregion 服务商
-
-      //region 门店
-      if(IsNum($OrderInfo["store_id"], false, false)){
-        $StoreInfo = $clsBrokerCompany->GetBrokerCompanyStoreDetails($OrderInfo["store_id"]);
-        $this->assign("StoreInfo", $StoreInfo);
-      }
-      //endregion 门店
-
-      //region 产品
-      if(IsNum($OrderInfo["product_id"], false, false)){
-        $ProductInfo = $clsProduct->GetProductDetails($OrderInfo["product_id"]);
-        $this->assign("ProductInfo", $ProductInfo);
-      }
-      //endregion 产品
-
-      //region 客户
-      if(IsNum($OrderInfo["customer_id"], false, false)){
-        $CustomerInfo = $clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
-        $CustomerInfo["birthday"] = Time2FullDate($CustomerInfo["birthday"], "Y年m月d日");
-        $this->assign("CustomerInfo", $CustomerInfo);
-      }
-      //endregion 客户
-    }
-
-    $this->assign("OrderInfo", $OrderInfo);
-
-    $this->CustomDisplay("order_info_review");
-  }
-
-  /**
-   * todo: 销售经理编辑工单信息
-   */
-  public function OrderInfoEdit(){
-    $sOrderSn = RR("order_sn");
-    $OrderInfo = $this->modOrder->OrderInfo($sOrderSn);
-
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsSellerManager = new \Org\ZhiHui\SellerManager();
-    $clsProduct = new \Org\ZhiHui\Product();
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $clsCustomer = new \Org\ZhiHui\Customer();
-
-    if(IsArray($OrderInfo)){
-      //region 经纪公司
-      $BrokerCompanyInfo = $clsBrokerCompany->GetBrokerCompanyDetails($OrderInfo["broker_company_id"]);
-      $this->assign("BrokerCompanyInfo", $BrokerCompanyInfo);
-      //endregion 经纪公司
-      
-      //region 销售经理
-      $SellerManagerInfo = $clsSellerManager->GetSellerManagerDetails($OrderInfo["seller_manager_id"]);
-      $this->assign("SellerManagerInfo", $SellerManagerInfo);
-      //endregion 销售经理
-
-      //region 门店
-      $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption($OrderInfo["broker_company_id"]);
-      $this->assign("StoreOption", $StoreOption);
-      
-      if(IsNum($OrderInfo["store_id"], false, false)){
-        $StoreInfo = $clsBrokerCompany->GetBrokerCompanyStoreDetails($OrderInfo["store_id"]);
-        $this->assign("StoreInfo", $StoreInfo);
-      }
-
-      $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption();
-      $this->assign("StoreOption", $StoreOption);
-      //endregion 门店
-
-      //region 服务商
-      if(IsNum($OrderInfo["service_providers_id"], false, false)){
-        $ServiceProvidersInfo = $clsServiceProviders->GetServiceProvidersDetails($OrderInfo["service_providers_id"]);
-        $this->assign("ServiceProvidersInfo", $ServiceProvidersInfo);
-      }
-      //endregion 服务商
-
-      //region 产品
-      if(IsNum($OrderInfo["product_id"], false, false)){
-        $ProductInfo = $clsProduct->GetProductDetails($OrderInfo["product_id"]);
-        $this->assign("ProductInfo", $ProductInfo);
-      }
-
-      if(IsNum($OrderInfo["service_providers_id"], false, false)){
-        $ProductOption = $clsProduct->ProductOption('service_providers_id', $OrderInfo["service_providers_id"]);
-        $this->assign("ProductOption", $ProductOption);
-      }
-      //endregion 产品
-
-      //region 客户
-      if(IsNum($OrderInfo["customer_id"], false, false)){
-        $CustomerInfo = $clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
-        $CustomerInfo["birthday"] = Time2FullDate($CustomerInfo["birthday"], "Y年m月d日");
-        $this->assign("CustomerInfo", $CustomerInfo);
-      }
-
-      if(IsNum($OrderInfo["broker_company_id"], false, false)){
-        $CustomerOption = $clsCustomer->CustomerOption($OrderInfo["broker_company_id"]);
-        $this->assign("CustomerOption", $CustomerOption);
-      }
-      //endregion 客户
-
-      //region 审批信息
-      $ReviewInfo = $this->modOrder->OrderLastReviewInfo($OrderInfo["order_sn"], $OrderInfo["status"]);
-      $ReviewList = $this->modOrder->OrderReviewList($OrderInfo["order_sn"]);
-      //endregion 审批信息
-    }
-
-    $this->assign("OrderInfo", $OrderInfo);
-    $this->assign("ReviewInfo", $ReviewInfo);
-    $this->assign("ReviewList", $ReviewList);
-
-    if(($OrderInfo["status"] == 0 || $OrderInfo["status"] == 1) && $OrderInfo["review"] == 3){
-      $this->CustomDisplay("order_info_edit2");
-    }else{
-      $this->CustomDisplay("order_info_edit");
-    }
-  }
-
-  /**
-   * todo: 保存销售经理编辑的工单信息
-   */
-  public function AjaxOrderEditSave(){
-    $OrderSn = RR("order_sn");
-    $sSubmitAction = RR("submit_action");
-    $nStoreID = RR("store");
-    $sReservationTime = RR("reservation_time");
-    $sPayTime = RR("pay_time");
-    $nPayAmount = RR("pay_amount");
-    $sVisitTime = RR("visit_time");
-    $sSellerManagerRemarks = RR("seller_manager_remarks");
+  //endregion 待审核的预约预约
+  
+  //region 待审核计划书
+  public function AuditPlanList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+    $OrderList = $this->modOrder->AuditPlanList($this->_PagingRowCount, $SearchParam);
     
-    $Result = $this->modOrder->OrderEditSave($OrderSn, $sSubmitAction, $nStoreID, $sReservationTime, $sPayTime, $nPayAmount, $sVisitTime, $sSellerManagerRemarks);
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
     
-    AjaxReturn($Result);
-  }
-
-  /**
-   * todo: Ajax获取Option
-   */
-  public function AjaxOptionList(){
-    $nBrokerCompanyID = RR("broker_company_id");
-    
-    $clsSellerManager = new \Org\ZhiHui\SellerManager();
-    $Result["seller_manage_option"] = $clsSellerManager->SellerManagerOption($nBrokerCompanyID);
-    
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $Result["store_option"] = $clsBrokerCompany->BrokerCompanyStoreOption($nBrokerCompanyID);
-
-    $clsCustomer = new \Org\ZhiHui\Customer();
-    $Result["customer_option"] = $clsCustomer->CustomerOption($nBrokerCompanyID);
-    
-    AjaxReturnCorrect("", $Result);
+    $this->CustomDisplay("audit_plan_order_list");
   }
   
+  public function AjaxAuditPlanInfo(){
+    $sOrderSn = RR("order_sn");
+    
+    $OrderInfo = $this->modOrder->PlanInfo($sOrderSn);
+    
+    AjaxReturnCorrect("", $OrderInfo);
+  }
+  
+  /**
+   * todo: 计划书信息
+   */
+  public function AuditPlanInfo(){
+    $OrderSn = RR("order_sn");
+    
+    $OrderInfo = $this->modOrder->AuditPlanInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+    
+    if(IsArray($OrderInfo)){
+      //region 客户经理
+      $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($OrderInfo["seller_captain_id"]);
+      $this->assign("SellerMemberOption", $SellMemberOption);
+      //endregion 客户经理
+      
+      //region 客户
+      if(IsNum($OrderInfo["seller_member_id"], false, false)){
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($OrderInfo["seller_member_id"]);
+      }else{
+        $CustomerOption = $this->modOrder->clsCustomer->CustomerOption(0, $OrderInfo["seller_captain_id"]);
+      }
+      
+      $this->assign("CustomerOption", $CustomerOption);
+      
+      $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+      $this->assign("CustomerInfo", $CustomerInfo);
+      //endregion 客户
+      
+      //region 产品
+      $ProductSnapshotsInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+      $this->assign("ProductInfo", $ProductSnapshotsInfo);
+      
+      $ProductOption = $this->modOrder->clsProduct->ProductOption("type_id", $ProductSnapshotsInfo["type_id"]);
+      $this->assign("ProductOption", $ProductOption);
+      //endregion 产品
+    }
+    
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+        
+        //region 客户经理
+        if(!IsArray($SellMemberOption)){
+          $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+          $this->assign("SellerMemberOption", $SellMemberOption);
+        }
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+        $this->assign("SellerMemberInfo", $SellerMemberInfo);
+      }
+      
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+      
+      //region 客户
+      $CustomerOption = $this->modOrder->clsCustomer->CustomerOption($SellerMemberInfo["id"], $OrderInfo["seller_captain_id"]);
+      $this->assign("CustomerOption", $CustomerOption);
+      //endregion 客户
+    }
+    
+    //region 产品类别
+    $ProductTypeOption = $this->modOrder->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+    //endregion 产品类别
+    
+    //p($OrderInfo);
+    
+    $this->CustomDisplay("audit_plan_info");
+  }
+  //endregion 待审核计划书
+  
+  //region 确认消费
+  /**
+   * todo: 完善确认消费预约的界面
+   */
+  public function AuditUpdatesSubscribeOrderInfo(){
+    $sOrderSn = RR("order_sn");
+    
+    $OrderInfo = $this->modOrder->clsOrder->GetOrderDetails($sOrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    $ProductTypeOption = $this->modOrder->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+    
+    if(IsArray($OrderInfo["product_snapshots"])){
+      $ProductOption = $this->modOrder->clsProduct->ProductOption($OrderInfo["product_snapshots"]["type_id"]);
+      $this->assign("ProductOption", $ProductOption);
+    }
+  
+    $ProductAttachmentImgCfg = GetProductAttachmentImgCfg();
+    $this->assign("ProductAttachmentImgCfg", $ProductAttachmentImgCfg);
+  
+    $ProductAttachmentFileCfg = GetProductAttachmentFileCfg();
+    $this->assign("ProductAttachmentFileCfg", $ProductAttachmentFileCfg);
+  
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+    
+    $this->CustomDisplay("updates_subscribe_order_info");
+  }
+  
+  public function AuditUpdatesSubscribeOrderInfoSave(){
+    
+  }
+  //endregion 确认消费
+  //endregion 审核
+
+  //region 已完成预约
+  /**
+   * todo: 已完成预约列表
+   */
+  public function CompletedOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+
+    if(
+      $this->_AccountType == $this->_AdminAccountType
+      || $this->_AccountType == $this->_BrokerCompanyAccountType
+    ){
+      //region 团队长
+      $SellerCaptainOption = $this->modOrder->clsUser->SellerCaptainOption();
+      $this->assign("SellerCaptainOption", $SellerCaptainOption);
+      //endregion 团队长
+    }else{
+      //region 团队长
+      if($this->_AccountType == $this->_SellerCaptainAccountType){
+        $SellerCaptainInfo = $this->_AccountInfo;
+
+        //region 客户经理
+        $SellMemberOption = $this->modOrder->clsUser->SellerMemberOption($SellerCaptainInfo["id"]);
+        $this->assign("SellerMemberOption", $SellMemberOption);
+        //endregion 客户经理
+      }else{
+        $SellerCaptainInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+        $SellerMemberInfo = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["id"]);
+      }
+
+      $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+      //endregion 团队长
+    }
+
+    $OrderList = $this->modOrder->CompletedOrderList($SellerCaptainInfo["id"], $SellerMemberInfo["id"], $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("completed_order_list");
+  }
+
+  /**
+   * todo: 已完成预约时间
+   */
+  public function CompletedOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    //region 产品
+    $ProductInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+    $this->assign("ProductInfo", $ProductInfo);
+    //endregion 产品
+
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+
+    $this->CustomDisplay("completed_order_info");
+  }
+  //endregion 已完成预约
+  
+  //region 已交易订单
+  /**
+   * todo: 已完成预约列表
+   */
+  public function BusinessOrderList(){
+    $SearchParam = $this->GetOrderListSearchParam();
+    $OrderList = $this->modOrder->CompletedOrderList(0, 0, $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("OrderList", $OrderList["DataList"]);
+    $this->assign("Page", $OrderList["PageInfo"]);
+
+    $this->CustomDisplay("business_order_list");
+  }
+
+  /**
+   * todo: 已完成预约时间
+   */
+  public function BusinessOrderInfo(){
+    $OrderSn = RR("order_sn");
+
+    $OrderInfo = $this->modOrder->OrderInfo($OrderSn);
+    $this->assign("OrderInfo", $OrderInfo);
+
+    $ProductInfo = $this->modOrder->clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+    $this->assign("ProductInfo", $ProductInfo);
+
+    //region 客户
+    $CustomerInfo = $this->modOrder->clsCustomer->GetCustomerDetails($OrderInfo["customer_id"]);
+    $this->assign("CustomerInfo", $CustomerInfo);
+    //endregion 客户
+
+    $this->assign("AttachmentFileType", $this->modOrder->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modOrder->clsProduct->_AttachmentType["image"]);
+
+    $this->CustomDisplay("business_order_info");
+  }
+  //endregion 已交易订单
+
+  //region 添加客户
+  public function AjaxCustomerAboutData(){
+    switch($this->_AccountInfo["user_type"]){
+      case $this->_SellerCaptainAccountType:
+        $Result["SellerCaptainOption"] = array();
+        $Result["SellerCaptainInfo"] = $this->_AccountInfo;
+        
+        $Result["SellerMemberOption"] = $this->modOrder->clsUser->SellerMemberOption($this->_AccountInfo["id"]);
+        $Result["SellerMemberInfo"] = array();
+        break;
+
+      case $this->_SellerMemberAccountType:
+        $Result["SellerCaptainOption"] = array();
+        $Result["SellerCaptainInfo"] = $this->modOrder->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+
+        $Result["SellerMemberInfo"] = $this->_AccountInfo;
+        $Result["SellerMemberOption"] = array();
+        break;
+
+      case $this->_AdminAccountType:
+        $Result["SellerCaptainOption"] = $this->modOrder->clsUser->SellerCaptainOption();
+        $Result["SellerCaptainInfo"] = array();
+
+        $Result["SellerMemberOption"] = array();
+        $Result["SellerMemberInfo"] = array();
+    }
+
+    $clsCustomer = new \Org\ZhiHui\Customer();
+
+    $Result["GenderOption"] = $clsCustomer->_Gender;
+
+    AjaxReturnCorrect("", $Result);
+  }
+
+  public function AjaxCustomerSave(){
+    $nCustomerID = RR("customer_id");
+    $nSellerCaptainID = RR("modal_seller_captain_id");
+    $nSellerMemberID = RR("modal_seller_member_id");
+    $sRealName = RR("real_name");
+    $sGender = RR("gender");
+    $sNationality = RR("nationality");
+    $sIdCardType = RR("idcard_type");
+    $sIdCardNo = RR("idcard_no");
+    $fileIdCardImgA = $_FILES["idcard_img"];
+    $nIdCardImgA = RR("idcard_img_id");
+    $sBirthday = RR("birthday");
+    $nProvinceID = RR("province_id");
+    $nCityID = RR("city_id");
+    $nDistrictID = RR("district_id");
+    $sAddress = RR("address");
+    $sPhone = RR("phone");
+    $sWechat = RR("wechat");
+
+    $modCustomer = D("Customer");
+
+    $SaveResult = $modCustomer->CustomerSave($nCustomerID, $nSellerCaptainID, $nSellerMemberID, $sRealName, $sGender, $sNationality, $sIdCardType, $sIdCardNo, $fileIdCardImgA, $nIdCardImgA, $sBirthday, $nProvinceID, $nCityID, $nDistrictID, $sAddress, $sPhone, $sWechat);
+    
+    if($SaveResult["error"] == 0){
+      if(IsNum($SaveResult["data"], false, false)){
+        $CustomerInfo = $modCustomer->clsCustomer->GetCustomerDetails($SaveResult["data"]);
+        $SaveResult["data"] = $CustomerInfo;
+      }
+    }
+
+    AjaxReturn($SaveResult);
+  }
+  //endregion 添加客户
+
   /**
    * todo: Ajax获取Option
    */
   public function AjaxProductOptionList(){
-    $nServiceProvidersID = RR("service_providers_id");
+    $nProductTypeID = RR("product_type_id");
     
-    $clsProduct = new \Org\ZhiHui\Product();
-    $ProductOption = $clsProduct->ProductOption("service_providers_id", $nServiceProvidersID);
+    $ProductOption = $this->modOrder->clsProduct->ProductOption("type_id", $nProductTypeID);
     
     AjaxReturnCorrect("", $ProductOption);
   }
@@ -474,44 +1277,7 @@ class OrderController extends CommonController {
   }
 
   /**
-   * todo: 添加工单信息
-   */
-  public function AjaxOrderAdd(){
-    $sOrderSn = RR("order_sn");
-    $nBrokerCompanyID = RR("broker_company");
-    $nSellerManagerID = RR("seller_manager");
-    $nStoreID = RR("store");
-    $nServiceProviders = RR("service_providers");
-    $nCustomerID = RR("customer");
-    $nProductID = RR("product");
-    $fileAttachment = $_FILES["attachment"];
-    $nAttachmentID = RR("attachment_id");
-    $nSellerManagerRemarks = RR("seller_manager_remarks");
-
-    $SaveResult = $this->modOrder->OrderAdd($sOrderSn, $this->_AccountType, $nBrokerCompanyID, $nSellerManagerID, $nStoreID, $nServiceProviders, $nCustomerID, $nProductID, $fileAttachment, $nAttachmentID, $nSellerManagerRemarks);
-
-    AjaxReturn($SaveResult);
-  }
-
-  /**
-   * todo:快速修改工单信息的字段值
-   */
-  public function QuickModifyOrderField(){
-    $sKey = RR("key"); //查询条件，对应数据库字段
-    $sVal = RR("val"); //关键字
-    $nID = RR("id"); //数据ID
-
-    $Result = $this->modOrder->QuickModifyOrderField($nID, $sKey, $sVal);
-
-    if($Result["error"] == 0){
-      AjaxReturnCorrect($Result["info"], $sVal);
-    }else{
-      AjaxReturn($Result);
-    }
-  }
-
-  /**
-   * todo: Ajax删除工单
+   * todo: Ajax删除预约
    */
   public function AjaxOrderDelete(){
     $sOrderSn = RR("order_sn");
@@ -522,7 +1288,7 @@ class OrderController extends CommonController {
   }
 
   /**
-   * todo:刷新工单缓存
+   * todo:刷新预约缓存
    */
   public function ResetOrderCache(){
     $Result = $this->modOrder->ResetOrderCache();
@@ -531,7 +1297,7 @@ class OrderController extends CommonController {
   }
 
   /**
-   * todo:获取工单列表查询参数
+   * todo:获取预约列表查询参数
    */
   private function GetOrderListSearchParam(){
     $map = $this->SetOrderListParamData();
@@ -539,8 +1305,8 @@ class OrderController extends CommonController {
     if(
       IsN($map["search_case"])
       && IsN($map["search_key"])
-      && IsN($map["search_broker_company"])
-      && IsN($map["search_seller_manager"])
+      && IsN($map["search_seller_captain"])
+      && IsN($map["search_seller_member"])
       && IsN($map["search_service_providers"])
       && IsN($map["search_store"])
       && IsN($map["search_review"])
@@ -551,8 +1317,8 @@ class OrderController extends CommonController {
 
     $this->assign("search_case", $map["search_case"]);
     $this->assign("search_key", $map["search_key"]);
-    $this->assign("search_broker_company", $map["search_broker_company"]);
-    $this->assign("search_seller_manager", $map["search_seller_manager"]);
+    $this->assign("search_seller_captain", $map["search_seller_captain"]);
+    $this->assign("search_seller_member", $map["search_seller_member"]);
     $this->assign("search_service_providers", $map["search_service_providers"]);
     $this->assign("search_store", $map["search_store"]);
     $this->assign("search_review", $map["search_review"]);
@@ -565,8 +1331,8 @@ class OrderController extends CommonController {
     $Param["search_case"] = RR("search_case"); //查询条件，对应数据库字段
     $Param["search_key"] = RR("search_key"); //关键字
     $Param["search_key"] = urldecode($Param["search_key"]);
-    $Param["search_broker_company"] = RR("search_broker_company");
-    $Param["search_seller_manager"] = RR("search_seller_manager");
+    $Param["search_seller_captain"] = RR("search_seller_captain");
+    $Param["search_seller_member"] = RR("search_seller_member");
     $Param["search_service_providers"] = RR("search_service_providers");
     $Param["search_store"] = RR("search_store");
     $Param["search_review"] = RR("search_review");
@@ -574,5 +1340,4 @@ class OrderController extends CommonController {
 
     return $Param;
   }
-  //endregion 工单
 }

@@ -1,0 +1,127 @@
+<extend name="Base/mobile"/>
+
+<block name="body">
+    <div>
+        <div class="pad-20">
+            <table class="mobdhtb">
+                <tr>
+                    <td class="col1">订单状态</td>
+                    <td>
+                        <?php
+                            switch($data['order']['state']) {
+                                case '10': {
+                                    echo '待支付'; break;
+                                }
+                                case '20': {
+                                    echo '已支付'; break;
+                                }
+                                case '30': {
+                                    echo '已完成'; break;
+                                }
+                                case '80': {
+                                    echo '已关闭'; break;
+                                }
+                            }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col1">下单时间</td>
+                    <td>{$data.order.create_at}</td>
+                </tr>
+                <tr>
+                    <td class="col1">订单号</td>
+                    <td>{$data.order.id}</td>
+                </tr>
+                <tr>
+                    <td class="col1">总金额</td>
+                    <td>{$data.order.amount}元</td>
+                </tr>
+                <tr>
+                    <td class="col1">收货人</td>
+                    <td>{$data.order.address.name}</td>
+                </tr>
+                <tr>
+                    <td class="col1">联系电话</td>
+                    <td>{$data.order.address.phone}</td>
+                </tr>
+                <tr>
+                    <td class="col1">收货地址</td>
+                    <td>{$data.order.address.address}</td>
+                </tr>
+                <tr>
+                    <td class="col1">物流信息</td>
+                    <td><a id="show_exp" code="{$data.order.exp_code}" val="{$data.order.exp_id}">查看物流信息</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="ftlistbox">
+            <?php foreach ($data['order']['details'] as $itm) :?>
+                <div class="itm tapquick" url="/mobile/product?id=<?php echo $itm['item_id']?>">
+                    <div class="imgd" style="background-image:url(<?php echo $itm['product']['show_photo']['url']; ?>)"></div>
+                    <div class="t1">
+                        <span><?php echo $itm['product']['item_name']; ?></span>
+                    </div>
+                    <div class="t1s">
+                        <span>颜色：<?php echo $itm['color']; ?></span>
+                    </div>
+                    <div class="t3" style="font-weight: bold;">
+                        <span style="margin-right:15px;">单价：<?php echo $itm['price']; ?>元 x <?php echo $itm['num']; ?></span>
+                        <span>小计：<?php echo $itm['amount']; ?>元</span>
+                    <!--</div>-->
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <a class="bottombackbtn" href="javascript:void(0)">返回我的订单</a>
+
+    <?php if ($data['order']['state'] == '10') :?>
+        <a id="btn_pay" href="javascript:void(0)" class="confirmbtn full fixed">前往支付</a>
+    <?php elseif ($data['order']['state'] == '20') :?>
+        <a id="btn_comment" href="javascript:void(0)" class="confirmbtn green full fixed">前往评价</a>
+    <?php endif; ?>
+    <style>
+        .ftlistbox .itm .t3 * {
+            color:#444;
+            font-weight: bold;
+        }
+    </style>
+    <input type="hidden" id="order_id" value="{$data.order.id}">
+</block>
+<block name="script">
+    <script>
+        var access = localStorage.getItem('user_id');
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+            $('#btn_pay').click(function () {
+                var order_id = $('#order_id').val();
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/checkout?id='+ order_id +'&access='+ user_id;
+            })
+
+            $('#btn_comment').click(function () {
+                var order_id = $('#order_id').val();
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me_ordercomment?id='+ order_id +'&access='+ user_id;
+            })
+
+            $('.bottombackbtn').click(function() {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me_order?access='+ user_id;
+            })
+            
+            $('#show_exp').click(function () {
+                location.href = 'http://m.kuaidi100.com/index_all.html?type=' + $(this).attr('code') + '&postid=' + $(this).attr('val') + '&callbackurl=' + location.href;
+            })
+        });
+
+    </script>
+</block>

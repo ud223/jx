@@ -1,0 +1,74 @@
+<layout name="layout" />
+<!-- <link rel="stylesheet" href="__PUBLIC__/Home/css/reset.css" /> -->
+<!-- <link rel="stylesheet" href="__PUBLIC__/Home/css/willesPlayone.css" /> -->
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="center-block" style="text-align: center;padding-bottom: 10px;"><img src="__IMG__/guangpu_15.jpg"></h3>
+               <!-- pc -->
+                <div class="baner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="cst-space">
+                                <div id="myCarousel" class="carousel slide">
+                                    <!-- 轮播（Carousel）项目 -->
+                                    <div class="carousel-inner" >
+                                                                
+                                            <div class="item active">                        
+                                                                           
+                                                <a  href="{$zileiinfo['keywords']}" >
+                                                <img src="{$zileiinfo.pic}" alt="First slide">
+                                                <div class="icovido" style="position:absolute;top:45%;left:48%;z-index:1;"><img src="__IMG__/ico.png"></div>
+                                                </a>                               
+                                            </div>
+                                            
+                                    </div>
+                                    <!-- 轮播（Carousel）导航 -->
+                                  
+                              
+                                </div> 
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+                <!-- pc end -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<div class="sp" style="margin:20px auto;"></div>
+    <div class="btn-group pull-right">
+        <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <volist name="zilei" id="vo" key="k">                
+                <if condition="$vo.id == $zileiid">
+                    选集：{$vo.name}<span class="caret"></span>                                  
+                    <else />                     
+                </if>                    
+            </volist>
+        </button>
+        <ul class="dropdown-menu">
+            <volist name="zilei" id="vo" key="k">
+                <li><a href="{:U('Mogul/index?zid='.$vo['id'])}">{$vo.name}</a></li>                                  
+            </volist>            
+        </ul>
+    </div>
+    <div class="splist" id="liebiao">
+        <div class="row" style="padding-top:30px;padding-bottom:45px;">
+            <volist name="zileiinfo.zlinfo" id="vo" key="k">
+                <div class="col-xs-6 col-sm-3 sppic">
+<!--                    <center>{$vo['t']|date="Y-m-d",###}</center>-->
+                    <a href="{:U('Mogul/detail?id='.$vo['aid'])}" class="sp-a">
+                        <div class="preview" style="background:url('{$vo.thumbnail}') no-repeat; background-size:cover;"></div>
+                        <div class="icovido"><img src="__IMG__/ico.png"></div>
+                    </a>
+                    <a href="{:U('Mogul/detail?id='.$vo['aid'])}" class="sp-a">
+                        <h3>{$vo.title}</h3>
+                    </a>
+                    <!-- <span>{$vo.description}</span> -->
+                </div>
+            </volist>    
+        </div>
+    </div>    
+</div>
+<script type="text/javascript" src="__JS__/willesplayone.js"></script>

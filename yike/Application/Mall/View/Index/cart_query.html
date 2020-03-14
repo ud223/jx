@@ -1,0 +1,296 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!-- 页面部分 -->
+    <!-- 页面部分 -->
+    <style>
+        body {
+            padding-top:150px;
+            background:#FBFBFB;
+        }
+        .fomdh {
+            width:100%;
+        }
+        .fomdh td {
+            vertical-align: middle;
+            height:60px;
+        }
+        .fomdh .btn-primary {
+            width:120px;height:40px;
+        }
+        .fomdhtt {
+            margin-bottom:25px;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+    <div class="container apply-hdchtdm">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="clearfix dh1">
+                    <div class="lt">
+                        <a style="font-weight:bold;margin-right:20px;" href="/index/server">常见问题</a>
+                        <a style="font-weight:bold;margin-right:20px;" href="/index/test_self">自助检测</a>
+                        <a style="color:#03A9F4;font-weight:bold;margin-right:20px;" href="javascript:void(0)">网点服务</a>
+                        <a style="font-weight:bold;margin-right:20px;" href="/index/buy_question">购买须知及运费说明</a>
+                    </div>
+                    <!--<div class="rt">-->
+                        <!--<div class="dhchddlwo" id="dropdownMenu1" data-toggle="dropdown">-->
+                            <!--<span>网点服务</span>-->
+                            <!--<i class="iconfont icon-angledown"></i>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin-bottom:90px;">
+        <div class="row">
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
+                <div class="fomdhtt">
+                    查询车辆
+                </div>
+                <table class="fomdh">
+                    <tr>
+                        <td>
+                            <input id="sn_code" type="radio" name="rds" value="1" checked />
+                            <label for="sn_code">SN码</label>
+                        </td>
+                        <td>
+                            <input id="txt_sn_code" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="sn_cjh" type="radio" name="rds" value="2" />
+                            <label for="sn_cjh">车架号</label>
+                        </td>
+                        <td>
+                            <input id="txt_sn_cjh" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="sn_djh" type="radio" name="rds" value="3" />
+                            <label for="sn_djh">电机号</label>
+                        </td>
+                        <td>
+                            <input id="txt_sn_djh" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <button id="btn_query" class="btn btn-primary">查询</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+        <div id="opt_repair" class="row" style="display:none">
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
+                <div class="fomdhtt">
+                    维修记录处理
+                </div>
+                <table class="fomdh">
+                    <tr>
+                        <td>
+                            <label>记录方式</label>
+                        </td>
+                        <td>
+                            <a id="url_repair_log" class="orange" href="javascript:void(0)">合法车辆维修记录(请点击)</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="opt_lose_log" class="row" style="display:none">
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
+                <div class="fomdhtt">
+                    维修记录处理
+                </div>
+                <table class="fomdh">
+                    <tr>
+                        <td>
+                            <label>处理方式</label>
+                        </td>
+                        <td>
+                            <a id="url_lose_log" class="orange" href="javascript:void(0)">失窃车辆上报(请点击)</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="query_data" class="row" style="display:none">
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
+                <div class="fomdhtt">
+                    车辆信息
+                </div>
+                <table class="fomdh">
+                    <tr>
+                        <td>
+                            <label>状态</label>
+                        </td>
+                        <td>
+                            <span class="state"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>备案时间</label>
+                        </td>
+                        <td>
+                            <span class="create_at"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>电机号</label>
+                        </td>
+                        <td>
+                            <span class="car_engine_no"></span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn_query').click(function () {
+                query();
+            })
+        })
+
+        function query() {
+            var sel = $('input:radio[name="rds"]:checked').val();
+
+            if (!sel) {
+                $.alertbox({msg:'<span class="orange">请先选择查询类型!</span>'});
+
+                return;
+            }
+
+            var val = false;
+
+            switch (sel) {
+                case '1' : {
+                    val = $('#txt_sn_code').val();
+
+                    break;
+                }
+                case '2' : {
+                    val = $('#txt_sn_cjh').val();
+
+                    break;
+                }
+                case '3' : {
+                    val = $('#txt_sn_djh').val();
+
+                    break;
+                }
+            }
+
+            if (!val) {
+                $.alertbox({msg: '<span class="orange">请先填写查询条件!</span>'});
+
+                return;
+            }
+
+            var data = { 'type': sel, 'val': val }
+
+            fit.ajax({
+                url:'/user/get_cartinfo',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                            console.log(JSON.stringify(result));
+                    if (result.code == 200) {
+                        switch (result.data.state.toString()) {
+                            case '1': {
+                                $('#opt_repair').show();
+
+                                $('#url_repair_log').click(function () {
+                                    location.href = '/index/repair_log?id='+ result.data.id;
+                                });
+
+                                $('#query_data').find('.state').text('未绑定');
+
+                                break;
+                            }
+                            case '2': {
+                                $('#opt_repair').show();
+
+                                $('#url_repair_log').click(function () {
+                                    location.href = '/index/repair_log?id='+ result.data.id;
+                                });
+
+                                $('#query_data').find('.state').text('正常绑定');
+
+                                break;
+                            }
+                            case '3': {
+                                $('#opt_lose_log').show();
+
+                                $('#url_lose_log').click(function () {
+                                    location.href = '/index/lose_log?id='+ result.data.id;
+                                });
+
+                                $('#query_data').find('.state').text('盗窃中');
+
+                                break;
+                            }
+                            case '4': {
+                                $('#opt_repair').show();
+
+                                $('#url_repair_log').click(function () {
+                                    location.href = '/index/repair_log?id='+ result.data.id;
+                                });
+
+                                $('#query_data').find('.state').text('已损毁');
+
+                                break;
+                            }
+                            default: {
+                                $('#query_data').find('.state').text('未知状态');
+
+                                break;
+                            }
+                        }
+
+                        var create_at = '';
+
+                        if (result.data.create_at)
+                            create_at = result.data.create_at;
+
+                        $('#query_data').find('.create_at').text(create_at);
+                        $('#query_data').find('.car_engine_no').text(result.data.car_engine_no);
+
+                        $('#query_data').show();
+                    }
+                    else {
+                        $('#query_data').hide();
+
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>'
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</block>

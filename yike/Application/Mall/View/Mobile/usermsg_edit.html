@@ -1,0 +1,96 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div class="msgdtl" style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="zhengwen">用户</span>
+                        <input type="text" class="form-control" id="txt_user_name" value="{$data['item'][0].user_name}" readonly="readonly">
+                    </div>
+                    <div class="input-group">
+                        <span class="zhengwen">标题</span>
+                        <input type="text" class="form-control" id="txt_title" value="{$data['item'][0].title}" readonly="readonly">
+                    </div>
+                    <div class="input-group">
+                    <span class="fubiaoti">摘要</span>
+                    <textarea class="form-control" id="txt_abstract" readonly="readonly">{$data['item'][0].abstract}</textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="fubiaoti">内容</span>
+                        <textarea rows="6" class="form-control" id="txt_info" readonly="readonly">{$data['item'][0].info}</textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="zhengwen">时间</span>
+                        <input type="text" class="form-control" id="txt_time" value="{$data['item'][0].time}" readonly="readonly">
+                    </div>
+                    <div class="input-group">
+                        <span class="zhengwen">异常码信息</span>
+                        <textarea rows="6" class="form-control" id="txt_err_code_msg" readonly="readonly">{$data['item'][0].err_code_msg}</textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="zhengwen">状态</span>
+                        <input type="text" class="form-control" id="txt_readtext" value="{$data['item'][0].readtext}" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(document).ready(function () {
+            var reg=new RegExp("<br>","g"); //创建正则RegExp对象
+
+            var newstr=$('#txt_info').text().replace(reg,"\n");
+
+            $('#txt_info').text(newstr);
+
+            var newstr=$('#txt_err_code_msg').text().replace(reg,"\n");
+
+            $('#txt_err_code_msg').text(newstr);
+
+            var newstr=$('#txt_abstract').text().replace(reg,"\n");
+
+            $('#txt_abstract').text(newstr);
+        })
+    </script>
+</block>
+
+<block name="style">
+    <style>
+        .msgdtl {
+            padding:15px;
+            color:#222;
+        }
+        .msgdtl .biaoti {
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-top:10px;
+        }
+        .msgdtl .fubiaoti {
+            margin-bottom:15px;
+            margin-top:-15px;
+            font-size:16px;
+            color:#999;
+        }
+        .msgdtl .shuxing {
+            margin-bottom:15px;
+            font-size:12px;
+            color:#999;
+        }
+        .msgdtl .zhengwen {
+            margin-bottom:15px;
+            font-size:18px;
+            line-height:24px;
+        }
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>

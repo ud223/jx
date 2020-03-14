@@ -1,0 +1,106 @@
+<include file="Public:page_header" />
+         
+<!-- BEGIN 主体区域-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>{$pagetitle}</div>
+                <div class="tools">
+                    <a href="" class="collapse"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form action="#" class="form-horizontal form-bordered">
+                    <div class="form-body">
+                        <?php CreateHtmlWidget($config); ?>
+                    </div>
+
+                    <?php if(!empty($BtnCustom) && !empty($config)){ ?>
+                    <div class="form-actions fluid">
+                        <div class="row">
+                           <div class="col-md-12">
+                              <div class="col-md-offset-3 col-md-9">
+                                 <volist name="BtnCustom" id="btn">
+                                     <button type="button" id="{$btn.id}" data-url="{$btn.href}" style="margin-right: 5px;" class="btn {$btn.css}" <notempty name="btn.event">onclick="{$btn.event}"</notempty>>
+                                         <notempty name="btn.icon"><i class="{$btn.icon}"></i>&nbsp;</notempty>{$btn.title}
+                                     </button>
+                                </volist>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                    <?php } ?>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END 主体区域-->
+
+<script>
+ function checkdata(){
+     <?php
+     $JsonCntID = array();
+
+     if(!empty($config)){
+         $nCount = sizeof($config);
+         $arrJosn = array();
+
+         for($i=0; $i<$nCount; $i++){
+             array_push(
+                 $arrJosn, 
+                 array(
+                     "cntid"=>$config[$i]["id"], 
+                     "cntname"=>$config[$i]["name"], 
+                     "control"=>$config[$i]["control"], 
+                     "required"=>$config[$i]["required"], 
+                     "rule"=>$config[$i]["rule"], 
+                     "minlen"=>$config[$i]["minlen"],
+                     "maxlen"=>$config[$i]["maxlen"],
+                     "default"=>$config[$i]["default"],
+                     "nulltip"=>$config[$i]["nulltip"],
+                     "error"=>$config[$i]["error"],
+                 )    
+             );
+         }
+     }
+
+     $JsonCntID = json_encode($arrJosn);
+     ?>
+
+     var arrCntID = {$JsonCntID};
+     var nLen = arrCntID.length;
+     var info = null;
+
+     for(var i=0; i<nLen; i++){
+         info = arrCntID[i];
+         btten.Validator({"objid" : info.cntid, "type" : info.control, "nulltip":info.nulltip, "error":info.error, "required":info.required, "rule": info.rule});
+     }
+
+     var Config = {
+         type:  "POST",
+         cache: false,
+         url:  "{$PostUrl}",
+         dataType: "json",
+         success : function(result){
+             if(btten.IsN(result)){
+                 btten.Error("没有获取到服务器返回消息！");
+                 return;
+             }
+
+             if(!result.status){
+                 btten.Error(result.info);
+             }else{
+                 window.location.href = "{$PostBackUrl}"; 
+             }
+         },
+         error : function (xhr, ajaxOptions, thrownError) {
+             btten.Error("无法加载请求的内容！");
+         }
+     };
+
+     btten.ValidatorSubmit(Config);
+ }
+</script>
+<include file="Public:page_footer" />

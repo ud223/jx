@@ -1,0 +1,55 @@
+<layout name="layout" />
+<div class="container">
+    <h3 class="center-block" style="text-align: center;padding-bottom: 10px;">{$zileiinfo.name}</h3>
+    <!-- pc -->
+    <div class="baner">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="cst-space">
+                    <div id="myCarousel" class="carousel slide">
+                       
+                        <!-- 轮播（Carousel）项目 -->
+                        <div class="carousel-inner" >                   
+                                            <div class="item active">                        
+                                                                           
+                                                <a  href="{$zileiinfo['keywords']}" >
+                                                <img src="{$zileiinfo.pic}" alt="First slide">
+                                                <div class="icovido" style="position:absolute;top:45%;left:48%;z-index:1;"><img src="__IMG__/ico.png"></div>
+                                                </a>                               
+                                            </div>    
+                        </div>
+
+                    </div> 
+                </div>
+            </div>
+        </div>        
+    </div>
+    <!-- pc  end-->
+  
+    <!-- <div class="works"><a href="#"><img class="responsive" src="{$zileiinfo.pic}"/></a></div>		 -->
+</div>
+<div class="container">
+    <div class="sp" style="margin:20px auto;"></div>
+    <div style="    color: #333;background-color: #fff;border: 1px solid #ccc;padding: 10px 16px;font-size: 18px;line-height: 1.3333333; border-radius: 6px;width: 106px;height: 46px;float:right">
+            播放列表                                 
+    </div>
+    <div class="splist">
+        <div class="row" style="padding-top:30px;padding-bottom:45px;">
+            <volist name="zileiinfo.zlinfo" id="vo" key="k">
+                <div class="col-xs-6 col-sm-3 sppic">
+<!--                    <center>{$vo['t']|date="Y-m-d",###}</center>-->
+                    <a href="{:U('Work/detail?id='.$vo['aid'])}" class="sp-a">
+                        <div class="preview" style="background:url('{$vo.thumbnail}') no-repeat; background-size:cover;"></div>
+                        <div class="icovido"><img src="__IMG__/ico.png"></div>
+                    </a>
+                    <a href="{:U('Work/detail?id='.$vo['aid'])}" class="sp-a">
+                    <h3>{$vo.title}</h3>
+                    <!-- <span>{$vo['title']|msubstr=0,16,'utf-8',true}</span> -->
+                    </a>
+                </div>
+            </volist>
+        </div>
+    </div>
+    <div style="text-align:center;clear:both;">{$page}</div>
+</div>
+<script type="text/javascript" src="__JS__/willesplayone.js"></script>

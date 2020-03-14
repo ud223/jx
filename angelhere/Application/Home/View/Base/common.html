@@ -2,19 +2,186 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Project 0/1</title>
+    <title>天使圈</title>
+    <!-- Unresponsive -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--[if (lte IE 8) ]> <script type="text/javascript">location.href="/index/upgrade";</script> <![endif]-->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <!--<link rel="stylesheet" href="css/bootstrap.css" />-->
+    <!--<link rel="stylesheet" href="css/reset.css" />-->
+    <!--<link rel="stylesheet" href="css/iconfont.css" />-->
+    <!--<link rel="stylesheet" href="css/global.css" />-->
+    <!--<link rel="stylesheet" href="css/frontend.css" />-->
+
+    <!--<script src="js/jquery.js"></script>-->
+    <!--<script src="js/bootstrap.min.js"></script>-->
+    <!--<script src="js/global.js"></script>-->
+    <!--<link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <!--<script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>-->
+    <!--<script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>-->
+    <![endif]-->
     <include file="Base/script"/>
 </head>
 
 <body ontouchstart="">
-<block name="body"></block>
+<!--
+通用头部开始
+-->
+<div class="nxtopbanner">
+    <div class="inner">
+        <a href="/" class="ltlogo">
+            <img src="/Public/statics/img/logo.png" />
+        </a>
+        <div class="rtico">
+            <!--<a href="#"><span class="iconfont icon-user"></span></a>-->
+            <button class="btn btn-primary" data-toggle="modal" data-target="#contactusboard" id="contactus_top">联系我们</button>
+        </div>
+        <div class="mdcontent">
+            <ul class="uln">
+                <li>
+                    <a href="/">首页</a>
+                </li>
+                <li>
+                    <a href="/index/project">孵化项目</a>
+                </li>
+                <li>
+                    <a href="/index/about">关于天使圈</a>
+                </li>
+                <li>
+                    <a href="/index/team">团队</a>
+                </li>
+                <li>
+                    <a href="/index/mentor">导师</a>
+                </li>
+                <li>
+                    <a href="/index/blog">博客</a>
+                </li>
+                <li>
+                    <a href="http://www.fi.co" target="_blank">Founder Institute</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
+<!--
+通用头部结束
+-->
+<block name="body"></block>
+<!--
+通用底部开始
+-->
+<div class="pagebottom">
+    <div class="container tcg1">
+        <div class="row" style="margin-bottom:20px;">
+            <div class="col-xs-3">
+                <a href="/index/blog" class="t1">天使圈博客</a>
+                <a href="http://angelhere.cn/intel.htm" target="_blank" class="t2">以想法之名，携梦想之行</a>
+                <a href="http://mp.weixin.qq.com/s?__biz=MjM5NzIwMzY3NQ==&mid=506915598&idx=1&sn=b2b4b320003f2222f1c9449762026dd2#rd" target="_blank" class="t2">硅谷项目中国行</a>
+                <a href="http://mp.weixin.qq.com/s?__biz=MjM5NzIwMzY3NQ==&mid=506915571&idx=1&sn=a78e6d721212917606568a6b21f4e232#rd" target="_blank" class="t2">深圳广播“先锋898”携手 ...</a>
+                <a href="http://mp.weixin.qq.com/s?__biz=MjM5NzIwMzY3NQ==&mid=401109981&idx=1&sn=9adc3697064802271b4796feaf6b5b80#rd" target="_blank" class="t2">硅谷华人创投之父加入天使圈 ...</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/index/about" class="t1">关于天使圈</a>
+                <a href="http://fi.co/about" target="_blank" class="t2">创业者学院介绍</a>
+                <a href="mailto:info@angelhere.com" class="t2">联系我们 info@angelhere.com</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/index/project" class="t1">孵化项目</a>
+                <a href="http://www.fitshike.com" target="_blank" class="t2">沸腾时刻</a>
+                <a href="http://www.luoye.cc/" target="_blank" class="t2">罗爷</a>
+                <a href="http://www.keenbrace.com/" target="_blank" class="t2">Keenbrace</a>
+                <a href="http://www.sd-home.cn/" target="_blank" class="t2">送货神器</a>
+            </div>
+            <div class="col-xs-3" style="text-align: right">
+                <!--<a href="#" class="iconfont icon-weixin weixin_bt"></a>-->
+                <div style="display: inline-block;">
+                    <img src="/Public/statics/img/tsqqr.png"/>
+                    <div style="padding-top:10px;text-align:center;">扫一扫关注天使圈</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tcg2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8">
+                    <div>
+                        Copyright © 2014-2016 Angelhere Ltd. All rights reserved.
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div style="text-align: right">
+                        <span>粤ICP备13041605号-1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="contactusboard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 300px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">天使圈官方邮箱</h4>
+            </div>
+            <div class="modal-body" style="padding-bottom:0;">
+                <div style="margin-bottom:15px;">
+                    请发送邮件至下方邮箱<br/>我们将会在1-3个工作日内回复
+                </div>
+                <a style="font-weight:bold;font-size:16px;" href="mailto:info@angelhere.com">
+                    info@angelhere.com
+                </a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+通用底部结束
+-->
 <block name="script"></block>
 </body>
 <script type="text/javascript">
-    userLogin();
+    //通用脚本调用部分
+
+    $(function() {
+        adfunc();
+
+        // 顶部banner动画
+        $(window).scroll(function() {
+            if($(window).scrollTop() <= 150) {
+                $('.nxtopbanner').removeClass('topped');
+            } else {
+                $('.nxtopbanner').addClass('topped');
+            }
+
+        });
+
+        // 顶部banner内部的hover事件
+        $('.mdcontent .uln li').mouseenter(function() {
+            var $this = $(this);
+            $this.siblings('li').addClass('ignor');
+            $this.removeClass('ignor');
+        });
+        $('.mdcontent .uln li').mouseleave(function() {
+            $('.mdcontent .uln li').removeClass('ignor');
+        });
+        $('#contactus_top').click(function(){
+
+        });
+    })
 </script>
 </html>

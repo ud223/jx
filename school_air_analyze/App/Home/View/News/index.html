@@ -1,0 +1,34 @@
+<layout name="layout" />
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="center-block" style="text-align: center;padding-bottom: 10px;">{$zonglei.name}</h3>
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="news">
+        <ul>
+            <volist name="zileiinfo.zlinfo" id="vo" key="k">
+            <li class="row" >
+                <a href="{:U('News/detail?id='.$vo['aid'])}">
+                    <div class="wen col-md-6">
+                        <h1>{$vo.title}</h1>
+                        <p style="padding:20px;">{$vo.description}</p>
+                        </div>
+                    <i class="col-md-6"><img src="{$vo.thumbnail}" width="100%" height="100%"></i>
+                </a>
+            </li>
+            <div class="sp" style="margin-top:10px;"></div>
+            </volist>
+
+        </ul>
+    </div>
+
+        <nav aria-label="Page navigation">
+            {$page}
+        </nav>
+</div>
+

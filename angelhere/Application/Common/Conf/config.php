@@ -5,6 +5,11 @@ return array(
     'MODULE_ALLOW_LIST' => array('Home', 'Coach',  'Index', 'Admin', 'Manage', 'User'),
     'URL_MODEL'=>2,
 
+    'APP_SUB_DOMAIN_DEPLOY' => 1,
+    'APP_SUB_DOMAIN_RULES' => array(
+        'angelhere.webetter100.com' => 'Home'
+    ),
+
     /* 数据库配置 */
     'DB_TYPE'   => 'mysql', // 数据库类型
     'DB_HOST'   => 'rdsa2y1yp95n3965rug4o.mysql.rds.aliyuncs.com', // 服务器地址 rdsa2y1yp95n3965rug4o.mysql.rds.aliyuncs.com 115.29.225.219  192.168.0.148

@@ -67,35 +67,6 @@
             </div>
 
             <div class="row">
-
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">服务商</label>
-                  <div class="col-sm-9">
-                    <select class="chosen-select" name="search_service" id="search_service" autocomplete="off" style="width: 100%;" data-placeholder="全部服务商">
-                      <option value="" <empty name="search_service">selected</empty> >全部服务商</option>
-                      <volist name="ServiceProvidersOption" id="list">
-                        <option value="{$list.val}" <eq name="list.val" value="$search_service">selected</eq> >{$list.key}</option>
-                      </volist>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">门店</label>
-                  <div class="col-sm-9">
-                    <select class="chosen-select" name="search_store" id="search_store" autocomplete="off" style="width: 100%;" data-placeholder="全部门店">
-                      <option value="" <empty name="search_store">selected</empty> >全部门店</option>
-                      <volist name="StoreOption" id="list">
-                        <option value="{$list.val}" <eq name="list.val" value="$search_store">selected</eq> >{$list.key}</option>
-                      </volist>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
               <div class="col-sm-4">
                 <div class="form-group">
                   <label class="col-sm-3 control-label">产品状态</label>
@@ -159,17 +130,17 @@
               <th style="width: 100px;">
                 <div class="checkbox checkbox-inline checkbox-info">
                   <input type="checkbox" name="list_chk_all" id="list_chk_all_1" onclick="ListMainCheckBoxClick(this);">
-                  <label for="list_chk_all_1">编号</label>
+                  <label for="list_chk_all_1"></label>
                 </div>
               </th>
+              <th>产品类别</th>
               <th>产品名称</th>
-              <th class="text-center">产品类别</th>
-              <th class="text-center">产品价格</th>
+              <th class="text-center">缴费方式</th>
+              <th class="text-center">投保年龄</th>
+              <th class="text-center">保险期间</th>
               <th class="text-center">销售数量</th>
-              <th>门店</th>
-              <th class="text-center">服务商</th>
-              <th>简介</th>
-              <th>备注</th>
+              <th class="text-center">团队长提成比例</th>
+              <th class="text-center">客户经理提成比例</th>
               <th class="text-center">状态</th>
               <th></th>
             </tr>
@@ -178,7 +149,7 @@
             <tbody>
             <empty name="ProductList">
               <tr>
-                <td colspan="10" class="text-center">暂无数据</td>
+                <td colspan="11" class="text-center">暂无数据</td>
               </tr>
               <else />
               <volist name="ProductList" id="list">
@@ -186,17 +157,23 @@
                   <td style="width: 100px;">
                     <div class="checkbox checkbox-inline checkbox-info">
                       <input type="checkbox" name="list_chk_sub" id="list_chk_sub_{$i}" onclick="ListSubCheckBoxClick(this);" value="{$list.id}">
-                      <label for="list_chk_sub_{$i}">{$list.id}</label>
+                      <label for="list_chk_sub_{$i}"></label>
                     </div>
                   </td>
+                  <td>{$list.type_name}</td>
                   <td>{$list.product_name}</td>
-                  <td class="text-center">{$list.type_name}</td>
-                  <td class="text-center"><i class="fa fa-cny"></i>&nbsp;{$list.product_price}</td>
+                  <td class="text-center">{$list.pay_type}</td>
+                  <td class="text-center">{$list.min_age}</td>
+                  <td class="text-center">{$list.validity_year}</td>
                   <td class="text-center">{$list.sell_number}</td>
-                  <td style="width: 200px;">{$list.store}</td>
-                  <td class="text-center">{$list.service_providers_name}</td>
-                  <td>{$list.intro}</td>
-                  <td>{$list.remarks}</td>
+                  <td class="text-center">
+                    <p class="form-control-static">首年：{$list.captain_first_rate}%</p>
+                    <p class="form-control-static">次年：{$list.captain_next_rate}%</p>
+                  </td>
+                  <td class="text-center">
+                    <p class="form-control-static">首年：{$list.member_first_rate}%</p>
+                    <p class="form-control-static">次年：{$list.member_next_rate}%</p>
+                  </td>
                   <td class="text-center">{$list.status_style}</td>
                   <td class="text-right">
                     <a href="__URL__/ProductInfo/product_id/{$list.id}" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;编辑</a>
@@ -211,17 +188,17 @@
               <th style="width: 100px;">
                 <div class="checkbox checkbox-inline checkbox-info">
                   <input type="checkbox" name="list_chk_all" id="list_chk_all_2" onclick="ListMainCheckBoxClick(this);">
-                  <label for="list_chk_all_2">编号</label>
+                  <label for="list_chk_all_2"></label>
                 </div>
               </th>
+              <th>产品类别</th>
               <th>产品名称</th>
-              <th class="text-center">产品类别</th>
-              <th class="text-center">产品价格</th>
+              <th class="text-center">缴费方式</th>
+              <th class="text-center">投保年龄</th>
+              <th class="text-center">保险期间</th>
               <th class="text-center">销售数量</th>
-              <th>门店</th>
-              <th class="text-center">服务商</th>
-              <th>简介</th>
-              <th>备注</th>
+              <th class="text-center">团队长提成比例</th>
+              <th class="text-center">客户经理提成比例</th>
               <th class="text-center">状态</th>
               <th></th>
             </tr>

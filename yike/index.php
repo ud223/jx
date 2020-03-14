@@ -17,9 +17,9 @@ if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 // 开启调试模式 建议开发阶段开启 部署阶段注释或者设为false
 define('APP_DEBUG',True);
 define('NO_CACHE_RUNTIME', True);
-define('SITE_DOMIAN', 'http://mall.yike.com/');
+define('SITE_DOMIAN', 'http://www.ecomoter.com/');
 define('SITE_DIR', dirname(__FILE__));
-define('UPLOAD_DIR', '/Public/upload/');
+define('UPLOAD_DIR', '/Public/uploads/');
 define('LIB_DIR', '/Public/common/lib/');
 define('LOG_DIR', '/Public/logs/');
 define('max_customer', 5);

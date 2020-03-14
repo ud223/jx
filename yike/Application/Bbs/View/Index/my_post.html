@@ -1,0 +1,84 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <!-- Start of Page Container -->
+    <div class="page-container">
+        <div class="container">
+            <div class="row">
+                <!-- start of page content -->
+                <div class="span8 page-content">
+
+                    <!-- Basic Home Page Template -->
+                    <div class="row separator">
+                        <section class="span8 articles-list">
+
+                            <p>
+                            <h3>最新帖子列表</h3>
+                            <a id="my_post"
+                               style="cursor:pointer;float:right;margin-right:0px;margin-bottom: 10px">我的贴子</a>
+                            <a id="post_add"
+                               style="cursor:pointer;float:right;margin-right: 30px">发新贴</a>
+                            </p>
+                            <ul class="articles">
+                                <!--class=standard video image-->
+                                <volist name="data" id="itm">
+                                    <li class="article-entry standard">
+                                        <h4><a href="/index/post_info.html?pid={$itm.Id}">{$itm.title}</a></h4>
+                                        <span class="article-meta">by {$itm.author} {$itm.creat_at} in <a
+                                                href="/index/sindex.html?id={$itm.section_id}">{$itm.section_name}</a></span>
+                                        <span class="like-count">{$itm.num}</span>
+                                    </li>
+                                </volist>
+                            </ul>
+                            <div class="pages" style="margin-top:20px">
+                                {$page}
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!-- end of page content -->
+
+                <!-- start of sidebar -->
+                <aside class="span4 page-sidebar">
+
+                    <section class="widget">
+                        <div class="support-widget">
+                            <h3 class="title">公告</h3>
+                            <p class="intro">{$notice[0].content}</p>
+                        </div>
+                    </section>
+
+                    <include file="Base/section"/>
+                </aside>
+                <!-- end of sidebar -->
+            </div>
+        </div>
+    </div>
+    <!-- End of Page Container -->
+</block>
+
+
+<block name="script">
+    <script type="text/javascript">
+        $(function () {
+            var user_id = localStorage.getItem('user_id');
+
+            if (!user_id) {
+                location.href = 'http://mall.ecomoter.com/index/login';
+                return;
+            }
+
+            $('#post_add').click(function () {
+                location.href = '/index/post_add.html?access=' + localStorage.user_id;
+            });
+
+            $('.sindex').click(function () {
+                if (localStorage.user_id == undefined) {
+                    location.href = 'http://mall.ecomoter.com/index/login';
+                }
+                location.href = '/index/sindex?id='+$(this).attr("val") +'&access=' + localStorage.user_id;
+            });
+        });
+
+    </script>
+</block>

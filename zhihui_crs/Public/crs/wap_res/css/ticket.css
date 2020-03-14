@@ -1,0 +1,84 @@
+body{background-color: #faf9f8; margin-bottom: 20px;}
+ul{padding: 0; margin: 0; list-style-type: none;}
+.mui-active{background-color: transparent !important;}
+.mui-table-view{background-color: transparent;}
+.mui-table-view:before{height: 0;}
+.mui-table-view:after{height: 0;}
+.mui-table-view-cell{padding: 0; border: 0;}
+.mui-media-body{background-color: #ebeced; padding: 7px 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; text-align: justify;}
+.mui-content{background-color: #faf9f8;}
+
+.header{width: 100%; padding: 55px 20px 0 20px; background: url(../images/page_bg.jpg) center top no-repeat; background-size: 100% auto;}
+.ticket{overflow: hidden;}
+.ticket-bg{width: 100%; height: 300px; margin-top: 20px; background: url(../images/ticket_bg.png) center top no-repeat; background-size: 254px auto;}
+
+.body{width: 100%; padding:0 20px;}
+.user-head-img{width: 65px; max-width: 65px !important; height: 65px !important; line-height: 65px !important; text-align: right; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;}
+
+.user-info-ifr .user-info{font-size: 14px; color: #371500;}
+
+.goods-info-ifr{width: 100%; margin-top: 2px; margin-bottom: 5px;}
+.goods-info-ifr .goods-title{color: #371500; font-size: 12px;}
+.goods-info-ifr .goods-item .goods-info{line-height: 15px !important; overflow: hidden;}
+.goods-info-ifr .goods-item .goods-info .goods-img{width: 46px !important; height: 46px !important; max-width: 46px !important; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
+.goods-info-ifr .goods-item .goods-info .goods-name{color: #ff8801; font-size: 12px;}
+
+.user-info-ifr .ticket-status{clear: both !important; margin-top: 5px; color: #371500; font-size: 12px;}
+
+.ticket-ifr{overflow: hidden; margin: 30px auto;}
+.ticket-ifr .ticket-top-bg{width: 100%; height: 4px; background: url("../images/bonus_top_bg.png") left top repeat-x;}
+.ticket-ifr .ticket-body{overflow: hidden; padding: 0 10px; background-color: #fff; -moz-border-radius: 0 0 5px 5px; -webkit-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px; border: 1px solid #e8e8e8; border-top: 0;}
+.ticket-ifr .ticket-body-border-bottom{border-bottom: 3px solid #ff3674;}
+.ticket-ifr .ticket-body-border-bottom_no{border-bottom: 3px solid #989898;}
+.ticket-ifr .ticket-body .ticket-content{overflow: hidden; background: url("../images/zhuazi.png") right bottom no-repeat; background-size: auto 50px;}
+.ticket-ifr .ticket-body .ticket-content .ticket-name-ifr{overflow: hidden; margin: 10px 0 0 0;}
+.ticket-ifr .ticket-body .ticket-content .ticket-name-ifr p{padding: 0; margin: 0;}
+.ticket-ifr .ticket-body .ticket-content .ticket-name-ifr .name {font-size: 18px; color: #ff3674;}
+.ticket-ifr .ticket-body .ticket-content .ticket-name-ifr .name_no {font-size: 18px; color: #989898;}
+.ticket-ifr .ticket-body .ticket-content .ticket-name-ifr .date {font-size: 12px; color: #989898;}
+.ticket-ifr .ticket-body .ticket-content .ticket-amount-ifr{overflow: hidden; margin: 10px 0 0 0;}
+.ticket-ifr .ticket-body .ticket-content .ticket-amount-ifr p{padding: 0; margin: 0;}
+.ticket-ifr .ticket-body .ticket-content .ticket-amount-ifr .amount{font-size: 30px; color: #ff3674;}
+.ticket-ifr .ticket-body .ticket-content .ticket-amount-ifr .amount_no{font-size: 30px; color: #989898;}
+.ticket-ifr .ticket-body .ticket-content .ticket-amount-ifr .decimal{font-size: 16px;}
+.ticket-ifr .ticket-body .ticket-content .ticket-amount-ifr .unit{font-size: 18px; padding-left: 2px;}
+.ticket-ifr .ticket-body .ticket-content .ticket-tips{font-size: 14px; color: #797979; margin: 10px 0 3px 0; padding: 0;}
+
+.ticket-ifr .ticket-body .ticket-content .ticket-over{width: 90%; height: 90px; background: url("../images/geted.png") 55% center no-repeat; background-size: 70px 70px; position: absolute; z-index: 1;}
+
+.bonus-ifr{overflow: hidden; background-color: #eb8f2d; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius:  5px;}
+.bonus-ifr .bonus-logo{width: 84px; height: 94px; background: url("../images/bonus.jpg") center center no-repeat; background-size: 54px auto;}
+.bonus-ifr .bonus-body{overflow: hidden; padding: 20px 0;}
+.bonus-ifr .bonus-body p{padding: 0; margin: 0; color: #fff;}
+.bonus-ifr .bonus-body .name{font-size: 20px; padding-bottom: 6px;}
+.bonus-ifr .bonus-body .amount{font-size: 20px; padding-top: 6px;}
+.bonus-ifr .bonus-footer{ font-size: 14px; color: #371500; background-color: #fff; padding: 5px; border: 1px solid #eb8f2d; -moz-border-radius: 0 0 5px 5px; -webkit-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px; border-top: 0;}
+.bonus-ifr .bonus-footer .amount-total{background-color: #fff;}
+.bonus-ifr .bonus-footer .goto-advance{color: #ff3674; border-bottom: 1px solid #ff3674; margin-left: 5px;}
+
+.account-ifr{overflow: hidden; font-size: 14px; color: #371500; padding: 10px 0; text-align: center;}
+.account-ifr .mobile-phone{color: #ff3674; margin-left: 5px; border-bottom: 1px solid #ff3674;}
+.btn-advance{width: 100% !important; height: 40px; line-height: 40px; font-size: 14px; color: #fff; text-align: center; background-color: #ff3674; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;}
+
+.user-list-ifr{overflow: hidden;}
+.user-list-ifr .user-list-title{overflow: hidden; text-align: center; background: url("../images/line_bg.jpg") center center repeat-x; background-size: 1px 1px;}
+.user-list-ifr .user-list-title span{font-size: 12px; color: #797979; padding-left: 30px; padding-right: 30px; background-color: #fafaf9;}
+
+.user-list-ifr .user-list{overflow: hidden;}
+.user-list-ifr .user-list li{overflow: hidden; background: url("../images/line_bg.jpg") left bottom repeat-x; background-size: 1px 1px; padding: 10px 0;}
+.user-list-ifr .user-list li p{padding: 0; margin: 0;}
+.user-list-ifr .user-list li .user-info{width: 74%; overflow: hidden;}
+.user-list-ifr .user-list li .user-info p{font-size: 12px; color: #585959;}
+.user-list-ifr .user-list li .user-info .date{padding-left: 5px;}
+.user-list-ifr .user-list li .user-info .user-head{width: 40px; height: 40px; margin-right: 5px;}
+
+.user-list-ifr .user-list li .ticket-info{width: 25%; overflow: hidden; text-align: right;}
+.user-list-ifr .user-list li .ticket-info p{font-size: 12px; color: #585959;}
+.user-list-ifr .user-list li .ticket-info .balance{color: #ff3674;}
+
+.activity-rule-ifr{overflow: hidden;}
+.activity-rule-ifr .activity-rule-title{overflow: hidden; text-align: center; background: url("../images/line_bg.jpg") center center repeat-x; background-size: 1px 1px;}
+.activity-rule-ifr .activity-rule-title span{font-size: 12px; color: #797979; padding-left: 30px; padding-right: 30px; background-color: #fafaf9;}
+
+.activity-rule-ifr .activity-rule-list{overflow: hidden; padding: 0; margin: 10px 0 0 0;}
+.activity-rule-ifr .activity-rule-list p{font-size: 12px; color: #797979; line-height: 15px;}

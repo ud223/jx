@@ -1,0 +1,422 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="sunnytct ntp">
+                    <span class="t1">结算订单</span>
+                    <span class="t2">Checkout</span>
+                </div>
+                <div class="checkotbf">
+                    <div class="tt">收货信息</div>
+
+                    <div class="itms">
+                        <volist name="data.address" id="itm">
+                            <?php if ($itm['is_default'] != '1') :?>
+                                <div class="itm address-itm" val="{$itm.id}" province="{$itm.province}">
+                            <?php else :?>
+                                <div class="itm address-itm selected" val="{$itm.id}">
+                            <?php endif; ?>
+                                <div class="nmm">{$itm.name}</div>
+                                <div>{$itm.phone}</div>
+                                <div>{$itm.province}省{$itm.city}市{$itm.address}</div>
+                                <span class="cls iconfont icon-iconfontclose"></span>
+                                <span class="iconfont icon-iconfontcheck"></span>
+                            </div>
+                        </volist>
+                        <div class="itm addnew" data-toggle="modal" data-target="#addressDetail">
+                            <div class="addsimg">+</div>
+                            <div>添加地址</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <table class="carttb" style="margin-bottom:30px;">
+                    <thead>
+                    <th class="col1">商品名称</th>
+                    <th></th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th style="text-align: right;">小计</th>
+                    </thead>
+                    <tbody>
+                        <?php $item_type=''?>
+                        <volist name="data.order.details" id="itm">
+                            <?php
+                                if ($item_type != '') {
+                                    $item_type = $item_type . ',';
+                                }
+
+                                $item_type = $item_type . $itm['product']['type'];
+                            ?>
+                            <tr>
+                                <td>
+                                    <a href="/index/product?id={$itm.item_id}" target="_blank" style="background-image: url(<?php echo $itm['product']['show_photo'][0]['url'] ?>);" class="josmimg"></a>
+                                </td>
+                                <td>
+                                    <a href="/index/product?id={$itm.item_id}" target="_blank" class="jostxt">{$itm.product.item_name}</a>
+                                </td>
+                                <td>
+                                    <div class="josprice">
+                                        ¥ {$itm.price}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="josunit">
+                                        {$itm.num}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="summeryprice">
+                                        ¥ {$itm.amount}
+                                    </div>
+                                </td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            共 {$data.order.count} 件商品，已选择 {$data.order.count} 件商品总计：<span style="color:#03a9f4;font-weight:bold;">¥ {$data.order.amount}</span>，运费：<span style="color:#03a9f4;font-weight:bold;">￥<span id="freight" val="{$data.freight}">{$data.freight}</span></span>
+                        </td>
+                        <td style="text-align:right;"></td>
+
+                        <td colspan="2" style="text-align:right">
+                            应付金额：<span style="color:#03a9f4;font-weight:bold;">￥<span id="pay-amount" val="{$data.order.amount}">{$data.order.amount}</span></span>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <div style="margin-bottom:50px;text-align: right;">
+                    <button id="btn_pay" class="btn btn-success" style="width:150px;" >前往支付</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div ui-shopping-service="" class="shopping-service">-->
+                    <!--<ul class="shopping-info gray-box">-->
+                        <!--<li class="online-services">-->
+                            <!--<span class="online"></span>-->
+                            <!--<h5>在线客服</h5>-->
+                            <!--<h6>周一至周日 8:00-17:00</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="return-goods"></span>-->
+                            <!--<h5>7 天无理由退货</h5>-->
+                            <!--<h6>7 天无理由退货 请放心购买</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="delivery-goods"></span>-->
+                            <!--<h5 class="ng-binding">周边产品满 500 元免运费</h5>-->
+                            <!--<h6>全场使用德邦或顺丰快递</h6>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="modal fade" id="addressDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">修改地址</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <div>
+                        <input id="name" type="text" placeholder="收件人姓名" />
+                        <div class="clear-15"></div>
+                        <input id="phone" type="text" placeholder="手机/电话" />
+                        <div class="clear-15"></div>
+                        <select class="sheng"></select> <select class="shi"></select>
+                        <div class="clear-15"></div>
+                        <input id="address" type="text" placeholder="收件地址 /区/ 门牌号码" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-address" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="item_type" value="<?php echo $item_type ?>">
+    <input type="hidden" id="order_id" value="{$data.order.id}">
+</block>
+<block name="script">
+    <script type="text/javascript">
+        var login_id = '{$data.login_id}';
+
+        $(document).ready(function() {
+            User.validate();
+
+            var odr_id = $('#order_id').val();
+//            alert(login_id);
+            if (!odr_id) {
+                $.alertbox({
+                    msg:'<span class="orange">请正常操作购物流程!</span>',
+                    exitCallback: function () {
+                        location.href = '/';
+                    }
+                });
+
+                return;
+            }
+
+            if (User.id != login_id) {
+//                $.alertbox({
+//                    msg:'<span class="orange">当前登录用户不是订单用户!</span>',
+//                    exitCallback: function () {
+//                        location.href = '/';
+//                    }
+//                });
+                location.href = '/';
+                return;
+            }
+
+            // 顶部banner动画
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 150) {
+                    $('.nxtopbanner').removeClass('topped');
+                } else {
+                    $('.nxtopbanner').addClass('topped');
+                }
+
+            });
+
+            // 顶部banner内部的hover事件
+            $('.mdcontent .uln li').mouseenter(function() {
+                var $this = $(this);
+                $this.siblings('li').addClass('ignor');
+                $this.removeClass('ignor');
+            });
+            $('.mdcontent .uln li').mouseleave(function() {
+                $('.mdcontent .uln li').removeClass('ignor');
+            });
+
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 600) {
+                    $('.btfixprodthumb').removeClass('displayed');
+                } else {
+                    $('.btfixprodthumb').addClass('displayed');
+                }
+            });
+
+            // 选择地址
+            $('.checkotbf .itm').click(function() {
+                var $this = $(this);
+                if(!$this.hasClass('addnew')) {
+                    $this.addClass('selected').siblings('.itm').removeClass('selected');
+
+                    var types = $('#item_type').val();
+
+                    getTransportPrice($(this).attr('province'), types)
+                }
+            });
+
+            $('#btn_pay').click(function () {
+                pay();
+            })
+
+            $('#save-address').click(function () {
+                addAddess();
+            })
+
+            costFreight();
+
+            initProvince();
+        });
+
+        function getTransportPrice(province, types) {
+            var order_amount = $('#pay-amount').text();
+
+            var data = { 'province':province, 'types':types, 'order_amount':order_amount };
+                    console.log(JSON.stringify(data));
+            fit.ajax({
+                url:'/api/getTransportPrice',
+                data:data,
+                success:function(result){
+                    console.log(JSON.stringify(result));
+                    $('#freight').text(result.data);
+
+                    costFreight();
+                }
+            });
+        }
+
+        function initProvince() {
+            var sheng = $('.sheng');
+            sheng.append('<option value="-1">请选择省份</option>');
+            $.each(cityjson, function() {
+                sheng.append('<option value="' + this.name + '">' + this.name + '</option>');
+            });
+
+            $('body').on('change', '.sheng', function() {
+                var $this = $(this);
+                var val = $this.val();
+
+                var cities;
+                $.each(cityjson, function() {
+                    if(this.name === val) {
+                        cities = this.city;
+                    }
+                });
+
+                var shi = $('.shi');
+                shi.empty();
+                shi.append('<option value="-1">请选择城市</option>');
+
+                $.each(cities, function() {
+                    shi.append('<option value="' + this.name + '">' + this.name + '</option>');
+                });
+            });
+        }
+
+        function costFreight() {
+            var freight = $('#freight').html();
+            var pay_amount = $('#pay-amount').attr('val');
+
+            if (!freight)
+                freight = 0;
+
+            if (!pay_amount)
+                pay_amount = 0;
+
+            pay_amount = parseFloat(pay_amount) + parseFloat(freight);
+
+            $('#pay-amount').html(pay_amount.toFixed(2));
+        }
+
+        function pay() {
+            var order_id = $('#order_id').val();
+            var user_id = localStorage.getItem('user_id');
+            var address_id = $('.address-itm.selected').attr('val');
+            var pay_amount = $('#pay-amount').html();
+            var freight = $('#freight').html();
+
+            var addresses = $('.address-itm.selected');
+
+            if (addresses.length < 1) {
+                $.alertbox({
+                    msg:'<span class="orange">请先选择收货地址信息!</span>'
+                });
+
+                return;
+            }
+
+            if (!address_id) {
+                address_id = $(addresses[0]).attr('val');
+            }
+
+            var data = { 'user_id':user_id, 'order_id': order_id, 'address_id': address_id, 'pay_amount': pay_amount, 'freight': freight };
+//                    alert(JSON.stringify(data)); return;
+            fit.ajax({
+                url:'/user/pay',
+                data:data,
+                success:function(result){
+//                     console.log(JSON.stringify(result)); return;
+
+                    localStorage.setItem('tmp_order_id', order_id);
+                    localStorage.setItem('tmp_code', result.code);
+                    localStorage.setItem('tmp_msg', result.msg);
+
+                    if (result.code == 200) {
+                        localStorage.setItem('tmp_url', '/index/user_order?access='+ user_id);
+                        localStorage.setItem('trade_no', '{$data.order.id}');
+                        localStorage.setItem('product_name', '{$itm.product.item_name}');
+                        localStorage.setItem('fee', $('#pay-amount').html());//);
+
+                        location.href = '/index/order_pay';
+                    }
+                    else {
+                        localStorage.setItem('tmp_url', location.href);
+
+                        location.href = '/index/success';
+                    }
+                }
+            });
+        }
+
+        function addAddess() {
+            var user_id = localStorage.getItem('user_id');
+            var address_id = $('#address_id').val();
+            var name = $('#name').val();
+            var phone = $('#phone').val();
+            var province = $('.sheng').val();
+            var city = $('.shi').val();
+            var address = $('#address').val();
+
+            if (!name) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!phone) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人电话不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!province) {
+                $.alertbox({
+                    msg:'<span class="orange">省份不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!city) {
+                $.alertbox({
+                    msg:'<span class="orange">城市不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!address) {
+                $.alertbox({
+                    msg:'<span class="orange">地址不能为空!</span>'
+                });
+
+                return;
+            }
+
+            var data = { 'user_id':user_id, 'address_id':address_id, 'phone': phone, 'name': name, 'province':province, 'city':city, 'address': address }
+//            console.log(JSON.stringify(data));
+            fit.ajax({
+                url:'/user/add_address',
+                data:data,
+                success:function(result){
+//                    console.log(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+</block>

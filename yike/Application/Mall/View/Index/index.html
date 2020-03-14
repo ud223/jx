@@ -1,0 +1,137 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+<div id="cst-space">
+    <div class="sid-bts lt">
+        <span class="iconfont icon-left"></span>
+    </div>
+    <div class="sid-bts rt">
+        <span class="iconfont icon-right"></span>
+    </div>
+    <div id="btc-lst">
+        <?php $index = 1; ?>
+        <?php foreach ($data['list_1'] as $itm) : ?>
+            <?php if ($index == 1) :?>
+                <div class="itm selected"></div>
+            <?php else :?>
+                <div class="itm"></div>
+            <?php endif; ?>
+            <?php $index++; ?>
+        <?php endforeach; ?>
+    </div>
+    <div id="gall-wp">
+        <div id="gall-list">
+            <?php foreach ($data['list_1'] as $itm) : ?>
+                <?php if ($itm['pic_class'] == '1') :?>
+                    <div class="gall-itm" style="background-image:url(<?php echo $itm['url'] ?>)">
+                        <?php echo $itm['content']?>
+                    </div>
+                <?php elseif ($itm['pic_class'] == '2') :?>
+                    <div class="gall-itm">
+                        <?php echo $itm['content'] ?>
+                        <video loop="" preload="" autoplay="" muted="" style="height:100%;position:absolute;z-index:0;left:-300px;">
+                            <source src="<?php echo $itm['url'] ?>" type="video/mp4">
+                        </video>
+                    </div>
+                <?php else :?>
+
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<!--
+    cst-space：大型slide (END)
+-->
+
+<!-- 页面部分 -->
+
+<div class="gall3grids">
+    <?php $index = 0;?>
+    <?php foreach ($data['list_2'] as $itm) : ?>
+        <div class="td">
+            <div class="inner">
+                <?php if ($index == 0) :?>
+                    <a href="/index/scooter">
+                        <div class="imgwrapper">
+                            <?php echo $itm['content']?>
+                            <div class="imghold" style="background-image:url(<?php echo $itm['url']?>)"></div>
+                        </div>
+                    </a>
+                <?php elseif ($index == 1) :?>
+                    <a href="/index/mall">
+                        <div class="imgwrapper">
+                            <?php echo $itm['content']?>
+                            <div class="imghold" style="background-image:url(<?php echo $itm['url']?>)"></div>
+                        </div>
+                    </a>
+                <?php else :?>
+                    <div class="imgwrapper">
+                        <?php echo $itm['content']?>
+                        <div class="imghold" style="background-image:url(<?php echo $itm['url']?>)"></div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php $index++;?>
+    <?php endforeach; ?>
+    <!--<div class="td">-->
+        <!--<div class="inner">-->
+            <!--<div class="imgwrapper">-->
+
+                <!--<a href="#" class="crv">-->
+                    <!--<div class="txtct">-->
+                        <!--<div class="t1">-->
+                            <!--<span>精彩瞬间</span>-->
+                        <!--</div>-->
+                        <!--<div class="t2">易客骑士时刻在分享一路风光</div>-->
+                    <!--</div>-->
+                <!--</a>-->
+                <!--<div class="imghold"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="td">-->
+        <!--<div class="inner">-->
+            <!--<div class="imgwrapper">-->
+
+                <!--<a href="#" class="crv">-->
+                    <!--<div class="txtct">-->
+                        <!--<div class="t1">-->
+                            <!--<span>精彩瞬间</span>-->
+                        <!--</div>-->
+                        <!--<div class="t2">易客骑士时刻在分享一路风光</div>-->
+                    <!--</div>-->
+                <!--</a>-->
+                <!--<div class="imghold" style="background-image:url(/Public/common/js/img/slide/btcht03.jpg)"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="td">-->
+        <!--<div class="inner">-->
+            <!--<div class="imgwrapper">-->
+                <!--<a href="#" class="crv">-->
+                    <!--<div class="txtct">-->
+                        <!--<div class="t1">-->
+                            <!--<span>精彩瞬间</span>-->
+                        <!--</div>-->
+                        <!--<div class="t2">易客骑士时刻在分享一路风光</div>-->
+                    <!--</div>-->
+                <!--</a>-->
+                <!--<div class="imghold" style="background-image:url(/Public/common/js/img/slide/btcht02.jpg)"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            adfunc();
+
+        });
+    </script>
+</block>

@@ -1,0 +1,29 @@
+<extend name="Base/common"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <button id="arm_test">测试 </button>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#arm_test').click(function () {
+                test_arm();
+            })
+        });
+
+        function test_arm() {
+            var data = { "o_direction": "1", "a_direction": "1", "longitude": "3333", "latitude": "1111", "mileage": "0", "speed": "0" };
+
+            fit.ajax({
+                url:'http://yike.webetter100.com/car/uploadgps',
+                data:data,
+//                datatype: 'jsonp',
+                success:function(result){
+                    alert(JSON.stringify(result));
+                }
+            });
+        }
+    </script>
+</block>

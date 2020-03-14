@@ -1,0 +1,124 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" action="{:U('control_update')}" method="post">
+                            <input type="hidden" name="id" value="{$item.id}" id="id"/>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="name"> 控件名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="title" id="title" placeholder="请填写控件名称"
+                                           class="col-xs-10 col-sm-5" value="{$item.title}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle">必填项</span>
+                            </span>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="tips" id="tips"
+                                   value="{$item.tips}">
+
+                            <input type="hidden" name="activity_id" id="activity_id"
+                                   value="{$activity_id}">
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    控件类型： </label>
+                                <div class="col-sm-9">
+                                    <select id="type" name="type" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($activity_control as $itm) :?>
+                                        <?php if ($itm['id'] == $item['type']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    是否必选： </label>
+                                <div class="col-sm-9">
+                                    <select id="checked" name="checked" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($active_yn as $itm) :?>
+                                        <?php if ($itm['id'] == $item['checked']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="col-md-offset-2 col-md-9">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+                                &nbsp; &nbsp; &nbsp;
+                                <a class="btn btn-info" href="{:U('control',array('id'=>$activity_id))}" value="">返回</a>
+                                &nbsp; &nbsp; &nbsp;
+                                &nbsp; &nbsp; &nbsp;
+                                <if condition="$item['type'] eq '3' or $item['type'] eq '4' ">
+                                    <a class="btn btn-info" href="{:U('box',array('tips'=>$item['tips'],'activity_id'=>$item['activity_id'] ))}" value="">下拉框内容管理</a>
+                                </if>
+
+
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div><!-- /.main-content -->
+<include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+
+<script type="text/javascript">
+    $(function () {
+        $("#tabs").tabs();
+        var editor = KindEditor.create('textarea[name="content"]', {
+            uploadJson: '__PUBLIC__/kindeditor/php/upload_json.php',
+            fileManagerJson: '__PUBLIC__/kindeditor/php/file_manager_json.php',
+            allowFileManager: true,
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+    })
+</script>
+</body>
+</html>

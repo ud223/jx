@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>幸福龙光</title>
+    <!-- Unresponsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link rel="shortcut icon" href="/Public/Home/img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Public/Home/css/global.css" />
+    <link rel="stylesheet" href="/Public/Home/css/leader.css" />
+    <script src="__JS__/jquery.js"></script>
+    <script src="__JS__/bootstrap.min.js"></script>
+    <script src="__JS__/global.js"></script>
+    <script src="__JS__/plugin.js"></script>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+
+</head>
+
+<body>
+<div class="myat_article_body">
+    <div class="ldr_d01">
+        <div>共建社区居民提供问题</div>
+        <div>
+            <a href="leader_home.html?uid={$item['u']['id']}" class="ldr_backlist">返回 工作列表</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="ldr_meblk">
+    <div>
+        当前用户 <strong>{$item['u']['name']}</strong>
+        <a href="login.html">登出</a>
+    </div>
+</div>
+
+<div class="ldr_blk">
+    <table class="ldr_table">
+        <tr>
+            <td class="col1">发送者</td>
+            <td class="col2">{$item['user']['name']}</td>
+        </tr>
+        <tr>
+            <td class="col1">联系电话</td>
+            <td class="col2">{$item['phone']}</td>
+        </tr>
+        <tr>
+            <td class="col1">时间</td>
+            <td class="col2">{$item['times']}</td>
+        </tr>
+        <tr>
+            <td class="col1">类型</td>
+            <td class="col2">{$item['types']['name']}</td>
+        </tr>
+        <tr>
+            <td class="col1">状态</td>
+            <td class="col2">{$list_state['name']}</td>
+        </tr>
+        <tr>
+            <td class="col1">处理人</td>
+            <td class="col2">{$list_name['name']}</td>
+        </tr>
+        <tr>
+            <td class="col1">问题描述</td>
+            <td class="col2">{$item['content']}</td>
+        </tr>
+        <tr>
+            <td class="col1">图片</td>
+
+            <td class="col2">
+                <volist name="consult" id="val">
+                    <a class="ldr_gladdritm" target="_blank" style="background-image: url({$val['img']});" href="{$val['img']}"></a>
+                </volist>
+            </td>
+
+        </tr>
+    </table>
+
+        <input name="optid" id="optid" value="{$item['optid']}" type="hidden">
+        <input name="id" id="uid" value="{$item['u']['id']}" type="hidden">
+    <div>
+        <div>
+            <label class="ldr_ss01">选择分配处理人员</label>
+        </div>
+        <select name="field" id="field" class="ldr_slec">
+            <option value="0">请分配负责处理工作人员</option>
+            <volist name="type" id="val">
+                <option  <if condition="$item['name'] eq $val['id']">selected="selected"</if> value="{$val['id']}" >{$val['name']}</option>
+            </volist>
+        </select>
+    </div>
+
+    <div class="ldr_formrow" style="padding-top:15px;">
+        <button class="ldr_btn"  id="btn_submit"  >分配任务</button>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#btn_submit').click(function () {
+
+            var name = $("#field").find("option:selected").text();
+
+
+            var msg = "您真的确定要分配任务给"+name+"吗？";
+                if (confirm(msg)==true){
+                    get_photo();
+                }else{
+                    return false;
+                }
+        })
+    });
+
+
+    function get_photo() {
+        var optid = $('#optid').val();
+        var field = $('#field').val();
+        var uid = $('#uid').val();
+
+        var data = {};
+        data.optid = optid;
+        data.field = field;
+        data.uid = uid;
+
+        console.log(JSON.stringify(data));
+
+        fit.ajax({
+            url:'/Home/Cooperate/edit',
+            data:data,
+            success:function(result){
+                console.log(JSON.stringify(result));
+                  alert(result.msg);//发出信息
+                if (result.code == 200)
+                    location.href = '/home/cooperate/leader_home.html?uid='+ uid;
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

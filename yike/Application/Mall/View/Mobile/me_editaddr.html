@@ -1,0 +1,125 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div class="tcitcy">
+        请正确填写下方信息，以便收到货物
+    </div>
+    <div class="tbrform">
+        <div class="rs">
+            <div class="r">
+                <div>
+                    <input id="name" type="text" class="lineinput" placeholder="收货人" value="{$data.item.name}" />
+                </div>
+            </div>
+            <div class="r">
+                <div>
+                    <input id="phone" type="tel" class="lineinput" placeholder="联系电话" value="{$data.item.phone}" />
+                </div>
+            </div>
+            <div class="r">
+                <div>
+                    <input id="address" type="text" class="lineinput" placeholder="收货地址 省，市，区，街道门牌号" value="{$data.item.address}" />
+                </div>
+            </div>
+            <div class="r">
+
+                <div style="padding-top:5px;">
+                    <?php if ($data['item']['is_default'] == '1') :?>
+                        <input type="checkbox" id='setdefaultaddr' checked="checked" />
+                    <?php else :?>
+                        <input type="checkbox" id='setdefaultaddr' />
+                    <?php endif; ?>
+                    <label for="setdefaultaddr">设置为默认地址</label>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="address_id" value="{$data.item.id}">
+        <button id="btn_save" class="confirmbtn full">保存</button>
+        <a class="bottombackbtn" href="javascript:void(0)">返回个人中心</a>
+    </div>
+</block>
+<block name="script">
+    <script>
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+            $('#btn_save').click(function(){
+                save();
+            });
+
+            $('.bottombackbtn').click(function() {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me?access='+ user_id;
+            })
+        });
+
+        function loadAddr() {
+
+        }
+
+        function save() {
+            addAddess();
+        }
+
+        function addAddess() {
+            var user_id = localStorage.getItem('user_id');
+            var address_id = $('#address_id').val();
+            var name = $('#name').val();
+            var phone = $('#phone').val();
+            var address = $('#address').val();
+
+            var is_default = 0;
+
+            if ($("#setdefaultaddr").prop('checked')) {
+                is_default = 1;
+            }
+
+            if (!name) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!phone) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!address) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            var data = { 'user_id':user_id, 'address_id':address_id, 'phone': phone, 'name': name, 'address': address, 'is_default': is_default }
+//            alert(JSON.stringify(data));
+            fit.ajax({
+                url:'/user/save_address',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+                    if (result.code == 200)
+                        location.href = '/mobile/me_editaddr?id=' + result.data;
+                }
+            });
+        }
+    </script>
+</block>

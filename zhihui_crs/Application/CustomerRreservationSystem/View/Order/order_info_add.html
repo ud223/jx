@@ -18,7 +18,7 @@
     <div class="col-sm-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>添加工单</h5>
+          <h5>添加预约</h5>
         </div>
 
         <div class="ibox-content">
@@ -58,11 +58,11 @@
 
               <div class="form-group">
                 <label class="col-sm-3 control-label">
-                  <span class="label label-info">必填</span> 销售经理
+                  <span class="label label-info">必填</span> 客户经理
                 </label>
                 <div class="col-sm-4">
-                  <select class="chosen-select" name="seller_manager" id="seller_manager" data-placeholder="请选择销售经理" style="width: 100% !important;">
-                    <option value="">请选择销售经理</option>
+                  <select class="chosen-select" name="seller_manager" id="seller_manager" data-placeholder="请选择客户经理" style="width: 100% !important;">
+                    <option value="">请选择客户经理</option>
                     <volist name="SellerManagerOption" id="list">
                       <option value="{$list.val}">{$list.key}</option>
                     </volist>
@@ -147,7 +147,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                工单附件
+                预约附件
               </label>
               <div class="col-sm-7">
                 <input type="file" name="attachment" id="attachment" class="form-control">
@@ -158,9 +158,9 @@
             <div class="hr-line-dashed"></div>
 
             <div class="form-group">
-              <label class="col-sm-3 control-label">销售经理备注</label>
+              <label class="col-sm-3 control-label">客户经理备注</label>
               <div class="col-sm-7">
-                <textarea class="form-control" name="seller_manager_remarks" id="seller_manager_remarks" rows="5" autocomplete="off" placeholder="销售经理备注" style="resize: none;"></textarea>
+                <textarea class="form-control" name="seller_manager_remarks" id="seller_manager_remarks" rows="5" autocomplete="off" placeholder="客户经理备注" style="resize: none;"></textarea>
               </div>
             </div>
 
@@ -251,9 +251,9 @@
           number : "经纪公司不存在",
         },
         seller_manager: {
-          required : "请选择销售经理",
-          min : "销售经理不存在",
-          number : "销售经理不存在",
+          required : "请选择客户经理",
+          min : "客户经理不存在",
+          number : "客户经理不存在",
         },
         store: {
           required : "请选择门店",
@@ -296,7 +296,7 @@
   
   //region 提交表单
   function SubmitBefore(){
-    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+    BlockWindow_ExecOp('正在保存预约数据', 140);
   }
 
   function SubmitResponse(responseText){
@@ -333,7 +333,7 @@
   }
   //endregion 提交表单
   
-  //region 获取销售经理及门店列表
+  //region 获取客户经理及门店列表
   function LoadOptionList(obj){
     var nBrokerCompanyID = $(obj).val();
     
@@ -380,7 +380,7 @@
       return false;
     }
 
-    //region 销售经理
+    //region 客户经理
     var Dom = [];
     var OptionList = objJson.data.seller_manage_option;
     var nLen = OptionList.length;
@@ -395,7 +395,7 @@
     }
 
     $('#seller_manager').html(Dom.join('')).trigger("chosen:updated");
-    //endregion 销售经理
+    //endregion 客户经理
     
     //region 门店
     sKey = $('#store').attr("data-placeholder");
@@ -431,7 +431,7 @@
     $('#customer').html(Dom.join('')).trigger("chosen:updated");
     //endregion 客户
   }
-  //endregion 获取销售经理及门店列表
+  //endregion 获取客户经理及门店列表
   
   //region 获取产品列表
   function LoadProductOptionList(obj){

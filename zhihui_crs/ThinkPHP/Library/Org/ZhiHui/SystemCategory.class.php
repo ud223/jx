@@ -35,96 +35,99 @@ class SystemCategory {
       ),
     ),
     array(
-      'menu_name' => '经纪公司',
-      'url' => 'javascript:void(0);',
-      'ico' => 'fa-registered',
-      'role' => array('admin','broker_company'),
-      'sub' => array(
-        array(
-          'menu_name' => '经纪公司管理',
-          'url' => 'BrokerCompany/BrokerCompanyList',
-          'ico' => '',
-          'role' => array('admin'),
-          'sub' => array(),
-        ),
-        array(
-          'menu_name' => '经济公司帐号管理',
-          'url' => 'BrokerCompany/BrokerCompanyAccountList',
-          'ico' => '',
-          'role' => array('admin','broker_company'),
-          'sub' => array(),
-        ),
-        array(
-          'menu_name' => '经济公司门店管理',
-          'url' => 'BrokerCompany/BrokerCompanyStoreList',
-          'ico' => '',
-          'role' => array('admin','broker_company'),
-          'sub' => array(),
-        ),
-      ),
-      'permission' => array(
-        'admin' => array(
-          'BrokerCompany/BrokerCompanyList',
-          'BrokerCompany/BrokerCompanyInfo',
-          'BrokerCompany/AjaxBrokerCompanySave',
-          'BrokerCompany/QuickModifyBrokerCompanyField',
-          'BrokerCompany/ResetBrokerCompanyCache',
-          'BrokerCompany/AjaxBrokerCompanyDelete',
-          'BrokerCompany/BrokerCompanyAccountList',
-          'BrokerCompany/BrokerCompanyAccountInfo',
-          'BrokerCompany/AjaxBrokerCompanyAccountSave',
-          'BrokerCompany/AjaxBrokerCompanyAccountDelete',
-          'BrokerCompany/ResetBrokerCompanyAccountCache',
-          'BrokerCompany/BrokerCompanyStoreList',
-          'BrokerCompany/BrokerCompanyStoreInfo',
-          'BrokerCompany/AjaxBrokerCompanyStoreSave',
-          'BrokerCompany/ResetBrokerCompanyStoreCache',
-          'BrokerCompany/AjaxBrokerCompanyStoreDelete',
-        ),
-        'broker_company' => array(
-          'BrokerCompany/BrokerCompanyInfo',
-          'BrokerCompany/AjaxBrokerCompanySave',
-          'BrokerCompany/BrokerCompanyAccountList',
-          'BrokerCompany/BrokerCompanyAccountInfo',
-          'BrokerCompany/AjaxBrokerCompanyAccountSave',
-          'BrokerCompany/AjaxBrokerCompanyAccountDelete',
-          'BrokerCompany/ResetBrokerCompanyAccountCache',
-          'BrokerCompany/BrokerCompanyStoreList',
-          'BrokerCompany/BrokerCompanyStoreInfo',
-          'BrokerCompany/AjaxBrokerCompanyStoreSave',
-          'BrokerCompany/ResetBrokerCompanyStoreCache',
-          'BrokerCompany/AjaxBrokerCompanyStoreDelete',
-        ),
-      ),
-    ),
-    array(
-      'menu_name' => '销售经理',
+      'menu_name' => '用户',
       'url' => 'javascript:void(0);',
       'ico' => 'fa-user',
-      'role' => array('admin','broker_company'),
+      'role' => array('admin', 'special', 'broker_company', 'captain'),
       'sub' => array(
         array(
-          'menu_name' => '销售经理管理',
-          'url' => 'SellerManager/SellerManagerList',
+          'menu_name' => '先锋账号管理',
+          'url' => 'User/SpecialUserInfo',
           'ico' => '',
-          'role' => array('admin','broker_company'),
+          'role' => array('admin', 'special'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '唯润城账号管理',
+          'url' => 'User/BrokerCompanyUserInfo',
+          'ico' => '',
+          'role' => array('admin', 'broker_company'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '团队长管理',
+          'url' => 'User/SellerCaptainList',
+          'ico' => '',
+          'role' => array('admin', 'broker_company'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '客户经理管理',
+          'url' => 'User/SellerMemberList',
+          'ico' => '',
+          'role' => array('admin', 'broker_company', 'captain'),
           'sub' => array(),
         ),
       ),
       'permission' => array(
         'admin' => array(
-          'SellerManager/SellerManagerList',
-          'SellerManager/SellerManagerInfo',
-          'SellerManager/AjaxSellerManagerSave',
-          'SellerManager/AjaxSellerManagerDelete',
-          'SellerManager/ResetSellerManagerCache',
+          'User/BrokerCompanyUserInfo',
+          'User/AjaxBrokerCompanyUserSave',
+
+          'User/SpecialUserInfo',
+          'User/AjaxSpecialUserSave',
+
+          'User/SellerCaptainList',
+          'User/SellerCaptainInfo',
+          'User/AjaxSellerCaptainSave',
+          'User/ResetSellerCaptainCache',
+
+          'User/SellerMemberList',
+          'User/SellerMemberInfo',
+          'User/AjaxSellerMemberSave',
+          'User/ResetSellerMemberCache',
+
+          'User/AjaxUserInfo',
+          'User/AjaxCustomerList',
+          'User/AjaxUserDelete',
+
+          'User/CustomerPayList',
+        ),
+        'special' => array(
+          'User/SpecialUserInfo',
+          'User/AjaxSpecialUserSave',
         ),
         'broker_company' => array(
-          'SellerManager/SellerManagerList',
-          'SellerManager/SellerManagerInfo',
-          'SellerManager/AjaxSellerManagerSave',
-          'SellerManager/AjaxSellerManagerDelete',
-          'SellerManager/ResetSellerManagerCache',
+          'User/BrokerCompanyUserInfo',
+          'User/AjaxBrokerCompanyUserSave',
+
+          'User/SellerCaptainList',
+          'User/SellerCaptainInfo',
+          'User/AjaxSellerCaptainSave',
+          'User/ResetSellerCaptainCache',
+
+          'User/SellerMemberList',
+          'User/SellerMemberInfo',
+          'User/AjaxSellerMemberSave',
+          'User/ResetSellerMemberCache',
+
+          'User/AjaxUserInfo',
+          'User/AjaxCustomerList',
+          'User/AjaxUserDelete',
+
+          'User/CustomerPayList',
+        ),
+        'captain' => array(
+          'User/SellerMemberList',
+          'User/SellerMemberInfo',
+          'User/AjaxSellerMemberSave',
+          'User/ResetSellerMemberCache',
+
+          'User/AjaxUserInfo',
+          'User/AjaxCustomerList',
+          'User/AjaxUserDelete',
+
+          'User/CustomerPayList',
         ),
       ),
     ),
@@ -132,13 +135,13 @@ class SystemCategory {
       'menu_name' => '客户',
       'url' => 'javascript:void(0);',
       'ico' => 'fa-user-md',
-      'role' => array('admin','broker_company','seller_manager'),
+      'role' => array('admin', 'broker_company', 'captain', 'member'),
       'sub' => array(
         array(
           'menu_name' => '客户管理',
           'url' => 'Customer/CustomerList',
           'ico' => '',
-          'role' => array('admin','broker_company','seller_manager'),
+          'role' => array('admin', 'broker_company', 'captain', 'member'),
           'sub' => array(),
         ),
       ),
@@ -146,74 +149,68 @@ class SystemCategory {
         'admin' => array(
           'Customer/CustomerList',
           'Customer/CustomerInfo',
+          'Customer/AjaxGetSellerMemberOption',
           'Customer/AjaxCustomerSave',
           'Customer/ResetCustomerCache',
           'Customer/AjaxCustomerDelete',
+          'Customer/AjaxCustomerInfo',
+          'Customer/AjaxCustomerPayList',
         ),
         'broker_company' => array(
           'Customer/CustomerList',
           'Customer/CustomerInfo',
+          'Customer/AjaxGetSellerMemberOption',
           'Customer/AjaxCustomerSave',
           'Customer/ResetCustomerCache',
           'Customer/AjaxCustomerDelete',
+          'Customer/AjaxCustomerInfo',
+          'Customer/AjaxCustomerPayList',
         ),
-        'seller_manager' => array(
+        'captain' => array(
           'Customer/CustomerList',
           'Customer/CustomerInfo',
+          'Customer/AjaxGetSellerMemberOption',
           'Customer/AjaxCustomerSave',
           'Customer/ResetCustomerCache',
+          'Customer/AjaxCustomerInfo',
+          'Customer/AjaxCustomerPayList',
         ),
-      ),
-    ),
-    array(
-      'menu_name' => '服务商',
-      'url' => 'javascript:void(0);',
-      'ico' => 'fa-globe',
-      'role' => array('admin','broker_company'),
-      'sub' => array(
-        array(
-          'menu_name' => '服务商管理',
-          'url' => 'ServiceProviders/ServiceProvidersList',
-          'ico' => '',
-          'role' => array('admin','broker_company'),
-          'sub' => array(),
-        ),
-      ),
-      'permission' => array(
-        'admin' => array(
-          'ServiceProviders/ServiceProvidersList',
-          'ServiceProviders/AjaxServiceProvidersSave',
-          'ServiceProviders/QuickModifyServiceProvidersField',
-          'ServiceProviders/ResetServiceProvidersCache',
-          'ServiceProviders/AjaxServiceProvidersDelete',
-        ),
-        'broker_company' => array(
-          'ServiceProviders/ServiceProvidersList',
-          'ServiceProviders/AjaxServiceProvidersSave',
-          'ServiceProviders/QuickModifyServiceProvidersField',
-          'ServiceProviders/ResetServiceProvidersCache',
-          'ServiceProviders/AjaxServiceProvidersDelete',
+        'member' => array(
+          'Customer/CustomerList',
+          'Customer/CustomerInfo',
+          'Customer/AjaxGetSellerMemberOption',
+          'Customer/AjaxCustomerSave',
+          'Customer/ResetCustomerCache',
+          'Customer/AjaxCustomerInfo',
+          'Customer/AjaxCustomerPayList',
         ),
       ),
     ),
     array(
       'menu_name' => '产品',
       'url' => 'javascript:void(0);',
-      'ico' => 'fa-heart',
-      'role' => array('admin','broker_company'),
+      'ico' => 'fa-heart-o',
+      'role' => array('admin', 'special','broker_company', 'captain', 'member'),
       'sub' => array(
         array(
           'menu_name' => '类别管理',
           'url' => 'Product/ProductTypeList',
           'ico' => '',
-          'role' => array('admin','broker_company'),
+          'role' => array('admin', 'broker_company'),
           'sub' => array(),
         ),
         array(
           'menu_name' => '产品管理',
           'url' => 'Product/ProductList',
           'ico' => '',
-          'role' => array('admin','broker_company'),
+          'role' => array('admin', 'broker_company'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '产品浏览',
+          'url' => 'Product/ProductViewList',
+          'ico' => '',
+          'role' => array('admin', 'special', 'captain', 'member'),
           'sub' => array(),
         ),
       ),
@@ -230,6 +227,17 @@ class SystemCategory {
           'Product/ResetProductCache',
           'Product/AjaxProductDelete',
           'Product/UploadProductContentImage',
+
+          'Product/ProductViewList',
+          'Product/AjaxProductViewList',
+          'Product/ProductViewInfo',
+          'Product/AjaxProductInfo',
+        ),
+        'special' => array(
+          'Product/ProductViewList',
+          'Product/AjaxProductViewList',
+          'Product/ProductViewInfo',
+          'Product/AjaxProductInfo',
         ),
         'broker_company' => array(
           'Product/ProductTypeList',
@@ -238,95 +246,404 @@ class SystemCategory {
           'Product/ResetProductTypeCache',
           'Product/AjaxProductTypeDelete',
           'Product/ProductList',
+          'Product/AjaxProductViewList',
           'Product/ProductInfo',
           'Product/AjaxProductSave',
           'Product/ResetProductCache',
           'Product/AjaxProductDelete',
           'Product/UploadProductContentImage',
+        ),
+        'captain' => array(
+          'Product/ProductViewList',
+          'Product/AjaxProductViewList',
+          'Product/ProductViewInfo',
+          'Product/AjaxProductInfo',
+        ),
+        'member' => array(
+          'Product/ProductViewList',
+          'Product/AjaxProductViewList',
+          'Product/ProductViewInfo',
+          'Product/AjaxProductInfo',
         ),
       ),
     ),
     array(
-      'menu_name' => '工单',
+      'menu_name' => '保险计划书',
       'url' => 'javascript:void(0);',
-      'ico' => 'fa-file',
-      'code' => 'Order',
-      'role' => array('admin','broker_company','seller_manager'),
+      'ico' => 'fa-file-text-o',
+      'code' => 'Plan',
+      'role' => array('admin', 'special', 'broker_company', 'captain', 'member'),
       'sub' => array(
         array(
-          'menu_name' => '工单管理',
-          'url' => 'Order/OrderList',
+          'menu_name' => '管理计划书',
+          'url' => 'Order/PlanList',
           'ico' => '',
-          'role' => array('admin', 'broker_company', 'seller_manager'),
+          'code' => 'PlanList',
+          'role' => array('admin', 'broker_company', 'captain', 'member'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '管理计划书',
+          'url' => 'Order/AuditPlanList',
+          'ico' => '',
+          'code' => 'AuditPlanList',
+          'role' => array('special'),
           'sub' => array(),
         ),
       ),
       'permission' => array(
         'admin' => array(
-          'Order/OrderList',
-          'Order/OrderInfo',
-          'Order/OrderAddInfo',
+          'Order/PlanList',
+          'Order/AjaxPlanInfo',
+          'Order/PlanInfo',
+        ),
+        'special' => array(
+          'Order/AuditPlanList',
+          'Order/AjaxAuditPlanInfo',
+          'Order/AuditPlanInfo',
+          'Order/AuditSignatoryOrderInfoSave',
+        ),
+        'broker_company' => array(
+          'Order/PlanList',
+          'Order/AjaxPlanInfo',
+          'Order/PlanInfo',
+        ),
+        'captain' => array(
+          'Order/PlanList',
+          'Order/AjaxPlanInfo',
+          'Order/PlanInfo',
+        ),
+        'member' => array(
+          'Order/PlanList',
+          'Order/AjaxPlanInfo',
+          'Order/PlanInfo',
+        ),
+      ),
+    ),
+    array(
+      'menu_name' => '预约',
+      'url' => 'javascript:void(0);',
+      'ico' => 'fa-calendar-check-o',
+      'code' => 'Order',
+      'role' => array('admin', 'special', 'broker_company', 'captain', 'member'),
+      'sub' => array(
+        array(
+          'menu_name' => '预约管理',
+          'url' => 'Order/SubscribeOrderList',
+          'ico' => '',
+          'code' => 'SubscribeOrder',
+          'role' => array('admin', 'broker_company', 'captain', 'member'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '已完成预约',
+          'url' => 'Order/CompletedOrderList',
+          'ico' => '',
+          'role' => array('admin', 'broker_company', 'captain', 'member'),
+          'sub' => array(),
+        ),
+        
+        array(
+          'menu_name' => '审核预约预约',
+          'url' => 'Order/UnauditSubscribeOrderList',
+          'code' => 'UnauditSubscribeOrder',
+          'ico' => '',
+          'role' => array('special'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '已成交预约',
+          'url' => 'Order/BusinessOrderList',
+          'ico' => '',
+          'role' => array('special'),
+          'sub' => array(),
+        ),
+      ),
+      'permission' => array(
+        'admin' => array(
+          //region 预约预约
+          'Order/SubscribeOrderList',
+          'Order/SubscribeOrderInfoAdd',
+          'Order/SubscribeOrderInfo',
+          'Order/SubscribeOrderInfoSave',
+          'Order/AjaxPlanList',
+          'Order/AjaxPlanSave',
+          'Order/ChangeReservationTime',
+          //endregion 预约预约
+
+          //region 消费预约
+          'Order/PayOrderList',
+          'Order/PayOrderInfo',
+          'Order/PayOrderInfoSave',
+          //endregion 消费预约
+
+          //region 回访预约
+          'Order/ReturnVisitOrderList',
+          'Order/ReturnVisitOrderInfo',
+          'Order/ReturnVisitOrderInfoSave',
+          //endregion 回访预约
+
+          //region 已完成预约
+          'Order/CompletedOrderList',
+          'Order/CompletedOrderInfo',
+          //endregion 已完成预约
+
+          //region 审核签约预约
+          'Order/UnauditSignatoryOrderList',
+          'Order/AuditSignatoryOrderInfo',
+          'Order/AuditSignatoryOrderInfoSave',
+          //endregion 审核签约预约
+
+          //region 审核预约预约
+          'Order/UnauditSubscribeOrderList',
+          'Order/AuditSubscribeOrderInfo',
+          'Order/AuditSubscribeOrderInfoSave',
+          //endregion 审核预约预约
+
+          'Order/AjaxSubscribeOrderList',
+          'Order/AjaxOrderViewInfo',
+          
+          'Order/AjaxCustomerAboutData',
+          'Order/AjaxCustomerSave',
+
+          'Order/AjaxGetSellerMemberOption',
+          'Order/AjaxGetCustomerOption',
           'Order/AjaxCustomerInfo',
-          'Order/AjaxOptionList',
           'Order/AjaxProductOptionList',
           'Order/AjaxProductInfo',
-          'Order/AjaxOrderAdd',
-          'Order/OrderInfoEditReview',
-          'Order/OrderInfoReviewSave',
-          'Order/ResetOrderCache',
           'Order/AjaxOrderDelete',
-          'Order/OrderInfoReview',
+          'Order/ResetOrderCache',
+
+          'Download/OriginalNameFile',
+          'Download/OriginalNameImage',
+          //=======================
+
+          'Order/OrderList',
+        ),
+        'special' => array(
+          //region 审核预约预约
+          'Order/UnauditSubscribeOrderList',
+          'Order/AuditSubscribeOrderInfo',
+          'Order/AuditSubscribeOrderInfoSave',
+          'Order/AjaxPlanInfo',
+          'Order/AjaxSubscribeOrderInfo',
+          'Order/AjaxConfirmPaymentOrderInfo',
+          'Order/AjaxProductOptionList',
+          'Order/AuditUpdatesSubscribeOrderInfo',
+          //endregion 审核预约预约
+
+          //region 已成交预约
+          'Order/BusinessOrderList',
+          'Order/BusinessOrderInfo',
+          //endregion 已成交预约
+          
+          'Order/ResetOrderCache',
+
           'Download/OriginalNameFile',
           'Download/OriginalNameImage',
         ),
         'broker_company' => array(
-          'Order/OrderList',
-          'Order/OrderInfo',
-          'Order/OrderAddInfo',
+          //region 预约预约
+          'Order/SubscribeOrderList',
+          'Order/SubscribeOrderInfoAdd',
+          'Order/SubscribeOrderInfo',
+          'Order/SubscribeOrderInfoSave',
+          'Order/AjaxPlanList',
+          'Order/AjaxPlanSave',
+          'Order/ChangeReservationTime',
+          //endregion 预约预约
+
+          //region 消费预约
+          'Order/PayOrderList',
+          'Order/PayOrderInfo',
+          'Order/PayOrderInfoSave',
+          //endregion 消费预约
+
+          //region 回访预约
+          'Order/ReturnVisitOrderList',
+          'Order/ReturnVisitOrderInfo',
+          'Order/ReturnVisitOrderInfoSave',
+          //endregion 回访预约
+
+          //region 已完成预约
+          'Order/CompletedOrderList',
+          'Order/CompletedOrderInfo',
+          //endregion 已完成预约
+
+          //region 审核签约预约
+          'Order/UnauditSignatoryOrderList',
+          'Order/AuditSignatoryOrderInfo',
+          'Order/AuditSignatoryOrderInfoSave',
+          //endregion 审核签约预约
+
+          //region 审核预约预约
+          'Order/UnauditSubscribeOrderList',
+          'Order/AuditSubscribeOrderInfo',
+          'Order/AuditSubscribeOrderInfoSave',
+          //endregion 审核预约预约
+  
+          'Order/AjaxSubscribeOrderList',
+          'Order/AjaxOrderViewInfo',
+          
+          'Order/AjaxCustomerAboutData',
+          'Order/AjaxCustomerSave',
+
+          'Order/AjaxGetSellerMemberOption',
+          'Order/AjaxGetCustomerOption',
           'Order/AjaxCustomerInfo',
-          'Order/AjaxOptionList',
           'Order/AjaxProductOptionList',
           'Order/AjaxProductInfo',
-          'Order/AjaxOrderAdd',
-          'Order/ResetOrderCache',
           'Order/AjaxOrderDelete',
-          'Order/OrderInfoReview',
-          'Order/OrderInfoReviewSave',
+          'Order/ResetOrderCache',
+
           'Download/OriginalNameFile',
           'Download/OriginalNameImage',
         ),
-        'seller_manager' => array(
-          'Order/OrderList',
-          'Order/OrderInfo',
-          'Order/OrderAddInfo',
-          'Order/OrderInfoEdit',
-          'Order/AjaxOrderEditSave',
+        'captain' => array(
+          //region 预约预约
+          'Order/SubscribeOrderList',
+          'Order/SubscribeOrderInfoAdd',
+          'Order/SubscribeOrderInfo',
+          'Order/SubscribeOrderInfoSave',
+          'Order/AjaxPlanList',
+          'Order/AjaxPlanSave',
+          'Order/ChangeReservationTime',
+          //endregion 预约预约
+
+          //region 消费预约
+          'Order/PayOrderList',
+          'Order/PayOrderInfo',
+          'Order/PayOrderInfoSave',
+          //endregion 消费预约
+
+          //region 回访预约
+          'Order/ReturnVisitOrderList',
+          'Order/ReturnVisitOrderInfo',
+          'Order/ReturnVisitOrderInfoSave',
+          //endregion 回访预约
+
+          //region 已完成预约
+          'Order/CompletedOrderList',
+          'Order/CompletedOrderInfo',
+          //endregion 已完成预约
+
+          //region 审核签约预约
+          'Order/UnauditSignatoryOrderList',
+          'Order/AuditSignatoryOrderInfo',
+          'Order/AuditSignatoryOrderInfoSave',
+          //endregion 审核签约预约
+
+          //region 审核预约预约
+          'Order/UnauditSubscribeOrderList',
+          'Order/AuditSubscribeOrderInfo',
+          'Order/AuditSubscribeOrderInfoSave',
+          //endregion 审核预约预约
+  
+          'Order/AjaxSubscribeOrderList',
+          'Order/AjaxOrderViewInfo',
+          
+          'Order/AjaxCustomerAboutData',
+          'Order/AjaxCustomerSave',
+
+          'Order/AjaxGetSellerMemberOption',
+          'Order/AjaxGetCustomerOption',
           'Order/AjaxCustomerInfo',
           'Order/AjaxProductOptionList',
           'Order/AjaxProductInfo',
-          'Order/AjaxOrderAdd',
+          'Order/AjaxOrderDelete',
           'Order/ResetOrderCache',
+
+          'Download/OriginalNameFile',
+          'Download/OriginalNameImage',
+        ),
+        'member' => array(
+          //region 预约预约
+          'Order/SubscribeOrderList',
+          'Order/SubscribeOrderInfoAdd',
+          'Order/SubscribeOrderInfo',
+          'Order/SubscribeOrderInfoSave',
+          'Order/AjaxPlanList',
+          'Order/AjaxPlanSave',
+          'Order/ChangeReservationTime',
+          //endregion 预约预约
+
+          //region 消费预约
+          'Order/PayOrderList',
+          'Order/PayOrderInfo',
+          'Order/PayOrderInfoSave',
+          //endregion 消费预约
+
+          //region 回访预约
+          'Order/ReturnVisitOrderList',
+          'Order/ReturnVisitOrderInfo',
+          'Order/ReturnVisitOrderInfoSave',
+          //endregion 回访预约
+
+          //region 已完成预约
+          'Order/CompletedOrderList',
+          'Order/CompletedOrderInfo',
+          //endregion 已完成预约
+
+          //region 审核签约预约
+          'Order/UnauditSignatoryOrderList',
+          'Order/AuditSignatoryOrderInfo',
+          'Order/AuditSignatoryOrderInfoSave',
+          //endregion 审核签约预约
+
+          //region 审核预约预约
+          'Order/UnauditSubscribeOrderList',
+          'Order/AuditSubscribeOrderInfo',
+          'Order/AuditSubscribeOrderInfoSave',
+          //endregion 审核预约预约
+  
+          'Order/AjaxSubscribeOrderList',
+          'Order/AjaxOrderViewInfo',
+
+          'Order/AjaxCustomerAboutData',
+          'Order/AjaxCustomerSave',
+
+          'Order/AjaxGetSellerMemberOption',
+          'Order/AjaxGetCustomerOption',
+          'Order/AjaxCustomerInfo',
+          'Order/AjaxProductOptionList',
+          'Order/AjaxProductInfo',
+          'Order/AjaxOrderDelete',
+          'Order/ResetOrderCache',
+
           'Download/OriginalNameFile',
           'Download/OriginalNameImage',
         ),
       ),
     ),
+    /*
     array(
       'menu_name' => '佣金',
       'url' => 'javascript:void(0);',
       'ico' => 'fa-money',
-      'role' => array('admin','broker_company'),
+      'role' => array('admin','broker_company', 'captain', 'member'),
       'sub' => array(
         array(
           'menu_name' => '佣金管理',
-          'url' => 'Commission/CommissionList',
+          'url' => 'Commission/CommissionDateList',
           'ico' => '',
           'role' => array('admin', 'broker_company'),
+          'sub' => array(),
+        ),
+        array(
+          'menu_name' => '历史佣金',
+          'url' => 'Commission/UserHistoryCommissionList',
+          'ico' => '',
+          'role' => array('captain', 'member'),
           'sub' => array(),
         ),
       ),
       'permission' => array(
         'admin' => array(
+          'Commission/CommissionDateList',
+          'Commission/AjaxCalcLastMonthCommission',
+          'Commission/AjaxSendCommission',
+
+
           'Commission/CommissionList',
           'Commission/CommissionInfo',
           'Commission/AjaxSellerManagerOption',
@@ -336,16 +653,27 @@ class SystemCategory {
           'Commission/AjaxStandardAdd',
         ),
         'broker_company' => array(
-          'Commission/CommissionList',
-          'Commission/CommissionInfo',
-          'Commission/AjaxSellerManagerOption',
-          'Commission/AjaxCommissionSave',
-          'Commission/AjaxCommissionInfo',
+          'Commission/CommissionDateList',
+          'Commission/AjaxCalcLastMonthCommission',
+          'Commission/AjaxSendCommission',
           'Commission/ResetCommissionCache',
-          'Commission/AjaxStandardAdd',
+          'Commission/AjaxCommissionOrderList',
+
+          'Commission/AjaxCommissionOrderList',
+        ),
+        'captain' => array(
+          'Commission/UserHistoryCommissionList',
+          'Commission/AjaxCommissionOrderList',
+          'Commission/AjaxUserCurrMonthCommissionInfo',
+        ),
+        'member' => array(
+          'Commission/UserHistoryCommissionList',
+          'Commission/AjaxCommissionOrderList',
+          'Commission/AjaxUserCurrMonthCommissionInfo',
         ),
       )
     ),
+    */
   );
 
   /**

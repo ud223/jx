@@ -20,11 +20,11 @@
         <ul class="sidebar-menu">
             <li class="header"></li>
             <!--<li  class="manage-site">
-                <a href="/manage/site">
-                    <i class="fa fa-th"></i> <span>站点管理</span> <small class="label pull-right bg-green"></small>
+                <a href="/operator/car_list">
+                    <i class="fa fa-th"></i> <span>车辆管理</span> <small class="label pull-right bg-green"></small>
                 </a>
-            </li>-->
-            <!--<li  class="manage-data">
+            </li>
+            <li  class="manage-data">
               <a href="/manage/data">
                 <i class="fa fa-pie-chart"></i> <span>查看数据</span> <small class="label pull-right bg-green"></small>
               </a>
@@ -57,20 +57,19 @@
             <!--</volist>-->
 
             <?php foreach ($model as $item) :?>
-                <li class="treeview">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-pie-chart"></i> <span><?php echo $item['name']; ?></span> <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <?php foreach ($fun as $itm) :?>
-                            <?php if ($item['id'] == $itm['pid']) :?>
-                                <li><a href="<?php echo $itm['url']?>"><i class="fa fa-circle-o"></i><?php echo $itm['name'] ?></a></li>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
+            <li class="treeview">
+                <a href="javascript:void(0)">
+                    <i class="fa fa-pie-chart"></i> <span><?php echo $item['name']; ?></span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <?php foreach ($fun as $itm) :?>
+                    <?php if ($item['id'] == $itm['pid']) :?>
+                    <li><a href="<?php echo $itm['url']?>"><i class="fa fa-circle-o"></i><?php echo $itm['name'] ?></a></li>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
             <?php endforeach; ?>
-
         </ul>
     </section>
     <!-- /.sidebar -->

@@ -1,0 +1,37 @@
+<div class="form-group {$checkbox.css}" id="{$checkbox.id}Tip">
+    <label  class="col-md-{$checkbox.title_width} control-label">
+        {$checkbox.title}<eq name="checkbox.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$checkbox.input_width}" id="{$checkbox.id}_item">
+        <div class="checkbox-list">
+            <?php
+            if(!empty($checkbox["option"])){
+                $nCount = sizeof($checkbox["option"]);
+
+                for($i=0; $i<$nCount; $i++){
+                    $checkboxInfo = $checkbox["option"][$i];
+                    
+                    if(!IsN($checkbox["value"])){
+                        $nExist = strpos($checkbox["value"], $checkboxInfo["val"]);
+
+                        if(!IsN($nExist)){
+                            $sSelected = 'checked="checked"';
+                        }else{
+                            $sSelected = '';
+                        }
+                    }
+                    
+                    if($checkboxInfo["readonly"] == "true"){
+                        $sRead = 'disabled="disabled"';
+                    }else{
+                        $sRead='';
+                    }
+
+                    echo '<label class="checkbox-inline"><input type="checkbox" name="'. $checkbox["name"] .'" id="'. $checkbox["id"] . '_' . $i .'" value="'. $checkboxInfo["val"] .'" '. $sSelected . ' ' . $sRead .'>' . $checkboxInfo["key"] . '</label>';
+                }
+            }
+            ?>
+        </div>
+        <span class="help-block">{$checkbox.tips}</span>
+    </div>
+</div>

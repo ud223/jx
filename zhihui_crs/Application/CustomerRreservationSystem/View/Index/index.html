@@ -36,31 +36,29 @@
                 </span>
               </a>
               <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                <li><a href="login.html"><i class="fa fa-sign-out"></i>&nbsp;安全退出</a></li>
+                <li><a href="__MODULE__/Login/Logout"><i class="fa fa-sign-out"></i>&nbsp;安全退出</a></li>
               </ul>
             </div>
-            <div class="logo-element">ZH</div>
+            <div class="logo-element">WRC</div>
           </li>
           
           <volist name="SystemCategoryList" id="list">
             <li>
               <gt name="list.child" value="0">
-                <a href="{$list.url}"><i class="fa {$list.ico}"></i> <span class="nav-label">{$list.menu_name}</span><eq name="list.code" value="Order">&nbsp;<span class="label label-warning" id="menu_order_number_ifr" style="display: none;"> </span>&nbsp;</eq><span class="fa arrow"></span></a>
-
-                <eq name="list.code" value="Order"><input type="hidden" id="hf_untreated_order_number" value="{$UntreatedOrderNumber}" /></eq>
+                <a href="{$list.url}"><i class="fa {$list.ico}"></i> <span class="nav-label">{$list.menu_name}</span> <notempty name="list.code"><span class="label label-warning" id="menu_{$list.code}_ifr" style="display: none;"> </span></notempty> <span class="fa arrow"></span></a>
 
                 <ul class="nav nav-second-level">
                   <volist name="list.sub" id="lv2list">
                     <li>
                       <gt name="lv2list.child" value="0">
-                        <a href="{$lv2list.url}">{$lv2list.menu_name} <span class="fa arrow"></span></a>
+                        <a href="{$lv2list.url}">{$lv2list.menu_name} <notempty name="lv2list.code"><span class="label label-warning" id="menu_{$lv2list.code}_ifr" style="display: none;"></span></notempty> <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
                           <volist name="lv2list.sub" id="lv3list">
-                            <li><a class="J_menuItem" href="{$lv3list.url}">{$lv3list.menu_name}</a></li>
+                            <li><a class="J_menuItem" href="{$lv3list.url}" >{$lv3list.menu_name}</a></li>
                           </volist>
                         </ul>
                         <else/>
-                        <a class="J_menuItem" href="__MODULE__/{$lv2list.url}">{$lv2list.menu_name}</a>
+                        <a class="J_menuItem" href="__MODULE__/{$lv2list.url}">{$lv2list.menu_name} <notempty name="lv2list.code"><span class="label label-warning" id="menu_{$lv2list.code}_ifr" style="display: none;"> </span></notempty></a>
                       </gt>
                     </li>
                   </volist>
@@ -141,37 +139,89 @@
   <script src="__PUBLIC__/crs/res/js/public.js"></script>
 
   <script>
-    var nUntreatedNumber = 0;
+
 //    var nIntervalMinute = (1000*60*15); //15分钟
-    var nIntervalMinute = (10000); //15分钟
+    var nIntervalMinute = 10000; //15分钟
 
     $(document).ready(function(){
-      ControlUntreatedNumberIfr();
+      PollingUntreatedNumber();
 
       setInterval("PollingUntreatedNumber()",nIntervalMinute);
     });
 
-    //region 页面加载时，显示未处理工单的数量
-    function ControlUntreatedNumberIfr(){
-      nUntreatedNumber = parseInt($('#hf_untreated_order_number').val());
-
-      if(nUntreatedNumber > 0){
-        ShowUntreatedNumberIfr(nUntreatedNumber);
-      }else{
-        HideUntreatedNumberIfr();
-      }
-    }
-
+    //region 新状态预约总数
     function ShowUntreatedNumberIfr(num){
-      $('#menu_order_number_ifr').text(num).show();
+      $('#menu_Order_ifr').text(num).show();
     }
 
     function HideUntreatedNumberIfr(){
-      $('#menu_order_number_ifr').text('').hide();
+      $('#menu_Order_ifr').text('').hide();
     }
-    //endregion 页面加载时，显示未处理工单的数量
+    //endregion 新状态预约总数
 
-    //region 心跳查询未处理工单的数量
+    //region 新状态计划书总数量
+    function ShowUnauditPlanTotalNumberIfr(num){
+      $('#menu_Plan_ifr').text(num).show();
+    }
+    
+    function HideUnauditPlanTotalNumberIfr(){
+      $('#menu_Plan_ifr').text('').hide();
+    }
+    //endregion 新状态计划书总数量
+
+    //region 申请
+    //region 计划书
+    function ShowNewPlanNumberIfr(num){
+      $('#menu_PlanList_ifr').text(num).show();
+    }
+    
+    function HideNewPlanNumberIfr(){
+      $('#menu_PlanList_ifr').text('').hide();
+    }
+    //endregion 计划书
+
+    //region 预约新状态预约数
+    function ShowNewSubscribeStatusNumberIfr(num){
+      $('#menu_SubscribeOrder_ifr').text(num).show();
+    }
+
+    function HideNewSubscribeStatusNumberIfr(){
+      $('#menu_SubscribeOrder_ifr').text('').hide();
+    }
+    //endregion 预约新状态预约数
+    //endregion 申请
+
+    //region 审核
+
+    //region 计划书
+    //region 待处理的计划书数量
+    function ShowUnauditPlanNumberIfr(num){
+      $('#menu_AuditPlanList_ifr').text(num).show();
+    }
+
+    function HideUnauditPlanNumberIfr(){
+      $('#menu_AuditPlanList_ifr').text('').hide();
+    }
+    //endregion 待处理的计划书数量
+    //endregion 计划书
+
+    //region 预约
+    //region 待处理的计划书数量
+    function ShowUnauditSubscribeNumberIfr(num){
+      $('#menu_UnauditSubscribeOrder_ifr').text(num).show();
+    }
+    
+    function HideUnauditSubscribeNumberIfr(){
+      $('#menu_UnauditSubscribeOrder_ifr').text('').hide();
+    }
+    //endregion 待处理的计划书数量
+    //endregion 预约
+
+    //endregion 审核
+
+    //endregion 页面加载时，显示未处理预约的数量
+
+    //region 心跳查询未处理预约的数量
     function PollingUntreatedNumber(){
       $.ajax({
         type: "POST",
@@ -200,14 +250,55 @@
         return false;
       }
 
-      if(objJson.data <= 0){
-        HideUntreatedNumberIfr();
-        return false;
+      if(objJson.data.user_type == "special"){
+        //region 计划书
+        if(objJson.data.signatory <= 0){
+          HideUnauditPlanNumberIfr();
+          HideUnauditPlanTotalNumberIfr();
+        }else{
+          ShowUnauditPlanTotalNumberIfr(objJson.data.signatory);
+          ShowUnauditPlanNumberIfr(objJson.data.signatory);
+        }
+        //endregion 计划书
+
+        //region 待审核的预约
+        if(objJson.data.subscribe <= 0){
+          HideUnauditSubscribeNumberIfr();
+          HideUntreatedNumberIfr();
+        }else{
+          ShowUnauditSubscribeNumberIfr(objJson.data.subscribe);
+          ShowUntreatedNumberIfr(objJson.data.subscribe);
+        }
+        //endregion 待审核的预约
       }
 
-      ShowUntreatedNumberIfr(objJson.data);
+      if(objJson.data.user_type == "member"){
+        //region 计划书
+        var nSignatoryNumber = Number(objJson.data.signatory_approve) + Number(objJson.data.signatory_reject);
+        if(nSignatoryNumber <= 0){
+          HideNewPlanNumberIfr();
+          HideUnauditPlanTotalNumberIfr();
+        }else{
+          ShowNewPlanNumberIfr(nSignatoryNumber);
+          ShowUnauditPlanTotalNumberIfr(nSignatoryNumber);
+        }
+        //endregion 计划书
+        //endregion 已处理的签约
+
+        //region 已处理的预约
+        var nSubscribeNumber = (Number(objJson.data.subscribe_approve) + Number(objJson.data.subscribe_reject));
+        if(nSubscribeNumber <= 0){
+          HideNewSubscribeStatusNumberIfr();
+          HideUntreatedNumberIfr
+        }else{
+          ShowNewSubscribeStatusNumberIfr(nSubscribeNumber);
+          ShowUntreatedNumberIfr(nSubscribeNumber);
+        }
+        //endregion 已处理的预约
+      }
+
     }
-    //endregion 心跳查询未处理工单的数量
+    //endregion 心跳查询未处理预约的数量
   </script>
 </body>
 

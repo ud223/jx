@@ -1,0 +1,54 @@
+<div class="form-group {$uploadify_image.css}" id="{$uploadify_image.id}Tip">
+    <label class="control-label col-md-{$uploadify_image.title_width}">
+        {$uploadify_image.title}<eq name="uploadify_image.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$uploadify_image.input_width}" id="{$uploadify_image.id}_item">
+        <div class="fileupload fileupload-new">
+            <div class="bt_uploadify_thumb_ifr" id="div_{$uploadify_image.id}_thumb_ifr"></div>
+            
+            <div class="uploadify_ifr" style="clear: both;">
+                <input type="file" name="file_{$uploadify_image.id}" id="file_{$uploadify_image.id}" class="form-control"/>
+                <input id="hidden_{$uploadify_image.id}" name="hidden_{$uploadify_image.id}" type="hidden" value="{$uploadify_image.value}">
+            </div>
+        </div>
+        <span class="help-block">{$uploadify_image.tips}</span>
+    </div>
+</div>
+
+<script>
+    //图片上传 Begin
+    $("#file_{$uploadify_image.id}").uploadify({
+        'buttonImage': '{$uploadify_image.buttonImage}',      //按钮图片路径
+        'swf': '{$uploadify_image.swf}',                //Flash路径
+        'uploader': '{$uploadify_image.uploader}',       //图片提交路径
+        'auto': {$uploadify_image.auto},   //是否自动提交
+        'multi': {$uploadify_image.multi}, //是否允许多文件选择
+        'width': {$uploadify_image.width},    //宽度
+        'height': {$uploadify_image.height},   //高度
+        'removeTimeout': {$uploadify_image.removeTimeout}, //移除页面项的时间
+        'buttonCursor': '{$uploadify_image.buttonCursor}',   //按钮鼠标样式
+        'fileSizeLimit': '{$uploadify_image.fileSizeLimit}',    //上传的文件大小
+        'fileTypeDesc': '{$uploadify_image.fileTypeDesc}', //上传文件类型说明
+        'fileTypeExts': '{$uploadify_image.fileTypeExts}', //上传文件类型
+        'method': '{$uploadify_image.method}',    //提交方式
+        'queueSizeLimit': {$uploadify_image.queueSizeLimit},
+        'progressData': '{$uploadify_image.progressData}',   //显示进度和上传速度
+        'uploadLimit': {$uploadify_image.uploadLimit},  //每次共允许上传99次文件
+        'formData':{ "fieldname" : '{$uploadify_image.fieldname}' },//额外的提交数据
+        'onSelect': function (file) {   //选择文件后，添加上传按钮
+
+        },
+        'onCancel': function (file) {   //取消上传，移除上传按钮
+
+        },
+        'onUploadError': function (file, errorCode, errorMsg, errorString) {    //上传出现错误
+
+        },
+        'onUploadComplete': function (file) {   //上传完成时，移除上传按钮
+
+        },
+        'onUploadSuccess': function (file, data, response) {  //加载上传的图片
+            btten.FileHtml("ul_{$uploadify_image.id}_file_ifr", {$uploadify_image.multi}, data, 'hidden_{$uploadify_image.id}');
+        }
+    });     
+</script>

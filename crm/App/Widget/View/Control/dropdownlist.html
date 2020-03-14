@@ -1,0 +1,35 @@
+<?php
+if($ddl["extend"]["readonly"] == "true"){
+    $sRead = 'disabled="disabled"';
+}else{
+    $sRead='';
+}
+?>
+<div class="form-group  {$ddl.css}" id="{$ddl.id}Tip">
+    <label  class="col-md-{$ddl.title_width} control-label">
+        {$ddl.title}<eq name="ddl.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-3" id="{$ddl.id}_item">
+        <!--<select  class="sidebar-option form-control input-large" name="{$ddl.name}" id="{$ddl.id}" {$sRead}>-->
+        <select  class="sidebar-option form-control input-large" name="{$ddl.name}" id="{$ddl.id}" {$sRead}>
+            <?php
+            if(!empty($ddl["option"])){
+                $nCount = sizeof($ddl["option"]);
+
+                for($i=0; $i<$nCount; $i++){
+                    $ddlInfo = $ddl["option"][$i];
+
+                    if($ddlInfo["val"] == $ddl["value"]){
+                        $sSelected = ' selected="selected"';
+                    }else{
+                        $sSelected = '';
+                    }
+                    
+                    echo '<option value="'. $ddlInfo["val"] .'" '. $sSelected .'>'. $ddlInfo["key"] .'</option>';
+                }
+            }
+            ?>
+        </select>
+        <span class="help-block">{$ddl.tips}</span>
+    </div>
+</div>

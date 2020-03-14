@@ -1,0 +1,83 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">加盟商协议管理</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">内容</span>
+                        <input type="hidden" id="content" name="content">
+                        <script type="text/plain" id="editor_content" name="editor_content" style="width:1000px;height:240px;">
+                            <p>请输入自助检测内容</p>
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            //实例化编辑器
+            var um = UM.getEditor('editor_content');
+
+            um.addListener('blur',function(){
+                $('#focush2').html('编辑器失去焦点了')
+            });
+            um.addListener('focus',function(){
+                $('#focush2').html('')
+            });
+
+            um.setContent('{$data.content.content}');
+        });
+
+        function saveItem() {
+            var html_description = UM.getEditor('editor_content').getContent()
+//            $("#content").val(html_description);
+            var content = html_description;
+
+            var data = { 'content':content };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存?')) {
+                fit.ajax({
+                    url:'/manage/protocol_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

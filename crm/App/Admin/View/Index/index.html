@@ -1,0 +1,90 @@
+<include file="Public:page_header" />
+
+<!-- BEGIN PAGE CONTENT-->
+<a href="http://localhost/btcms/index.php/Payment/Alipay/alipay" target="_blank"><i class="icon-pencil"></i> 支付宝</a>
+<div class="row">
+   <div class="col-md-12">
+      <div class="tabbable tabbable-custom boxless">
+         <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab_3" data-toggle="tab">Visual Effects</a></li>
+         </ul>
+         <div class="tab-content">
+            <div class="tab-pane active" id="tab_3">
+               <h4>An example implementing a preview pane.</h4>
+               <p>
+                  Obviously the most visual demo, the preview pane is accomplished
+                  entirely outside of Jcrop with a simple jQuery-flavored callback.
+                  This type of interface could be useful for creating a thumbnail
+                  or avatar. The onChange event handler is used to update the
+                  view in the preview pane.
+               </p>
+               <div class="row">
+                  <div class="col-md-6">
+                     <img src="__PUBLIC__/res/admin/assets/plugins/jcrop/demos/demo_files/image3.jpg" id="demo3" alt="Jcrop Example" />
+                  </div>
+                  <div class="col-md-6">
+                     <div id="preview-pane">
+                        <div class="preview-container">
+                           <img src="__PUBLIC__/res/admin/assets/plugins/jcrop/demos/demo_files/image3.jpg" class="jcrop-preview" alt="Preview"/>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- END PAGE CONTENT-->
+<script>
+    var demo3 = function() {
+        // Create variables (in this scope) to hold the API and image size
+        var jcrop_api,
+            boundx,
+            boundy,
+            // Grab some information about the preview pane
+            $preview = $('#preview-pane'),
+            $pcnt = $('#preview-pane .preview-container'),
+            $pimg = $('#preview-pane .preview-container img'),
+
+            xsize = $pcnt.width(),
+            ysize = $pcnt.height();
+        
+            console.log('init',[xsize,ysize]);
+
+        $('#demo3').Jcrop({
+          onChange: updatePreview,
+          onSelect: updatePreview,
+          aspectRatio: xsize / ysize
+        },function(){
+          // Use the API to get the real image size
+          var bounds = this.getBounds();
+          boundx = bounds[0];
+          boundy = bounds[1];
+          // Store the API in the jcrop_api variable
+          jcrop_api = this;
+          // Move the preview into the jcrop container for css positioning
+          $preview.appendTo(jcrop_api.ui.holder);
+        });
+
+        function updatePreview(c)
+        {
+          if (parseInt(c.w) > 0)
+          {
+            var rx = xsize / c.w;
+            var ry = ysize / c.h;
+
+            $pimg.css({
+              width: Math.round(rx * boundx) + 'px',
+              height: Math.round(ry * boundy) + 'px',
+              marginLeft: '-' + Math.round(rx * c.x) + 'px',
+              marginTop: '-' + Math.round(ry * c.y) + 'px'
+            });
+          }
+        };
+    };
+    
+    demo3();
+</script>
+
+<include file="Public:page_footer" />

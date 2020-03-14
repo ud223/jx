@@ -1,0 +1,118 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!-- 页面部分 -->
+    <style>
+        body {
+            padding-top:150px;
+            background:#FBFBFB;
+        }
+        .fomdh {
+            width:100%;
+        }
+        .fomdh td {
+            vertical-align: middle;
+            height:60px;
+        }
+        .fomdh .btn-primary {
+            width:120px;height:40px;
+        }
+        .fomdhtt {
+            margin-bottom:25px;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+    <div class="container" style="margin-bottom:90px;">
+        <div class="row">
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
+                <div class="fomdhtt">
+                    维修备案
+                </div>
+                <div class="alert alert-warning">
+                    该车辆为合法车辆，请按照易客智慧售后政策予以维修或提供必要的帮助，谢谢合作！
+                </div>
+                <table class="fomdh">
+                    <tr>
+                        <td>
+                            <label>维修内容</label>
+                        </td>
+                        <td>
+                            <input id="repair" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>维修门店</label>
+                        </td>
+                        <td>
+                            <input id="point_name" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>联系电话</label>
+                        </td>
+                        <td>
+                            <input id="phone" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <button id="btn_query" class="btn btn-primary">提交</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="car_id"  value="<?php echo $data['car_id'] ?>">
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn_query').click(function () {
+                save();
+            })
+        })
+
+        function save() {
+            var log = {};
+
+            log.car_id = $('#car_id').val();
+            log.repair = $('#repair').val();
+            log.point_name = $('#point_name').val();
+            log.phone = $('#phone').val();
+
+            var data = { 'log': log };
+
+            fit.ajax({
+                url:'/user/repair_log',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                            console.log(JSON.stringify(result));
+                    if (result.code == 200) {
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>',
+                            exitCallback: function () {
+                                location.href= '/index/cart_query';
+                            }
+                        });
+                    }
+                    else {
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>'
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</block>

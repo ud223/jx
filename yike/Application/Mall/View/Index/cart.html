@@ -1,0 +1,249 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="sunnytct ntp">
+                    <span class="t1">购物清单</span>
+                    <span class="t2">Shopping List</span>
+                </div>
+                <table id="car-list" class="carttb">
+                    <thead>
+                    <th class="col1">商品名称</th>
+                    <th></th>
+                    <th>单价</th>
+                    <th>颜色</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                    <th class="tc">操作</th>
+                    </thead>
+                    <tbody >
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            共 <span class="all-num">0</span> 件商品，已选择 <span class="itm-num">0</span> 件商品总计（不含运费）：<span class="all-amount" style="color:#03a9f4;font-weight:bold;">¥ 0</span>
+                        </td>
+                        <td colspan="3" style="text-align:right">
+                            <button id="submit-cart" class="btn btn-primary" style="width:90px; display:none">现在结算</button>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div ui-shopping-service="" class="shopping-service">-->
+                    <!--<ul class="shopping-info gray-box">-->
+                        <!--<li class="online-services">-->
+                            <!--<span class="online"></span>-->
+                            <!--<h5>在线客服</h5>-->
+                            <!--<h6>周一至周日 8:00-17:00</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="return-goods"></span>-->
+                            <!--<h5>7 天无理由退货</h5>-->
+                            <!--<h6>7 天无理由退货 请放心购买</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="delivery-goods"></span>-->
+                            <!--<h5 class="ng-binding">周边产品满 500 元免运费</h5>-->
+                            <!--<h6>全场使用德邦或顺丰快递</h6>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            User.validate();
+
+            // 顶部banner动画
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 150) {
+                    $('.nxtopbanner').removeClass('topped');
+                } else {
+                    $('.nxtopbanner').addClass('topped');
+                }
+            });
+
+            // 顶部banner内部的hover事件
+            $('.mdcontent .uln li').mouseenter(function() {
+                var $this = $(this);
+                $this.siblings('li').addClass('ignor');
+                $this.removeClass('ignor');
+            });
+            $('.mdcontent .uln li').mouseleave(function() {
+                $('.mdcontent .uln li').removeClass('ignor');
+            });
+
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 600) {
+                    $('.btfixprodthumb').removeClass('displayed');
+                } else {
+                    $('.btfixprodthumb').addClass('displayed');
+                }
+
+            });
+
+            $('#submit-cart').click(function () {
+                submitCar();
+            })
+
+            getCar();
+        });
+
+        function submitCar() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id };
+
+            fit.ajax({
+                url:'/user/submit_shopping_car',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    if (result.code == 101) {
+                        location.href = '/index/login';
+
+                        return ;
+                    }
+
+                    if (result.code == 200) {
+                        var url = '/index/checkout?access='+ user_id +'&id='+ result.data;
+//                        console.log(url);
+                        location.href = url;
+                    }
+                    else {
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>'
+                        });
+                    }
+                }
+            });
+        }
+
+        function getCar() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id };
+
+            fit.ajax({
+                url:'/user/get_shopping_car',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    loadCar(result.data);
+                }
+            });
+        }
+
+        function loadCar(data) {
+            var count = 0;
+            var amount = 0.00;
+
+            if (data.length > 0) {
+                $('#submit-cart').show();
+            }
+
+            $.each(data, function () {
+                amount = parseFloat(amount) + (parseFloat(this.price) * parseFloat(this.num));
+
+                var node = '<tr><td><a href="/index/product?id='+ this.item_id +'" target="_blank" style="background-image: url('+ this.product.show_photo.url +');" class="josmimg"></a></td><td><a href="/index/product?id='+ this.item_id +'" target="_blank" class="jostxt">'+ this.product.item_name +'</a></td> <td><div class="josprice">¥ <span class="itm-price">'+ this.price +'</span></div></td><td><div class="josunit">'+ this.color +'</div></td><td><div class="josunit"><input type="tel" val="'+ this.id +'" class="itm-num" style="height:30px;width:60px;margin:0;padding:0 5px;text-align:center;border-radius:3px;" value="'+ this.num +'" /></div></td><td><div class="josprice">¥ <span class="itm-amount">'+ this.amount +'</span></div></td><td><div class="josopera"><span class="iconfont icon-10013" val="'+ this.id +'" onclick="delCar(this)"></span></div></td></tr>';
+
+                $('#car-list tbody').append(node);
+            });
+
+            $('.itm-num').bind("change",function(){
+                var num = $(this).val();
+
+                if (!num || num < 1) {
+                    $.alertbox({
+                        msg:'<span class="orange">数量不能小于1</span>'
+                    });
+
+                    return;
+                }
+
+                var price = $(this).parent().parent().parent().find('.itm-price').html();
+                var itm_amount = parseFloat(price) * parseFloat(num);
+
+                $(this).parents('tr').find('.itm-amount').html(parseFloat(itm_amount).toFixed(2));
+
+                var all_amount = 0.00;
+
+                $.each($('.itm-amount'), function () {
+                    var tmp_amount = parseFloat($(this).html());
+
+                    all_amount = all_amount + tmp_amount;
+                });
+
+                $('.all-amount').html(parseFloat(all_amount).toFixed(2));
+
+                changeNum($(this).attr('val'), num);
+            })
+
+            $('.all-num').html(data.length);
+            $('.itm-num').html(data.length);
+            $('.all-amount').html(parseFloat(amount).toFixed(2));
+        }
+
+        function delCar(btn) {
+            $.confirm({
+                msg:"确认删除本项？",
+                confirmCallback:function () {
+                    var car_id = $(btn).attr('val');
+
+                    var user_id = localStorage.getItem('user_id');
+
+                    var data = { 'user_id':user_id, 'car_id': car_id };
+
+                    fit.ajax({
+                        url:'/user/del_shopping_car',
+                        data:data,
+                        success:function(result){
+//                    alert(JSON.stringify(result));
+
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        }
+
+        function changeNum(car_id, num) {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'car_id': car_id, 'num': num };
+//            alert(JSON.stringify(data))
+            fit.ajax({
+                url:'/user/change_car_num',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</block>

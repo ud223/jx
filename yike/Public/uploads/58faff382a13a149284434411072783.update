@@ -1,0 +1,11 @@
+#!/bin/sh
+path=/root
+wifi_config=/root/rtl_hostapd_2G.conf
+cp /root/wifi_base /root/rtl_hostapd_2G.conf
+sed -i "s/dy-electrombile/$1/g" /root/rtl_hostapd_2G.conf
+sync
+touch /var/lib/misc/udhcpd.leases
+ifconfig wlan0 up
+ifconfig wlan0 192.168.0.1
+$path/hostapd $wifi_config  -B
+udhcpd

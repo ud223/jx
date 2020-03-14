@@ -1,0 +1,148 @@
+<extend name="Base/login"/>
+<block name="body">
+<div class="row">
+    <div class="col-xs-3">
+    </div>
+    <div class="col-xs-6">
+        <div class="loginboardct">
+            <div class="wp silverbg">
+
+                <div class="t1">
+                    <a href="index.html"><img src="/Public/common/js/img/logo2.png" /></a>
+                </div>
+                <div>
+                    <div class="tt">注册E客电动</div>
+                    <div class="r">
+                        <input id="phone" class="xtxt" type="tel" placeholder="手机号码" />
+                    </div>
+                    <div class="r">
+                        <span class="valdcod valbtn">获取验证码</span>
+                        <span class="valdcod valcountdown">60s</span>
+                        <input id="code" class="xtxt" type="text" placeholder="验证码" />
+
+                    </div>
+                    <div class="r">
+                        <input id="pic_code" class="xtxt" type="text" placeholder="图形验证码"  style="width:70%" />
+                        <img style="width:100px;height: 40px" onclick="location.reload()" src='/index/verify/' />
+                    </div>
+                    <div class="r">
+                        <input id="password" class="xtxt" type="password" placeholder="设置密码" />
+                    </div>
+                    <div class="r">
+                        <button class="btn btn-success xbtn" id="gotoregister">注册</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-default xbtn" onclick="location.href='/index/login'">已有帐号？立即登录</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3"></div>
+</div>
+</block>
+<block name="script">
+<script>
+    $(document).ready(function(){
+        $('#gotoregister').click(function(){
+            register();
+        });
+
+        $('.valbtn').click(function () {
+            getSmsCode();
+        })
+    });
+
+    function register() {
+        var phone = $('#phone').val();
+        var code = $('#code').val();
+        var password = $('#password').val();
+
+        var data = { 'phone': phone, 'code': code, 'password': password }
+
+        fit.ajax({
+            url:'/user/register',
+            data:data,
+            success:function(result){
+//                alert(JSON.stringify(result));
+                $.alertbox({
+                    msg:'<span class="orange">'+ result.msg +'</span>'
+                });
+
+                if (result.code == 200) {
+                    localStorage.setItem('user_id', result.data);
+
+                    location.href = '/index/user_order';
+                }
+            }
+        });
+    }
+    
+    function getSmsCode() {
+        var phone = $('#phone').val();
+        var pic_code = $('#pic_code').val();
+
+        if (!phone || phone.length != 11) {
+            $.alertbox({
+                msg:'<span class="orange">请输入正确手机号!</span>'
+            });
+
+            return;
+        }
+
+        if (!pic_code) {
+            $.alertbox({
+                msg:'<span class="orange">请输入图形验证码!</span>'
+            });
+
+            return;
+        }
+
+        var data = { 'phone': phone, 'pic_code':pic_code }
+//            alert(JSON.stringify(data));
+        fit.ajax({
+            url:'/api/sms_valid',
+            data:data,
+            success:function(result){
+                if (result.code == 200)
+                    countDown(this);
+//                alert(JSON.stringify(result));
+                $.alertbox({
+                    msg:'<span class="orange">'+ result.msg +'</span>'
+                });
+//                    alert(result.msg);
+            }
+        });
+    }
+
+    var countdown = 60;
+    var is_count = false;
+
+    function countDown(val) {
+        is_count = true;
+
+        settime(val);
+    }
+
+    function settime(val) {
+        if (!is_count)
+            return;
+
+        if (countdown == 0) {
+            $('.valcountdown').hide();
+            $('.valbtn').show();
+//            $(val).show();
+            $('.valcountdown').html("60s");
+            countdown = 60;
+            is_count = false
+        } else {
+            $('.valbtn').hide();
+//            $(val).hide();
+            $('.valcountdown').show();
+            $('.valcountdown').html(countdown + "s");
+            countdown--;
+        }
+        setTimeout(function () { settime(val) }, 1000)
+    }
+</script>
+</block>

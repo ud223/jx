@@ -32,6 +32,28 @@ class Customer {
       "val"=>"2",
     ),
   );
+
+  /**
+   * todo: 国家列表
+   * @var array
+   */
+  public $_Nationality = array(
+    "中国",
+    "香港",
+    "澳门",
+    "台湾",
+    "日本",
+    "韩国",
+    "新加坡",
+    "澳大利亚",
+    "美国",
+    "加拿大",
+    "英国",
+    "法国",
+    "德国",
+    "俄罗斯",
+    "其他",
+  );
   
   function __construct() {
     $this->modCustomer = M("customer");
@@ -76,6 +98,11 @@ class Customer {
       if(IsNum($Info["district_id"], false, false)){
         $DistrictInfo = $clsRegion->GetDistrictDetails($Info["district_id"]);
         $Info["district_name"] = $DistrictInfo["district_name"];
+      }
+
+      $Info["birthday_date"] = "";
+      if(IsNum($Info["birthday"], false, false)){
+        $Info["birthday_date"] = Time2FullDate($Info["birthday"], "Y年m月d日");
       }
       
       if(IsNum($Info["idcard_img_a"], false, false)){
@@ -153,13 +180,17 @@ class Customer {
    * todo: 客户Option选项列表
    * @return array
    */
-  public function CustomerOption($_broker_company_id=0){
+  public function CustomerOption($_seller_member_id=0, $_seller_captain_id=0){
     $sField = "id";
     $sWhere = "1=1";
     $sOrder = "id desc";
 
-    if(IsNum($_broker_company_id, false, false)){
-      $sWhere = "broker_company_id={$_broker_company_id}";
+    if(IsNum($_seller_member_id, false, false)){
+      $sWhere = "seller_member_id={$_seller_member_id}";
+    }else{
+      if(IsNum($_seller_captain_id, false, false)){
+        $sWhere = "seller_captain_id={$_seller_captain_id}";
+      }
     }
 
     $CustomerIdList = $this->modCustomer->field($sField)->where($sWhere)->order($sOrder)->select();

@@ -1,0 +1,191 @@
+<extend name="Base/pc"/>
+<block name="body">
+    <div>
+        <img id="photo_<?php echo $data['list'][0]['id']?>" src="<?php echo $data['list'][0]['url'] ?>" width="100%" />
+    </div>
+
+    <style>
+
+    </style>
+    <div class="yositab">
+        <div class="container">
+            <div class="row">
+                <div class="hdjk_dhj_wp" id="fixbars">
+                    <div class="col-xs-2 itme lt" style="padding:20px 0; font-size:18px;">
+                        E1 S/E1 PLUS
+                    </div>
+                    <?php $index = 0;?>
+                    <div class="col-xs-8 itme rt" style="text-align:center">
+                        <div style="padding:20px 0; font-size:18px;">
+                            <?php foreach ($data['list'] as $itm) :?>
+                                <?php if ($itm['text']) :?>
+                                    <?php if ($index == 0) :?>
+                                        <a href="#photo_<?php echo $itm['id'] ?>" class="model selected" style="display:inline-block;margin:0 10px;padding:0 15px;"><?php echo $itm['text'] ?></a>
+                                    <?php else :?>
+                                        <a href="#photo_<?php echo $itm['id'] ?>" class="model" style="display:inline-block;margin:0 10px;padding:0 15px;"><?php echo $itm['text'] ?></a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+
+                                <?php $index++;?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 页面部分 -->
+    <style>
+        body {
+            background: #f4f4f4;
+        }
+    </style>
+    <?php $index1 = 0; ?>
+    <?php foreach ($data['list'] as $itm) :?>
+        <?php if ($index1 > 0) :?>
+            <div>
+                <?php if ($index1 == 1) :?>
+                    <img id="photo_<?php echo $itm['id'] ?>" class="lazy" data-original="<?php echo $itm['url'] ?>" width="100%" data-toggle="modal" data-target="#video1" onclick="play1()" />
+                <?php elseif ($index1 == 3) :?>
+                    <img id="photo_<?php echo $itm['id'] ?>" class="lazy" data-original="<?php echo $itm['url'] ?>" width="100%" data-toggle="modal" data-target="#video2" onclick="play2()" />
+                <?php elseif ($index1 == 21) :?>
+                    <img id="photo_<?php echo $itm['id'] ?>" class="lazy" data-original="<?php echo $itm['url'] ?>" width="100%" data-toggle="modal" data-target="#video3" onclick="play3()" />
+                <?php else :?>
+                    <img id="photo_<?php echo $itm['id'] ?>" class="lazy" data-original="<?php echo $itm['url'] ?>" width="100%" />
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php $index1++;?>
+    <?php endforeach; ?>
+    <div class="clear-50"></div>
+
+    <div class="modal fade" id="video1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 680px; height: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pause1()"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <video id="myVideo1" width="640" height="360" class="v" preload="auto" loop poster="http://yikeweb.oss-cn-shanghai.aliyuncs.com/E%E5%AE%A2%E4%BA%A7%E5%93%81%E4%B8%89%E7%BB%B4%E8%A7%86%E9%A2%91s.mp4">
+                        <source src="http://yikeweb.oss-cn-shanghai.aliyuncs.com/E%E5%AE%A2%E4%BA%A7%E5%93%81%E4%B8%89%E7%BB%B4%E8%A7%86%E9%A2%91s.mp4" type="video/mp4"/>
+                    </video>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="video2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 680px; height: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pause2()"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <video id="myVideo2" width="640" height="360" class="v" preload="auto" loop poster="http://yikeweb.oss-cn-shanghai.aliyuncs.com/%E6%9E%81%E9%80%9F%E8%A7%86%E9%A2%91s.mp4">
+                        <source src="http://yikeweb.oss-cn-shanghai.aliyuncs.com/%E6%9E%81%E9%80%9F%E8%A7%86%E9%A2%91s.mp4" type="video/mp4"/>
+                    </video>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="video3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 680px; height: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pause3()"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <video id="myVideo3" width="640" height="360" class="v" preload="auto" loop poster="http://yikeweb.oss-cn-shanghai.aliyuncs.com/%E6%9E%81%E6%99%BA%E8%A7%86%E9%A2%91s.mp4">
+                        <source src="http://yikeweb.oss-cn-shanghai.aliyuncs.com/%E6%9E%81%E6%99%BA%E8%A7%86%E9%A2%91s.mp4" type="video/mp4"/>
+                    </video>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hdjk_dhj_wp" id="fixbarscopy">
+        <div class="col-xs-2 itme lt" style="padding:20px 0; font-size:18px;">
+            E1 S/E1 PLUS
+        </div>
+        <?php $index = 0;?>
+        <div class="col-xs-8 itme rt" style="text-align:center">
+            <div style="padding:20px 0; font-size:18px;">
+                <?php foreach ($data['list'] as $itm) :?>
+                    <?php if ($itm['text']) :?>
+                        <?php if ($index == 0) :?>
+                            <a href="#photo_<?php echo $itm['id'] ?>" class="model selected" style="display:inline-block;margin:0 10px;padding:0 15px;"><?php echo $itm['text'] ?></a>
+                        <?php else :?>
+                            <a href="#photo_<?php echo $itm['id'] ?>" class="model" style="display:inline-block;margin:0 10px;padding:0 15px;"><?php echo $itm['text'] ?></a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php $index++;?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function() {
+            $(window).scroll(function() {
+//                console.log($('#fixbars').offset().top);
+                if($(window).scrollTop() >= $('#fixbars').offset().top) {
+                    $('#fixbarscopy').show();
+                } else {
+                    $('#fixbarscopy').hide();
+                }
+            });
+
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+
+            $('.model').click(function () {
+                $('.model').removeClass('selected');
+
+                $(this).addClass('selected');
+            })
+        });
+
+        function play1() {
+            document.getElementById("myVideo1").play();
+        }
+        
+        function pause1() {
+            document.getElementById("myVideo1").currentTime = 0;
+            document.getElementById("myVideo1").pause();
+        }
+
+        function play2() {
+            document.getElementById("myVideo2").play();
+        }
+
+        function pause2() {
+            document.getElementById("myVideo2").currentTime = 0;
+            document.getElementById("myVideo2").pause();
+        }
+
+        function play3() {
+            document.getElementById("myVideo3").play();
+        }
+
+        function pause3() {
+            document.getElementById("myVideo3").currentTime = 0;
+            document.getElementById("myVideo3").pause();
+        }
+    </script>
+</block>

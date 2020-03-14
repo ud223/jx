@@ -1,0 +1,21 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    微信信息处理中...
+</block>
+<block name="script">
+    <script>
+        var open_id = '{$data.open_id}';
+        var user_id = '{$data.user_id}';
+        var url = '{$data.url}'
+
+        $(document).ready(function(){
+            localStorage.setItem('user_id', user_id);
+            localStorage.setItem('open_id', open_id);
+
+            location.href = url;
+        });
+    </script>
+</block>

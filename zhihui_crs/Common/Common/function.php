@@ -492,3 +492,93 @@ function my_sort($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC 
 
   return $arrays;
 }
+
+/**
+ * 判断是不是手机访问网站
+ * @return bool true是手机访问，false不是手机访问
+ */
+function is_mobile_request(){
+  $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
+  $mobile_browser = '0';
+  
+  if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', strtolower($_SERVER['HTTP_USER_AGENT']))){
+    $mobile_browser++;
+  }
+  
+  if ((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false)){
+    $mobile_browser++;
+  }
+  
+  if (isset($_SERVER['HTTP_X_WAP_PROFILE'])){
+    $mobile_browser++;
+  }
+  
+  if (isset($_SERVER['HTTP_PROFILE'])){
+    $mobile_browser++;
+  }
+  
+  $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
+  $mobile_agents = array(
+    'w3c ', 'acs-', 'alav', 'alca', 'amoi', 'audi', 'avan', 'benq', 'bird', 'blac',
+    'blaz', 'brew', 'cell', 'cldc', 'cmd-', 'dang', 'doco', 'eric', 'hipt', 'inno',
+    'ipaq', 'java', 'jigs', 'kddi', 'keji', 'leno', 'lg-c', 'lg-d', 'lg-g', 'lge-',
+    'maui', 'maxo', 'midp', 'mits', 'mmef', 'mobi', 'mot-', 'moto', 'mwbp', 'nec-',
+    'newt', 'noki', 'oper', 'palm', 'pana', 'pant', 'phil', 'play', 'port', 'prox',
+    'qwap', 'sage', 'sams', 'sany', 'sch-', 'sec-', 'send', 'seri', 'sgh-', 'shar',
+    'sie-', 'siem', 'smal', 'smar', 'sony', 'sph-', 'symb', 't-mo', 'teli', 'tim-',
+    'tosh', 'tsm-', 'upg1', 'upsi', 'vk-v', 'voda', 'wap-', 'wapa', 'wapi', 'wapp',
+    'wapr', 'webc', 'winw', 'winw', 'xda', 'xda-'
+  );
+  
+  if (in_array($mobile_ua, $mobile_agents)){
+    $mobile_browser++;
+  }
+  
+  if (strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false){
+    $mobile_browser++;
+  }
+  
+  // Pre-final check to reset everything if the user is on Windows  
+  if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') !== false){
+    $mobile_browser = 0;
+  }
+  
+  // But WP7 is also Windows, with a slightly different characteristic  
+  if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false){
+    $mobile_browser++;
+  }
+  
+  //>0表示是手机访问，转向wap版本
+  if($mobile_browser > 0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+/**
+ * todo:格式化分页信息数据
+ *
+ * @param int $_total 总数
+ * @param int $_page  第几页数据
+ * @param int $_rows  页记录数
+ *
+ * @return \分页数据数组
+ *
+ */
+function FmtPagin($_total, $_page, $_rows){
+  $nMore = 0; //是否还有下一页数据， 0没有，1有
+  
+  $nCurrRows = ($_page-1) * $_rows;
+  if($_total > $nCurrRows){
+    $nMore = 1;
+  }
+  
+  $Reslut = array(
+    "total"=>(int)$_total,
+    "count"=>(int)$_rows,
+    "more"=>(int)$nMore
+  );
+  
+  return $Reslut;
+}

@@ -1,0 +1,198 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <div class="row">
+                            <div class="cf">
+                                <form class="form-inline" action="" method="get">
+                                    <a class="btn btn-info" href="{:U('form')}" value="">新增</a>
+                                    <label class="inline">商品名称</label>
+                                    <input type="text" name="keyword" value="{:I(keyword)}" class="form-control" placeholder="请输入商品名称">
+                                    <button type="submit" class="btn btn-purple btn-sm">
+                                        <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                        Search
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="space-4"></div>
+                            <form id="form" method="post" action="{:U('del')}">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="center"><input class="check-all" type="checkbox" value=""></th>
+                                        <th>商品名称</th>
+                                        <th>商品积分</th>
+                                        <th>操作</th>
+                                        <th>二维码生成</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <volist name="consult" id="val">
+                                        <tr>
+                                            <td class="center">
+                                                <input class="ids" id="text"   type="checkbox" name="id[]" value="{$val['id']}">
+                                            </td>
+                                            <td>{$val['name']}</td>
+                                            <td>{$val['integral']}</td>
+                                            <td class="center"><a href="{:U('edit',array('id'=>$val['id']))}">修改</a>&nbsp;<a
+                                                    class="del" href="javascript:;" val="{:U('del',array('id'=>$val['id']))}"
+                                                    title="删除">删除</a></td>
+                                            <td class="center">
+                                                <a href="{:U('generate',array('id'=>$val['id']))}"  target="_blank"> <div class="qrcode_div" style="width:100px; height:100px;" val="{$val['id']}"></div></a>
+                                            </td>
+
+                                        </tr>
+                                    </volist>
+                                    </tbody>
+                                </table>
+                            </form>
+                            <div class="cf">
+                                <input id="submit" class="btn btn-info" type="button" value="删除">
+                            </div>
+                            {$page}
+                        </div>
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div>
+    </div><!-- /.main-content -->
+    <include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+     function init_QRcode() {
+         var divs =$('.qrcode_div');
+         $.each(divs, function(){
+             var div = this;
+              // console.log(div);
+             var text =$(div).attr("val");
+              console.log(text);
+             var qrcode = new QRCode(div, {
+                 width : 100,
+                 height : 100
+             });
+
+             makeCode(qrcode, text);
+
+             // $(div).click(function () {
+             //     // var img = $(this).children(img)[1];
+             //     // console.log(img.length);
+             //     // console.log(img);
+             //     //
+             //     // // var img = document.querySelector(selector)
+             //     // // 将图片的src属性作为URL地址
+             //     // var url = img.src
+             //     // var a = document.createElement('a')
+             //     // var event = new MouseEvent('click')
+             //     //
+             //     // a.download = name || '123.jpg'
+             //     // a.href = url
+             //     //
+             //     // a.dispatchEvent(event)
+             // })
+         });
+    }
+
+     init_QRcode();
+
+    function makeCode (qrcode, text) {
+        if (!text) {
+            alert("Input a text");
+            // elText.focus();
+            return;
+        }
+
+        qrcode.makeCode(text);
+    }
+
+    // on("blur", function () {
+    //     makeCode();
+    // }).
+    // on("keydown", function (e) {
+    //     if (e.keyCode == 13) {
+    //         makeCode();
+    //     }
+    // });
+
+
+    $(function () {
+        $(".check-all").click(function () {
+            $(".ids").prop("checked", this.checked);
+        });
+        $(".ids").click(function () {
+            var option = $(".ids");
+            option.each(function (i) {
+                if (!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+        $("#submit").click(function () {
+            bootbox.confirm({
+                title: "系统提示",
+                message: "确定要删除所选？",
+                callback: function (result) {
+                    if (result) {
+                        $("#form").submit();
+                    }
+                },
+                buttons: {
+                    "cancel": {"label": "取消"},
+                    "confirm": {
+                        "label": "确定",
+                        "className": "btn-danger"
+                    }
+                }
+            });
+        });
+        $(".del").click(function () {
+            var url = $(this).attr('val');
+            bootbox.confirm({
+                title: "系统提示",
+                message: "确定要删除?",
+                callback: function (result) {
+                    if (result) {
+                        window.location.href = url;
+                    }
+                },
+                buttons: {
+                    "cancel": {"label": "取消"},
+                    "confirm": {
+                        "label": "确定",
+                        "className": "btn-danger"
+                    }
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

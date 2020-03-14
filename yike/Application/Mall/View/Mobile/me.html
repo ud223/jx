@@ -1,0 +1,51 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div class="cimebgt">
+        <div class="cimegrad">
+            <div class="cimeimgusr"></div>
+            <div class="cimetxt">章明秋</div>
+        </div>
+    </div>
+
+    <div class="profc08">
+        <div id="my_order" class="itm">我的订单</div>
+        <div id="my_address" class="itm">我的地址</div>
+        <div id="my_password" class="itm">修改密码</div>
+
+    </div>
+</block>
+<block name="script">
+    <script>
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+
+            $('#my_order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me_order?access='+ user_id;
+            })
+
+            $('#my_address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me_addr?access='+ user_id;
+            })
+
+            $('#my_password').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me_resetpwd?access='+ user_id;
+            })
+        });
+
+    </script>
+</block>

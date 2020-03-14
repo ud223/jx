@@ -132,6 +132,14 @@ function GetProductContentImgCfg(){
   return C('UPLOAD_PRODUCT_CONTENT_IMAGE_CONFIG');
 }
 
+function GetProductAttachmentImgCfg(){
+  return C('UPLOAD_PRODUCT_ATTACHMENT_IMAGE_CONFIG');
+}
+
+function GetProductAttachmentFileCfg(){
+  return C('UPLOAD_PRODUCT_ATTACHMENT_FILE_CONFIG');
+}
+
 function GetCustomerIdCardImgCfg(){
   return C('UPLOAD_CUSTOMER_IDCARD_IMAGE_CONFIG');
 }

@@ -1,0 +1,334 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="glaxkblock usr-lft">
+                    <div class="pad-20">
+                        <div style="background-image:url(/Public/common/js/img/eco_new.jpg);background-position: center center;background-repeat: no-repeat;background-size: cover;width:100%;height:200px;border-radius:2px;"></div>
+                    </div>
+                    <ul>
+                        <li class="selected"><a id="li-my-order" href="javascript:void(0)">我的订单</a></li>
+                        <li><a id="li-my-address" href="javascript:void(0)">我的地址</a></li>
+                        <li><a id="li-my-pwd" href="javascript:void(0)">修改密码</a></li>
+                        <li><a id="li-my-info" href="javascript:void(0)">资料设置</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <ul class="culcmt">
+                    <li class="choose-state selected" val="0">全部订单</li>
+                    <li class="choose-state" val="10">待付款</li>
+                    <li class="choose-state" val="20">已付款</li>
+                    <li class="choose-state" val="30">已完成</li>
+                    <li class="choose-state" val="80">已关闭</li>
+                </ul>
+
+                <div class="glaxkblock">
+                    <div class="inner">
+                        <div id="order-list" class="mticimt">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="order-itm" style="display:none">
+        <div class="itm">
+            <div class="t1">
+                <span class="t1a">收货人：<span class="name"></span></span><span>下单时间：<span class="buy-date"></span></span>
+                <a class="checkdetl detail" href="#">查看详细</a>
+            </div>
+            <div class="t2 clearfix">
+                <span class="t1ab">订单号：<span class="order-id"></span></span>
+                <span class="t1ab2">订单总额：<span class="amount"></span>元</span>
+                <span class="t1ab3">订单状态: <span class="state"></span></span>
+            </div>
+            <div class="t3 close" style="display:none">
+                <a class="checkdetl close" href="javascript:void(0)">关闭订单</a>
+            </div>
+            <div class="t3 refund" style="display:none">
+                <a class="checkdetl refund" href="javascript:void(0)" data-toggle="modal" data-target="#refund"">申请退款</a>
+            </div>
+            <!--<div class="t3">-->
+                <!--<div class="td">-->
+                    <!--<img style="width:100%" src="" class="prodcimg show-photo" />-->
+                <!--</div>-->
+                <!--<div class="td">-->
+                    <!--<a href="" class="lncht item-name" target="_blank"></a>-->
+                <!--</div>-->
+                <!--<div class="td chtoe5t">-->
+                    <!--x <span class="num"></span>-->
+                <!--</div>-->
+                <!--<div class="td">-->
+                    <!--<span class="price"></span>元-->
+                <!--</div>-->
+                <!--<div class="td">-->
+
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+    <div class="modal fade" id="refund" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">退款信息</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <div>
+                        <input id="alipay_id" type="text" placeholder="支付宝账号" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input id="cur_order_id" type="hidden">
+                    <button id="refund_order" type="button" class="btn btn-primary" data-dismiss="modal">申请</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            User.validate();
+
+            $('#li-my-order').click(function () {
+//                var user_id = localStorage.getItem('user_id');
+//
+//                if (!user_id) {
+//                    location.href = '/index/login';
+//
+//                    return;
+//                }
+//
+//                location.href = '/index/cart?access='+ user_id;
+            });
+
+            $('#li-my-info').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_info?access='+ user_id;
+            });
+
+            $('#li-my-address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_address?access='+ user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('.choose-state').click(function () {
+                var state = $(this).attr('val');
+
+                $('.choose-state').removeClass('selected');
+
+                $(this).addClass('selected');
+
+                getOrder(state);
+            })
+
+            $('#refund_order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+                var order_id = $('#cur_order_id').val();
+                var alipay_id = $('#alipay_id').val();
+
+                if (!alipay_id) {
+                    $.alertbox({
+                        msg:'<span class="orange">支付宝账号不能为空!</span>'
+                    });
+
+                    return;
+                }
+
+//                alert(order_id); return;
+
+                var data = { 'user_id':user_id, 'order_id': order_id, 'alipay_id': alipay_id };
+//                    alert(JSON.stringify(data));
+                fit.ajax({
+                    url:'/user/refund_order',
+                    data:data,
+                    success:function(result){
+//                    alert(JSON.stringify(result));
+//                            console.log(JSON.stringify(result));
+                        if (result.code == 200) {
+                            $.alertbox({
+                                msg:'<span class="orange">'+ result.msg +'</span>',
+                                exitCallback: function () {
+                                    location.reload();
+                                }
+                            });
+
+                        }
+                        else {
+                            $.alertbox({
+                                msg:'<span class="orange">'+ result.msg +'</span>'
+                            });
+                        }
+                    }
+                });
+            })
+
+            getOrder(0);
+        });
+
+        function getOrder(state) {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'state': state };
+//            console.log(JSON.stringify(data));
+            fit.ajax({
+                url:'/user/get_order',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                    console.log(JSON.stringify(result));
+
+                    loadOrder(result.data);
+                }
+            });
+        }
+
+        function loadOrder(data) {
+            var user_id = localStorage.getItem('user_id');
+            $('#order-list').html('');
+
+//            console.log(JSON.stringify(data));
+
+            $.each(data, function () {
+                var order_id = this.id;
+                var node = $('#order-itm').find('.itm').clone();
+
+                if (this.address) {
+                    node.find('.name').html(this.address.name);
+                }
+
+
+
+//                var t = this.create_at;//'2014-02-26T21:18:02.497'
+//                var a = t.replace(/(\d{4})-(\d{2})-(\d{2})T(.*)?\.(.*)/, "$1/$2/$3 $4")
+
+
+
+                var buy_date = new Date(this.create_at).Format("yyyy年MM月dd日 hh:mm");
+
+                var str_full_date = this.create_at.split(' ');
+//
+                var str_time = str_full_date[1].split(':')
+
+                node.find('.buy-date').html(str_full_date[0] + ' ' + str_time[0] + ':' + str_time[1]);
+//                node.find('.buy-date').html(buy_date);
+                node.find('.order-id').html(this.id);
+                node.find('.amount').html(this.amount);
+
+                switch (this.state) {
+                    case '10':
+                        node.find('.state').html('待付款');
+                        break;
+                    case '20':
+                        node.find('.state').html('已付款');
+                        break;
+                    case '30':
+                        node.find('.state').html('已完成');
+                        break;
+                    case '80':
+                        node.find('.state').html('已关闭');
+                        break;
+                    case '100':
+                        node.find('.state').html('退款申请');
+                        break;
+                    case '101':
+                        node.find('.state').html('已退款');
+                        break;
+                    default:
+                        node.find('.state').html('已关闭');
+                        break;
+                }
+
+                node.find('.show-photo').attr('src', this.details[0].product.show_photo.url);
+
+                node.find('.item-name').attr('href', '/index/product/?id=' + this.details[0].product.id + '&access='+ user_id);
+                node.find('.item-name').html(this.details[0].product.item_name);
+                node.find('.num').html(this.details[0].num);
+                node.find('.price').html(this.details[0].price);
+                node.find('.checkdetl.detail').attr('href', '/index/user_order_detail?id='+ this.id + '&access='+ user_id);
+                node.find('.checkdetl.close').click(function () {
+                    var data = { 'user_id':user_id, 'order_id': order_id };
+//                    alert(JSON.stringify(data));
+                    fit.ajax({
+                        url:'/user/close_order',
+                        data:data,
+                        success:function(result){
+//                    alert(JSON.stringify(result));
+//                            console.log(JSON.stringify(result));
+                            if (result.code == 200)
+                                location.reload();
+                            else
+                                $.alertbox({
+                                    msg:'<span class="orange">'+ result.msg +'</span>'
+                                });
+                        }
+                    });
+                });
+
+                node.find('.checkdetl.refund').click(function () {
+                    $('#cur_order_id').val(order_id)
+                });
+
+                if (this.state == 10) {
+
+                    var create_at = new Date(this.create_at);
+
+                    create_at.setDate(create_at.getDate() + 2);
+
+                    var now = new Date();
+
+                    if (now > create_at)
+                        node.find('.t3.close').show();
+                }
+
+                if (this.state == 20) {
+                    node.find('.t3.refund').show();
+                }
+
+                $('#order-list').append(node);
+            });
+        }
+    </script>
+</block>

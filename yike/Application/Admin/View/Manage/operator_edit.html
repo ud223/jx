@@ -1,0 +1,121 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">{$title}</h3>
+            </div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">运营商名称</span>
+                        <input type="text" class="form-control" placeholder="运营商名称" name="name" id="name"
+                               value="{$data['item'].name}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">帐号</span>
+                        <input type="text" class="form-control" placeholder="帐号" name="name" id="user_name"
+                               value="{$data['item'].user_name}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">密码</span>
+                        <input type="text" class="form-control" placeholder="密码{$pwdinfo}" name="password" id="password"
+                               value="">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">密码确认</span>
+                        <input type="text" class="form-control" placeholder="密码确认{$pwdinfo}" name="confirm_pwd"
+                               id="confirm_pwd" value="">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否启用</span>
+                        <select class="form-control" name="enable_field" id="enable_field">
+                            <?php if ($data['item']['enable'] == '0') :?>
+                            <option value="1">启用</option>
+                            <option value="0" selected="selected">不启用</option>
+                            <?php else :?>
+                            <option value="1" selected="selected">启用</option>
+                            <option value="0">不启用</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn">返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group {
+            margin-top: 20px;
+        }
+    </style>
+</block>
+<!--web upload-->
+
+<block name="script">
+    <script>
+        $(function () {
+            $('#btn_save').click(function () {
+                saveItem();
+            })
+
+            $('#btn_return').click(function () {
+                location.href = '/manage/operator_list';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#id').val();
+            var name = $('#name').val();
+            var user_name = $('#user_name').val();
+            var password = $('#password').val();
+            var enable = $('#enable_field').val();
+
+            var data = {
+                'id': id,
+                'name': name,
+                'user_name': user_name,
+                'password': password,
+                'enable': enable
+            };
+
+            if ($('#user_name').val() == '') {
+                alert('运营商帐号不能为空!');
+                return;
+            }
+
+            if ($('#name').val() == '') {
+                alert('运营商名称不能为空!');
+                return;
+            }
+
+            if ($('#confirm_pwd').val() != $('#password').val()) {
+                alert('密码不一致!');
+                return;
+            }
+
+            if (confirm('是否保存编辑?')) {
+                fit.ajax({
+                    url: '/manage/operator_save',
+                    data: data,
+                    success: function (result) {
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/manage/operator_list';
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

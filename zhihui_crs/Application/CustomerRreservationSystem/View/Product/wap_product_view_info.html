@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {:W('Page/wapPageMeta')}
+  
+  {:W('Page/wapPageTitle')}
+  
+  {:W('Page/wapPageHeadInclude')}
+  
+  <style>
+    .mui-col-xs-5{color: #333;}
+    .mui-content{padding-top: 0 !important;}
+  </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+  <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+  <h1 class="mui-title">关于</h1>
+</header>
+<div class="mui-content">
+  <ul class="mui-table-view" style="margin-top: 0;">
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">产品类别</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.type_name}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">产品名称</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.product_name}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">缴费方式</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.pay_type}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">付款方式</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.payment_type}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">投保年龄</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.min_age}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">保险期间</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.validity_year}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">团队长首年提成比例</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.captain_first_rate}%</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">团队长次年提成比例</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.captain_next_rate}%</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">客户经理首年提成比例</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.member_first_rate}%</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">客户经理次年提成比例</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.member_next_rate}%</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">产品状态</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.status_style}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">产品简介</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.intro}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">产品详情</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.intro}</div>
+      </div>
+    </li>
+    <li class="mui-table-view-cell">
+      <div class="mui-row">
+        <div class="mui-col-xs-5 mui-h5">备注</div>
+        <div class="mui-col-xs-7 mui-h5">{$ProductInfo.remarks}</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+{:W('Page/wapPageFootInclude')}
+
+<script type="text/javascript">
+  mui.init();
+</script>
+</body>
+</html>

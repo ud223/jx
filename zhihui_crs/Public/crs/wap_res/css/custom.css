@@ -1,0 +1,12 @@
+body{background-color: #f3f3f4;}
+.list-title{color: #333;}
+
+.hr-line-dashed{border-top: 1px dashed #e7eaec; color: #fff; background-color: #fff; height: 1px; margin: 5px 0;}
+
+.mui-badge-info, .mui-btn-info{color: #fff; background-color: #31c6c7 !important;}
+.mui-badge-primary, .mui-btn-primary{background-color: #1AB394 !important;}
+.mui-badge-success, .mui-btn-success{background-color: #2585c4 !important;}
+.mui-badge-warning, .mui-btn-warning{background-color: #f6ab60 !important;}
+.mui-badge-danger, .mui-btn-danger{background-color: #eb5768 !important;}
+
+.mui-btn-info, .mui-btn-primary, .mui-btn-success, .mui-btn-warning, .mui-btn-danger{border: 0;}

@@ -1,0 +1,16 @@
+<?php
+if($textarea["extend"]["readonly"] == "true"){
+    $sRead = 'disabled="disabled"';
+}else{
+    $sRead='';
+}
+?>
+<div class="form-group {$textarea.css}" id="{$textarea.id}Tip">
+    <label  class="col-md-{$textarea.title_width} control-label" style="text-align: {$textarea.title_align}; line-height: 30px;">
+        {$textarea.title}<eq name="textarea.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$textarea.input_width}" id="{$textarea.id}_item">
+        <textarea class="form-control" rows="{$textarea.extend.rows}" id="{$textarea.id}" name="{$textarea.id}" {$sRead}>{$textarea.value}</textarea>
+        <span class="help-block">{$textarea.tips}</span>
+    </div>
+</div>

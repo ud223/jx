@@ -18,18 +18,24 @@ class CustomerController extends CommonController {
    * todo: 客户列表
    */
   public function CustomerList(){
+    $nSellerCaptainID = 0;
+    $nSellerMemberID = 0;
+
+    if($this->_AccountInfo["user_type"] == $this->_SellerCaptainAccountType){
+      $nSellerCaptainID = $this->_AccountInfo["id"];
+    }elseif($this->_AccountInfo["user_type"] == $this->_SellerMemberAccountType){
+      $nSellerCaptainID = $this->_AccountInfo["parent_user_id"];
+      $nSellerMemberID = $this->_AccountInfo["id"];
+    }
+
     $SearchParam = $this->GetCustomerListSearchParam();
     
     if($this->_AccountType != $this->_AdminAccountType){
       $SearchParam["search_broker_company"] = $this->_AccountInfo["broker_company_id"];
     }
     
-    $CustomerList = $this->modCustomer->CustomerList($this->_PagingRowCount, $SearchParam);
+    $CustomerList = $this->modCustomer->CustomerList($nSellerCaptainID, $nSellerMemberID, $this->_PagingRowCount, $SearchParam);
 
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $BrokerCompanyOption = $clsBrokerCompany->BrokerCompanyOption();
-    
-    $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
     $this->assign("CustomerList", $CustomerList["DataList"]);
     $this->assign("Page", $CustomerList["PageInfo"]);
 
@@ -42,39 +48,50 @@ class CustomerController extends CommonController {
   public function CustomerInfo(){
     $nCustomerID = RR("customer_id");
 
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsCustomer = new \Org\ZhiHui\Customer();
-    
     $CustomerInfo = $this->modCustomer->CustomerInfo($nCustomerID);
-    $BrokerCompanyOption = $clsBrokerCompany->BrokerCompanyOption();
+    $SellerCaptainOption = $this->modCustomer->clsUser->SellerCaptainOption();
 
-    if($this->_AccountType != $this->_AdminAccountType){
-      $BrokerCompanyInfo = $clsBrokerCompany->GetBrokerCompanyDetails($this->_AccountInfo["broker_company_id"]);
-    }
-    
-    $clsRegion = new \Org\ZhiHui\Region();
-    $ProvinceList = $clsRegion->GetProvinceList();
-    $CityList = array();
-    $DistrictList = array();
-    
     if(IsArray($CustomerInfo)){
-      if(IsNum($CustomerInfo["province_id"], false, false)){
-        $CityList = $clsRegion->GetCityList($CustomerInfo["province_id"]);
-      }
+      $SellerMemberOption = $this->modCustomer->clsUser->SellerMemberOption($CustomerInfo["seller_captain_id"]);
+    }else{
+      if($this->_AccountInfo["user_type"] == $this->_SellerMemberAccountType){
 
-      if(IsNum($CustomerInfo["city_id"], false, false)){
-        $DistrictList = $clsRegion->GetDistrictList($CustomerInfo["city_id"]);
       }
     }
 
-    $this->assign("IdCardType", $clsCustomer->_IdCardType);
-    $this->assign("GenderOption", $clsCustomer->_Gender);
+    if($this->_AccountInfo["user_type"] == $this->_SellerCaptainAccountType){
+      $SellerCaptainInfo = $this->_AccountInfo;
+      $SellerMemberOption = $this->modCustomer->clsUser->SellerMemberOption($this->_AccountInfo["id"]);
+    }elseif($this->_AccountInfo["user_type"] == $this->_SellerMemberAccountType){
+      $SellerCaptainInfo = $this->modCustomer->clsUser->GetUserDetails($this->_AccountInfo["parent_user_id"]);
+      $SellerMemberInfo = $this->_AccountInfo;
+    }
+    
+//    $ProvinceList = $this->modCustomer->clsRegion->GetProvinceList();
+//    $CityList = array();
+//    $DistrictList = array();
+//
+//    if(IsArray($CustomerInfo)){
+//      if(IsNum($CustomerInfo["province_id"], false, false)){
+//        $CityList = $this->modCustomer->clsRegion->GetCityList($CustomerInfo["province_id"]);
+//      }
+//
+//      if(IsNum($CustomerInfo["city_id"], false, false)){
+//        $DistrictList = $this->modCustomer->clsRegion->GetDistrictList($CustomerInfo["city_id"]);
+//      }
+//    }
+
+    $this->assign("IdCardType", $this->modCustomer->clsCustomer->_IdCardType);
+    $this->assign("GenderOption", $this->modCustomer->clsCustomer->_Gender);
     $this->assign("CustomerInfo", $CustomerInfo);
-    $this->assign("BrokerCompanyInfo", $BrokerCompanyInfo);
-    $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
-    $this->assign("ProvinceList", $ProvinceList);
-    $this->assign("CityList", $CityList);
-    $this->assign("DistrictList", $DistrictList);
+    $this->assign("SellerCaptainInfo", $SellerCaptainInfo);
+    $this->assign("SellerMemberInfo", $SellerMemberInfo);
+    $this->assign("SellerCaptainOption", $SellerCaptainOption);
+    $this->assign("SellerMemberOption", $SellerMemberOption);
+    $this->assign("NationalityOption", $this->modCustomer->clsCustomer->_Nationality);
+//    $this->assign("ProvinceList", $ProvinceList);
+//    $this->assign("CityList", $CityList);
+//    $this->assign("DistrictList", $DistrictList);
 
     $this->CustomDisplay("customer_info");
   }
@@ -84,7 +101,8 @@ class CustomerController extends CommonController {
    */
   public function AjaxCustomerSave(){
     $nCustomerID = RR("customer_id");
-    $nBrokerCompanyID = RR("broker_company");
+    $nSellerCaptainID = RR("seller_captain_id");
+    $nSellerMemberID = RR("seller_member_id");
     $sRealName = RR("real_name");
     $sGender = RR("gender");
     $sNationality = RR("nationality");
@@ -100,7 +118,7 @@ class CustomerController extends CommonController {
     $sPhone = RR("phone");
     $sWechat = RR("wechat");
 
-    $SaveResult = $this->modCustomer->CustomerSave($nCustomerID, $nBrokerCompanyID, $sRealName, $sGender, $sNationality, $sIdCardType, $sIdCardNo, $fileIdCardImgA, $nIdCardImgA, $sBirthday, $nProvinceID, $nCityID, $nDistrictID, $sAddress, $sPhone, $sWechat);
+    $SaveResult = $this->modCustomer->CustomerSave($nCustomerID, $nSellerCaptainID, $nSellerMemberID, $sRealName, $sGender, $sNationality, $sIdCardType, $sIdCardNo, $fileIdCardImgA, $nIdCardImgA, $sBirthday, $nProvinceID, $nCityID, $nDistrictID, $sAddress, $sPhone, $sWechat);
 
     AjaxReturn($SaveResult);
   }
@@ -116,6 +134,32 @@ class CustomerController extends CommonController {
     AjaxReturn($Result);
   }
 
+  public function AjaxCustomerInfo(){
+    $nCustomerID = RR("customer_id");
+
+    $CustomerInfo = $this->modCustomer->CustomerInfo($nCustomerID);
+
+    $clsUser = new \Org\ZhiHui\User();
+
+    if(IsArray($CustomerInfo)){
+      $SellerCaptainInfo = $clsUser->GetUserDetails($CustomerInfo["seller_captain_id"]);
+      $SellerMemberInfo = $clsUser->GetUserDetails($CustomerInfo["seller_member_id"]);
+
+      $CustomerInfo["seller_captain_name"] = $SellerCaptainInfo["real_name"];
+      $CustomerInfo["seller_member_name"] = $SellerMemberInfo["real_name"];
+    }
+
+    AjaxReturnCorrect("", $CustomerInfo);
+  }
+
+  public function AjaxCustomerPayList(){
+    $nCustomerID = RR("customer_id");
+
+    $CustomerPayList = $this->modCustomer->CustomerPayList($nCustomerID);
+
+    AjaxReturnCorrect("", $CustomerPayList);
+  }
+
   /**
    * todo:刷新客户缓存
    */
@@ -123,6 +167,17 @@ class CustomerController extends CommonController {
     $Result = $this->modCustomer->ResetCustomerCache();
 
     AjaxReturn($Result);
+  }
+
+  /**
+   * todo: Ajax获取客户经理option
+   */
+  public function AjaxGetSellerMemberOption(){
+    $nSellerCaptainID = RR("seller_captain_id");
+    
+    $SellMemberOption = $this->modCustomer->clsUser->SellerMemberOption($nSellerCaptainID);
+
+    AjaxReturnCorrect("", $SellMemberOption);
   }
 
   /**

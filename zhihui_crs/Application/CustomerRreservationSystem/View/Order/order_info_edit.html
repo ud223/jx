@@ -18,7 +18,7 @@
     <div class="col-sm-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>工单编号：{$OrderInfo.order_sn}</h5>{$OrderInfo.status_desc} {$OrderInfo.review_desc}
+          <h5>预约编号：{$OrderInfo.order_sn}</h5>{$OrderInfo.status_desc} {$OrderInfo.review_desc}
         </div>
 
         <div class="ibox-content">
@@ -29,7 +29,7 @@
               <div class="col-sm-12 col-sm-offset-4">
                 <neq name="OrderInfo.review" value="3">
                   <if condition="($OrderInfo.review eq '0') AND ($OrderInfo.status eq '0')">
-                    <button class="btn btn-primary" type="button" data-action-value="save" onclick="SubmitForm(this);"><i class="fa fa-save"></i>&nbsp;保存工单</button>
+                    <button class="btn btn-primary" type="button" data-action-value="save" onclick="SubmitForm(this);"><i class="fa fa-save"></i>&nbsp;保存预约</button>
                   </if>
                   
                   <if condition="($OrderInfo.review eq '2') AND ($OrderInfo.status lt '1')">
@@ -54,7 +54,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                审批意见
+                回复意见
               </label>
               <div class="col-sm-9">
                 <if condition="($OrderInfo.status gt '1')">
@@ -255,9 +255,9 @@
               <div class="hr-line-dashed"></div>
 
               <div class="form-group">
-                <label class="col-sm-3 control-label">销售经理备注</label>
+                <label class="col-sm-3 control-label">客户经理备注</label>
                 <div class="col-sm-7">
-                  <textarea class="form-control" name="seller_manager_remarks" id="seller_manager_remarks" rows="5" autocomplete="off" placeholder="销售经理备注" style="resize: none;">{$OrderInfo.seller_manager_remarks}</textarea>
+                  <textarea class="form-control" name="seller_manager_remarks" id="seller_manager_remarks" rows="5" autocomplete="off" placeholder="客户经理备注" style="resize: none;">{$OrderInfo.seller_manager_remarks}</textarea>
                 </div>
               </div>
             </neq>
@@ -278,7 +278,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                销售经理
+                客户经理
               </label>
               <div class="col-sm-9">
                 <p class="form-control-static">{$SellerManagerInfo.real_name}</p>
@@ -334,7 +334,7 @@
               <div class="hr-line-dashed"></div>
 
               <div class="form-group">
-                <label class="col-sm-3 control-label">销售经理备注</label>
+                <label class="col-sm-3 control-label">客户经理备注</label>
                 <div class="col-sm-7">
                   <p class="form-control-static">{$OrderInfo.seller_manager_remarks}</p>
                 </div>
@@ -345,7 +345,7 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                工单附件
+                预约附件
               </label>
               <div class="col-sm-9">
                 <notempty name="OrderInfo.attachment">
@@ -481,7 +481,7 @@
   }
   
   function SubmitBefore(){
-    BlockWindow_ExecOp('正在保存工单数据', 140);
+    BlockWindow_ExecOp('正在保存预约数据', 140);
   }
 
   function SubmitResponse(responseText){

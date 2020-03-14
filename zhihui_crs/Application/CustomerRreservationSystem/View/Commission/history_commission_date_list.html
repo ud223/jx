@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="searchForm" action="__URL__/UserHistoryCommissionList" method="get">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>开始日期</label>
+                    <input type="text" name="serarch_begin_date" id="serarch_begin_date" class="form-control layer-date" placeholder="请选择开始日期" onfocus="laydate({istime: false, format: 'YYYY-MM-DD'});" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>结束日期</label>
+                    <input type="text" name="serarch_end_date" id="serarch_end_date" class="form-control layer-date" placeholder="请选择结束日期" onfocus="laydate({istime: false, format: 'YYYY-MM-DD'});" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>产品名称</label>
+                    <input type="text" name="serarch_product_name" id="serarch_product_name" class="form-control" placeholder="请输入产品名称" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>发放状态</label>
+                    <select class="chosen-select" name="search_send_status" id="search_send_status" data-placeholder="全部" style="width: 100% !important;" onchange="SetSellerMemberOption(this);">
+                      <option value="">全部</option>
+                      <option value="1">已发放</option>
+                      <option value="0">未发放</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa fa-search"></i>&nbsp;查询
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th class="text-left">预约编号</th>
+              <th class="text-left">拟购产品</th>
+              <th class="text-left">客户姓名</th>
+              <th class="text-left">消费日期</th>
+              <th class="text-left">年缴保费</th>
+              <th class="text-center">缴费年限</th>
+              <th class="text-center">状态</th>
+              <!--<th></th>-->
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="CommissionList">
+              <tr>
+                <td colspan="7" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="CommissionList" id="list">
+                <tr>
+                  <td class="text-left">{$list.order_sn}月</td>
+                  <td class="text-left">{$list.product_type_name} - {$list.product_name}</td>
+                  <td class="text-left">{$list.customer_name}</td>
+                  <td class="text-left">{$list.pay_date}</td>
+                  <td class="text-left"><i class="fa fa-cny"></i>&nbsp;{$list.order_amoount}</td>
+                  <td class="text-center">{$list.payment_years}</td>
+                  <td class="text-center">{$list.status_style}</td>
+                  <!--<td class="text-right">-->
+                    <!--<button type="button" class="btn btn-info" data-id="{$list.id}" onclick="ShowCommissionOrderInfo(this);">-->
+                      <!--<i class="fa fa-eye"></i>&nbsp;查看详情-->
+                    <!--</button>-->
+                  <!--</td>-->
+                </tr>
+              </volist>
+            </empty>
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th class="text-left">预约编号</th>
+              <th class="text-left">拟购产品</th>
+              <th class="text-left">客户姓名</th>
+              <th class="text-left">消费日期</th>
+              <th class="text-left">年缴保费</th>
+              <th class="text-center">缴费年限</th>
+              <th class="text-center">状态</th>
+              <!--<th></th>-->
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--佣金明细列表Modal Begin-->
+  <div class="modal inmodal fade" id="modal_order_list_ifr" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">佣金明细</h4>
+        </div>
+
+        <div class="modal-body" style="height: 400px; overflow-x: auto;">
+          <div class="row">
+            <div class="col-sm-6 text-center">
+              销售业绩：<i class="fa fa-cny"></i>&nbsp;<span id="span_achievements"></span>
+            </div>
+            <div class="col-sm-6 text-center">
+              佣金提成：<i class="fa fa-cny"></i>&nbsp;<span id="span_rake"></span>
+            </div>
+            <!--<div class="col-sm-3">-->
+              <!--下级返利：<i class="fa fa-cny"></i>&nbsp;<span id="span_member_rake"></span>-->
+            <!--</div>-->
+            <!--<div class="col-sm-3">-->
+              <!--获得佣金：<i class="fa fa-cny"></i>&nbsp;<span id="span_total_rake"></span>-->
+            <!--</div>-->
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>订单编号</th>
+              <th>产品信息</th>
+              <th>订单金额</th>
+              <th>提成比例</th>
+              <th>提成金额</th>
+              <th>客户经理</th>
+            </tr>
+            </thead>
+
+            <tbody id="order_list_ifr">
+            <tr>
+              <td colspan="6" class="text-center">暂无数据</td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th>订单编号</th>
+              <th>产品信息</th>
+              <th>订单金额</th>
+              <th>提成比例</th>
+              <th>提成金额</th>
+              <th>客户经理</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--佣金明细列表Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/UserHistoryCommissionList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+  
+  for (var selector in config) $(selector).chosen(config[selector]);
+
+  $(document).ready(function(){
+    //UserCurrMonthCommissionInfo();
+  });
+  
+  //region 刷新缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新佣金缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetCommissionCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新缓存
+
+  //region 查看明细
+  function ShowCommissionOrderInfo(obj) {
+    var nCommissionID = $(obj).attr("data-id");
+
+    if(IsN(nCommissionID)){
+      AlertError("佣金数据错误");
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在佣金明细', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCommissionOrderList",
+      dataType:"json",
+      timeout: 6000,
+      data: {"commission_id": nCommissionID},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        ShowCommissionOrderInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function ShowCommissionOrderInfoResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var nAchievements = objJson.data.achievements;
+    var nRake = objJson.data.rake;
+//    var nMemberRake = objJson.data.member_rake;
+//    var nTotalRake = objJson.data.total_rake;
+    var OrderList = objJson.data.order_list;
+    var nLen = OrderList.length;
+    var Dom = [];
+    var Info = null;
+
+    for(var i=0; i<nLen; i++){
+      Info = OrderList[i];
+
+      Dom.push('<tr>');
+      Dom.push('<td>'+ Info.order_sn +'</td>');
+      Dom.push('<td>'+ Info.product_type_name + ' - ' + Info.product_name +'</td>');
+      Dom.push('<td><i class="fa fa-cny"></i>&nbsp;'+ Info.year_premium_amount +'</td>');
+      Dom.push('<td>首年：'+ Info.first_rate +'%<br>次年：'+ Info.next_rate +'%</td>');
+      Dom.push('<td>首年：<i class="fa fa-cny"></i>&nbsp;'+ Info.first_amount +'<br>次年：<i class="fa fa-cny"></i>&nbsp;'+ Info.next_amount +'</td>');
+      Dom.push('<td>'+ Info.user_name +'</td>');
+      Dom.push('</tr>');
+    }
+
+    $('#span_achievements').text(nAchievements);
+    $('#span_rake').text(nRake);
+//    $('#span_member_rake').text(nMemberRake);
+//    $('#span_total_rake').text(nTotalRake);
+    $('#order_list_ifr').html(Dom.join(''));
+
+    ShowOrderListModal();
+  }
+
+  function ShowOrderListModal() {
+    $('#modal_order_list_ifr').modal();
+  }
+
+  function HideOrderListModal() {
+    $('#modal_order_list_ifr').modal("hide");
+  }
+  //endregion 查看明细
+
+  //region 查看当月明细
+  function ShowCurrMonthCommissionOrderList(obj) {
+    BlockWindow_ExecOp('正在佣金明细', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCommissionOrderList",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        ShowCurrMonthCommissionOrderListResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function ShowCurrMonthCommissionOrderListResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var nAchievements = objJson.data.achievements;
+    var nRake = objJson.data.rake;
+    var nMemberRake = objJson.data.member_rake;
+    var nTotalRake = objJson.data.total_rake;
+    var OrderList = objJson.data.order_list;
+    var nLen = OrderList.length;
+    var Dom = [];
+    var Info = null;
+
+    for(var i=0; i<nLen; i++){
+      Info = OrderList[i];
+
+      Dom.push('<tr>');
+      Dom.push('<td>'+ Info.order_sn +'</td>');
+      Dom.push('<td>'+ Info.product_type_name + ' - ' + Info.product_name +'</td>');
+      Dom.push('<td><i class="fa fa-cny"></i>&nbsp;'+ Info.year_premium_amount +'</td>');
+      Dom.push('<td>首年：'+ Info.first_rate +'%<br>次年：'+ Info.next_rate +'%</td>');
+      Dom.push('<td>首年：<i class="fa fa-cny"></i>&nbsp;'+ Info.first_amount +'<br>次年：<i class="fa fa-cny"></i>&nbsp;'+ Info.next_amount +'</td>');
+      Dom.push('<td>'+ Info.user_name +'</td>');
+      Dom.push('</tr>');
+    }
+
+    $('#span_achievements').text(nAchievements);
+    $('#span_rake').text(nRake);
+    $('#span_member_rake').text(nMemberRake);
+    $('#span_total_rake').text(nTotalRake);
+    $('#order_list_ifr').html(Dom.join(''));
+
+    ShowOrderListModal();
+  }
+  //endregion 查看当月明细
+
+  //region 获取用户当月佣金信息
+  function UserCurrMonthCommissionInfo() {
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxUserCurrMonthCommissionInfo",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        UserCurrMonthCommissionInfoResponse(data);
+      },
+      error: function(request, status, error){
+        $('#curr_date').html("--");
+        $('#curr_amount').html("--");
+        $('#curr_achievements').html("--");
+      }
+    });
+  }
+
+  function UserCurrMonthCommissionInfoResponse(objJson) {
+    if(objJson.error != 0){
+      $('#curr_date').html("--");
+      $('#curr_amount').html("--");
+      $('#curr_achievements').html("--");
+
+      return false;
+    }else{
+      if(IsN(objJson.data)){
+        $('#curr_date').html("--");
+        $('#curr_amount').html("--");
+        $('#curr_achievements').html("--");
+
+        return false;
+      }else if(objJson.data.length < 1){
+        $('#curr_date').html("--");
+        $('#curr_amount').html("--");
+        $('#curr_achievements').html("--");
+
+        return false;
+      }
+    }
+
+    var sDate = objJson.data.year + "年" + objJson.data.month + "月";
+    var sCommissionAmount = "&yen;" + (Number(objJson.data.rake)+Number(objJson.data.member_rake));
+    var sAchievements = "&yen;" + objJson.data.achievements;
+
+    $('#curr_date').html(sDate);
+    $('#curr_amount').html(sCommissionAmount);
+    $('#curr_achievements').html(sAchievements);
+  }
+  //endregion 获取用户当月佣金信息
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

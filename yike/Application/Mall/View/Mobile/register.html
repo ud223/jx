@@ -1,0 +1,128 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <div class="loginbldtt">欢迎注册E客电动</div>
+    <div class="tbrform">
+        <div class="rs">
+            <div class="r">
+                <div>
+                    <input id="phone" type="tel" class="lineinput" placeholder="手机号码">
+                </div>
+            </div>
+            <div class="r">
+                <!--<input id="code" class="xtxt" type="text" placeholder="验证码" />-->
+                <div>
+                    <input id="code" type="tel" class="lineinput" placeholder="验证码">
+                    <button class="btn btn-default btn-sm getvaldxt valbtn">获取验证码</button>
+                    <span class="valdcod valcountdown getvaldxt" style="display:none">60s</span>
+                </div>
+            </div>
+            <div class="r">
+                <div>
+                    <input id="password" type="password" class="lineinput" placeholder="设置密码">
+                </div>
+            </div>
+        </div>
+        <button id="gotoregister" class="confirmbtn full">注册</button>
+        <div class="loginbtcht">
+            <a href="/mobile/login">已有帐号，直接登录</a>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            $('#gotoregister').click(function(){
+                register();
+            });
+
+            $('.valbtn').click(function () {
+                getSmsCode();
+            })
+        });
+
+        function register() {
+            var phone = $('#phone').val();
+            var code = $('#code').val();
+            var password = $('#password').val();
+
+            var data = { 'phone': phone, 'code': code, 'password': password }
+
+            fit.ajax({
+                url:'/user/register',
+                data:data,
+                success:function(result){
+//                alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        localStorage.setItem('user_id', result.data);
+
+                        location.href = '/index/user_order';
+                    }
+                }
+            });
+        }
+
+        function getSmsCode() {
+            var phone = $('#phone').val();
+
+            if (!phone || phone.length != 11) {
+                $.alertbox({
+                    msg:'<span class="orange">请输入正确手机号!</span>'
+                });
+            }
+
+            countDown(this);
+
+            var data = { 'phone': phone }
+//            alert(JSON.stringify(data));
+            fit.ajax({
+                url:'/api/sms_valid',
+                data:data,
+                success:function(result){
+//                alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+//                    alert(result.msg);
+                }
+            });
+        }
+
+        var countdown = 60;
+        var is_count = false;
+
+        function countDown(val) {
+            is_count = true;
+
+            settime(val);
+        }
+
+        function settime(val) {
+            if (!is_count) {
+                return;
+            }
+
+            if (countdown == 0) {
+                $('.valcountdown').hide();
+                $('.valbtn').show();
+//            $(val).show();
+                $('.valcountdown').html("60s");
+                countdown = 60;
+                is_count = false
+            } else {
+                $('.valbtn').hide();
+//            $(val).hide();
+                $('.valcountdown').show();
+                $('.valcountdown').html(countdown + "s");
+                countdown--;
+            }
+            setTimeout(function () { settime(val) }, 1000)
+        }
+    </script>
+</block>

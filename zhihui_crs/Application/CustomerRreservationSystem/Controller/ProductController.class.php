@@ -113,6 +113,48 @@ class ProductController extends CommonController {
 
   //region 产品
   /**
+   * todo: 产品浏览列表
+   */
+  public function ProductViewList(){
+    if($this->_MobileClient){
+      $this->CustomDisplay("wap_product_view_list");
+      exit();
+    }
+    
+    $SearchParam = $this->GetProductListSearchParam();
+    $SearchParam["search_status"] = 1;
+    $ProductList = $this->modProduct->ProductList($this->_PagingRowCount, $SearchParam);
+
+    //region 产品类别
+    $ProductTypeOption = $this->clsProduct->ProductTypeOption();
+    $this->assign("ProductTypeOption", $ProductTypeOption);
+    //endregion 产品类别
+
+    $this->assign("ProductList", $ProductList["DataList"]);
+    $this->assign("Page", $ProductList["PageInfo"]);
+    
+    $this->CustomDisplay("product_view_list");
+  }
+  
+  /**
+   * todo: 产品浏览列表
+   */
+  public function AjaxProductViewList(){
+    $nPage = RR("page");
+    
+    $ProductList = $this->modProduct->AjaxProductList($nPage, 10);
+    
+    if($this->_AccountType == $this->_SellerMemberAccountType || $this->_AccountType == $this->_SpecialAccountType){
+      foreach($ProductList["DataList"] as $key=>$val){
+        $ProductList["DataList"][$key]["captain_first_rate"] = "";
+        $ProductList["DataList"][$key]["captain_next_rate"] = "";
+      }
+    }
+    
+    AjaxReturnCorrect("", $ProductList);
+  }
+
+  /**
    * todo: 产品列表
    */
   public function ProductList(){
@@ -123,18 +165,6 @@ class ProductController extends CommonController {
     $ProductTypeOption = $this->clsProduct->ProductTypeOption();
     $this->assign("ProductTypeOption", $ProductTypeOption);
     //endregion 产品类别
-
-    //region 服务商
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $ServiceProvidersOption = $clsServiceProviders->ServiceProvidersOption();
-    $this->assign("ServiceProvidersOption", $ServiceProvidersOption);
-    //endregion 服务商
-
-    //region 门店
-    $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption();
-    $this->assign("StoreOption", $StoreOption);
-    //endregion 门店
 
     $this->assign("ProductList", $ProductList["DataList"]);
     $this->assign("Page", $ProductList["PageInfo"]);
@@ -150,49 +180,70 @@ class ProductController extends CommonController {
 
     $ProductInfo = $this->modProduct->ProductInfo($nProductID);
     
-    //region 经纪公司
-    $clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
-    if($this->_AccountType !== $this->_AdminAccountType){
-      $BrokerCompanyInfo = $clsBrokerCompany->GetBrokerCompanyDetails($this->_AccountInfo["broker_company_id"]);
-      $this->assign("BrokerCompanyInfo", $BrokerCompanyInfo);
-    }else{
-      $BrokerCompanyOption = $clsBrokerCompany->BrokerCompanyOption();
-      $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
-    }
-    //endregion 经纪公司
-    
     //region 产品类别
     $ProductTypeOption = $this->clsProduct->ProductTypeOption();
     $this->assign("ProductTypeOption", $ProductTypeOption);
     //endregion 产品类别
 
-    //region 服务商
-    $clsServiceProviders = new \Org\ZhiHui\ServiceProviders();
-    $ServiceProvidersOption = $clsServiceProviders->ServiceProvidersOption();
-    $this->assign("ServiceProvidersOption", $ServiceProvidersOption);
-    //endregion 服务商
-    
-    //region 门店
-    $StoreOption = $clsBrokerCompany->BrokerCompanyStoreOption();
-    
+    //region 支付方式
+    $PaymentType = $this->modProduct->clsProduct->_PaymentType;
+    $this->assign("PaymentType", $PaymentType);
+    //endregion 支付方式
+
+    //region 缴费方式
+    $PayType = $this->modProduct->clsProduct->_PayType;
+    $this->assign("PayType", $PayType);
+    //endregion 缴费方式
+
+    //region 附件上传配置
+    $ProductAttachmentImgCfg = GetProductAttachmentImgCfg();
+    $this->assign("ProductAttachmentImgCfg", $ProductAttachmentImgCfg);
+
+    $ProductAttachmentFileCfg = GetProductAttachmentFileCfg();
+    $this->assign("ProductAttachmentFileCfg", $ProductAttachmentFileCfg);
+    //endregion 附件上传配置
+
+    $this->assign("AttachmentFileType", $this->modProduct->clsProduct->_AttachmentType["file"]);
+    $this->assign("AttachmentImageType", $this->modProduct->clsProduct->_AttachmentType["image"]);
+    $this->assign("ProductInfo", $ProductInfo);
+  
+    $this->CustomDisplay("product_info");
+  }
+  
+  public function ProductViewInfo(){
+    $nProductID = RR("product_id");
+  
+    $ProductInfo = $this->modProduct->ProductInfo($nProductID);
+    $Result = array();
+  
     if(IsArray($ProductInfo)){
-      $StoreIdList = explode(",", $ProductInfo["store_id"]);
-      
-      foreach($StoreOption as $key=>$val){
-        if(in_array($val["val"], $StoreIdList)){
-          $StoreOption[$key]["status"] = "checked";
-        }else{
-          $StoreOption[$key]["status"] = "";
-        }
-      }
-    }
+      $Result["type_name"] = $ProductInfo["type_name"];
+      $Result["product_name"] = $ProductInfo["product_name"];
+      $Result["payment_type"] = $ProductInfo["payment_type"];
+      $Result["pay_type"] = $ProductInfo["pay_type"];
+      $Result["min_age"] = $ProductInfo["min_age"];
+      $Result["validity_year"] = $ProductInfo["validity_year"];
     
-    $this->assign("StoreOption", $StoreOption);
-    //endregion 门店
+      if($this->_AccountType != $this->_SellerMemberAccountType && $this->_AccountType != $this->_SpecialAccountType){
+        $Result["captain_first_rate"] = $ProductInfo["captain_first_rate"];
+        $Result["captain_next_rate"] = $ProductInfo["captain_next_rate"];
+      }else{
+        $Result["captain_first_rate"] = "";
+        $Result["captain_next_rate"] = "";
+      }
+    
+      $Result["member_first_rate"] = $ProductInfo["member_first_rate"];
+      $Result["member_next_rate"] = $ProductInfo["member_next_rate"];
+      $Result["status"] = $ProductInfo["status"];
+      $Result["intro"] = $ProductInfo["intro"];
+      $Result["content"] = $ProductInfo["content"];
+      $Result["remarks"] = $ProductInfo["remarks"];
+      $Result["attachment_type"] = $ProductInfo["attachment_type"];
+      $Result["attachment"] = $ProductInfo["attachment"];
+    }
 
     $this->assign("ProductInfo", $ProductInfo);
-    
-    $this->CustomDisplay("product_info");
+    $this->CustomDisplay("wap_product_view_info");
   }
 
   /**
@@ -200,18 +251,25 @@ class ProductController extends CommonController {
    */
   public function AjaxProductSave(){
     $nProductID = RR("product_id");
-    $nBrokerCompanyID = RR("broker_company");
     $nProductType = RR("product_type");
-    $nServiceProvidersID = RR("service_providers");
     $sProductName = RR("product_name");
+    $sPayType = RR("pay_type");
+    $sPaymentType = RR("payment_type");
     $nProductPrice = RR("product_price");
-    $sStoreStr = RR("store");
+    $nMinAge = RR("min_age");
+    $nMaxAge = RR("max_age");
+    $nCaptainFirstRate = RR("captain_first_rate");
+    $nCaptainNextRate = RR("captain_next_rate");
+    $nMemberFirstRate = RR("member_first_rate");
+    $nMemberNextRate = RR("member_next_rate");
+    $nValidityYear = RR("validity_year");
     $sProductIntro = RR("product_intro");
     $sProductContent = $_POST["product_content"];
     $sProductRemarks = RR("product_remarks");
     $nProductStatus = RR("product_status");
+    $Attachment = $_FILES["attachment"];
     
-    $SaveResult = $this->modProduct->ProductSave($nProductID, $nBrokerCompanyID, $nProductType, $nServiceProvidersID, $sProductName, $nProductPrice, $sStoreStr, $sProductIntro, $sProductContent, $sProductRemarks, $nProductStatus);
+    $SaveResult = $this->modProduct->ProductSave($nProductID, $nProductType, $sProductName, $sPayType, $sPaymentType, $nProductPrice, $nMinAge, $nMaxAge, $nCaptainFirstRate, $nCaptainNextRate, $nMemberFirstRate, $nMemberNextRate, $nValidityYear, $sProductIntro, $sProductContent, $sProductRemarks, $nProductStatus, $Attachment);
 
     AjaxReturn($SaveResult);
   }
@@ -225,6 +283,41 @@ class ProductController extends CommonController {
     $Result = $this->modProduct->ProductDelete($sProductID);
 
     AjaxReturn($Result);
+  }
+
+  public function AjaxProductInfo(){
+    $nProductID = RR("product_id");
+
+    $ProductInfo = $this->modProduct->ProductInfo($nProductID);
+    $Result = array();
+
+    if(IsArray($ProductInfo)){
+      $Result["type_name"] = $ProductInfo["type_name"];
+      $Result["product_name"] = $ProductInfo["product_name"];
+      $Result["payment_type"] = $ProductInfo["payment_type"];
+      $Result["pay_type"] = $ProductInfo["pay_type"];
+      $Result["min_age"] = $ProductInfo["min_age"];
+      $Result["validity_year"] = $ProductInfo["validity_year"];
+
+      if($this->_AccountType != $this->_SellerMemberAccountType && $this->_AccountType != $this->_SpecialAccountType){
+        $Result["captain_first_rate"] = $ProductInfo["captain_first_rate"];
+        $Result["captain_next_rate"] = $ProductInfo["captain_next_rate"];
+      }else{
+        $Result["captain_first_rate"] = "";
+        $Result["captain_next_rate"] = "";
+      }
+
+      $Result["member_first_rate"] = $ProductInfo["member_first_rate"];
+      $Result["member_next_rate"] = $ProductInfo["member_next_rate"];
+      $Result["status"] = $ProductInfo["status"];
+      $Result["intro"] = $ProductInfo["intro"];
+      $Result["content"] = $ProductInfo["content"];
+      $Result["remarks"] = $ProductInfo["remarks"];
+      $Result["attachment_type"] = $ProductInfo["attachment_type"];
+      $Result["attachment"] = $ProductInfo["attachment"];
+    }
+
+    AjaxReturnCorrect("", $Result);
   }
 
   /**

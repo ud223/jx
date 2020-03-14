@@ -1,0 +1,19 @@
+<div class="form-group  {$system_category.css}" id="{$system_category.id}Tip">
+    <label  class="col-md-{$system_category.title_width} control-label">
+        {$system_category.title}<eq name="system_category.required" value="true"><span class="required">*</span></eq>
+    </label>
+    
+    <div class="col-md-{$system_category.input_width}">
+        <select  class="sidebar-option form-control input-large" name="{$system_category.name}" id="{$system_category.id}">
+            <option value="1">作为主分类</option>
+            <volist name="system_category.extend.option" id="vo">
+                <eq name="vo.menuid" value="$system_category.value">
+                    <option value="{$vo.menuid}" selected="selected">{$vo.menu_name}</option>
+                <else/>
+                    <option value="{$vo.menuid}">{$vo.menu_name}</option>
+                </eq>
+            </volist>
+        </select>
+        <span class="help-block">{$system_category.tips}</span>
+    </div>
+</div>

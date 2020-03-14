@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>添加保险计划书</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/AjaxPlanSave" method="post">
+            <input type="hidden" name="order_sn" id="order_sn" value="{$OrderInfo.order_sn}" />
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <!--团队长 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 团队长
+              </label>
+              <div class="col-sm-4">
+                <notempty name="SellerCaptainOption">
+                  <select class="chosen-select" name="seller_captain_id" id="seller_captain_id" data-placeholder="请选择团队长" style="width: 100% !important;" onchange="SetSellerMemberOption(this);">
+                    <option value="">请选择团队长</option>
+                    <volist name="SellerCaptainOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.seller_captain_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                <else/>
+                  <p class="form-control-static">{$SellerCaptainInfo.real_name}</p>
+                  <input type="hidden" name="seller_captain_id" id="seller_captain_id" value="{$SellerCaptainInfo.id}" />
+                </notempty>
+              </div>
+            </div>
+            <!--团队长 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--客户经理 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                客户经理
+              </label>
+
+              <div class="col-sm-4">
+                <if condition="($AccountType eq $AdminAccount) OR ($AccountType eq $BrokerCompanyAccountType) OR ($AccountType eq $SellerCaptainAccountType) ">
+                  <select class="chosen-select" name="seller_member_id" id="seller_member_id" data-placeholder="请选择客户经理" style="width: 100% !important;" onchange="LoadCustomerOption(this);">
+                    <option value="">--</option>
+                    <volist name="SellerMemberOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.seller_member_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                  <else/>
+                  <p class="form-control-static">{$SellerMemberInfo.real_name}</p>
+                  <input type="hidden" name="seller_member_id" id="seller_member_id" value="{$SellerMemberInfo.id}" />
+                </if>
+              </div>
+            </div>
+            <!--客户经理 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--客户 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 客户
+              </label>
+              <div class="col-sm-4">
+                <select class="chosen-select" name="customer" id="customer" data-placeholder="请选择客户" style="width: 100% !important;" onchange="LoadCustomerInfo();">
+                  <option value="">--</option>
+                  <volist name="CustomerOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$OrderInfo.customer_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-primary" onclick="GetCustomerAboutData();"><i class="fa fa-user-plus"></i>&nbsp;添加新客户</button>
+              </div>
+            </div>
+
+
+            <div class="form-group" id="customer_info_ifr" <empty name="CustomerInfo">style="display: none;"</empty>>
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9" id="customer_content_ifr">
+                <p class="form-control-static">
+                  <label class="label label-info">姓名：<span class="label label-default">{$CustomerInfo.real_name}</span></label>&nbsp;
+                  <label class="label label-info">性别：<span class="label label-default">{$CustomerInfo.gender}</span></label>&nbsp;
+                  <label class="label label-info">国籍：<span class="label label-default">{$CustomerInfo.nationality}</span></label>&nbsp;
+                </p>
+                <p class="form-control-static">
+                  <label class="label label-info">证件类型：<span class="label label-default">{$CustomerInfo.idcard_type}</span></label>&nbsp;
+                  <label class="label label-info">证件号：<span class="label label-default">{$CustomerInfo.idcard_no}</span></label>&nbsp;
+                  <label class="label label-info">证件照片：<span class="label label-default">{$CustomerInfo.idcard_img_a.original_name}</span></label>&nbsp;
+                </p>
+                <p class="form-control-static">
+                  <label class="label label-info">联系电话：<span class="label label-default">{$CustomerInfo.phone}</span></label>&nbsp;
+                </p>
+              </div>
+            </div>
+            <!--客户 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--产品 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 拟购产品
+              </label>
+              <div class="col-sm-3">
+                <select class="chosen-select" name="service_providers" id="service_providers" data-placeholder="请选择产品类型" style="width: 100% !important;" onchange="LoadProductOptionList(this);">
+                  <option value="">请选择产品类型</option>
+                  <volist name="ProductTypeOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.type_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <select class="chosen-select" name="product" id="product" data-placeholder="请选择产品" style="width: 100% !important;">
+                  <option value="">请选择产品</option>
+                  <volist name="ProductOption" id="list">
+                    <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.product_id">selected</eq> >{$list.key}</option>
+                  </volist>
+                </select>
+              </div>
+            </div>
+            <!--产品 End-->
+  
+            <div class="hr-line-dashed"></div>
+  
+            <!--年缴保费 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                年缴保费
+              </label>
+              <div class="col-sm-7">
+                <input type="text" name="year_premium_amount" id="year_premium_amount" class="form-control" placeholder="年缴保费" value="{$OrderInfo.year_premium_amount}">
+              </div>
+            </div>
+            <!--年缴保费 End-->
+      
+            <div class="hr-line-dashed"></div>
+      
+            <!--缴费年限 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                缴费年限
+              </label>
+              <div class="col-sm-7">
+                <input type="text" name="payment_years" id="payment_years" class="form-control" placeholder="缴费年限" value="{$OrderInfo.payment_years}">
+              </div>
+            </div>
+            <!--缴费年限 End-->
+      
+            <div class="hr-line-dashed"></div>
+      
+            <!--保障额度 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                保障额度
+              </label>
+              <div class="col-sm-7">
+                <input type="text" name="guarantee_amount" id="guarantee_amount" class="form-control" placeholder="保障额度" value="{$OrderInfo.guarantee_amount}">
+              </div>
+            </div>
+            <!--保障额度 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--附件 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                附件
+              </label>
+              <div class="col-sm-7">
+                <input type="file" name="attachment" id="attachment" class="form-control">
+                <span class="help-block m-b-none">只能上传jpg、png格式的图片</span>
+              </div>
+            </div>
+
+            <notempty name="OrderInfo.attachment">
+              <div class="form-group">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-9">
+
+                  <div class="file-box">
+                    <div class="file">
+                      <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.attachment.id}">
+                        <span class="corner"></span>
+
+                        <div class="image">
+                          <img alt="image" class="img-responsive" src="{$OrderInfo.attachment.full_file}">
+                        </div>
+                        <div class="file-name">
+                          <span style="word-wrap:break-word;">{$OrderInfo.attachment.original_name}</span>
+                          <br/>
+                          <small>添加时间：{$OrderInfo.attachment.add_date}</small>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </notempty>
+            <!--附件 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--备注 Begin-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">客户经理备注</label>
+              <div class="col-sm-7">
+                <textarea class="form-control" name="seller_manager_remarks" id="seller_manager_remarks" rows="5" autocomplete="off" placeholder="客户经理备注" style="resize: none;">{$OrderInfo.seller_manager_remarks}</textarea>
+              </div>
+            </div>
+            <!--备注 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;保存</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--添加客户Modal Begin-->
+  <div class="modal inmodal fade" id="modal_add_customer_ifr" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">添加客户</h4>
+        </div>
+
+        <form class="form-horizontal" id="addCustomerForm" action="__URL__/AjaxCustomerSave" method="post">
+          <div class="modal-body">
+            <input type="hidden" name="modal_seller_captain_id" id="modal_seller_captain_id" value="" />
+            <input type="hidden" name="modal_seller_member_id" id="modal_seller_member_id" value="" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 客户姓名
+              </label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="real_name" id="real_name" class="form-control" placeholder="客户姓名" value="">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 国籍
+              </label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="nationality" id="nationality" class="form-control" placeholder="国籍" value="">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 出生日期
+              </label>
+              <div class="col-sm-7">
+                <input type="text" autocomplete="off" name="birthday" id="birthday" class="form-control layer-date" placeholder="出生日期" onfocus="laydate({istime: false, format: 'YYYY-MM-DD', start: '1980-01-01'});" value="">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 性别
+              </label>
+              <div class="col-sm-7" id="div_gender">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--添加客户Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/PlanList";
+
+  $(document).ready(function(){
+    //region 下拉框样式
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框样式
+
+    //region 表单验证
+    $("#addForm").validate({
+      ignore: "",
+      rules: {},
+      messages: {},
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+    //endregion 表单验证
+
+    //region 添加客户表单验证
+    $("#addCustomerForm").validate({
+      ignore: "",
+      rules: {
+        broker_company : {
+          required : true,
+          min:1,
+          number:true
+        },
+        real_name : {
+          required : true
+        },
+        nationality : {
+          required : true
+        },
+        birthday : {
+          required : true
+        },
+      },
+      messages: {
+        broker_company : {
+          required : "请选择经纪公司",
+          min : "经纪公司不存在",
+          number : "经纪公司不存在"
+        },
+        real_name : "请输入姓名",
+        nationality : "请输入国籍",
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitCustomerBefore,
+          success : SubmitCustomerResponse,    // 提交后的回调函数
+          error : SubmitCustomerError
+        });
+      }
+    });
+    //endregion 添加客户表单验证
+  });
+  
+  //region 提交表单
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存保险计划书数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm){
+        <if condition="($AccountType neq $SellerManagerAccount)">
+          window.parent.PollingUntreatedNumber();
+        </if>
+
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+
+  function SubmitCustomerBefore(){
+    BlockWindow_ExecOp('正在保存客户数据', 140);
+  }
+
+  function SubmitCustomerResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }else{
+      if(IsN(responseText.data)){
+        AlertError("未查询到添加的客户数据");
+        return false;
+      }
+    }
+
+    var CustomerInfo = responseText.data;
+    $("#customer").find("option:selected").attr("selected", false);
+    var sHtml = '<option value="'+ CustomerInfo.id +'" selected>'+ CustomerInfo.real_name +'</option>';
+    $('#customer').append(sHtml).trigger("chosen:updated");
+
+    LoadCustomerInfo();
+
+    $('#customer').trigger("chosen:updated");
+
+    HideAddCustomerModal();
+    ClearAddCustomerInfo();
+  }
+
+  function SubmitCustomerError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+
+  //region 设置客户经理option
+  function SetSellerMemberOption(obj) {
+    var nSellerCaptainID = $(obj).val();
+
+    if(IsN(nSellerCaptainID)){
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取客户经理数据', 180);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxGetSellerMemberOption",
+      dataType:"json",
+      data: {"seller_captain_id": nSellerCaptainID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        SetSellerMemberOptionResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function SetSellerMemberOptionResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      return false;
+    }
+
+    var Dom = [];
+    var MemberList = objJson.data;
+    var nLen = MemberList.length;
+    var Info = null;
+
+    Dom.push('<option value="">请选择客户经理</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = MemberList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#seller_member_id').html(Dom.join('')).trigger("chosen:updated");
+
+    ClearCustomerOption(false);
+  }
+  //endregion 设置客户经理option
+
+  //region 获取客户信息
+  function ClearCustomerOption(changedesc) {
+    $('#customer_content_ifr').html('');
+    $('#customer_info_ifr').hide();
+
+    if(changedesc){
+      $('#customer').html('<option value="">请选择客户</option>').trigger("chosen:updated");
+    }else{
+      $('#customer').html('<option value="">--</option>').trigger("chosen:updated");
+    }
+
+  }
+
+  function LoadCustomerOption(obj) {
+    ClearCustomerOption(false);
+
+    var nSellerCaptainId = $('#seller_captain_id').val();
+    var nSellerMemberId = $(obj).val();
+
+    if(IsN(nSellerMemberId) && IsN(nSellerCaptainId)){
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取客户信息', 180);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxGetCustomerOption",
+      dataType:"json",
+      data: {"seller_captain_id": nSellerCaptainId, "seller_member_id": nSellerMemberId},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadCustomerOptionResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadCustomerOptionResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      return false;
+    }
+
+    var Dom = [];
+    var CustomerList = objJson.data;
+    var nLen = CustomerList.length;
+    var Info = null;
+
+    Dom.push('<option value="">请选择客户</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = CustomerList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#customer').html(Dom.join('')).trigger("chosen:updated");
+  }
+
+  function LoadCustomerInfo(){
+    var objCustomer = $('#customer');
+    var nCustomerID = objCustomer.val();
+
+    if(IsN(nCustomerID)){
+      $('#customer_content_ifr').html('');
+      $('#customer_info_ifr').fadeOut('fast');
+      return false;
+    }
+
+    BlockWindow_ExecOp('获取产品信息', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCustomerInfo",
+      dataType:"json",
+      data: {"customer_id": nCustomerID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadCustomerInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadCustomerInfoResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      $('#customer_content_ifr').html('');
+      $('#customer_info_ifr').fadeOut('fast');
+
+      AlertError(objJson.info);
+      return false;
+    }
+
+    //region 产品列表
+    var Dom = [];
+    var CustomerInfo = objJson.data;
+
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">客户编号：<span class="label label-default">'+ CustomerInfo.id +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">姓名：<span class="label label-default">'+ CustomerInfo.real_name +'</label>&nbsp;');
+    Dom.push('<label class="label label-info">性别：<span class="label label-default">'+ CustomerInfo.gender +'</label>&nbsp;');
+    Dom.push('<label class="label label-info">国籍：<span class="label label-default">'+ CustomerInfo.nationality +'</label>&nbsp;');
+    Dom.push('</p>');
+//    Dom.push('<p class="form-control-static">');
+//    Dom.push('<label class="label label-info">证件类型：<span class="label label-default">'+ CustomerInfo.idcard_type +'</span></label>&nbsp;');
+//    Dom.push('<label class="label label-info">证件号：<span class="label label-default">'+ CustomerInfo.idcard_no +'</span></label>&nbsp;');
+//    Dom.push('<label class="label label-info">证件照片：<span class="label label-default">'+ CustomerInfo.idcard_img_a.original_name +'</span></label>&nbsp;');
+//    Dom.push('</p>');
+//    Dom.push('<p class="form-control-static">');
+//    Dom.push('<label class="label label-info">联系电话：<span class="label label-default">'+ CustomerInfo.phone +'</span></label>&nbsp;');
+//    Dom.push('</p>');
+
+    $('#customer_content_ifr').html(Dom.join(''));
+    $('#customer_info_ifr').fadeIn();
+    //endregion 产品列表
+  }
+  //endregion 获取客户信息
+
+  //region 获取产品列表
+  function LoadProductOptionList(obj){
+    var nProductTypeID = $(obj).val();
+    
+    if(IsN(nProductTypeID)){
+      var sKey = $('#product').attr("data-placeholder");
+      $('#product').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取产品列表', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxProductOptionList",
+      dataType:"json",
+      data: {"product_type_id": nProductTypeID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadProductOptionListResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadProductOptionListResponse(objJson){
+    Un_BlockWindow_ExecOp();
+    
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var sKey = $('#product').attr("data-placeholder");
+    if(IsN(objJson.data)){
+      $('#product').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+
+      return false;
+    }
+
+    //region 产品列表
+    var Dom = [];
+    var OptionList = objJson.data;
+    var nLen = OptionList.length;
+    var Info = null;
+
+    Dom.push('<option value="">'+ sKey +'</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = OptionList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#product').html(Dom.join('')).trigger("chosen:updated");
+    //endregion 产品列表
+  }
+  //endregion 获取产品列表
+  
+  //region 获取产品信息
+  function LoadProductInfo(obj){
+    var nProductID = $(obj).val();
+
+    if(IsN(nProductID)){
+      $('#product_content_ifr').html('');
+      $('#product_info_ifr').fadeOut('fast');
+      return false;
+    }
+
+    BlockWindow_ExecOp('获取产品信息', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxProductInfo",
+      dataType:"json",
+      data: {"product_id": nProductID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        LoadProductInfoResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function LoadProductInfoResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      $('#product_content_ifr').html('');
+      $('#product_info_ifr').fadeOut('fast');
+      
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var sKey = $('#product').attr("data-placeholder");
+    if(IsN(objJson.data)){
+      $('#product').html('<option value="">'+ sKey +'</option>').trigger("chosen:updated");;
+
+      return false;
+    }
+
+    //region 产品列表
+    var Dom = [];
+    var ProductInfo = objJson.data;
+
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">产品编号：<span class="label label-default">'+ ProductInfo.id +'</span></label>&nbsp;');
+    Dom.push('<label class="label label-info">产品名称：<span class="label label-default">'+ ProductInfo.product_name +'</span></label>&nbsp;');
+    Dom.push('</p>');
+    
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">产品简介：<span class="label label-default">'+ ProductInfo.intro +'</span></label>&nbsp;');
+    Dom.push('</p>');
+    
+    Dom.push('<p class="form-control-static">');
+    Dom.push('<label class="label label-info">产品备注：<span class="label label-default">'+ ProductInfo.remarks +'</span></label>&nbsp;');
+    Dom.push('</p>');
+
+    $('#product_content_ifr').html(Dom.join(''));
+    $('#product_info_ifr').fadeIn();
+    //endregion 产品列表
+  }
+  //endregion 获取产品信息
+
+  //region 添加客户
+  function GetCustomerAboutData() {
+    var nCaptainID = $('#seller_captain_id').val();
+    var nMemberID = $('#seller_member_id').val();
+
+    if(IsN(nCaptainID)){
+      AlertError("请指定团队长");
+      return false;
+    }
+
+    if(IsN(nMemberID)){
+      AlertError("请指定客户经理");
+      return false;
+    }
+
+    $('#modal_seller_captain_id').val(nCaptainID);
+    $('#modal_seller_member_id').val(nMemberID);
+
+    BlockWindow_ExecOp('正在获取客户相关', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCustomerAboutData",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        GetCustomerAboutDataResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function GetCustomerAboutDataResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }else{
+      if(IsN(objJson.data)){
+        AlertError("没有查询到客户相关数据");
+        return false;
+      }
+    }
+
+    var Dom = [];
+    var nLen = 0;
+    var Info = null;
+
+    //region 加载性别
+    var GenderOption = objJson.data.GenderOption;
+
+    if(!IsN(GenderOption)){
+      Dom = [];
+      nLen = GenderOption.length;
+
+      for(var i=0; i<nLen; i++){
+        Info = GenderOption[i];
+
+        Dom.push('<div class="radio radio-inline radio-info">');
+        Dom.push('<input type="radio" id="gender_'+ Info.val +'" name="gender" value="'+ Info.key +'"');
+
+        if(i==0){
+          Dom.push(' checked ');
+        }
+        Dom.push('>');
+        Dom.push('<label for="gender_'+ Info.val +'"> '+ Info.key +' </label>');
+        Dom.push('</div>');
+      }
+
+      $('#div_gender').html(Dom.join(''));
+    }
+
+    //endregion 加载性别
+
+    ShowAddCustomerModal();
+  }
+
+  function ShowAddCustomerModal() {
+    $('#modal_add_customer_ifr').modal();
+  }
+
+  function HideAddCustomerModal() {
+    $('#modal_add_customer_ifr').modal('hide');
+  }
+
+  function ClearAddCustomerInfo() {
+    $('#modal_seller_captain_id').val('');
+    $('#modal_seller_member_id').val('');
+    $('#real_name').val('');
+    $('#nationality').val('');
+    $('#birthday').val('');
+  }
+  //endregion 添加客户
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

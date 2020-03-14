@@ -1,0 +1,61 @@
+<div class="form-group {$upload_file.css}" id="{$upload_file.id}Tip">
+    <label class="control-label col-md-{$upload_file.title_width}">
+        {$upload_file.title}<eq name="upload_file.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$upload_file.input_width}">
+        <div class="fileupload fileupload-new">
+            <ul class="list-group btten_file_ifr btten_file_no_margin" id="ul_{$upload_file.id}_file_ifr"></ul>
+
+            <div class="uploadify_ifr" style="clear: both;" id="{$upload_file.id}_item">
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>浏览文件...</span>
+                    <!-- The file input field used as target for the file upload widget -->
+                    <input id="file_{$upload_file.id}" type="file" name="Filedata" <eq name="upload_file.multi" value="true">multiple</eq>>
+                </span>
+                <span class="help-block">{$upload_file.tips}</span>
+
+                <input id="{$upload_file.id}" name="{$upload_file.name}" type="hidden" value='{$upload_file.value}'>
+            </div>
+            
+            
+                <!-- The global progress bar -->
+                <div id="div_{$upload_file.id}_loading" style="display:none;">
+                    <span class="help-block"><img src="__PUBLIC__/res/admin/assets/img/input-spinner.gif" align="" width="16" height="16"> 正在上传文件……</span>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+btten.LoadDataFile("ul_{$upload_file.id}_file_ifr", {$upload_file.extend.multi}, '{$upload_file.id}');
+        
+$(function () {
+    var url = '__MODULE__/{$upload_file.extend.url}';
+    $('#file_{$upload_file.id}').fileupload({
+        url : url,
+        dataType : 'json',
+        acceptFileTypes : /(\.|\/)({$upload_file.extend.fileTypeExts})$/i,
+        maxFileSize : {$upload_file.extend.fileSizeLimit}, // 5 MB
+        formData:{ "fieldname" : '{$uploadify_file.extend.fieldname}' },//如果需要额外添加参数可以在这里添加
+        done: function (e, data) {
+            $('#div_{$upload_file.id}_loading').hide();
+            
+            if(data.result.status == 0){
+                btten.Warning(data.result.info);
+                return;
+            }else{
+                
+                $('#ul_{$upload_file.id}_file_ifr').removeClass("btten_file_no_margin").addClass("btten_file_margin");
+
+                var sJson = '{"fileid":'+ data.result.fileid +',"name":"'+ data.result.name +'","size":'+ data.result.size +',"ext":"'+ data.result.ext +'","savename":"'+ data.result.savename +'","savepath":"'+ data.result.savepath +'"}';
+
+                btten.FileHtml("ul_{$upload_file.id}_file_ifr", {$upload_file.extend.multi}, sJson, '{$upload_file.id}');
+            }
+        },
+        submit : function (e, data) {
+            $('#div_{$upload_file.id}_loading').show();
+        }
+    });
+});
+</script>

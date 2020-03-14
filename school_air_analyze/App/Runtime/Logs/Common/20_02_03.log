@@ -1,0 +1,30 @@
+[ 2020-02-03T18:20:28+08:00 ] 192.168.3.218 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000041s ]
+ERR: 无法加载模块:Favicon
+
+[ 2020-02-03T18:44:43+08:00 ] 192.168.3.218 /Public/qwadmin/js/function.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000039s ]
+ERR: 无法加载模块:Public
+
+[ 2020-02-03T18:44:44+08:00 ] 192.168.3.218 /Public/qwadmin/js/function.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000005s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000039s ]
+ERR: 无法加载模块:Public
+
+[ 2020-02-03T18:49:05+08:00 ] 192.168.3.218 /Public/qwadmin/js/function.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000005s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000039s ]
+ERR: 无法加载模块:Public
+
+[ 2020-02-03T18:49:05+08:00 ] 192.168.3.218 /Public/qwadmin/js/function.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000005s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000037s ]
+ERR: 无法加载模块:Public
+

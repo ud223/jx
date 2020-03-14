@@ -1,0 +1,131 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" action="{:U('update')}" method="post">
+                            <input type="hidden" name="id" value="{$item.id}" id="id"/>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 姓名 ：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name" id="name" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.name}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 账号： </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="usermane" id="usermane" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.usermane}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 密码：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="password" id="password" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.password}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    类型： </label>
+                                <div class="col-sm-9">
+                                    <select id="type" name="type" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($community_cooperate_login_type as $itm) :?>
+                                        <?php if ($itm['id'] == $item['type']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    分类： </label>
+                                <div class="col-sm-9">
+                                    <select id="manage" name="manage" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($community_cooperate_type as $itm) :?>
+                                        <?php if ($itm['id'] == $item['manage']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 联系电话： </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="phone" id="phone" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.phone}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+
+                            <div class="space-4"></div>
+                            <div class="col-md-offset-2 col-md-9">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="icon-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div><!-- /.main-content -->
+<include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+</body>
+</html>

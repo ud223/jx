@@ -8,28 +8,31 @@ class CustomerModel extends Model {
   private $_CustomerRealNameLength = 10;
 
   private $modCustomer = null;
-  
-  private $clsCustomer = null;
-  private $clsBrokerCompany = null;
-  private $clsRegion = null;
+
+  public $clsCustomer = null;
+  public $clsUser = null;
+  public $clsRegion = null;
   
   function __construct() {
     $this->modCustomer = M("customer");
     
     $this->clsCustomer = new \Org\ZhiHui\Customer();
-    $this->clsBrokerCompany = new \Org\ZhiHui\BrokerCompany();
+    $this->clsUser = new \Org\ZhiHui\User();
     $this->clsRegion = new \Org\ZhiHui\Region();
   }
   
   //region 客户
   /**
    * todo:客户列表
+   *
+   * @param int   $_seller_captain_id
+   * @param int   $_seller_member_id
    * @param int   $_rownum
    * @param array $_param
    *
    * @return array
    */
-  public function CustomerList($_rownum=20, $_param=array()){
+  public function CustomerList($_seller_captain_id, $_seller_member_id=0, $_rownum=20, $_param=array()){
     $sField = "id";
     $sWhere = "1=1";
     $sOrder = "add_time desc";
@@ -76,8 +79,12 @@ class CustomerModel extends Model {
         }
       }
 
-      if(IsNum($_param["search_broker_company"], false, false)){
-        $sWhere .= " and broker_company_id = {$_param["search_broker_company"]}";
+      if(IsNum($_seller_captain_id, false, false)){
+        $sWhere .= " and seller_captain_id={$_seller_captain_id}";
+      }
+
+      if(IsNum($_seller_member_id, false, false)){
+        $sWhere .= " and seller_member_id={$_seller_member_id}";
       }
     }
 
@@ -92,16 +99,47 @@ class CustomerModel extends Model {
     foreach($CustomerIdList as $key=>$val){
       $CustomerInfo = $this->clsCustomer->GetCustomerDetails($val["id"]);
 
-      $CustomerInfo["broker_company_name"] = "--";
-      if(IsNum($CustomerInfo["broker_company_id"], false, false)){
-        $BrokerCompanyInfo = $this->clsBrokerCompany->GetBrokerCompanyDetails($CustomerInfo["broker_company_id"]);
-        $CustomerInfo["broker_company_name"] = $BrokerCompanyInfo["broker_company_name"];
+      $CustomerInfo["seller_captain_name"] = "--";
+      if(IsNum($CustomerInfo["seller_captain_id"], false, false)){
+        $UserInfo = $this->clsUser->GetUserDetails($CustomerInfo["seller_captain_id"]);
+        $CustomerInfo["seller_captain_name"] = $UserInfo["real_name"];
+      }
+
+      $CustomerInfo["seller_member_name"] = "--";
+      if(IsNum($CustomerInfo["seller_member_id"], false, false)){
+        $UserInfo = $this->clsUser->GetUserDetails($CustomerInfo["seller_member_id"]);
+        $CustomerInfo["seller_member_name"] = $UserInfo["real_name"];
       }
 
       array_push($CustomerList, $CustomerInfo);
     }
 
     return array("PageInfo"=>$PageShow, "DataList"=>$CustomerList);
+  }
+
+  /**
+   * todo: 获取客户经理的客户列表
+   * @param $_user_id
+   *
+   * @return array
+   */
+  public function SellerMemberCustomerList($_user_id){
+    if(!IsNum($_user_id, false, false)){
+      return array();
+    }
+
+    $sField = "id";
+    $sWhere = "seller_member_id={$_user_id}";
+    $CustomerIdList = $this->modCustomer->field($sField)->where($sWhere)->select();
+    $CustomerList = array();
+
+    foreach($CustomerIdList as $key=>$val){
+      $CustomerInfo = $this->clsCustomer->GetCustomerDetails($val["id"]);
+
+      array_push($CustomerList, $CustomerInfo);
+    }
+
+    return $CustomerList;
   }
 
   /**
@@ -124,31 +162,32 @@ class CustomerModel extends Model {
 
   /**
    * todo: 保存客户
-   * 
-   * @param $_customer_id 客户ID
-   * @param $_broker_company_id 经纪公司ID
-   * @param $_real_name 真实姓名
-   * @param $_gender 性别
-   * @param $_nationality 国籍
-   * @param $_idcard_type 证件类型
-   * @param $_idcard_no 证件号
+   *
+   * @param $_customer_id       客户ID
+   * @param $_seller_captain_id 团队长ID
+   * @param $_seller_member_id  客户经理ID
+   * @param $_real_name         真实姓名
+   * @param $_gender            性别
+   * @param $_nationality       国籍
+   * @param $_idcard_type       证件类型
+   * @param $_idcard_no         证件号
    * @param $_file_idcard_img_a 上传的证件照文件
-   * @param $_idcard_img_a_id 证件照文件ID
-   * @param $_birthday 出生日期
-   * @param $_province_id 省份ID
-   * @param $_city_id 城市ID
-   * @param $_district_id 区县ID
-   * @param $_address 详细地址
-   * @param $_phone 手机号
-   * @param $_wechat 微信号
+   * @param $_idcard_img_a_id   证件照文件ID
+   * @param $_birthday          出生日期
+   * @param $_province_id       省份ID
+   * @param $_city_id           城市ID
+   * @param $_district_id       区县ID
+   * @param $_address           详细地址
+   * @param $_phone             手机号
+   * @param $_wechat            微信号
    *
    * @return array
    */
-  public function CustomerSave($_customer_id, $_broker_company_id, $_real_name, $_gender, $_nationality, $_idcard_type, $_idcard_no, $_file_idcard_img_a, $_idcard_img_a_id, $_birthday, $_province_id, $_city_id, $_district_id, $_address, $_phone, $_wechat){
+  public function CustomerSave($_customer_id, $_seller_captain_id, $_seller_member_id, $_real_name, $_gender, $_nationality, $_idcard_type, $_idcard_no, $_file_idcard_img_a, $_idcard_img_a_id, $_birthday, $_province_id, $_city_id, $_district_id, $_address, $_phone, $_wechat){
     $CustomerInfo = array();
 
     //region 数据检查,并赋值保存的数据
-    //检查客户信息
+    //region 检查客户信息
     if(IsNum($_customer_id, false, false)){
       $CustomerInfo = $this->clsCustomer->GetCustomerDetails($_customer_id);
 
@@ -158,27 +197,60 @@ class CustomerModel extends Model {
 
       $SaveBaseData["id"] = $_customer_id;
     }
+    //endregion 检查客户信息
 
-    //region 检查经纪公司
-    if(!IsNum($_broker_company_id, false, false)){
-      return ReturnError(L("_BROKER_COMPANY_NEED_SELECT_"));
+    //region 检查团队长
+    if(!IsNum($_seller_captain_id, false, false)){
+      return ReturnError(L("_SELLER_CAPTAIN_ID_ERROR_"));
     }else{
-      $BrokerCompanyInfo = $this->clsBrokerCompany->GetBrokerCompanyDetails($_broker_company_id);
+      $SellerCaptainInfo = $this->clsUser->GetUserDetails($_seller_captain_id);
 
-      if(!IsArray($BrokerCompanyInfo)){
-        return ReturnError(L("_BROKER_COMPANY_NOT_EXIST_"));
+      if(!IsArray($SellerCaptainInfo)){
+        return ReturnError(L("_SELLER_CAPTAIN_NOT_EXIST_"));
+      }else{
+        $UserGroupInfo = $this->clsUser->SellerCaptainUserGroup();
+
+        if($SellerCaptainInfo["group_id"] != $UserGroupInfo["group_id"]){
+          return ReturnError(L("_USER_GROUP_NOT_SELLER_CAPTAIN_"));
+        }
       }
 
-      $SaveBaseData["broker_company_id"] = $_broker_company_id;
+      $SaveBaseData["broker_company_id"] = $SellerCaptainInfo["parent_user_id"];
+      $SaveBaseData["seller_captain_id"] = $SellerCaptainInfo["id"];
     }
-    //endregion 检查经纪公司
+    //endregion 检查团队长
+
+    //region 检查客户经理
+    if(!IsNum($_seller_member_id, false, false)){
+      return ReturnError(L("_SELLER_MEMBER_ID_ERROR_"));
+    }else{
+      $SellerMemberInfo = $this->clsUser->GetUserDetails($_seller_member_id);
+
+      if(!IsArray($SellerMemberInfo)){
+        return ReturnError(L("_SELLER_MEMBER_NOT_EXIST_"));
+      }else{
+        $UserGroupInfo = $this->clsUser->SellereMemberUserGroup();
+
+        if($SellerMemberInfo["group_id"] != $UserGroupInfo["group_id"]){
+          return ReturnError(L("_USER_GROUP_NOT_SELLER_MEMBER_"));
+        }
+
+        if($SellerMemberInfo["parent_user_id"] != $SellerCaptainInfo["id"]){
+          return ReturnError(L("_SELLER_MEMBER_NOT_SELLER_CAPTAIN_USER_"));
+        }
+      }
+
+      $SaveBaseData["seller_member_id"] = $SellerMemberInfo["id"];
+    }
+    //endregion 检查客户经理
     
-    //检查姓名
+    //region 检查姓名
     if(IsN($_real_name)){
       return ReturnError(L("_CUSTOMER_REAL_NAME_NULL_"));
     }else{
       $SaveBaseData["real_name"] = $_real_name;
     }
+    //endregion 检查姓名
     
     //region 检查性别
     if(IsN($_gender)){
@@ -210,6 +282,7 @@ class CustomerModel extends Model {
     //endregion 检查国籍
 
     //region 检查证件类型
+    /*
     if(IsN($_idcard_type)){
       return ReturnError(L("_CUSTOMER_IDCARD_TYPE_NULL_"));
     }else{
@@ -228,17 +301,21 @@ class CustomerModel extends Model {
 
       $SaveBaseData["idcard_type"] = $_idcard_type;
     }
+    */
     //endregion 检查证件类型
     
     //region 检查证件号
+    /*
     if(IsN($_idcard_no)){
       return ReturnError(L("_CUSTOMER_IDCARD_NO_NULL_"));
     }else{
       $SaveBaseData["idcard_no"] = $_idcard_no;
     }
+    */
     //endregion 检查证件号
 
     //region 保存证件照图片
+    /*
     if(IsArray($_file_idcard_img_a)){
       $nImageId = $this->UploadCustomerIdCardImage($_file_idcard_img_a);
 
@@ -248,6 +325,7 @@ class CustomerModel extends Model {
 
       $SaveBaseData["idcard_img_a"] = $nImageId["data"];
     }
+    */
     //endregion 保存证件照图片
 
     //检查出生日期
@@ -262,6 +340,7 @@ class CustomerModel extends Model {
     }
     
     //region 检查地址
+    /*
     if(!IsNum($_province_id, false, false)){
       return ReturnError(L("_REGION_PROVINCE_ID_NULL_"));
     }else{
@@ -288,9 +367,11 @@ class CustomerModel extends Model {
     $SaveBaseData["city_id"] = $_city_id;
     $SaveBaseData["district_id"] = $_district_id;
     $SaveBaseData["address"] = $_address;
+    */
     //endregion 检查地址
 
     //检查手机号
+    /*
     if(!IsN($_phone)){
       if(!isMobile($_phone)){
         return ReturnError(L("_MOBILE_PHONE_ERROR_"));
@@ -302,6 +383,7 @@ class CustomerModel extends Model {
     if(!IsN($_wechat)){
       $SaveBaseData["wechat"] = $_wechat;
     }
+    */
     //endregion 数据检查,并赋值保存的数据
 
     //region 添加基本数据
@@ -329,7 +411,7 @@ class CustomerModel extends Model {
 
     $this->clsCustomer->SetCustomerDetailsCache($nCustomerID);
 
-    return ReturnCorrect(L("_SAVE_DATA_SUCCEED_"));
+    return ReturnCorrect(L("_SAVE_DATA_SUCCEED_"), $nCustomerID);
   }
 
   /**
@@ -378,6 +460,51 @@ class CustomerModel extends Model {
     }
 
     return ReturnCorrect(L("_CACHE_REFRESH_SUCCEED_"));
+  }
+
+  public function CustomerPayList($_customer_id){
+    $CustomerPayList = array();
+
+    if(!IsNum($_customer_id, false, false)){
+      return $CustomerPayList;
+    }
+
+    $clsProduct = new \Org\ZhiHui\Product();
+    $clsOrder = new \Org\ZhiHui\Order();
+    
+    $sField = "order_sn";
+    $sWhere = "customer_id={$_customer_id}";
+    $sWhere .= " and status>={$clsOrder->OrderStatusPayStatus()}";
+    $sOrder = "pay_time desc";
+
+    $modOrder = M("order");
+
+    $OrderSnList = $modOrder->field($sField)->where($sWhere)->order($sOrder)->select();
+
+    foreach($OrderSnList as $key=>$val){
+      $OrderInfo = $clsOrder->GetOrderDetails($val["order_sn"]);
+
+      if(IsNum($OrderInfo["seller_member_id"], false, false)){
+        $UserInfo = $this->clsUser->GetUserDetails($OrderInfo["seller_member_id"]);
+      }else{
+        if(IsNum($OrderInfo["seller_captain_id"], false, false)){
+          $UserInfo = $this->clsUser->GetUserDetails($OrderInfo["seller_captain_id"]);
+        }
+      }
+
+      $ProductInfo = $clsProduct->GetProductSnapshotsDetails($OrderInfo["product_snapshots_id"]);
+
+      $Info["order_sn"] = $OrderInfo["order_sn"];
+      $Info["pay_amount"] = $OrderInfo["year_premium_amount"];
+      $Info["pay_time"] = Time2FullDate($OrderInfo["pay_time"]);
+      $Info["seller_name"] = $UserInfo["real_name"];
+      $Info["product_type_name"] = $ProductInfo["type_name"];
+      $Info["product_name"] = $ProductInfo["product_name"];
+
+      array_push($CustomerPayList, $Info);
+    }
+
+    return $CustomerPayList;
   }
 
   /**

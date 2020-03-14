@@ -1,0 +1,123 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <?php
+        $index = 0;
+        $imgs = '';
+
+        foreach ($data['list_1'] as $itm) {
+            if ($index > 0) {
+                $imgs = $imgs . ',';
+            }
+
+            $imgs = $imgs . "{url: '". $itm['url'] ."'}";
+
+            $index++;
+        }
+   ?>
+    <div class="pad-10">
+        <script type="text/javascript">
+            // 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
+            var imgs_json = [<?php echo $imgs?>];
+        </script>
+        <!--此段为滑动多图的html部分，写死在这里-->
+        <div id="cd_mentor_img_slider" class="swipe">
+            <div class="swipe-wrap">
+                <!--<div class="figure">
+                {
+                url: '/Public/mobile/img/btcht01.jpg'
+            }, {
+                url: '/Public/mobile/img/btcht02.jpg'
+            }, {
+                url: '/Public/mobile/img/btcht03.jpg'
+            }
+                </div>-->
+            </div>
+            <!-- 放置索引标签的地方 -->
+            <div class="gl">
+                <!--<div class="pgitm"></div>-->
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom:10px;padding:0 10px;">
+        <div style="background:#FFF;box-shadow: 0 2px 10px rgba(0,0,0,.05);">
+            <div style="background:url(<?php echo $data['list_4'][0]['url']?>) center center no-repeat #FFF;background-size: cover;width:65%;height:160px;float:left;box-shadow:inset -1px 0 0 rgba(0,0,0,.05);" class="tapquick" url="<?php echo $data['list_4'][0]['content']?>">
+                <div style="padding:10px;z-index:2;position: relative;">
+                </div>
+            </div>
+            <div style="width:35%;height:160px;float:left;">
+                <div class="yuyue_index tapquick" url="<?php echo $data['list_4'][1]['content']?>" style="background:url(<?php echo $data['list_4'][1]['url']?>) center center no-repeat #FFF;background-size: cover;height:50%;overflow:hidden;box-shadow:inset 0 -1px 0 rgba(0,0,0,.05);">
+                </div>
+                <div class="yuyue_index tapquick" url="<?php echo $data['list_4'][2]['content']?>" style="background:url(<?php echo $data['list_4'][2]['url']?>) center center no-repeat #FFF;background-size: cover;height:50%;overflow:hidden;">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <style>
+
+    </style>
+    <div class="horirow">
+        <div class="horirow_img" style="background-image: url(<?php echo $data['list_2'][0]['url'] ?>);"></div>
+        <?php echo $data['list_2'][0]['content'] ?>
+    </div>
+    <div class="horirow">
+        <div class="horirow_img" style="background-image: url(<?php echo $data['list_3'][0]['url'] ?>);"></div>
+        <?php echo $data['list_3'][0]['content'] ?>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $('document').ready(function() {
+            // 初始化轮动广告部分（Start）
+            if (imgs_json.length) {
+                // 根据imgs_json的长度和内容循环加载图片
+                $.each(imgs_json, function() {
+                    var new_img = $('<div>').addClass('figure');
+                    new_img.css('background-image', 'url(' + this.url + ')');
+                    /*
+                     * 9月26日更新：
+                     * 新增了可链接的情况，插入一个a标签
+                     */
+                    if (this.link) {
+                        var new_link = $('<a>').addClass('sw-inner-link');
+                        new_link.attr('href', this.link);
+                        new_img.append(new_link);
+                    }
+                    $('#cd_mentor_img_slider .swipe-wrap').append(new_img);
+                });
+                // 初始化swipe
+                var slider = Swipe(document.getElementById('cd_mentor_img_slider'), {
+                    startSlide: 0,
+                    speed: 400,
+                    auto: false,
+                    continuous: false,
+                    disableScroll: false,
+                    stopPropagation: false,
+                    callback: function(index, elem) {},
+                    transitionEnd: function(index, elem) {
+                        $('.gl .pgitm.selected').removeClass('selected');
+                        $('.gl .pgitm[index="' + index + '"]').addClass('selected');
+                    }
+                });
+                // 初始化pager
+                var n = slider.getNumSlides();
+                for (var i = 0; i < n; i++) {
+                    var new_pager = $('<div>').addClass('pgitm').attr('index', i);
+                    if (i === 0) {
+                        new_pager.addClass('selected');
+                    }
+                    $('.swipe .gl').append(new_pager);
+                }
+            }
+            // 设置广告栏比例：
+            $('.swipe-wrap > .figure').height(($('.swipe').width() / 16) * 8 + 'px');
+            // 初始化轮动广告部分（End）
+
+        });
+    </script>
+</block>

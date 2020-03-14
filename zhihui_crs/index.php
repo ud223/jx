@@ -3,7 +3,7 @@
 if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 
 // 开启调试模式 建议开发阶段开启 部署阶段注释或者设为false
-define('APP_DEBUG',True);
+//define('APP_DEBUG',True);
 
 // 定义应用目录
 define('APP_PATH','./Application/');
@@ -16,7 +16,8 @@ define('COMMON_PATH','./Common/');
 
 //region 自定义全局
 define('SITE_PATH', dirname(__FILE__));
-define('IMAGE_DOMIAN', "http://localhost/zhihui/");
+define('IMAGE_DOMIAN', "http://crs.webetter100.com/");
+//define('IMAGE_DOMIAN', "http://localhost/zhihui_crs/");
 //endregion 自定义全局
 
 // 引入ThinkPHP入口文件

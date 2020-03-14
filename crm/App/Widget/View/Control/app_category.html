@@ -1,0 +1,37 @@
+<div class="form-group  {$app_category.css}" id="{$app_category.id}Tip">
+    <label  class="col-md-{$app_category.title_width} control-label">
+        {$app_category.title}<eq name="app_category.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$app_category.input_width}">
+        <select  class="sidebar-option form-control input-large" name="{$app_category.name}" id="{$app_category.id}">
+            <?php 
+
+            if(empty($app_category["first_option"])){
+                echo '<option value="1">作为主分类</option>';
+            }else{
+                echo '<option value="'. $app_category["first_option"]["val"] .'">'.$app_category["first_option"]["key"].'</option>';
+            }
+            ?>
+            
+            <?php
+            //exitp($app_category["option"]);
+            $nCount = sizeof($app_category["option"]);
+            $arrItem = array();
+            
+            for($i=0; $i<$nCount; $i++){
+                $arrItem = $app_category["option"][$i];
+                $sNameSign = GetAppMenuSign($arrItem, $app_category["option"][$i-1], $app_category["option"][$i+1]);
+                
+                if($arrItem["menuid"] ==$app_category["value"]){
+                    $sSelected = 'selected="selected"';
+                }else{
+                    $sSelected = '';
+                }
+                
+                echo '<option value="'. $arrItem["menuid"] .'" '. $sSelected .'>' . $sNameSign . $arrItem["menu_name"] .'</option>';
+            }
+            ?>
+        </select>
+        <span class="help-block">{$app_category.tips}</span>
+    </div>
+</div>

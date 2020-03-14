@@ -1,0 +1,85 @@
+<include file="Public:page_header" />
+         
+<!-- BEGIN 主体区域-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>{$pagetitle}</div>
+            </div>        
+
+            <div class="portlet-body">
+                <?php
+                if(!empty($BtnCustom)){
+                ?>
+                <div class="table-toolbar">
+                    <div class="btn-group">
+                        <volist name="BtnCustom" id="btn">
+                            <a href="{$btn.href}" class="btn {$btn.css}" <notempty name="btn.event">onclick="{$btn.event}"</notempty>><i class="{$btn.icon}"></i> {$btn.title}</a>
+                        </volist>
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
+
+                <table class="table table-striped table-bordered table-hover" id="table_menu_list">
+                    <thead>
+                       <tr>
+                          <th style="width:60px; text-align: center; vertical-align:middle;">编号</th>
+                          <th>栏目名称</th>
+                          <th>栏目链接</th>
+                          <th>站点导航链接</th>
+                          <th style="width:60px; text-align: center; vertical-align:middle;">状态</th>
+                          <th style="width:140px; text-align: center; vertical-align:middle;">添加日期</th>
+                          <th></th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="listdata" id="list">
+                        <tr class="odd gradeX">
+                            <td style="width:60px; text-align: center; vertical-align:middle;">{$list.menuid}</td>
+                            <td style="vertical-align:middle;">{$list.menu_name}</td>
+                            <td style="vertical-align:middle;">{$list.url}</td>
+                            <td style="vertical-align:middle;">{$list.navurl}</td>
+                            <td style="width:60px; text-align: center; vertical-align:middle;">
+                                <eq name="list.status" value="0"><span class="label label-sm label-success">{$list.statusstr}</span></eq>
+                                <eq name="list.status" value="1"><span class="label label-sm label-danger">{$list.statusstr}</span></eq>
+                            </td>
+                            <td style="width:140px; text-align: center; vertical-align:middle;">{$list.addtime|date="Y-m-d",###}</td>
+                            <td style="width:103px; vertical-align:middle;">
+                                <div class="btn-group">
+                                    <a class="btn btn-default dropdown-toggle" href="#" data-toggle="dropdown">
+                                        <i class="icon-cogs"></i> 操作
+                                        <i class="icon-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <eq name="MenuAddChild" value="true">
+                                            <li><a href="{$PageListAddUrl}/parentid/{$list.menuid}"><i class="icon-plus"></i> 添加子栏目</a></li>
+                                        <else/>
+                                            <eq name="list.parentid" value="1">
+                                                <li><a href="{$PageListAddUrl}/parentid/{$list.menuid}"><i class="icon-plus"></i> 添加子栏目</a></li>
+                                            </eq>
+                                        </eq>
+                                       <li><a href="{$PageListEditUrl}/menuid/{$list.menuid}/parentid/{$list.parentid}"><i class="icon-edit"></i> 编辑</a></li>
+                                       <eq name="list.child" value="0">
+                                            <li><a href="javascript:void(0);" onclick="btten.DeleteData({$list.menuid}, '{$PageListDeleteUrl}')"><i class="icon-trash"></i> 删除</a></li>
+                                       </eq>
+                                    </ul>
+                                 </div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END 主体区域-->
+ 
+<script>
+    btten.ListPageCheckBoxSelectAll('table_menu_list');
+    btten.ListPageCheckBoxSelect('table_menu_list');
+</script>
+<include file="Public:page_footer" />

@@ -20,7 +20,7 @@
         <div class="ibox-title">
           <h5>
             <empty name="SellerManagerInfo">
-              添加销售经理帐号
+              添加客户经理帐号
             <else/>
               <label class="label label-info">{$SellerManagerInfo.login_name}</label>&nbsp;的账号信息
             </empty>
@@ -292,7 +292,7 @@
   
   //region 提交表单
   function SubmitBefore(){
-    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+    BlockWindow_ExecOp('正在保存客户经理数据', 140);
   }
 
   function SubmitResponse(responseText){

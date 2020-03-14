@@ -1,0 +1,160 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">编辑</h3>
+            </div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">标题</span>
+                        <input type="text" class="form-control" placeholder="请输入标题..." name="title" id="title" value="{$data['item'].title}" maxlength="120">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">序号</span>
+                        <select class="form-control" name="sort_field" id="sort_field">
+                            <?php for ($i = 1; $i < 51; $i++): ?>
+                            <?php if ($data['item']['sort'] == $i) :?>
+                            <option value="<?php echo $i ?>" selected="selected"><?php echo $i ?></option>
+                            <?php else :?>
+                            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php endif; ?>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否启用</span>
+                        <select class="form-control" name="enable_field" id="enable_field">
+                            <?php if ($data['item']['enable'] == '0') :?>
+                            <option value="1">启用</option>
+                            <option value="0" selected="selected">不启用</option>
+                            <?php else :?>
+                            <option value="1" selected="selected">启用</option>
+                            <option value="0">不启用</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">上传文件</span>
+                        <input type="text" class="form-control" readonly name="img_url" id="img_url" value="{$data['item'].img_url}" >
+                        <div id="queue" style="display: none"></div>
+                        <input id="file_upload" name="file_upload" class="addprodinnbtn new_add" type="file" multiple="true">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="id" value="{$data['item'].Id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+<!--web upload-->
+<link rel="stylesheet" type="text/css" href="/Public/common/uploadifive/uploadifive.css">
+<block name="script">
+    <script src="/Public/common/uploadifive/jquery.uploadifive.min.js" type="text/javascript" ></script>
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/bbs_queue_list';
+            });
+
+            init();
+        });
+
+        function init() {
+            initUpload();
+        }
+
+        function add_file(file) {
+            if (file.code == 0) {
+                alert(file.msg);
+
+                return;
+            }
+
+            $('#img_url').val(file.file_name);
+            //$('#version_size').val(file.size);
+            //$('#file_app_md5').val(file.md5);
+
+            alert('上传成功!');
+        }
+
+        //初始化上传控件
+        function initUpload() {
+            $('#file_upload').uploadifive({
+                'buttonText'       : '请选择上传文件',
+                'multi'            : false,
+                'auto'             : true,
+                'checkScript'      : '/Public/common/uploadifive/check-exists.php',
+                'formData'         : {
+                    'timestamp' : '<?php echo $timestamp;?>',
+                    'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+                },
+                'queueID'          : 'queue',
+                'uploadScript'     : '/Public/common/uploadifive/uploadifive.php',
+                'onUploadComplete' : function(file, data) {
+                    add_file(JSON.parse(data));
+                }
+            });
+        }
+
+        function saveItem() {
+            var version = {};
+
+            version.id = $('#id').val();
+            version.title = $('#title').val();
+            version.sort_field = $('#sort_field').val();
+            version.enable_field = $('#enable_field').val();
+            version.img_url = $('#img_url').val();
+
+            if (!version.title) {
+                alert('标题不能为空!');
+
+                return;
+            }
+
+            if (!version.img_url) {
+                alert('请先上传文件!');
+
+                return;
+            }
+
+            var data = {'version':version };
+
+//            console.log(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存编辑?')) {
+                fit.ajax({
+                    url:'/manage/bbs_queue_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

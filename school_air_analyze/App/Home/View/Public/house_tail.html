@@ -1,0 +1,74 @@
+<!-- Swiper JS -->
+<script src="__JS__/swiper.min.js"></script>
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+</script>
+
+</div>
+
+
+<div class="btmblockmain">
+    <div>
+        <div class="t1">粤ICP备15111482号-1</div>
+        <div class="t2">Powered by 20018-2021 深圳市唯润城有限公司</div>
+    </div>
+</div>
+
+<!--百度API链接请自行注册生成-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=C39a01ae2221d5afc846238539b6bbc2"></script>
+<script>
+    // 百度地图API功能
+    var map = new BMap.Map("themap");
+    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(-87.915364, 42.201544), 15);
+    // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true);
+    //开启鼠标滚轮缩放
+    var point = new BMap.Point(-87.915364, 42.201544);
+    // 关联图片
+    var myIcon = new BMap.Icon("img/mapdot.png", new BMap.Size(25, 25));
+    //map.centerAndZoom(point, 15);
+    var marker = new BMap.Marker(point, {
+        icon: myIcon
+    });
+    // 创建标注
+    map.addOverlay(marker);
+
+    var opts = {
+        position: point, // 指定文本标注所在的地理位置
+        offset: new BMap.Size(12, -30) //设置文本偏移量
+    }
+
+    $('document').ready(function() {
+
+    });
+</script>
+<!-- /container -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.expand').click(function() {
+            $('#themap').addClass('big');
+            $(this).hide();
+            $('.inexpand').show();
+        });
+        $('.inexpand').click(function() {
+            $('#themap').removeClass('big');
+            $(this).hide();
+            $('.expand').show();
+        });
+
+        $('.btbtn_d').click(function() {
+            $('.expandableboard').height('auto');
+            $(this).hide();
+        });
+    });
+</script>

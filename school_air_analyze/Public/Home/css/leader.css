@@ -1,0 +1,118 @@
+.ldr_d01 {
+	padding:30px 0;
+	text-align: center;
+	background:linear-gradient(#00cccc, #26dfdf);
+	color:#FFF;
+	text-shadow: 0 1px 3px rgba(0,0,0,.5);
+	font-size: 22px;
+}
+.ldr_blk {
+	padding:15px;
+}
+.ldr_label {
+	font-size:12px;
+	margin-bottom:8px;
+	display: block;
+	color:#666;
+}
+.ldr_input {
+	width:100%;
+	box-sizing: border-box;
+	padding:15px 15px;
+	background:#FFF;
+}
+.ldr_formrow {
+	margin-bottom:15px;
+}
+.ldr_btn {
+	display: block;
+	text-align: center;
+	background:#0cc;
+	padding:0;
+	color:#FFF;
+	width: 100%;
+	height:42px;
+	font-size:16px;
+	border-radius:5px;
+}
+.ldr_qusti {
+	font-size:16px;
+	margin-bottom:5px;
+}
+.ldr_qusti .t1 {
+	font-weight: bold;
+	margin-right: 5px;
+}
+.ldr_qusti .t3 {
+	color:#FA7000;
+	margin-left:15px;
+}
+.ldr_qustiwp {
+	padding:15px;
+	border-bottom:1px solid rgba(0,0,0,.1);
+}
+.ldr_table {
+	width:100%;
+}
+.ldr_table td {
+	vertical-align: top;
+	line-height: 28px;
+	font-size: 16px;
+}
+.ldr_table .col1 {
+	font-weight: bold;
+	width: 30%;
+}
+.ldr_table .col2 {
+	padding-bottom:10px;
+}
+.ldr_gladdritm {
+	float:left;
+	display: inline-block;
+	width:60px;
+	height: 60px;
+	margin-right: 10px;
+	background-size: cover;
+	background-position: center center;
+}
+.ldr_slec {
+	width:100%;
+	box-sizing: border-box;
+	padding:10px;
+	font-size: 16px;
+}
+.ldr_ss01 {
+	margin-bottom:12px;
+	display: block;
+	padding-top:12px;
+	font-size: 16px;
+	font-weight: bold;
+}
+.ldr_meblk {
+	padding:15px;
+	margin:15px;
+	border-radius:5px;
+	border:1px solid #ddd;
+}
+.ldr_backlist {
+	display: inline-block;
+	padding:10px 20px;
+	background: #fff;
+	color: #00CCCC;
+	line-height: normal;
+	text-shadow: none;
+	margin-top:15px;
+	font-size: 16px;
+	border-radius: 50px;
+	box-shadow: 0 2px 10px rgba(0,0,0,.1);
+	border: none;
+}
+.ldr_di01, .ldr_di02 {
+	width:100%;
+	box-sizing: border-box;
+	padding:10px;
+	margin-bottom:15px;
+}
+.ldr_di02 {
+	height:80px;
+}

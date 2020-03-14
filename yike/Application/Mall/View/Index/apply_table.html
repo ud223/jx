@@ -1,0 +1,1110 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!-- 页面部分 -->
+    <style>
+        body {
+            padding-bottom:160px;
+        }
+        h1 {
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .applyformhd {
+            width: 1100px;
+            padding-top: 50px;
+            line-height: 36px;
+        }
+
+        .applyformhd .st1_1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .applyformhd .st1_2 {
+            line-height: 14px;
+        }
+
+        .applyformhd .fhunit {
+            position: absolute;
+            right: 30px;
+            height: 14px;
+            line-height: 14px;
+            font-size: 12px;
+            color: #bbb;
+            top: 50%;
+            margin-top: -7px;
+            z-index: 5;
+        }
+
+        .redstag {
+            color: red;
+        }
+
+        .gurimtxt {
+            text-align: right;
+        }
+
+        input[type=text],
+        .txtdiv,
+        select {
+            height: 36px;
+        }
+
+        .txtdiv {
+            line-height: 36px;
+            cursor: pointer;
+        }
+
+        .txtdiv .icon-angledown {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            margin-top: -10px;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .dhidhctxt {
+            font-size: 12px;
+            color: #bbb;
+            margin-left: 10px;
+        }
+
+        .storetmp {
+            display: none;
+        }
+
+        .stores .onestore:first-child .deleteonestore {
+            display: none !important;
+        }
+
+        .stores .onestore .deleteonestore {
+            display: inline-block;
+            right: 0;
+            position: absolute;
+            top: 7px;
+        }
+
+        .warningframe {
+            box-shadow: 0 0 5px rgba(255, 0, 0, .75) !important;
+        }
+        .pagebottom {
+            display: none;
+        }
+    </style>
+    <div style="height:120px;"></div>
+    <div class="container apply-hdchtdm">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="clearfix dh1">
+                    <div class="lt"><strong>加盟申请</strong></div>
+                    <div class="rt">
+                        <div class="dhchddlwo" id="dropdownMenu1" data-toggle="dropdown">
+                            <span>商家加盟</span>
+                            <i class="iconfont icon-angledown"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+                            <li>
+                                <a href="/index/apply">加盟商申请</a>
+                            </li>
+                            <li>
+                                <a href="/index/expstore_search">进度查询</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>商家加盟申请表</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container applyformhd">
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-xs-12">
+                <div class="st1">
+                    <div class="st1_1">公司信息</div>
+                    <div class="st1_2">请填写您公司营业执照上的相关信息 <span class="redstag">*</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    公司名称 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <input id="company_name" type="text" req_type="text" req="yes" title='请填写公司名称' data-trigger="manual" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    法人姓名 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="owner" type="text" req_type="text" req="yes" title='请填写法人姓名' data-trigger="manual" />
+            </div>
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    法人身份证号码 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="owner_card_id" req_type="card_id" type="text" req="yes" title='请填写法人身份证号码' data-trigger="manual" />
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-xs-12">
+                请填写您公司注册地址所在地区 <span class="redstag">*</span>
+            </div>
+        </div>
+        <div class="row citydataarea" style="margin-bottom:30px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    省份 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <select id="province" class="sheng" req="yes" title='省份' data-trigger="manual">
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    市 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <select id="city" class="shi" req="yes" title='请填写市' data-trigger="manual">
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    区 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <select id="region" class="qu" req="yes" title='请填写区' data-trigger="manual">
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-xs-12">
+                您公司其他的信息
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    运营资金 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="business_fund" req_type="float" type="text" req="yes" title='请填写运营资金' data-trigger="manual" />
+                <span class="fhunit">万元</span>
+            </div>
+
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    运营区域 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="operating_region" req_type="text" type="text" placeholder="请任意填写" req="yes" title='请填写运营区域' data-trigger="manual" />
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    注册资金
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="registered_capital" req_type="float" type="text" />
+                <div class="fhunit">万元</div>
+            </div>
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    主营品牌
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="brand" req_type="text" type="text" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    经营人员
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="operating_number" req_type="int" type="text" />
+                <div class="fhunit">人</div>
+            </div>
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    售后服务人员
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="server_number" req_type="int" type="text" />
+                <div class="fhunit">人</div>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    拥有门店数
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="store_number" req_type="int" type="text" />
+                <div class="fhunit">个</div>
+            </div>
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    已加盟门店数
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="join_store_number" req_type="int" type="text" />
+                <div class="fhunit">个</div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top:50px;margin-bottom:30px;">
+            <div class="col-xs-12">
+                <div class="st1">
+                    <div class="st1_1">联系信息</div>
+                    <div class="st1_2">请填写能及时与您取得联系的相关信息 <span class="redstag">*</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    联系人姓名 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="contact_name" req_type="text" type="text" req="yes" title='请填写联系人姓名' data-trigger="manual" />
+            </div>
+
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    联系人电话 <span class="redstag">*</span>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="contact_phone" req_type="tel" type="text" req="yes" title='请填写联系人电话' data-trigger="manual" />
+            </div>
+
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    传真
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="fax" req_type="tel" type="text" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    QQ号
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="qq" req_type="qq" type="text" />
+            </div>
+
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    微信号
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="wechat" req_type="text" type="text" />
+            </div>
+
+            <div class="col-xs-2">
+                <div class="gurimtxt">
+                    邮箱
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input id="email" req_type="email" type="text" />
+            </div>
+        </div>
+
+        <div class="row" style="padding-top:50px;margin-bottom:30px;">
+            <div class="col-xs-12">
+                <div class="st1">
+                    <div class="st1_1">网点信息</div>
+                    <div class="st1_2">请填写您想要加盟网点的门店相关信息 <span class="redstag">*</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stores">
+
+        </div>
+
+        <div class="row" style="margin-bottom:15px;padding-top:10px;padding-bottom:10px;">
+            <div class="col-xs-12 tc">
+                <a href="javascript:void(0)" class="btn btn-default" onclick="$('.stores').append($('.storetmp .onestore').clone(true));">+ 添加您的另一个门店为加盟网点</a>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top:50px;margin-bottom:30px;">
+            <div class="col-xs-12">
+                <div class="st1">
+                    <div class="st1_1">备注信息</div>
+                    <div class="st1_2">如有其它信息，请在此填写</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-8">
+                <textarea id="remark" maxlength="500" class="textarea" style="height:80px;"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="background:#FFF;padding-top:30px;padding-bottom:30px;border-top:1px solid #F60;position:fixed;z-index:9;bottom:0;left:0;right:0;line-height:normal;color:#bbb;">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div style="color:#444;">说明：</div>
+                    <div>1. 红色星号部分 (*) 须填写完整，并确保内容真实性。</div>
+                    <div>2. 各门店均具有区域保护性，我们会按照先后顺序进行筛选抉择。</div>
+                </div>
+                <div class="col-xs-6">
+                    <input type="hidden" id="company_id">
+                    <button style="float:right;" class="btn btn-primary" id="submitthisform">
+                        提交
+                    </button>
+                    <button style="float:right;margin-right:10px;" onclick="location.href='/index/apply'" class="btn btn-default">
+                        取消返回
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="storetmp">
+        <div class="onestore">
+            <div class="row hengpaitt" style="margin-bottom:30px;margin-top:30px;">
+                <div class="col-xs-12">
+                    <div style="text-align:center;">
+                        <span style="position:relative;padding:0 50px;background:#FFF;display:inline-block;z-index:2;">您的新门店</span>
+                        <div style="background:#EEE;height:1px;width:100%;left:0;top:50%;position: absolute;z-index:0;"></div>
+                        <input type="hidden" name="store_id">
+                        <a href="javascript:void(0)" class="btn btn-default deleteonestore">删除该门店</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        加盟类型 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <select name="join_type" req="yes" title='请填写加盟类型' data-trigger="manual">
+                        <option value="经销商">经销商</option>
+                        <option value="服务商">服务商</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        行业经验 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <select name="industry_experience" req="yes" title='请填写行业经验' data-trigger="manual">
+                        <option value="电动车">电动车</option>
+                        <option value="摩托车">摩托车</option>
+                        <option value="其他维修史">其他维修史</option>
+                        <option value="无">无</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        门店名称 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <input name="store_name" req_type="text" type="text" req="yes" title='请填写门店名称' data-trigger="manual" />
+                </div>
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        门店面积 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <input name="store_area" req_type="float" type="text" req="yes" title='请填写门店面积' data-trigger="manual" />
+                    <span class="fhunit">平方米</span>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        是否能备件 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2" style="line-height:36px;">
+                    <select name="is_backup_part" req="yes" title='请填写是否能备件' data-trigger="manual">
+                        <option value="-1">请选择</option>
+                        <option value="0">不能</option>
+                        <option value="1">能</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        是否有展车位 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2" style="line-height:36px;">
+                    <select name="is_stand" req="yes" title='请填写是否有展车位' data-trigger="manual">
+                        <option value="-1">请选择</option>
+                        <option value="0">没有</option>
+                        <option value="1">有</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        展车位数量 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <input name="stand_number" req_type="int" type="text" req="yes" title='请填写展车位数量' data-trigger="manual" />
+                </div>
+            </div>
+
+            <div class="row citydataarea" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        门店地址 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <select name="province" class="hsditts sheng" req="yes" title='请填写省' data-trigger="manual">
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <select name="city" class="hsditts shi" req="yes" title='请填写市' data-trigger="manual">
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <select name="region" class="hsditts qu" req="yes" title='请填写区' data-trigger="manual">
+                    </select>
+                </div>
+
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        营业时间 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <select name="operating_time_start" style="width:65px;padding:0;" req="yes" title='请填写开门时间' data-trigger="manual">
+                        <option>1:00</option>
+                        <option>2:00</option>
+                        <option>3:00</option>
+                        <option>4:00</option>
+                        <option>5:00</option>
+                        <option>6:00</option>
+                        <option>7:00</option>
+                        <option>8:00</option>
+                        <option selected="selected">9:00</option>
+                        <option>10:00</option>
+                        <option>11:00</option>
+                        <option>12:00</option>
+                    </select>
+                    <span>-</span>
+                    <select name="operating_time_end" style="width:65px;padding:0;" req="yes" title='请填写关门时间' data-trigger="manual">
+                        <option>12:00</option>
+                        <option>13:00</option>
+                        <option>14:00</option>
+                        <option>15:00</option>
+                        <option>16:00</option>
+                        <option>17:00</option>
+                        <option>18:00</option>
+                        <option>19:00</option>
+                        <option>20:00</option>
+                        <option>21:00</option>
+                        <option selected="selected">22:00</option>
+                        <option>23:00</option>
+                        <option>24:00</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        详细地址 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <input name="address" req_type="text" type="text" req="yes" title='请填写详细地址' data-trigger="manual" />
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        GPS信息 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-8">
+                    <input name="gps" type="text" req_type="text" req="yes" title='请填写GPS信息' data-trigger="manual" />
+                </div>
+                <div class="col-xs-2">
+                    <a href="http://lbs.amap.com/console/show/picker" target="_blank">获取GPS坐标</a>
+                </div>
+
+                <!--<div class="col-xs-2">-->
+                    <!--<div class="gurimtxt">-->
+                        <!--运营资金 <span class="redstag">*</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-xs-2">-->
+                    <!--<input name="business_fund" req_type="float" type="text" req="yes" title='请填写运营资金' data-trigger="manual" />-->
+                    <!--<span class="fhunit">万元</span>-->
+                <!--</div>-->
+            </div>
+
+            <canvas id="upload-canvas" style="display:none"></canvas>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        上传门头照片 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <button name="btn_photo_door" class="btn btn-default">点击浏览 ...</button>
+                    <span style="font-size: 12px;color:#bbb;margin-left:10px;">( jpg、png格式，文件小于2M )</span>
+                    <input name="file_photo_door" type="file" style="display:none;" />
+                    <input type="hidden" name="photo_door" req="yes" title='请上传门头照片' data-trigger="manual">
+                    <img name="img_photo_door" style="display:none" style="height:150px" />
+                    <input type="hidden" name="photo_door_code">
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        上传内部照片 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <button name="btn_photo_indoor"  class="btn btn-default">点击浏览 ...</button>
+                    <span class="dhidhctxt">( jpg、png格式，文件小于2M )</span>
+                    <input name="file_photo_indoor" type="file" style="display:none;" />
+                    <input type="hidden" name="photo_indoor" req="yes" title='请上传门头照片' data-trigger="manual">
+                    <img name="img_photo_indoor" style="display:none" style="height:150px" />
+                    <input type="hidden" name="photo_indoor_code">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        上传门外全景照片 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <button name="btn_photo_overall_view"  class="btn btn-default">点击浏览 ...</button>
+                    <span class="dhidhctxt">( jpg、png格式，文件小于2M )</span>
+                    <input name="file_photo_overall_view" type="file" style="display:none;" />
+                    <input type="hidden" name="photo_overall_view" req="yes" title='请上传门头照片' data-trigger="manual">
+                    <img name="img_photo_overall_view" style="display:none" style="height:150px" />
+                    <input type="hidden" name="photo_overall_view_code">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        上传营业执照照片 <span class="redstag">*</span>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <button name="btn_photo_license" class="btn btn-default">点击浏览 ...</button>
+                    <span class="dhidhctxt">( 营业执照扫描件，jpg、png格式，文件小于2M )</span>
+                    <input name="file_photo_license" type="file" style="display:none;" />
+                    <input type="hidden" name="photo_license" req="yes" title='请上传门头照片' data-trigger="manual">
+                    <img name="img_photo_license" style="display:none" style="height:150px" />
+                    <input type="hidden" name="photo_license_code">
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        门店联系人
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <input req_type="text" name="contact_name" type="text" />
+                </div>
+                <div class="col-xs-2">
+                    <div class="gurimtxt">
+                        联系人电话
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <input req_type="tel" name="contact_phone" type="text" />
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        var tmp_pic = null;
+
+        $(document).ready(function() {
+            // 加载第一个门店表单
+            var onestore = $('.storetmp .onestore').clone(true);
+            $('.stores').append(onestore);
+
+            // 全局加载省份
+            $('.citydataarea').each(function() {
+                var sheng = $(this).find('.sheng');
+                sheng.append('<option value="-1">请选择省份</option>');
+                $.each(cityjson, function() {
+                    sheng.append('<option value="' + this.name + '">' + this.name + '</option>');
+                });
+            });
+            // 点击后逐步加载城市
+            $('body').on('change', '.citydataarea .sheng', function() {
+                var $this = $(this);
+                var val = $this.val();
+
+                var cities;
+                $.each(cityjson, function() {
+                    if(this.name === val) {
+                        cities = this.city;
+                    }
+                });
+                var shi = $this.closest('.citydataarea').find('.shi');
+                shi.empty();
+                shi.append('<option value="-1">请选择城市</option>');
+                $.each(cities, function() {
+                    shi.append('<option value="' + this.name + '">' + this.name + '</option>');
+                });
+
+            });
+
+            // 点击后逐步加载区
+            $('body').on('change', '.citydataarea .shi', function() {
+                var $this = $(this);
+                var val = $this.closest('.citydataarea').find('.sheng').val();
+
+                var cities;
+                $.each(cityjson, function() {
+                    if(this.name === val) {
+                        cities = this.city;
+                    }
+                });
+
+                var qus;
+                val = $(this).val();
+                $.each(cities, function() {
+                    if(this.name === val) {
+                        qus = this.area;
+                    }
+                });
+                var qu = $this.closest('.citydataarea').find('.qu');
+                qu.empty();
+                qu.append('<option value="-1">请选择区</option>');
+                $.each(qus, function() {
+                    qu.append('<option value="' + this + '">' + this + '</option>');
+                });
+
+            });
+
+            $('.deleteonestore').click(function() {
+                if(confirm('确认删除该门店信息？')) {
+                    var $this = $(this);
+                    var onestore = $this.closest('.onestore');
+                    onestore.remove();
+                }
+            });
+            //1.
+            $("button[name='btn_photo_door']").click(function () {
+                $(this).parent().find("input[name='file_photo_door']").click();
+            })
+
+            $("input[name='file_photo_door']").change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                var img = $(this).parent().find("img");//[name='img_photo_door']
+                var code_text = $(this).parent().find("input[name='photo_door']").click();
+
+                ImageOptByEle(file, img, imgOpt, getImageCode, code_text);
+            });
+            //2.
+            $("button[name='btn_photo_indoor']").click(function () {
+                $(this).parent().find("input[name='file_photo_indoor']").click();
+            })
+
+            $("input[name='file_photo_indoor']").change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                var img = $(this).parent().find("img");//[name='img_photo_door']
+                var code_text = $(this).parent().find("input[name='photo_indoor']").click();
+
+                ImageOptByEle(file, img, imgOpt, getImageCode, code_text);
+            });
+            //3.
+            $("button[name='btn_photo_overall_view']").click(function () {
+                $(this).parent().find("input[name='file_photo_overall_view']").click();
+            })
+
+            $("input[name='file_photo_overall_view']").change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                var img = $(this).parent().find("img");//[name='img_photo_door']
+                var code_text = $(this).parent().find("input[name='photo_overall_view']").click();
+
+                ImageOptByEle(file, img, imgOpt, getImageCode, code_text);
+            });
+            //4.
+            $("button[name='btn_photo_license']").click(function () {
+                $(this).parent().find("input[name='file_photo_license']").click();
+            })
+
+            $("input[name='file_photo_license']").change(function () {
+                var file = this.files[0];
+
+                tmp_pic = file;
+
+                var img = $(this).parent().find("img");//[name='img_photo_door']
+                var code_text = $(this).parent().find("input[name='photo_license']").click();
+
+                ImageOptByEle(file, img, imgOpt, getImageCode, code_text);
+            });
+
+            $('#submitthisform').click(function() {
+                var result = validateInput();
+
+                if(!result) {
+                    $.alertbox({
+                        msg:'<span class="orange">请完成所有必填项再提交!</span>'
+                    });
+                } else {
+                    result = validateFormat();
+
+                    if(!result) {
+                        $.alertbox({
+                            msg:'<span class="orange">请正确填写提交信息!</span>'
+                        });
+                    }
+                    else {
+                        save();
+                    }
+                }
+            });
+
+            var validateInput = function() {
+                var result = true;
+                $('.warningframe').removeClass('warningframe');
+                $('.applyformhd').find('*[req="yes"]').each(function() {
+                    var $this = $(this);
+                    var typeoftag = typeof($this);
+                    if(this.tagName.toLowerCase() === 'input') {
+                        console.log($this.val().length);
+                        if($this.val().length == 0) {
+//                            alert($this.attr('name') + ":" + $this.val());
+                            $this.tooltip('show');
+                            $this.addClass('warningframe');
+                            result = false;
+                        } else {
+                            $this.tooltip('destroy');
+                        }
+                    } else if(this.tagName.toLowerCase() === 'select') {
+                        if(!$this.val() || $this.val() == '-1') {
+//                            alert($this.attr('name'));
+                            $this.tooltip('show');
+                            $this.addClass('warningframe');
+                            result = false;
+                        } else {
+                            $this.tooltip('destroy');
+                        }
+                    }
+                });
+                return result;
+            }
+
+            var validateFormat = function () {
+                var result = true;
+                $('.warningframe').removeClass('warningframe');
+                $('.applyformhd').find('*[req_type="int"]').each(function() {
+                    var $this = $(this);
+                    var reg = /^[-\+]?\d+$/;
+
+                    if (!reg.test($this.val())) {
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    }
+                });
+
+                $('.applyformhd').find('*[req_type="float"]').each(function() {
+                    var $this = $(this);
+                    var reg = /^\d+(\.\d+)?$/;
+
+                    if (!reg.test($this.val())) {
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    }
+                });
+
+                $('.applyformhd').find('*[req_type="qq"]').each(function() {
+                    var $this = $(this);
+                    var reg = /^[1-9]\d{4,8}$/;
+
+                    if (!reg.test($this.val())) {
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    }
+                });
+
+                $('.applyformhd').find('*[req_type="email"]').each(function() {
+                    var $this = $(this);
+                    var reg = /^\w+([-+.]\w+)*@\w+([-.]\\w+)*\.\w+([-.]\w+)*$/;
+
+                    if (!reg.test($this.val())) {
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    }
+                });
+
+                $('.applyformhd').find('*[req_type="card_id"]').each(function() {
+                    var $this = $(this);
+                    var reg = /^\d{15}(\d{2}[A-Za-z0-9])?$/;
+
+                    if (!reg.test($this.val())) {
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    }
+                });
+
+                $('.applyformhd').find('*[req_type="tel"]').each(function() {
+                    var $this = $(this);
+                    var isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+                    var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+
+
+                    if (!isPhone.test($this.val()) && !isMob.test($this.val())) {
+                        $this.tooltip('show');
+                        $this.addClass('warningframe');
+                        result = false;
+                    }
+                });
+
+                return result;
+            }
+        });
+
+        function imgOpt(img) {
+            img.show();
+        }
+
+        function getImageCode(img, code_text) {
+            var image = img.get(0);//document.getElementById('pre-image');
+            var is_def = false;
+
+            EXIF.getData(image, function () {
+                if (EXIF.getTag(image, 'Orientation') == 6) {
+                    is_def = true;
+                }
+                //使用插件初始化图片
+                var mpImg = new MegaPixImage(tmp_pic);
+                var option = null;
+
+                if (is_def)
+                    option = { maxWidth: image.width * 2, maxHeight: image.height * 2, orientation: 6 };
+                else
+                    option = { maxWidth: image.width * 2, maxHeight: image.height * 2, quality: 0.5 };
+
+                var canvas = document.getElementById('upload-canvas');
+
+                mpImg.render(canvas, option, function () {
+                    var base64 = canvas.toDataURL('image/jpeg');
+//                    alert(code_text.attr('name'));
+//                    code_text.parent().find("input[name='"+ code_text.attr('name').replace('_code', '') +"']").val(base64);
+                    code_text.val(base64);
+
+//                    alert(code_text.val());
+                });
+            });
+        }
+
+        function save() {
+            var company = getCompanyData();
+            var stores = getStoreData();
+            
+            var data = { 'company': company, 'stores': stores };
+
+//            alert(JSON.stringify(data)); return;
+
+            fit.ajax({
+                url:'/user/company_submit',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>',
+
+                        exitCallback: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        }
+
+        function  getCompanyData() {
+            var company_id = $('#company_id').val();
+            var company_name = $('#company_name').val();
+            var owner = $('#owner').val();
+            var owner_card_id = $('#owner_card_id').val();
+            var province = $('#province').find("option:selected").text();
+            var city = $('#city').find("option:selected").text();
+            var region = $('#region').find("option:selected").text();
+            var registered_capital = $('#registered_capital').val();
+            var brand = $('#brand').val();
+            var operating_number = $('#operating_number').val();
+            var server_number = $('#server_number').val();
+            var store_number = $('#store_number').val();
+            var join_store_number = $('#join_store_number').val();
+            var contact_name = $('#contact_name').val();
+            var contact_phone = $('#contact_phone').val();
+            var fax = $('#fax').val();
+            var qq = $('#qq').val();
+            var wechat = $('#wechat').val();
+            var email = $('#email').val();
+            var remark = $('#remark').val();
+            var business_fund = $('#business_fund').val();
+            var operating_region = $('#operating_region').val();
+
+            var  data = {};
+
+            data['company_id'] = company_id;
+            data['company_name'] = company_name;
+            data['owner'] = owner;
+            data['owner_card_id'] = owner_card_id;
+            data['province'] = province;
+            data['city'] = city;
+            data['region'] = region;
+            data['registered_capital'] = registered_capital;
+            data['brand'] = brand;
+            data['operating_number'] = operating_number;
+            data['server_number'] = server_number;
+            data['store_number'] = store_number;
+            data['join_store_number'] = join_store_number;
+            data['contact_name'] = contact_name;
+            data['contact_phone'] = contact_phone;
+            data['fax'] = fax;
+            data['qq'] = qq;
+            data['wechat'] = wechat;
+            data['email'] = email;
+            data['remark'] = remark;
+            data['business_fund'] = business_fund;
+            data['operating_region'] = operating_region;
+
+            return data;
+        }
+        
+        function getStoreData() {
+            var data = {};
+
+            var stores = $('.stores').find('.onestore');
+
+            for (var i = 0; i < stores.length; i++) {
+                var store_data = {};
+
+                var store = stores[i];
+
+                store_data['store_id'] = $(store).find("input[name='store_id']").val();
+                store_data['join_type'] = $(store).find("select[name='join_type']").val();
+                store_data['industry_experience'] = $(store).find("select[name='industry_experience']").val();
+                store_data['store_name'] = $(store).find("input[name='store_name']").val();
+                store_data['store_area'] = $(store).find("input[name='store_area']").val();
+                store_data['is_backup_part'] = $(store).find("select[name='is_backup_part']").val();
+                store_data['is_stand'] = $(store).find("select[name='is_stand']").val();
+                store_data['stand_number'] = $(store).find("input[name='stand_number']").val();
+                store_data['province'] = $(store).find("select[name='province']").val();
+                store_data['city'] = $(store).find("select[name='city']").val();
+                store_data['region'] = $(store).find("select[name='region']").val();
+                store_data['operating_time_start'] = $(store).find("select[name='operating_time_start']").val();
+                store_data['operating_time_end'] = $(store).find("select[name='operating_time_end']").val();
+                store_data['address'] = $(store).find("input[name='address']").val();
+                store_data['operating_region'] = '';$(store).find("input[name='operating_region']").val();
+                store_data['gps'] = $(store).find("input[name='gps']").val();
+                store_data['business_fund'] = '';$(store).find("input[name='business_fund']").val();
+
+                store_data['photo_door'] = $(store).find("input[name='photo_door']").val();
+                store_data['photo_indoor'] = $(store).find("input[name='photo_indoor']").val();
+                store_data['photo_overall_view'] = $(store).find("input[name='photo_overall_view']").val();
+                store_data['photo_license'] = $(store).find("input[name='photo_license']").val();
+
+                store_data['contact_name'] = $(store).find("input[name='contact_name']").val();
+                store_data['contact_phone'] = $(store).find("input[name='contact_phone']").val();
+
+                data[i] = store_data;
+            }
+
+            return data;
+        }
+    </script>
+</block>

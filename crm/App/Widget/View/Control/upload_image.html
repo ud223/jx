@@ -1,0 +1,61 @@
+<?php
+//exitp($upload_image);
+?>
+<div class="form-group {$upload_image.css}" id="{$upload_image.id}Tip">
+    <label class="control-label col-md-{$upload_image.title_width}">
+        {$upload_image.title}<eq name="upload_image.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$upload_image.input_width}">
+        <div class="fileupload fileupload-new">
+            <div class="bt_uploadify_thumb_ifr" id="div_{$upload_image.id}_thumb_ifr"></div>
+
+            <div class="uploadify_ifr" style="clear: both;" id="{$upload_image.id}_item">
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>浏览图片...</span>
+                    <!-- The file input field used as target for the file upload widget -->
+                    <input id="file_{$upload_image.id}" type="file" name="Filedata" accept="{$upload_image.extend.fileTypeDesc}" <eq name="upload_image.extend.multi" value="true">multiple</eq>>
+                </span>
+                
+                <span class="help-block">{$upload_image.tips}</span>
+
+                <input id="{$upload_image.id}" name="{$upload_image.name}" type="hidden" value='{$upload_image.value}'>
+            </div>
+            
+            
+                <!-- The global progress bar -->
+                <div id="div_{$upload_image.id}_loading" style="display:none;">
+                    <span class="help-block"><img src="__PUBLIC__/res/admin/assets/img/input-spinner.gif" align="" width="16" height="16"> 正在上传图片……</span>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+btten.LoadDataImage('div_{$upload_image.id}_thumb_ifr', {$upload_image.extend.multi}, '{$upload_image.id}');
+
+$(function () {
+    $('#file_{$upload_image.id}').fileupload({
+        url : '__MODULE__/{$upload_image.extend.url}',
+        dataType : 'json',
+        acceptFileTypes : /(\.|\/)({$upload_image.extend.fileTypeExts})$/i,
+        maxFileSize : {$upload_image.extend.fileSizeLimit}, // 5 MB
+        formData:{ fieldname : '{$upload_image.extend.fieldname}', crop : {$upload_image.extend.crop}, thumbsize : '{$upload_image.extend.thumbsize|json_encode}' },//如果需要额外添加参数可以在这里添加
+        done: function (e, data) {
+            $('#div_{$upload_image.id}_loading').hide();
+            
+            if(data.result.status == 0){
+                btten.Warning(data.result.info);
+                return;
+            }else{
+                var sJson = '{"imageid":'+ data.result.imageid +',"image":"'+ data.result.image +'","path":"'+ data.result.path +'","width":'+ data.result.width +',"height":'+ data.result.height +',"url":"'+ data.result.url +'","thumb_image":"'+ data.result.thumb_image +'","thumb_path":"'+ data.result.thumb_path +'","thumb_width":'+ data.result.thumb_width +',"thumb_height":'+ data.result.thumb_height +',"thumb_type":"'+ data.result.thumb_type +'","thumb_mime":"'+ data.result.thumb_mime +'","thumb_size":'+ data.result.thumb_size +',"thumb_url":"'+ data.result.thumb_url +'"}';
+
+                btten.ThumbHtml("div_{$upload_image.id}_thumb_ifr", {$upload_image.extend.multi}, sJson, '{$upload_image.id}');
+            }
+        },
+        submit : function (e, data) {
+            $('#div_{$upload_image.id}_loading').show();
+        }
+    });
+});
+</script>

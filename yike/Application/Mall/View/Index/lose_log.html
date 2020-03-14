@@ -1,0 +1,136 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!-- 页面部分 -->
+    <style>
+        body {
+            padding-top:150px;
+            background:#FBFBFB;
+        }
+        .fomdh {
+            width:100%;
+        }
+        .fomdh td {
+            vertical-align: middle;
+            height:60px;
+        }
+        .fomdh .btn-primary {
+            width:120px;height:40px;
+        }
+        .fomdhtt {
+            margin-bottom:25px;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+    <div class="container" style="margin-bottom:90px;">
+        <div class="row">
+            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-xs-4">
+                <div class="fomdhtt">
+                    上报失窃车辆信息
+                </div>
+                <div class="alert alert-warning">
+                    该车辆为失窃车辆，请协助保留车辆送修人联系方式，并录入系统，谢谢合作！
+                </div>
+                <table class="fomdh">
+                    <tr>
+                        <td>
+                            <label>送修人</label>
+                        </td>
+                        <td>
+                            <input id="repair_name" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>送修人电话</label>
+                        </td>
+                        <td>
+                            <input id="repair_phone" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>发现车辆门店</label>
+                        </td>
+                        <td>
+                            <input id="point_name" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>举报人</label>
+                        </td>
+                        <td>
+                            <input id="opt_name" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>举报人电话</label>
+                        </td>
+                        <td>
+                            <input id="opt_phone" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <button id="btn_query" class="btn btn-primary">提交</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="car_id"  value="<?php echo $data['car_id'] ?>">
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn_query').click(function () {
+                save();
+            })
+        })
+
+        function save() {
+            var log = {};
+
+            log.car_id = $('#car_id').val();
+            log.repair_name = $('#repair_name').val();
+            log.repair_phone = $('#repair_phone').val();
+            log.point_name = $('#point_name').val();
+            log.opt_name = $('#opt_name').val();
+            log.opt_phone = $('#opt_phone').val();
+
+            var data = { 'log': log };
+
+            fit.ajax({
+                url:'/user/lose_log',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                            console.log(JSON.stringify(result));
+                    if (result.code == 200) {
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>',
+                            exitCallback: function () {
+                                location.href= '/index/cart_query';
+                            }
+                        });
+                    }
+                    else {
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>'
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</block>

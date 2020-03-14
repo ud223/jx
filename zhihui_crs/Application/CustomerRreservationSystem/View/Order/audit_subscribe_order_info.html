@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            <label class="label label-info">回复预约</label>&nbsp;{$OrderInfo.status_desc}&nbsp;{$OrderInfo.order_sn}
+          </h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/AuditSubscribeOrderInfoSave" method="post">
+            <input type="hidden" autocomplete="off" name="order_sn" id="hf_order_sn" value="{$OrderInfo.order_sn}" />
+
+            <div class="form-group">
+              <div class="col-sm-10 col-sm-offset-1">
+                <p class="form-control-static">预约时间：{$OrderInfo.reservation_time}</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-10 col-sm-offset-1">
+                <label>回复内容</label>
+                <textarea class="form-control" name="review_remarks" id="review_remarks" rows="5" autocomplete="off" placeholder="回复内容" style="resize: none;">{$ReviewInfo.review_remarks}</textarea>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            
+            <empty name="OrderInfo.xf_attachment">
+              <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-1">
+                  <input type="file" name="attachment" id="attachment" class="form-control">
+                  <span class="help-block m-b-none">保险计划书附件只能上传{$ProductAttachmentImgCfg.desc}、{$ProductAttachmentFileCfg.desc}文件</span>
+                </div>
+              </div>
+  
+              <div class="hr-line-dashed"></div>
+            <else/>
+              <input type="hidden" name="attachment" id="attachment" value="you" disabled />
+            </empty>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <input type="hidden" name="review_status" id="review_status" value="" />
+                
+                <button class="btn btn-primary" type="button" data-review="approve" onclick="SetReviewForm(this);"><i class="fa fa-check"></i>&nbsp;回复</button>
+                <button class="btn btn-danger" type="button" data-review="reject" onclick="SetReviewForm(this);"><i class="fa fa-remove"></i>&nbsp;驳回</button>
+
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+  
+            <div class="ibox float-e-margins">
+              <div class="ibox-title"><h5>附件信息</h5></div>
+              <div class="ibox-content">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <notempty name="OrderInfo.attachment">
+                      <div class="file-box">
+                        <div class="file">
+                          <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.attachment.id}">
+                            <span class="corner"></span>
+                  
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$OrderInfo.attachment.full_file}">
+                            </div>
+                            <div class="file-name">
+                              <span style="word-wrap:break-word;">{$OrderInfo.attachment.original_name}</span>
+                              <br/>
+                              <small>添加时间：{$OrderInfo.attachment.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </notempty>
+          
+                    <notempty name="CustomerInfo.idcard_img_a">
+                      <div class="file-box">
+                        <div class="file">
+                          <!--<a href="javascript:void(0);">-->
+                          <a href="__MODULE__/Download/OriginalNameImage/image_id/{$CustomerInfo.idcard_img_a.id}">
+                  
+                            <span class="corner"></span>
+                  
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$CustomerInfo.idcard_img_a.full_file}">
+                            </div>
+                            <div class="file-name">
+                              {$CustomerInfo.idcard_img_a.original_name}
+                              <br/>
+                              <small>添加时间：{$CustomerInfo.idcard_img_a.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </notempty>
+  
+                    <notempty name="OrderInfo.xf_attachment">
+                      <eq name="OrderInfo.attachment_type" value="$AttachmentFileType">
+                        <div class="file-box">
+                          <div class="file">
+                            <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.xf_attachment.id}">
+                              <span class="corner"></span>
+            
+                              <div class="icon">
+                                <i class="fa {$OrderInfo.xf_attachment.icon}"></i>
+                              </div>
+                              <div class="file-name">
+                                <span style="word-wrap:break-word;">{$OrderInfo.xf_attachment.original_name}</span>
+                                <br/>
+                                <small>文件大小：{$OrderInfo.xf_attachment.file_size_kb}KB</small>
+                                <br/>
+                                <small>添加时间：{$OrderInfo.xf_attachment.add_date}</small>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      </eq>
+    
+                      <eq name="OrderInfo.attachment_type" value="$AttachmentImageType">
+                        <div class="file-box">
+                          <div class="file">
+                            <a href="__MODULE__/Download/OriginalNameImage/image_id/{$OrderInfo.xf_attachment.id}">
+                              <span class="corner"></span>
+            
+                              <div class="image">
+                                <img alt="image" class="img-responsive" src="{$OrderInfo.xf_attachment.full_file}">
+                              </div>
+            
+                              <div class="file-name">
+                                {$OrderInfo.xf_attachment.original_name}
+                                <br/>
+                                <small>添加时间：{$OrderInfo.xf_attachment.add_date}</small>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      </eq>
+                    </notempty>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-title"><h5>客户信息</h5></div>
+                  <div class="ibox-content">
+                    <div class="row">
+                      
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户姓名
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.real_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户性别
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.gender}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          出生年月
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.birthday}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          国籍
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.nationality}</p>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-title"><h5>预约信息</h5></div>
+                  <div class="ibox-content">
+                    <div class="row">
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          产品类别
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.type_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          拟购产品
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.product_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          支付方式
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.payment_type}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          缴费方式
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.pay_type}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          年缴保费
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static"><i class="fa fa-cny"></i>{$OrderInfo.year_premium_amount}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          缴费年限
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$OrderInfo.payment_years}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          保障额度
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$OrderInfo.guarantee_amount}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户描述及备注
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$OrderInfo.seller_manager_remarks}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/UnauditSubscribeOrderList";
+  
+  $(document).ready(function(){
+    //region 下拉框样式
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框样式
+    
+    //region 提交审核结果
+    $("#addForm").validate({
+      ignore: "",
+      rules: {
+//        review_remarks : {
+//          required : true
+//        }
+      },
+      messages: {
+//        review_remarks: "请输入回复内容"
+      },
+      focusInvalid: true,
+      submitHandler: function(form) {
+        if(IsN($('#attachment').val())){
+          swal(
+            {
+              title: "",
+              text: "您未上传保险计划书附件，是否继续？",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#F8AC59",
+              confirmButtonText: "继续",
+              cancelButtonText: "返回",
+              closeOnConfirm: true,
+              closeOnCancel: true
+            },
+            function(isConfirm){
+              if(isConfirm) {
+                $(form).ajaxSubmit({
+                  timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+                  type : "POST",
+                  dataType : "json",
+                  beforeSend : function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("request_type","ajax");
+                  },
+                  beforeSubmit : SubmitBefore,
+                  success : SubmitResponse,    // 提交后的回调函数
+                  error : SubmitError
+                });
+              }else{
+                return false;
+              }
+            }
+          );
+        }else{
+          $(form).ajaxSubmit({
+            timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+            type : "POST",
+            dataType : "json",
+            beforeSend : function (XMLHttpRequest) {
+              XMLHttpRequest.setRequestHeader("request_type","ajax");
+            },
+            beforeSubmit : SubmitBefore,
+            success : SubmitResponse,    // 提交后的回调函数
+            error : SubmitError
+          });
+        }
+      }
+    });
+    //endregion 提交审核结果
+  });
+  
+  //region 提交表单
+  function SetReviewForm(obj){
+    var nReviewStatus = $(obj).attr("data-review");
+    $('#review_status').val(nReviewStatus);
+
+    $("#addForm").submit();
+  }
+  
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存预约数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        <if condition="($AccountType neq $SellerManagerAccount)">
+          window.parent.PollingUntreatedNumber();
+        </if>
+
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

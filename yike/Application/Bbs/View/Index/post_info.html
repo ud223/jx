@@ -1,0 +1,213 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <style>
+        td {
+            position: relative;
+        }
+    </style>
+
+    <input type="hidden" id="hid_section" value="{$section}"/>
+    <div class="container" style="margin-top:50px;margin-bottom:50px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-body">
+                    <div>
+                        <p><span><a id="section_list" href="javascript:void(0)" style="color:blue">帖子列表</a></span><span> &gt; </span><span>{$title}</span>
+                            <a id="my_post"
+                               style="cursor:pointer;float:right;margin-right:0px;margin-bottom: 10px;color:blue">我的贴子</a>
+                            <a id="post_add"
+                               style="cursor:pointer;float:right;margin-right: 30px;color:blue">发新贴</a>
+                        </p>
+                    </div>
+
+                    <table class="table" style="border-bottom: #E1E1E1 1px solid;">
+                        <tr style="background: #E4E4E4;">
+                            <th style="width: 260px;"></th>
+                            <th>
+                                <a id="post_favorite" style="float:right;margin-right: 30px">收藏帖子</a>
+                                <span style="float:right;margin-right: 60px">{$num} 评论</span>
+                            </th>
+                        </tr>
+                        <volist name="data" id="itm">
+                            <tr>
+                                <td class="tr_border" style="padding: 100px 0px;text-align:center">
+                                    <div class="floor">{$itm.floor}</div>
+                                    <img src="{$itm.head_pic}"
+                                         style="width:100px;height:100px" class="img-circle"/>
+                                    <div style="margin-top:20px">{$itm.author}</div>
+                                </td>
+                                <td>
+                                    <div>{$itm.content}</div>
+
+                                    <div class="bottom-time" style="width:90%">
+                                        <div>
+                                            {$itm.creat_at}
+                                            <a href="javascript:void(0);" onclick="showReplay('div_replay_{$itm.Id}');"
+                                               style="color:blue;">回复</a>
+
+                                            <?php if ($delete == 1) :?>
+                                            <a style="color:blue" href="javascript:void(0)" class="itm-del"
+                                               val="{$itm.Id}">删除</a>
+                                            <?php endif; ?>
+
+                                        </div>
+                                        <div style="text-align:left">
+                                            <ul>
+                                                <volist name="itm.replay_data" id="v">
+                                                    <li>{$v.author}: {$v.content}<span
+                                                            style="float:right">{$v.creat_at}</span></li>
+                                                </volist>
+                                            </ul>
+                                        </div>
+                                        <div id="div_replay_{$itm.Id}" style="margin-top: 20px;display:none;">
+                                            <input id="txt_{$itm.Id}" type="text" style="width:100%;"/>&nbsp;
+                                            <a id="btn_{$itm.Id}" style="float:right;color:blue;"
+                                               href="javascript:void(0);"
+                                               onclick="saveReplay('{$itm.Id}','txt_{$itm.Id}')">提交</a>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                    <div class="pages">
+                        {$page}
+                    </div>
+                    <div class="line-2"></div>
+                    <div class="input-group">
+                        <span class="input-group-addon">评论：</span>
+                        <input type="hidden" id="content" name="content">
+                        <script type="text/plain" id="editor_content" name="editor_content"
+                                style="width:100%;height:240px;">
+                            <p>1200字以内</p>
+
+
+
+
+
+                        </script>
+                    </div>
+                    <span id="btn_save" class="btn btn-primary add_item_btn"
+                          style="float:right;margin-top: 25px;margin-right: 40px;">提交</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="style">
+    <link href="__PUBLIC__/common/js/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+    <script src="__PUBLIC__/common/js/umeditor/umeditor.config.js"></script>
+    <script src="__PUBLIC__/common/js/umeditor/umeditor.min.js"></script>
+    <script src="__PUBLIC__/common/js/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <style>
+        .input-group {
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        $(function () {
+            //实例化编辑器
+            var um = UM.getEditor('editor_content');
+
+            $('#post_favorite').click(function () {
+                // location.href = '/index/post_add.html?access=' + localStorage.user_id;
+            });
+
+            $('#my_post').click(function () {
+                location.href = '/index/my_post.html?access=' + localStorage.user_id;
+            });
+
+            $('#post_add').click(function () {
+                location.href = '/index/post_add.html';
+            });
+
+            $('#btn_save').click(function () {
+
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = 'http://mall.ecomoter.com/index/login';
+                    return;
+                }
+
+                saveItem();
+            });
+        });
+
+        function showReplay(id) {
+            $('#' + id).toggle()
+        }
+
+        function saveReplay(post_id, input_id) {
+            //alert(post_id);alert($('#'+input_id).val());
+
+            var data = {'content': $('#' + input_id).val(), 'pid': post_id, 'access': localStorage.user_id};
+            fit.ajax({
+                url: '/index/post_replay_add',
+                data: data,
+                success: function (result) {
+//                        alert(JSON.stringify(result));
+                    alert(result.msg);
+                    if (result.code == 200) {
+                        location.href = 'http://bbs.ecomoter.com/index/post_info.html?pid={$pid}';
+                    }
+                }
+            });
+        }
+
+
+        function saveItem() {
+            var html_description = UM.getEditor('editor_content').getContent();
+            var content = html_description;
+            var pid = '{$pid}';
+            var data = {'content': content, 'pid': pid, 'access': localStorage.user_id};
+
+            fit.ajax({
+                url: '/index/post_replay_save',
+                data: data,
+                success: function (result) {
+//                        alert(JSON.stringify(result));
+                    alert(result.msg);
+                    if (result.code == 200) {
+                        location.href = 'http://bbs.ecomoter.com/index/post_info.html?pid={$pid}';
+                    }
+                }
+            });
+        }
+
+        $('.itm-del').click(function () {
+            var id = $(this).attr('val');
+
+            if (confirm('是否删除?')) {
+                fit.ajax({
+                    url: '/index/del_post',
+                    data: {
+                        'id': id
+                    },
+                    success: function (result) {
+                        alert(result.msg);
+
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+
+        $('#section_list').click(function () {
+            var user_id = localStorage.getItem('user_id');
+
+            if (!user_id) {
+                location.href = 'http://mall.ecomoter.com/index/login';
+                return;
+            }
+
+            location.href = "/index/sindex.html?id=" + $('#hid_section').val() + "&access=" + user_id;
+        });
+    </script>
+</block>

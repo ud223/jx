@@ -1,0 +1,435 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="glaxkblock usr-lft">
+                    <div class="pad-20">
+                        <div style="background-image:url(/Public/common/js/img/eco_new.jpg);background-position: center center;background-repeat: no-repeat;background-size: cover;width:100%;height:200px;border-radius:2px;"></div>
+                    </div>
+                    <ul>
+                        <li><a id="li-my-order" href="javascript:void(0)">我的订单</a></li>
+                        <li class="selected"><a id="li-my-address" href="javascript:void(0)">我的地址</a></li>
+                        <li><a id="li-my-pwd" href="javascript:void(0)">修改密码</a></li>
+                        <li><a id="li-my-info" href="javascript:void(0)">资料设置</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <style>
+                    .checkotbf .itm {
+                        cursor: default;
+                        display: block;
+                        margin: 0;
+                        width: auto;
+                        float: none;
+                        margin-bottom: 20px;
+                    }
+
+                    .addnewaddr {
+                        position: absolute;
+                        right: 0;
+                        top: -3px;
+                    }
+                </style>
+                <div class="checkotbf">
+                    <div class="tt">
+                        <span>收货信息</span>
+                        <button class="btn btn-primary btn-sm addnewaddr" data-toggle="modal" data-target="#addressDetail">+ 添加地址</button>
+                    </div>
+                    <div id="address-list" class="itms">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="address-itm" style="display: none">
+        <div class="itm">
+            <div class="nmm name"></div>
+            <div class="phone"></div>
+            <div class="address"></div>
+            <span class="cls iconfont icon-iconfontclose del-address"></span>
+            <span class="iconfont icon-edit edit-address" data-toggle="modal" data-target="#addressDetail"></span>
+            <span class="setdefault">设为默认</span>
+            <span class="default">默认地址</span>
+        </div>
+    </div>
+
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div ui-shopping-service="" class="shopping-service">-->
+                    <!--<ul class="shopping-info gray-box">-->
+                        <!--<li class="online-services">-->
+                            <!--<span class="online"></span>-->
+                            <!--<h5>在线客服</h5>-->
+                            <!--<h6>周一至周日 8:00-17:00</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="return-goods"></span>-->
+                            <!--<h5>7 天无理由退货</h5>-->
+                            <!--<h6>7 天无理由退货 请放心购买</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="delivery-goods"></span>-->
+                            <!--<h5 class="ng-binding">周边产品满 500 元免运费</h5>-->
+                            <!--<h6>全场使用德邦或顺丰快递</h6>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
+        <!--<div class="modal-dialog" role="document" style="width: 400px;">-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                    <!--<h4 class="modal-title" id="myModalLabel">添加地址</h4>-->
+                <!--</div>-->
+                <!--<div class="modal-body" style="padding-bottom:0;">-->
+                    <!--<div>-->
+                        <!--<input type="text" placeholder="收件人姓名" />-->
+                        <!--<div class="clear-15"></div>-->
+                        <!--<input type="text" placeholder="手机/电话" />-->
+                        <!--<div class="clear-15"></div>-->
+                        <!--<input type="text" placeholder="收件地址 省/市/区/ 门牌号码" />-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="modal fade" id="addressDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">修改地址</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <div>
+                        <input id="name" type="text" placeholder="收件人姓名" />
+                        <div class="clear-15"></div>
+                        <input id="phone" type="text" placeholder="手机/电话" />
+                        <div class="clear-15"></div>
+                        <select class="sheng"></select> <select class="shi"></select>
+                        <div class="clear-15"></div>
+                        <input id="address" type="text" placeholder="收件地址 区/ 门牌号码" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-address" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="address_id">
+    <!-- /container -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        });
+    </script>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            // 顶部banner动画
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 150) {
+                    $('.nxtopbanner').removeClass('topped');
+                } else {
+                    $('.nxtopbanner').addClass('topped');
+                }
+
+            });
+
+            // 顶部banner内部的hover事件
+            $('.mdcontent .uln li').mouseenter(function() {
+                var $this = $(this);
+                $this.siblings('li').addClass('ignor');
+                $this.removeClass('ignor');
+            });
+            $('.mdcontent .uln li').mouseleave(function() {
+                $('.mdcontent .uln li').removeClass('ignor');
+            });
+
+            $(window).scroll(function() {
+                if($(window).scrollTop() <= 600) {
+                    $('.btfixprodthumb').removeClass('displayed');
+                } else {
+                    $('.btfixprodthumb').addClass('displayed');
+                }
+
+            });
+
+            User.validate();
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_order?access='+ user_id;
+            });
+
+            $('#li-my-address').click(function () {
+//                var user_id = localStorage.getItem('user_id');
+//
+//                if (!user_id) {
+//                    location.href = '/index/login';
+//
+//                    return;
+//                }
+//
+//                location.href = '/index/user_address?access='+ user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('#li-my-info').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_info?access='+ user_id;
+            });
+
+            $('#save-address').click(function () {
+                addAddess();
+            })
+
+            $('.addnewaddr').click(function () {
+                $('#address_id').val('');
+                $('#name').val('');
+                $('#phone').val('');
+                $('#address').val('');
+            })
+
+            getAddress();
+
+            initProvince();
+        });
+
+        function initProvince() {
+            var sheng = $('.sheng');
+            sheng.append('<option value="-1">请选择省份</option>');
+            $.each(cityjson, function() {
+                sheng.append('<option value="' + this.name + '">' + this.name + '</option>');
+            });
+
+            $('body').on('change', '.sheng', function() {
+                var $this = $(this);
+                var val = $this.val();
+
+                var cities;
+                $.each(cityjson, function() {
+                    if(this.name === val) {
+                        cities = this.city;
+                    }
+                });
+
+                var shi = $('.shi');
+                shi.empty();
+                shi.append('<option value="-1">请选择城市</option>');
+
+                $.each(cities, function() {
+                    shi.append('<option value="' + this.name + '">' + this.name + '</option>');
+                });
+            });
+        }
+
+        function getAddress() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id }
+
+            fit.ajax({
+                url:'/user/get_address',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    if (result.code == 200) {
+                        loadAddress(result.data);
+                    }
+                }
+            });
+        }
+
+        function addAddess() {
+            var user_id = localStorage.getItem('user_id');
+            var address_id = $('#address_id').val();
+            var name = $('#name').val();
+            var phone = $('#phone').val();
+            var province = $('.sheng').val();
+            var city = $('.shi').val();
+            var address = $('#address').val();
+
+            if (!name) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!phone) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            if (!address) {
+                $.alertbox({
+                    msg:'<span class="orange">收件人名字不能为空!</span>'
+                });
+
+                return;
+            }
+
+            var data = { 'user_id':user_id, 'address_id':address_id, 'phone': phone, 'name': name, 'province':province, 'city':city, 'address': address }
+
+            fit.ajax({
+                url:'/user/add_address',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        getAddress()
+                    }
+                }
+            });
+        }
+
+        function delAddess(address_id) {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'address_id': address_id }
+
+            fit.ajax({
+                url:'/user/del_address',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        loadAddress(result.data);
+                    }
+                }
+            });
+        }
+
+        function setDefault(address_id) {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'address_id': address_id }
+
+            fit.ajax({
+                url:'/user/set_default',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        loadAddress(result.data);
+                    }
+                }
+            });
+        }
+
+        function loadAddress(data) {
+            $('#address-list').html('');
+
+            $.each(data, function () {
+                var node = $('#address-itm').find('.itm').clone();
+
+//                node.attr('val', this.id);
+                var tmp_id = this.id;
+                var tmp_name = this.name;
+                var tmp_phone = this.phone;
+                var tmp_province = this.province;
+                var tmp_city = this.city;
+                var tmp_address = this.address;
+
+                node.find('.name').html(tmp_name);
+                node.find('.phone').html(tmp_phone);
+                node.find('.address').html(tmp_province+'省'+tmp_city+'市'+tmp_address);
+
+                node.find('.del-address').click(function () {
+                    if (confirm('是否删除该地址?'))
+                        delAddess(tmp_id);
+                });
+
+                node.find('.setdefault').click(function () {
+                    setDefault(tmp_id);
+                });
+
+                node.find('.edit-address').click(function () {
+                    $('#address_id').val(tmp_id);
+                    $('#name').val(tmp_name);
+                    $('#phone').val(tmp_phone);
+                    $('#address').val(tmp_address);
+                })
+
+                if (this.is_default == '1') {
+                    node.find('.setdefault').hide();
+                    node.find('.default').show();
+                }
+                else {
+                    node.find('.setdefault').show();
+                    node.find('.default').hide();
+                }
+
+                $('#address-list').append(node);
+            });
+        }
+    </script>
+</block>

@@ -1,0 +1,282 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <style type="text/css">
+        .amap-marker .marker-route {
+            position: absolute;
+            width: 40px;
+            height: 44px;
+            color: #e90000;
+            background: url(http://webapi.amap.com/theme/v1.3/images/newpc/poi-1.png) no-repeat;
+            cursor: pointer;
+        }
+        .amap-marker .marker-marker-bus-from {
+            background-position: -334px -180px;
+        }
+    </style>
+    <!-- 页面部分 -->
+    <style>
+        body {
+            padding-bottom: 160px;
+        }
+
+        .pagebottom {
+            display: none;
+        }
+    </style>
+    <div style="height:120px;"></div>
+    <div class="container apply-hdchtdm">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="clearfix dh1">
+                    <div class="lt">
+                        <a style="font-weight:bold;margin-right:20px;" href="authorized.html">经销商门店</a>
+                        <a style="color:#03A9F4;font-weight:bold;margin-right:20px;" href="serverman.html">服务商门店</a>
+                    </div>
+                    <div class="rt">
+                        <div class="dhchddlwo" id="dropdownMenu1" data-toggle="dropdown">
+                            <span>商家加盟</span>
+                            <i class="iconfont icon-angledown"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+                            <li>
+                                <a href="/index/apply">加盟申请</a>
+                            </li>
+                            <li>
+                                <a href="/index/expstore_search">进度查询</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .chooshdtbl {
+            width: 100%;
+        }
+
+        .chooshdtbl td {
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .chooshdtbl tr td:first-child {
+            padding-right: 5px;
+        }
+
+        .chooshdtbl tr td:last-child {
+            padding-left: 5px;
+        }
+        .chooshdtbl select {
+            width:100%;
+        }
+        .sencidtitms {
+            position: absolute;
+            width:100%;
+            top:70px;
+            background:#FFF;
+            bottom:0;
+            left:0;
+            overflow: auto;
+        }
+        .sencidtitm {
+            border-top:1px solid rgba(0,0,0,.15);
+            padding:10px;
+            border-left:5px solid transparent;
+            cursor: pointer;
+        }
+        .sencidtitm:hover {
+            border-left-color:#F60;
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <div style="height:720px;">
+                    <table class="chooshdtbl citydataarea">
+                        <tr>
+                            <td>
+                                <select class="sheng"></select>
+                            </td>
+                            <td>
+                                <select class="shi"></select>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="sencidtitms">
+                        <volist name="data.list" id="itm" key="k">
+                            <div class="sencidtitm" lng="{$itm.long}" lat="{$itm.lat}" province="{$itm.province}" city="{$itm.city}" is_show="1">
+                                <div>{$itm.point_text}</div>
+                                <div>{$itm.address}</div>
+                                <div>{$itm.phone}</div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <div id="container" style="height:720px;background:#F0F0F0;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=74bc1c4984cba9ddefb1ae3e5446b344"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script type="text/javascript">
+        var map = new AMap.Map("container", {
+            resizeEnable: true,
+            center: [114.146825,30.635655],//地图中心点
+            zoom: 5 //地图显示的缩放级别
+        });
+
+        $(document).ready(function() {
+            // 全局加载省份
+            $('.citydataarea').each(function() {
+                var sheng = $(this).find('.sheng');
+                sheng.append('<option value="-1">请选择省份</option>');
+                $.each(cityjson, function() {
+                    sheng.append('<option value="' + this.name + '">' + this.name + '</option>');
+                });
+            });
+            // 点击后逐步加载城市
+            $('body').on('change', '.citydataarea .sheng', function() {
+                var $this = $(this);
+                var val = $this.val();
+
+                var cities;
+                $.each(cityjson, function() {
+                    if(this.name === val) {
+                        cities = this.city;
+                    }
+                });
+
+                var shi = $this.closest('.citydataarea').find('.shi');
+                shi.empty();
+                shi.append('<option value="-1">请选择城市</option>');
+
+                $.each(cities, function() {
+                    shi.append('<option value="' + this.name + '">' + this.name + '</option>');
+                });
+
+                condition_point();
+            });
+
+            $('body').on('change', '.citydataarea .shi', function() {
+                condition_point();
+            });
+
+            map.clearMap();  // 清除地图覆盖物
+
+            var stores = $('.sencidtitm');
+
+            var markers = [];
+            var i = 1;
+
+            $.each(stores, function () {
+                var lng = $(this).attr('lng');
+                var lat = $(this).attr('lat');
+
+                markers.push({icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png', position: [lng, lat]});//'+ i +'
+
+                i++;
+            })
+
+            markers.forEach(function(marker) {
+                new AMap.Marker({
+                    map: map,
+                    icon: marker.icon,
+                    position: [marker.position[0], marker.position[1]],
+                    offset: new AMap.Pixel(-12, -36)
+                });
+            });
+
+            $('.sencidtitm').click(function () {
+                var lng = $(this).attr('lng');
+                var lat = $(this).attr('lat');
+
+                var map = new AMap.Map("container", {
+                    resizeEnable: true,
+                    center: [lng,lat],//地图中心点
+                    zoom: 15 //地图显示的缩放级别
+                });
+
+                markers.forEach(function(marker) {
+                    new AMap.Marker({
+                        map: map,
+                        icon: marker.icon,
+                        position: [marker.position[0], marker.position[1]],
+                        offset: new AMap.Pixel(-12, -36)
+                    });
+                });
+            })
+        });
+
+        function condition_point() {
+            var province = $('.sheng').val();
+            var city = $('.shi').val();
+
+            //如果没有选择省份 所有服务节点都显示
+            if (province == -1) {
+                $('.sencidtitms').find('.sencidtitm').attr('is_show', 1)
+                $('.sencidtitms').find('.sencidtitm').show();
+
+                return;
+            }
+            //初始化所有服务点为隐藏状态
+            $('.sencidtitms').find('.sencidtitm').attr('is_show', 0);
+            $('.sencidtitms').find('.sencidtitm').hide();
+
+            if (city == -1) {
+                //如果城市没有选择 则只要省份符合的服务点都显示
+                $('.sencidtitms').find('*[province="'+ province +'"]').attr('is_show', 1);
+                $('.sencidtitms').find('*[province="'+ province +'"]').show();
+            }
+            else {
+                //匹配选择的城市
+                $('.sencidtitms').find('*[city="'+ city +'市"]').attr('is_show', 1);
+                $('.sencidtitms').find('*[city="'+ city +'市"]').show();
+
+                $('.sencidtitms').find('*[city="'+ city +'"]').attr('is_show', 1);
+                $('.sencidtitms').find('*[city="'+ city +'"]').show();
+            }
+
+            initMaker();
+        }
+
+        function initMaker() {
+            map.clearMap();  // 清除地图覆盖物
+
+            var stores = $('.sencidtitms').find('*[is_show="1"]');
+
+            var markers = [];
+            var i = 1;
+
+            $.each(stores, function () {
+                var lng = $(this).attr('lng');
+                var lat = $(this).attr('lat');
+
+                markers.push({icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png', position: [lng, lat]});//'+ i +'
+
+                i++;
+            })
+
+            markers.forEach(function(marker) {
+                new AMap.Marker({
+                    map: map,
+                    icon: marker.icon,
+                    position: [marker.position[0], marker.position[1]],
+                    offset: new AMap.Pixel(-12, -36)
+                });
+            });
+        }
+
+    </script>
+</block>

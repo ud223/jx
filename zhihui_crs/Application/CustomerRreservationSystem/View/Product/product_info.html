@@ -44,46 +44,10 @@
 
             <div class="hr-line-dashed"></div>
 
+            <!--产品类别 产品名称 Begin-->
             <div class="row">
               <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">
-                    <span class="label label-info">必填</span> 经纪公司
-                  </label>
-                  <div class="col-sm-9">
-                    <eq name="AccountType" value="$AdminAccount">
-                      <select class="chosen-select" name="broker_company" id="broker_company" data-placeholder="请选择经纪公司" style="width:100% !important;">
-                        <option value="">请选择经纪公司</option>
-                        <volist name="BrokerCompanyOption" id="list">
-                          <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.broker_company_id">selected</eq> >{$list.key}</option>
-                        </volist>
-                      </select>
-                      <else/>
-                      <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
-                      <input type="hidden" name="broker_company" id="broker_company" value="{$AccountInfo.broker_company_id}" />
-                    </eq>
-
-                  </div>
-                </div>
-
-                <div class="hr-line-dashed"></div>
-
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">
-                    <span class="label label-info">必填</span> 服务商
-                  </label>
-                  <div class="col-sm-9">
-                    <select class="chosen-select" name="service_providers" id="service_providers" data-placeholder="请选择服务商" style="width:100% !important;">
-                      <option value="">请选择服务商</option>
-                      <volist name="ServiceProvidersOption" id="list">
-                        <option value="{$list.val}" <eq name="list.val" value="$ProductInfo.service_providers_id">selected</eq> >{$list.key}</option>
-                      </volist>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-sm-6">
+                <!--产品类别 Begin-->
                 <div class="form-group">
                   <label class="col-sm-3 control-label">
                     <span class="label label-info">必填</span> 产品类别
@@ -97,9 +61,11 @@
                     </select>
                   </div>
                 </div>
+                <!--产品类别 End-->
+              </div>
 
-                <div class="hr-line-dashed"></div>
-                
+              <div class="col-sm-6">
+                <!--产品名称 Begin-->
                 <div class="form-group">
                   <label class="col-sm-3 control-label">
                     <span class="label label-info">必填</span> 产品名称
@@ -108,53 +74,188 @@
                     <input type="text" autocomplete="off" name="product_name" id="product_name" class="form-control" placeholder="产品名称" value="{$ProductInfo.product_name}">
                   </div>
                 </div>
+                <!--产品名称 End-->
+              </div>
+            </div>
+            <!--产品类别 产品名称 End-->
 
-                <div class="hr-line-dashed"></div>
+            <div class="hr-line-dashed"></div>
 
+            <!--缴费方式 支付方式 Begin-->
+            <div class="row">
+              <div class="col-sm-6">
+                <!--缴费方式 Begin-->
                 <div class="form-group">
                   <label class="col-sm-3 control-label">
-                    <span class="label label-info">必填</span> 产品价格
+                    <span class="label label-info">必填</span> 缴费方式
                   </label>
                   <div class="col-sm-9">
-                    <input type="text" autocomplete="off" name="product_price" id="product_price" class="form-control" placeholder="产品价格" value="{$ProductInfo.product_price}">
+                    <select class="chosen-select" name="pay_type" id="pay_type" data-placeholder="请选择缴费方式" style="width:100% !important;">
+                      <option value="">请选择缴费方式</option>
+                      <volist name="PayType" id="list">
+                        <option value="{$list}" <eq name="list" value="$ProductInfo.pay_type">selected</eq> >{$list}</option>
+                      </volist>
+                    </select>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="ibox float-e-margins">
-              <div class="ibox-title">
-                <span class="label label-info">必填</span>&nbsp;<b>提供服务的门店</b>
+                <!--缴费方式 End-->
               </div>
 
-              <div class="ibox-content">
-                <volist name="StoreOption" id="list">
-                  <div class="checkbox checkbox-inline checkbox-info">
-                    <input type="checkbox" name="store" id="store_{$list.val}" value="{$list.val}" {$list.status}>
-                    <label for="store_{$list.val}"> {$list.key} </label>
+              <div class="col-sm-6">
+                <!--支付方式 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 支付方式
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" autocomplete="off" name="payment_type" id="payment_type" class="form-control" placeholder="支付方式" value="{$ProductInfo.payment_type}">
                   </div>
-                </volist>
+                </div>
+                <!--支付方式 End-->
               </div>
             </div>
+            <!--产品价格 支付方式 End-->
 
-            <div class="ibox float-e-margins">
-              <div class="ibox-title">
-                <span class="label label-info">必填</span>&nbsp;<b>发布产品</b>
+            <div class="hr-line-dashed"></div>
+
+            <!--投保年龄 Begin-->
+            <div class="row">
+              <div class="col-sm-6">
+                <!--最小年龄 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 投保年龄
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" autocomplete="off" name="min_age" id="min_age" class="form-control" placeholder="投保年龄" value="{$ProductInfo.min_age}">
+                  </div>
+                </div>
+                <!--最小年龄 End-->
               </div>
 
-              <div class="ibox-content">
-                <div class="radio radio-warning radio-inline">
-                  <input type="radio" id="status_0" value="0" name="product_status" <empty name="ProductInfo">checked="checked"<else/><eq name="ProductInfo.status" value="0">checked="checked"</eq></empty> >
-                  <label for="status_0"> 稍后发布 </label>
+              <div class="col-sm-6">
+                <!--保险期间 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 保险期间
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" autocomplete="off" name="validity_year" id="validity_year" class="form-control" placeholder="保险期间" value="{$ProductInfo.validity_year}">
+                  </div>
                 </div>
-
-                <div class="radio radio-info radio-inline">
-                  <input type="radio" id="status_1" value="1" name="product_status" <eq name="ProductInfo.status" value="1">checked="checked"</eq> >
-                  <label for="status_1"> 发布 </label>
-                </div>
+                <!--保险期间 End-->
               </div>
             </div>
+            <!--投保年龄 End-->
 
+            <div class="hr-line-dashed"></div>
+
+            <!--团队长提成比例 Begin-->
+            <div class="row">
+              <div class="col-sm-6">
+                <!--团队长首年提成比例 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 团队长首年提成比例
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="input-group" data-autoclose="off">
+                      <input type="text" autocomplete="off" name="captain_first_rate" id="captain_first_rate" class="form-control" placeholder="团队长首年提成比例" value="{$ProductInfo.captain_first_rate}">
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </div>
+                </div>
+                <!--团队长首年提成比例 End-->
+              </div>
+
+              <div class="col-sm-6">
+                <!--团队长首年提成比例 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 团队长次年提成比例
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="input-group" data-autoclose="off">
+                      <input type="text" autocomplete="off" name="captain_next_rate" id="captain_next_rate" class="form-control" placeholder="团队长次年提成比例" value="{$ProductInfo.captain_next_rate}">
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </div>
+                </div>
+                <!--团队长首年提成比例 End-->
+              </div>
+            </div>
+            <!--团队长提成比例 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--客户经理提成比例 Begin-->
+            <div class="row">
+              <div class="col-sm-6">
+                <!--客户经理首年提成比例 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 客户经理首年提成比例
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="input-group" data-autoclose="off">
+                      <input type="text" autocomplete="off" name="member_first_rate" id="member_first_rate" class="form-control" placeholder="客户经理首年提成比例" value="{$ProductInfo.member_first_rate}">
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </div>
+                </div>
+                <!--客户经理首年提成比例 End-->
+              </div>
+
+              <div class="col-sm-6">
+                <!--客户经理次年提成比例 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 客户经理次年提成比例
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="input-group" data-autoclose="off">
+                      <input type="text" autocomplete="off" name="member_next_rate" id="member_next_rate" class="form-control" placeholder="客户经理次年提成比例" value="{$ProductInfo.member_next_rate}">
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </div>
+                </div>
+                <!--客户经理次年提成比例 End-->
+              </div>
+            </div>
+            <!--客户经理提成比例 End-->
+
+            <div class="hr-line-dashed"></div>
+
+            <!--保险期间 发布产品 Begin-->
+            <div class="row">
+              <div class="col-sm-6">
+                <!--产品状态 Begin-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span class="label label-info">必填</span> 发布产品
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="radio radio-warning radio-inline">
+                      <input type="radio" id="status_0" value="0" name="product_status" <empty name="ProductInfo">checked="checked"<else/><eq name="ProductInfo.status" value="0">checked="checked"</eq></empty> >
+                      <label for="status_0"> 稍后发布 </label>
+                    </div>
+
+                    <div class="radio radio-info radio-inline">
+                      <input type="radio" id="status_1" value="1" name="product_status" <eq name="ProductInfo.status" value="1">checked="checked"</eq> >
+                      <label for="status_1"> 发布 </label>
+                    </div>
+                  </div>
+                </div>
+                <!--产品状态 End-->
+              </div>
+
+              <div class="col-sm-6">
+
+              </div>
+            </div>
+            <!--保险期间 发布产品 End-->
+
+            <!--产品简介 Begin-->
             <div class="ibox float-e-margins">
               <div class="ibox-title">
                 <b>产品简介</b>
@@ -168,7 +269,74 @@
                 </div>
               </div>
             </div>
+            <!--产品简介 End-->
 
+            <!--附件上传 Begin-->
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <b>产品附件</b>
+              </div>
+
+              <div class="ibox-content">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                      <input type="file" name="attachment" id="attachment" class="form-control">
+                    <span class="help-block m-b-none">只能上传{$ProductAttachmentImgCfg.desc}、{$ProductAttachmentFileCfg.desc}文件</span>
+                  </div>
+                </div>
+
+                <notempty name="ProductInfo.attachment">
+                  <div class="form-group">
+                    <div class="col-sm-12">
+
+                      <eq name="ProductInfo.attachment_type" value="$AttachmentFileType">
+                        <div class="file-box">
+                          <div class="file">
+                            <a href="__MODULE__/Download/OriginalNameFile/file_id/{$ProductInfo.attachment.id}">
+                              <span class="corner"></span>
+
+                              <div class="icon">
+                                <i class="fa {$ProductInfo.attachment.icon}"></i>
+                              </div>
+                              <div class="file-name">
+                                {$ProductInfo.attachment.original_name}
+                                <br/>
+                                <small>文件大小：{$ProductInfo.attachment.file_size_kb}KB</small>
+                                <br/>
+                                <small>添加时间：{$ProductInfo.attachment.add_date}</small>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      </eq>
+
+                      <eq name="ProductInfo.attachment_type" value="$AttachmentImageType">
+                        <div class="file-box">
+                          <div class="file">
+                            <a href="__MODULE__/Download/OriginalNameImage/image_id/{$ProductInfo.attachment.id}">
+                              <span class="corner"></span>
+
+                              <div class="image">
+                                <img alt="image" class="img-responsive" src="{$ProductInfo.attachment.full_file}">
+                              </div>
+
+                              <div class="file-name">
+                                {$ProductInfo.attachment.original_name}
+                                <br/>
+                                <small>添加时间：{$ProductInfo.attachment.add_date}</small>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      </eq>
+                    </div>
+                  </div>
+                </notempty>
+              </div>
+            </div>
+            <!--附件上传 End-->
+
+            <!--产品详情 Begin-->
             <div class="ibox float-e-margins">
               <div class="ibox-title">
                 <b>产品详情</b>
@@ -179,7 +347,9 @@
                 <input type="hidden" name="hf_product_content" id="hf_product_content" />
               </div>
             </div>
+            <!--产品详情 End-->
 
+            <!--备注 Begin-->
             <div class="ibox float-e-margins">
               <div class="ibox-title">
                 <b>备注</b>
@@ -193,6 +363,7 @@
                 </div>
               </div>
             </div>
+            <!--备注 End-->
 
             <div class="hr-line-dashed"></div>
 
@@ -246,28 +417,106 @@
     $("#addForm").validate({
       ignore: "",
       rules: {
-        broker_company : {
-          required : true
-        },
-        product_type : {
-          required : true,
-          number:true,
-          min:1
-        },
-        product_name : {
-          required : true
-        },
-        product_price : {
-          required : true,
-          number:true,
-          min:1
-        }
+//        product_type : {
+//          required : true,
+//          number:true,
+//          min:1
+//        },
+//        product_name : {
+//          required : true
+//        },
+//        product_price : {
+//          required : true,
+//          number:true,
+//          min:1
+//        },
+//        payment_type : {
+//          required : true
+//        },
+//        min_age : {
+//          required : true,
+//          number:true,
+//          min:1
+//        },
+//        max_age : {
+//          required : true,
+//          number:true,
+//          min:1
+//        },
+//        captain_first_rate : {
+//          required : true,
+//          number: true,
+//          min:0
+//        },
+//        captain_next_rate : {
+//          required : true,
+//          number: true,
+//          min:0
+//        },
+//        member_first_rate : {
+//          required : true,
+//          number: true,
+//          min:0
+//        },
+//        member_next_rate : {
+//          required : true,
+//          number: true,
+//          min:0
+//        },
+//        validity_year : {
+//          required : true,
+//          number: true,
+//          min:1
+//        }
       },
       messages: {
-        broker_company: "请选择经纪公司",
-        product_type: "请选择产品类型",
-        product_name: "请输入产品名称",
-        product_price: "请输入产品名称"
+//        product_type: {
+//          required: "请选择产品类型",
+//          number: "产品类型必须是数字",
+//          min: "产品类型必须大于0",
+//        },
+//        product_name: "请输入产品名称",
+//        product_price: {
+//          required: "请输入产品价格",
+//          number: "产品价格必须是数字",
+//          min: "产品价格必须大于0",
+//        },
+//        payment_type: "请选择支付方式",
+//        min_age : {
+//          required : "请输入投保最小年龄",
+//          number: "投保最小年龄必须是数字",
+//          min: "投保最小年龄不能大于0",
+//        },
+//        max_age : {
+//          required : "请输入投保最大年龄",
+//          number: "投保最大年龄必须是数字",
+//          min: "投保最大年龄不能大于0",
+//        },
+//        captain_first_rate : {
+//          required : "请输入团队长首年提成比例",
+//          number: "团队长首年提成比例必须是数字",
+//          min: "团队长首年提成比例不能小于0",
+//        },
+//        captain_next_rate : {
+//          required : "请输入团队长次年提成比例",
+//          number: "团队长次年提成比例必须是数字",
+//          min: "团队长次年提成比例不能小于0",
+//        },
+//        member_first_rate : {
+//          required : "请输入客户经理首年提成比例",
+//          number: "客户经理首年提成比例必须是数字",
+//          min: "客户经理首年提成比例不能小于0",
+//        },
+//        member_next_rate : {
+//          required : "请输入客户经理次年提成比例",
+//          number: "客户经理次年提成比例必须是数字",
+//          min: "客户经理次年提成比例不能小于0",
+//        },
+//        validity_year: {
+//          required: "请设定保险期间",
+//          number: "保险期间必须为数字",
+//          min: "保险期间必须大于0",
+//        }
       },
       focusInvalid: true,
       submitHandler: function(form) {
@@ -301,7 +550,7 @@
   }
   
   function SubmitBefore(){
-    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+    BlockWindow_ExecOp('正在保存产品数据', 140);
   }
 
   function SubmitResponse(responseText){
@@ -353,7 +602,7 @@
   });
 
   function UplodaContentImage(file) {
-    BlockWindow_ExecOp('正在删除选中的服务商', 200);
+    BlockWindow_ExecOp('正在删除选中的产品', 200);
     
     var data = new FormData();
     data.append("ProductContentImage", file);

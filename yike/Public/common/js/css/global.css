@@ -888,5 +888,36 @@ p:after {
 	box-shadow: 0 0 4px rgba(0, 0, 0, .2);
 }
 
+.hdjk_dhj_wp {
+	background: #F0F0F0;
+	color: #888;
+	padding: 20px;
+	text-align: center;
+	font-size: 18px;
+}
+
+.hdjk_dhj_itm {
+	display: inline-block;
+	margin: 0 20px;
+}
+
+#fixbarscopy {
+	position: fixed;
+	left: 0;
+	width: 100%;
+	top: 60px;
+	z-index: 5;
+	display: none;
+}
+.hdjk_dhj_wp .dhtt {
+	position:absolute;
+	left:15px;
+	top:50%;
+	height:30px;
+	line-height:30px;
+	margin-top:-15px;
+
+}
+
 
 /* Toast Part (End) */

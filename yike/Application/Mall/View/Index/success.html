@@ -1,0 +1,64 @@
+<extend name="Base/login"/>
+<block name="body">
+    <!--内容部分（START）-->
+    <div class="row" style="padding-top:90px;">
+        <div class="col-xs-3">
+        </div>
+        <div class="col-xs-6">
+            <div class="loginboardct">
+                <div class="wp silverbg">
+
+                    <div>
+                        <div id="success" class="tt operaedtt success" style="display:none">
+                            <span class="iconfont icon-iconfontcheck"></span>
+                            <span>操作成功</span>
+                        </div>
+                        <div id="fail" class="tt operaedtt failed" style="display:none">
+                            <span class="iconfont icon-iconfontclose"></span>
+                            <span>操作失败</span>
+                        </div>
+
+                        <div id="msg">
+                            此处编写此操作成功或者失败的文字内容，提示用户对应结果产生的后果等
+                        </div>
+
+                        <a id="url" class="operaafter" href="javascript:void(0)">知道了</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+    <!--内容部分（END）-->
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            var code = localStorage.getItem('tmp_code');
+            var msg = localStorage.getItem('tmp_msg');
+            var order_id = localStorage.getItem('tmp_order_id');
+            var user_id = localStorage.getItem('user_id');
+            var url = localStorage.getItem('tmp_url');
+
+            if (code == '200') {
+                $('#success').show();
+            }
+            else {
+                $('#fail').show();
+            }
+
+            $('#msg').html(msg);
+
+            $('#url').click(function () {
+                localStorage.getItem('tmp_code', null);
+                localStorage.getItem('tmp_msg', null);
+                localStorage.getItem('tmp_order_id', null);
+                localStorage.getItem('user_id', null);
+                localStorage.getItem('tmp_url', null);
+
+                location.href = url;
+            })
+        });
+    </script>
+</block>

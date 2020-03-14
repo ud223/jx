@@ -1,0 +1,93 @@
+<div class="form-group {$region.css}" id="{$region.id}Tip">
+    <label  class="col-md-{$region.title_width} control-label" style="text-align: {$region.title_align}; line-height: 30px;">
+        {$region.title}<eq name="region.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-3" id="{$region.id}_province_item">
+        <select  class="form-control" name="{$region.id}_province" id="{$region.id}_province">
+            <option value="">请选择省份</option>
+        </select>
+        <span class="help-block">{$region.tips}</span>
+    </div>
+    <div class="col-md-3" id="{$region.id}_city_item">
+        <select  class="form-control" name="{$region.id}_city" id="{$region.id}_city">
+            <option value="">--</option>
+        </select>
+        <span class="help-block">{$region.tips}</span>
+    </div>
+    <div class="col-md-3" id="{$region.id}_area_item">
+        <select  class="form-control" name="{$region.id}_area" id="{$region.id}_area">
+            <option value="">--</option>
+        </select>
+        <span class="help-block">{$region.tips}</span>
+    </div>
+ </div>
+<script>
+//$('#{$region.id}_province').select2({
+//    placeholder: "请选择",
+//    allowClear: true
+//});
+//
+//$('#{$region.id}_city').select2({
+//    placeholder: "请选择",
+//    allowClear: true
+//});
+//
+//$('#{$region.id}_area').select2({
+//    placeholder: "请选择",
+//    allowClear: true
+//});
+
+var {$region.id}_JsonProvince = {$Province};
+
+var {$region.id}_JsonCity = {$City};
+
+var {$region.id}_JsonArea = {$Area};
+
+$('#{$region.id}_province').ready(function(){
+    var arrList = {$region.id}_JsonProvince;
+    var nCount = arrList.length;
+    var info = null;
+    var arrOption = [];
+    
+    for(var i=0; i<nCount; i++){
+        info = arrList[i];
+        arrOption.push('<option value="'+ info.provinceid +'">'+ info.province +'</option>');
+    }
+
+    $('#{$region.id}_province').append(arrOption.join(''));
+}).change(function(){
+    var arrList = {$region.id}_JsonCity;
+    var nCount = arrList.length;
+    var info = null;
+    var arrOption = [];
+    var parentid = $('#{$region.id}_province').val();
+    
+    for(var i=0; i<nCount; i++){
+        info = arrList[i];
+        
+        if(info.provinceid == parentid){
+            arrOption.push('<option value="'+ info.cityid +'">'+ info.city +'</option>');
+        }
+    }
+
+    $('#{$region.id}_city').html(arrOption.join('')).change();
+});
+
+$('#{$region.id}_city').change(function(){
+    var arrList = {$region.id}_JsonArea;
+    var nCount = arrList.length;
+    var info = null;
+    var arrOption = [];
+    var parentid = $('#{$region.id}_city').val();
+    
+    for(var i=0; i<nCount; i++){
+        info = arrList[i];
+        
+        if(info.cityid == parentid){
+            arrOption.push('<option value="'+ info.areaid +'">'+ info.area +'</option>');
+        }
+    }
+
+    $('#{$region.id}_area').html(arrOption.join(''));
+});
+</script>

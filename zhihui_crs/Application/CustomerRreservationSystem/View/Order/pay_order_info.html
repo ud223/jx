@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            <label class="label label-info">预约预约</label>&nbsp;{$OrderInfo.status_desc}&nbsp;{$OrderInfo.order_sn}
+          </h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="addForm" action="__URL__/PayOrderInfoSave" method="post">
+            <input type="hidden" autocomplete="off" name="order_sn" id="hf_order_sn" value="{$OrderInfo.order_sn}" />
+
+            <div class="form-group">
+              <label class="col-sm-3 col-sm-offset-2 control-label">
+                回复人
+              </label>
+              <div class="col-sm-5">
+                <p class="form-control-static">{$OrderInfo.review_account}</p>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 col-sm-offset-2 control-label">
+                回复内容
+              </label>
+              <div class="col-sm-5">
+                <p class="form-control-static">{$OrderInfo.review_remarks}</p>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 col-sm-offset-2 control-label">
+                <span class="label label-info">必填</span> 消费金额
+              </label>
+              <div class="col-sm-5">
+                <input type="text" autocomplete="off" name="pay_amount" id="pay_amount" class="form-control" placeholder="消费金额" value="">
+
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 col-sm-offset-2 control-label">
+                <span class="label label-info">必填</span> 消费时间
+              </label>
+              <div class="col-sm-5">
+                <input type="text" autocomplete="off" name="pay_time" id="pay_time" class="form-control layer-date" placeholder="消费时间" onfocus="laydate({istime: true, format: 'YYYY-MM-DD hh:mm'});" value="">
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <div class="col-sm-12 col-sm-offset-4">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-check"></i>&nbsp;保存消费信息</button>
+                <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-mail-reply"></i>&nbsp;取消并返回</button>
+                <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-title"><h5>客户信息</h5></div>
+                  <div class="ibox-content">
+                    <div class="row">
+                      
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户姓名
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.real_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户性别
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.gender}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          出生年月
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.birthday}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          国籍
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.nationality}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          {$CustomerInfo.idcard_type}
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.idcard_no}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          现住址
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$CustomerInfo.province_name} {$CustomerInfo.city_name} {$CustomerInfo.district_name} {$CustomerInfo.address}</p>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-title"><h5>预约信息</h5></div>
+                  <div class="ibox-content">
+                    <div class="row">
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          产品类别
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.type_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          拟购产品
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$ProductInfo.product_name}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          预约时间
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$OrderInfo.reservation_time}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          拟消费金额
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static"><i class="fa fa-cny"></i>{$ProductInfo.product_price}</p>
+                        </div>
+                      </div>
+
+                      <div class="hr-line-dashed"></div>
+
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                          客户描述及备注
+                        </label>
+                        <div class="col-sm-9">
+                          <p class="form-control-static">{$OrderInfo.seller_manager_remarks}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+              <div class="ibox-title"><h5>附件信息</h5></div>
+              <div class="ibox-content">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <notempty name="OrderInfo.attachment">
+                      <div class="file-box">
+                        <div class="file">
+                          <a href="__MODULE__/Download/OriginalNameFile/file_id/{$OrderInfo.attachment.id}">
+                            <span class="corner"></span>
+
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$OrderInfo.attachment.full_file}">
+                            </div>
+                            <div class="file-name">
+                              <span style="word-wrap:break-word;">{$OrderInfo.attachment.original_name}</span>
+                              <br/>
+                              <small>添加时间：{$OrderInfo.attachment.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </notempty>
+                    
+                    <notempty name="CustomerInfo.idcard_img_a">
+                      <div class="file-box">
+                        <div class="file">
+                          <!--<a href="javascript:void(0);">-->
+                          <a href="__MODULE__/Download/OriginalNameImage/image_id/{$CustomerInfo.idcard_img_a.id}">
+                          
+                            <span class="corner"></span>
+
+                            <div class="image">
+                              <img alt="image" class="img-responsive" src="{$CustomerInfo.idcard_img_a.full_file}">
+                            </div>
+                            <div class="file-name">
+                              {$CustomerInfo.idcard_img_a.original_name}
+                              <br/>
+                              <small>添加时间：{$CustomerInfo.idcard_img_a.add_date}</small>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </notempty>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/PayOrderList";
+  
+  $(document).ready(function(){
+    //region 下拉框样式
+    var config = {
+      ".chosen-select": {},
+      ".chosen-select-deselect": {
+        allow_single_deselect: !0
+      },
+      ".chosen-select-no-single": {
+        disable_search_threshold: 10
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) $(selector).chosen(config[selector]);
+    //endregion 下拉框样式
+    
+    $("#addForm").validate({
+      ignore: "",
+      rules: {},
+      messages: {},
+      focusInvalid: true,
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          timeout : 6000,    // 限制请求的时间，当请求大于6秒后，跳出请求
+          type : "POST",
+          dataType : "json",
+          beforeSend : function (XMLHttpRequest) {
+            XMLHttpRequest.setRequestHeader("request_type","ajax");
+          },
+          beforeSubmit : SubmitBefore,
+          success : SubmitResponse,    // 提交后的回调函数
+          error : SubmitError
+        });
+      }
+    });
+  });
+  
+  //region 提交表单
+  function SubmitBefore(){
+    BlockWindow_ExecOp('正在保存预约数据', 140);
+  }
+
+  function SubmitResponse(responseText){
+    Un_BlockWindow_ExecOp();
+
+    if(responseText.error!=0){
+      AlertError(responseText.info);
+      return false;
+    }
+
+    swal(
+      {
+        title: "",
+        text: responseText.info,
+        type: "success",
+        confirmButtonText: "确定",
+        closeOnConfirm: true
+      },
+      function(isConfirm) {
+        <if condition="($AccountType neq $SellerManagerAccount)">
+          window.parent.PollingUntreatedNumber();
+        </if>
+
+        BackIndexPage();
+      }
+    );
+  }
+  
+  function SubmitError(){
+    Un_BlockWindow_ExecOp();
+
+    AlertError("请求超时");
+    return false;
+  }
+  //endregion 提交表单
+  
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 <?php
 namespace CustomerRreservationSystem\Controller;
-use Think\Controller;
 
 class CommissionController extends CommonController {
   private $modCommission = null;
@@ -14,140 +13,46 @@ class CommissionController extends CommonController {
   }
   
   //region 佣金
-  /**
-   * todo: 佣金列表
-   */
-  public function CommissionList(){
+  public function CommissionDateList(){
     $SearchParam = $this->GetCommissionListSearchParam();
-
-    if($this->_AccountType != $this->_AdminAccountType){
-      $SearchParam["search_broker_company"] = $this->_AccountInfo["broker_company_id"];
-    }
-
     $CommissionList = $this->modCommission->CommissionList($this->_PagingRowCount, $SearchParam);
 
-    $this->assign("CommissionList", $CommissionList[0]["DataList"]);
-    $this->assign("DateInfo", $CommissionList[0]["DateInfo"]);
+    $this->assign("CommissionList", $CommissionList["DataList"]);
+    $this->assign("DateInfo", $CommissionList["DateInfo"]);
     $this->assign("Page", $CommissionList["PageInfo"]);
 
-    $this->CustomDisplay("commission_list");
+    $this->CustomDisplay("commission_date_list");
+  }
+  
+  public function UserHistoryCommissionList(){
+    $SearchParam = $this->GetHistoryCommissionListSearchParam();
+    $CommissionList = $this->modCommission->HistoryCommissionList($this->_AccountID, $this->_PagingRowCount, $SearchParam);
+
+    $this->assign("CommissionList", $CommissionList["DataList"]);
+    $this->assign("Page", $CommissionList["PageInfo"]);
+
+    $this->CustomDisplay("history_commission_date_list");
   }
 
   /**
-   * todo:保存佣金信息
+   * todo: 计算上月提成金额
    */
-  public function CommissionInfo(){
+  public function AjaxCalcLastMonthCommission(){
+    $Result = $this->modCommission->CalcLastMonthCommission();
+
+    AjaxReturn($Result);
+  }
+
+  /**
+   * todo: 发放佣金
+   */
+  public function AjaxSendCommission(){
     $nCommissionID = RR("commission_id");
-    $CommissionInfo = $this->modCommission->CommissionInfo($nCommissionID);
+    $sRemark = RR("remark");
 
-    //region 经纪公司
-    switch($this->_AccountType){
-      case $this->_AdminAccountType:
-        $BrokerCompanyOption = $this->modCommission->clsBrokerCompany->BrokerCompanyOption();
-        $this->assign("BrokerCompanyOption", $BrokerCompanyOption);
-        break;
+    $Result = $this->modCommission->SendCommission($nCommissionID, $sRemark);
 
-      case $this->_BrokerCompanyAccountType:
-        $BrokerCompanyInfo = $this->modCommission->clsBrokerCompany->GetBrokerCompanyDetails($this->_AccountInfo["broker_company_id"]);
-        $this->assign("BrokerCompanyInfo", $BrokerCompanyInfo);
-
-        $SellerManagerOption = $this->modCommission->clsSellerManager->SellerManagerOption($this->_AccountInfo["broker_company_id"]);
-        $this->assign("SellerManagerOption", $SellerManagerOption);
-        break;
-    }
-    //endregion 经纪公司
-
-    //region 提成标准
-    $CommissionStandardOption = $this->modCommission->clsCommission->CommissionStandardOption();
-    $this->assign("CommissionStandardOption", $CommissionStandardOption);
-    //endregion 提成标准
-
-    //region 编辑时加载的数据
-    if(IsArray($CommissionInfo)){
-      //region 销售经理
-      if(IsNum($CommissionInfo["broker_company_id"], false, false)){
-        $SellerManagerOption = $this->modCommission->clsSellerManager->SellerManagerOption($CommissionInfo["broker_company_id"]);
-        $this->assign("SellerManagerOption", $SellerManagerOption);
-      }
-
-      if(IsNum($CommissionInfo["seller_manager_id"], false, false)){
-        $SellerManagerInfo = $this->modCommission->clsSellerManager->GetSellerManagerDetails($CommissionInfo["seller_manager_id"]);
-        $this->assign("SellerManagerInfo", $SellerManagerInfo);
-      }
-      //endregion 销售经理
-
-      //region 获取销售经理的佣金记录
-      $SellerManagerCommissionList = $this->modCommission->GetSellerManageCommissionList($CommissionInfo["id"], $CommissionInfo["seller_manager_id"]);
-      $this->assign("SellerManagerCommissionList", $SellerManagerCommissionList);
-      //endregion 获取销售经理的佣金记录
-    }
-    //region 编辑时加载的数据
-
-    //没有数据时默认的日期
-    $sDefaultDate = date("Y")."-".(date("m")-1);
-    
-    //region 获取最后一次添加的佣金
-    $LastCommissionInfo = $this->modCommission->clsCommission->LastCommissionInfo($this->_AccountInfo["broker_company_id"]);
-    //endregion 获取最后一次添加的佣金
-
-    $this->assign("CommissionInfo", $CommissionInfo);
-    $this->assign("DefaultDate", $sDefaultDate);
-    $this->assign("LastCommissionInfo", $LastCommissionInfo);
-
-    $this->CustomDisplay("commission_info");
-  }
-
-  /**
-   * todo: Ajax获取销售经理Option
-   */
-  public function AjaxSellerManagerOption(){
-    $nBrokerCompanyID = RR("broker_company_id");
-
-    $clsSellerManager = new \Org\ZhiHui\SellerManager();
-    $Result = $clsSellerManager->SellerManagerOption($nBrokerCompanyID);
-
-    AjaxReturnCorrect("", $Result);
-  }
-
-  /**
-   * todo: 保存佣金信息
-   */
-  public function AjaxCommissionSave(){
-    $nCommissionID = RR("commission_id");
-    $nBrokerCompany= RR("broker_company");
-    $nSellerManagerID = RR("seller_manager");
-    $nCommissionDate = RR("commission_date");
-    $nStandardID = RR("standard");
-    $nRank = RR("rank");
-    $nAchievements = RR("achievements");
-    $nRake = RR("rake");
-    $nBonus = RR("bonus");
-    $nSubsidy = RR("subsidy");
-    $nTax = RR("tax");
-    $nOtherMinus = RR("other_minus");
-    $nShouldPay = RR("should_pay");
-    $nActualDelivery = RR("actual_delivery");
-    $nStatus = RR("status");
-    $sRemarks = RR("remarks");
-
-    $SaveResult = $this->modCommission->CommissionSave($nCommissionID, $nBrokerCompany, $nSellerManagerID, $nCommissionDate, $nStandardID, $nRank, $nAchievements, $nRake, $nBonus, $nSubsidy, $nTax, $nOtherMinus, $nShouldPay, $nActualDelivery, $nStatus, $sRemarks);
-
-    AjaxReturn($SaveResult);
-  }
-
-  /**
-   * todo: Ajax获取佣金记录数据
-   */
-  public function AjaxCommissionInfo(){
-    $nCommissionID = RR("commission_id");
-    $CommissionInfo = $this->modCommission->CommissionInfo($nCommissionID);
-    $Result = "";
-
-    if(IsArray($CommissionInfo)){
-      $Result = $this->modCommission->FmtCommissionData($CommissionInfo);
-    }
-
-    AjaxReturnCorrect("", $Result);
+    AjaxReturn($Result);
   }
 
   /**
@@ -158,6 +63,28 @@ class CommissionController extends CommonController {
 
     AjaxReturn($Result);
   }
+
+  /**
+   * todo: 获取佣金来源的订单列表
+   */
+  public function AjaxCommissionOrderList(){
+    $nCommissionID = RR("commission_id");
+
+    if(IsNum($nCommissionID, false, false)){
+      $Result = $this->modCommission->CommissionOrderList($nCommissionID);
+    }else{
+      $Result = $this->modCommission->CurrCommissionOrderList($this->_AccountID);
+    }
+
+    AjaxReturn($Result);
+  }
+
+  public function AjaxUserCurrMonthCommissionInfo(){
+    $Result = $this->modCommission->CalcCurrMonthCommission($this->_AccountID);
+
+    AjaxReturn($Result);
+  }
+  //endregion 佣金
 
   /**
    * todo:获取佣金列表查询参数
@@ -191,16 +118,36 @@ class CommissionController extends CommonController {
 
     return $Param;
   }
-  //endregion 佣金
-
-  //region 提成标准
-  public function AjaxStandardAdd(){
-    $sStandardID = RR("standard_id");
-    $sStandardName = RR("standard_name");
-
-    $Result = $this->modCommission->CommissionStandardSave($sStandardID, $sStandardName);
-
-    AjaxReturn($Result);
+  
+  /**
+   * todo:获取佣金列表查询参数
+   */
+  private function GetHistoryCommissionListSearchParam(){
+    $map = $this->SetHistoryCommissionListParamData();
+    
+    if(
+      IsN($map["serarch_begin_date"])
+      && IsN($map["serarch_end_date"])
+      && IsN($map["serarch_product_name"])
+      && IsN($map["search_send_status"])
+    ){
+      return array();
+    }
+    
+    $this->assign("serarch_begin_date", $map["serarch_begin_date"]);
+    $this->assign("serarch_end_date", $map["serarch_end_date"]);
+    $this->assign("serarch_product_name", $map["serarch_product_name"]);
+    $this->assign("search_send_status", $map["search_send_status"]);
+    
+    return $map;
   }
-  //endregion 提成标准
+  
+  private function SetHistoryCommissionListParamData(){
+    $Param["serarch_begin_date"] = RR("serarch_begin_date");
+    $Param["serarch_end_date"] = RR("serarch_end_date");
+    $Param["serarch_product_name"] = urldecode(RR("serarch_product_name"));
+    $Param["search_send_status"] = RR("search_send_status");
+    
+    return $Param;
+  }
 }

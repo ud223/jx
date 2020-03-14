@@ -11,44 +11,81 @@
                 <div style="width: 60%;margin: auto;">
                     <div class="input-group">
                         <span class="input-group-addon">姓名</span>
-                        <input type="text" class="form-control" value="{$data[order][0].name}" readonly>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].name}" readonly>
                     </div>
+
                     <div class="input-group">
                         <span class="input-group-addon">电话</span>
-                        <input type="text" class="form-control" value="{$data[order][0].tel}" readonly>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon">课程</span>
-                        <input type="text" class="form-control" value="{$data[order][0].lesson_name}" readonly>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].phone}" readonly>
                     </div>
 
                     <div class="input-group">
-                        <span class="input-group-addon">预约日期</span>
-                        <input type="text" class="form-control" value="{$data[order][0].run_date}" readonly>
+                        <span class="input-group-addon">地址</span>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].address}" readonly>
                     </div>
 
                     <div class="input-group">
-                        <span class="input-group-addon">上课时间</span>
-                        <input type="text" class="form-control" value="{$data[order][0].start_time}" readonly>
+                        <span class="input-group-addon">下单时间</span>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].create_at}" readonly>
                     </div>
 
                     <div class="input-group">
-                        <span class="input-group-addon">分配教练</span>
-                        <select class="form-control" id="coach-list">
-                            <?php foreach ($data['coach'] as $itm) :?>
-                                <?php if ($itm['id'] == $data[order][0].coach_id) :?>
-                                    <option value="<?php echo $itm['id'] ?>" selected="selected"><?php echo $itm['Name'] ?></option>
+                        <span class="input-group-addon">订单金额</span>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].amount}" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">订单状态</span>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].state_text}" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">收货/退货时间</span>
+                        <input type="text" class="form-control" aria-readonly="true" value="{$data[order].modify_at}" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">快递单号</span>
+                        <?php if ($data['order']['state'] == '20') :?>
+                            <input id="exp_id" type="text" class="form-control" value="{$data[order].exp_id}">
+                        <?php else :?>
+                            <input type="text" class="form-control" aria-readonly="true" value="{$data[order].exp_id}" readonly>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">快递公司</span>
+                        <?php if ($data['order']['state'] == '20') :?>
+                            <select id="sel_exp" class="form-control">
+                                <?php if (!$data[order]['exp_code']) :?>
+                                    <option value="0" selected="selected">请选择发货快递公司</option>
                                 <?php else :?>
-                                    <option value="<?php echo $itm['id'] ?>"><?php echo $itm['Name'] ?></option>
+                                    <option value="0">请选择发货快递公司</option>
                                 <?php endif; ?>
-                            <?php endforeach; ?>
-                        </select>
+                                <?php foreach($data['exp'] as $e) :?>
+                                    <?php if ($data[order]['exp_code'] == $e['code']) :?>
+                                        <option value="<?php echo $e['code'] ?>" selected="selected"><?php echo $e['text']?></option>
+                                    <?php else :?>
+                                        <option value="<?php echo $e['code'] ?>"><?php echo $e['text']?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php else :?>
+                            <input type="text" class="form-control" aria-readonly="true" value="{$data[order].exp_text}" readonly>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">物流信息</span>
+                        <iframe id="iframeId" width="100%" height="500px" src="http://m.kuaidi100.com/index_all.html?type={$data.order.exp_code}&postid={$data.order.exp_id}&callbackurl="></iframe>
                     </div>
                 </div>
             </div>
             <div class="am-modal-footer">
-                <input type="hidden" id="order_id" value="{$data['order'][0].order_id}">
-                <span id="btn_save" class="am-modal-btn">提交</span>
+                <input type="hidden" id="order_id" value="{$data['order'].id}">
+                <?php if ($data['order']['state'] == '20') :?>
+                    <span id="btn_save" class="am-modal-btn">发货</span>
+                <?php endif; ?>
                 <span id="btn_return" class="am-modal-btn" >返回</span>
             </div>
         </div><!-- /.box -->
@@ -66,6 +103,7 @@
 <block name="script">
     <script>
         $(function(){
+            alert(1);
             $('#btn_save').click(function() {
                 saveItem();
             })
@@ -73,14 +111,47 @@
             $('#btn_return').click(function(){
                 location.href = '/admin/manage/order_list';
             });
+
+            var mainheight = $(this).contents().find("body").height() + 600;
+
+            $(this).height(mainheight);
         });
 
         function saveItem() {
-            var id = $('#order_id').val();
-            var coach_id = $('#coach-list').val();
+            var order_id = $('#order_id').val();
+            var exp_id = $('#exp_id').val();
+            var exp_code = $('#sel_exp').val();
+            var exp_text = $('#sel_exp').find("option:selected").text();
 
-            if (confirm('是否分配该教练?')) {
-                Order.setCoach(id, coach_id);
+            if (!exp_id) {
+                alert('快递单号不能为空!');
+
+                return;
+            }
+
+            if (exp_code == '0') {
+                alert('请选择快递公司!');
+
+                return;
+            }
+
+            var data = { 'order_id': order_id, 'exp_id': exp_id, 'exp_code': exp_code, 'exp_text': exp_text };
+
+//            alert(JSON.stringify(data)); return;
+
+            if (confirm('是否确认发货?')) {
+                fit.ajax({
+                    url:'/manage/order_send',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/manage/order_detail?id=' + order_id;
+                        }
+                    }
+                });
             }
         }
     </script>

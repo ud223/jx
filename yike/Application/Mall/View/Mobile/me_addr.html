@@ -1,0 +1,141 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!--有数据时显示列表（互斥出现）-->
+    <div style="padding:20px 10px 10px 10px;" class="tc">
+        <a href="/mobile/me_editaddr" class="confirmbtn full">+ 新地址</a>
+    </div>
+    <div id="address-list" class="ftlistbox">
+    </div>
+    <div id="address-itm" style="display:none">
+        <div class="itm np">
+            <span class="defaultaddr" style="display:none">默认地址</span>
+            <div class="t1">
+                <div class="addr-text"></div>
+            </div>
+            <div class="t3">
+                <span class="iconfont icon-phone"></span>
+                <span class="phone"></span>
+            </div>
+            <div class="opera">
+                <div class="td edit-address">编辑</div>
+                <div class="td del-address">删除</div>
+            </div>
+        </div>
+    </div>
+    <a class="bottombackbtn" href="javascript:void(0)">返回个人中心</a>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+//            User.validate();
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_order?access='+ user_id;
+            });
+
+            $('.bottombackbtn').click(function() {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/mobile/me?access='+ user_id;
+            })
+
+            getAddress();
+        });
+
+        function getAddress() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id }
+
+            fit.ajax({
+                url:'/user/get_address',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    if (result.code == 200) {
+                        loadAddress(result.data);
+                    }
+                }
+            });
+        }
+
+        function delAddess(address_id) {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'address_id': address_id }
+
+            fit.ajax({
+                url:'/user/del_address',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        loadAddress(result.data);
+                    }
+                }
+            });
+        }
+
+        function loadAddress(data) {
+            var user_id = localStorage.getItem('user_id');
+
+            $('#address-list').html('');
+
+            $.each(data, function () {
+                var node = $('#address-itm').find('.itm').clone();
+
+//                node.attr('val', this.id);
+                var tmp_id = this.id;
+                var tmp_name = this.name;
+                var tmp_phone = this.phone;
+                var tmp_address = this.address;
+
+                node.find('.phone').html(tmp_phone);
+                node.find('.addr-text').html(tmp_name + ' ' + tmp_address);
+
+                node.find('.del-address').click(function () {
+//                    $.confirm({
+//                        msg:'是否删除该地址?',
+//                        confirmCallback:delAddess(tmp_id)
+//                    });
+
+                    if (confirm('是否删除该地址?'))
+                        delAddess(tmp_id);
+                });
+
+                node.find('.edit-address').click(function () {
+                    location.href = '/mobile/me_editaddr?id='+ tmp_id +'&access='+ user_id;
+                })
+
+                if (this.is_default == '1') {
+                    node.find('.defaultaddr').show();
+                }
+
+                $('#address-list').append(node);
+            });
+        }
+    </script>
+</block>

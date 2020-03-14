@@ -1,0 +1,40 @@
+<div class="form-group {$kindeditor.css}" id="{$kindeditor.id}Tip">
+    <label  class="col-md-{$kindeditor.title_width} control-label" style="text-align: {$kindeditor.title_align}; line-height: 30px;">
+        {$kindeditor.title}<eq name="kindeditor.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$kindeditor.input_width}" id="{$kindeditor.id}_item">
+        <textarea class="form-control" rows="{$kindeditor.rows}" id="{$kindeditor.id}" name="{$kindeditor.id}">{$kindeditor.value}</textarea>
+        <span class="help-block">{$kindeditor.tips}</span>
+    </div>
+</div>
+
+<script>
+    KindEditor.ready(function (K) {
+        var editor = K.create('#{$kindeditor.id}', {
+            items : [{$kindeditor.extend.items}],
+            uploadJson : '__MODULE__/{$kindeditor.extend.uploadJson}/fieldname/{$kindeditor.extend.fieldname}',
+            filePostName : '{$kindeditor.extend.filePostName}',
+            allowImageRemote : {$kindeditor.extend.allowImageRemote},
+            afterChange:function(){
+                this.sync();
+            },		
+            afterFocus:function(){
+                this.sync();
+            },
+            afterBlur: function(){
+                this.sync();
+            },
+            afterCreate: function () {
+                var self = this;
+                K.ctrl(document, 13, function () {
+                        self.sync();
+                        K('form[name=example]')[0].submit();
+                });
+                K.ctrl(self.edit.doc, 13, function () {
+                        self.sync();
+                        K('form[name=example]')[0].submit();
+                });
+            }
+        });
+    });
+</script>

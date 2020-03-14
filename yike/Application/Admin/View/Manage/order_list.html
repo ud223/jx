@@ -13,33 +13,40 @@
                         <th style="width: 10px">id</th>
                         <th style="width: 120px">姓名</th>
                         <th style="width: 150px">电话</th>
-                        <th style="width: 250px">高尔夫球场</th>
+                        <!--<th style="width: 150px">订单金额</th>-->
+                        <!--<th style="width: 150px">邮费</th>-->
+                        <th style="width: 150px">金额</th>
                         <th style="width: 100px">状态</th>
-                        <th style="width: 150px">日期</th>
-                        <th style="width: 100px">上课时间</th>
+                        <th style="width: 200px">下单日期</th>
+                        <th style="width: 200px">收/退货时间</th>
                         <th style="width: 300px">地址</th>
-                        <!--<th style="width:80px">操作</th>-->
-                        <th>下课</th>
+                        <th style="width:80px">操作</th>
                     </tr>
 
                     <volist name="data.order" id="itm">
                         <tr>
-                            <td>{$itm.order_id}</td>
+                            <td>{$itm.id}</td>
                             <td>{$itm.name}</td>
-                            <td>{$itm.tel}</td>
-                            <td>{$itm.lesson_name}</td>
+                            <td>{$itm.phone}</td>
+                            <!--<td>{$itm.amount}</td>-->
+                            <!--<td>{$itm.freight}</td>-->
+                            <td>{$itm.vip_amount}</td>
                             <td>
-                                <if condition="$itm.state eq '20'">
-                                    未使用
-                                    <else  />
-                                    已下课
-                                </if>
+                                <?php if ($itm['state'] == '20') :?>
+                                    待发货
+                                <?php elseif ($itm['state'] == '90') :?>
+                                    已退货
+                                <?php elseif ($itm['state'] == '100') :?>
+                                    退款不退货
+                                <?php else :?>
+                                    已发货
+                                <?php endif; ?>
                             </td>
-                            <td>{$itm.run_date}</td>
-                            <td>{$itm.start_time}</td>
-                            <td>{$itm.local}</td>
-                            <!--<td><a href="javascript:void(0)" class="itm-edit" val="{$itm.order_id}">查看</a></td>-->
-                            <td><a href="javascript:void(0)" class="itm-over" val="{$itm.order_id}">下课</a></td>
+                            <td>{$itm.create_at}</td>
+                            <td>{$itm.modify_at}</td>
+                            <td>{$itm.province} {$itm.city} {$itm.address}</td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">查看</a></td>
+                            <!--<td><a href="javascript:void(0)" class="itm-over" val="{$itm.order_id}">同意退货</a></td>-->
                         </tr>
                     </volist>
                 </table>
@@ -67,15 +74,15 @@
             $('.itm-edit').click(function() {
                 var id = $(this).attr('val');
 
-                location.href = '/admin/manage/order_detail?id='+ id;
+                location.href = '/manage/order_detail?id='+ id;
             });
 
             $('.itm-over').click(function() {
                 var id = $(this).attr('val');
 
-                if (confirm('请确认是否该课程下课?')) {
+                if (confirm('请确认是否同意退货?')) {
                     fit.ajax({
-                        url:'/api/lesson_end',
+                        url:'/api/order_reject',
                         data:{
                             'order_id':id
                         },

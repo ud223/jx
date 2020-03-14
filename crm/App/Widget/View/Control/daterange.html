@@ -1,0 +1,49 @@
+<div class="form-group {$daterange.css}" id="{$daterange.id}Tip">
+    <label class="control-label col-md-{$daterange.title_width}">
+        {$daterange.title}<eq name="daterange.required" value="true"><span class="required">*</span></eq>
+    </label>
+
+    <div class="col-md-{$daterange.input_width}" id="{$daterange.id}_item">
+       <div class="input-group" id="div{$daterange.id}">
+          <input type="text" class="form-control" id="{$daterange.id}" name="{$daterange.id}" value="{$daterange.value}" readonly="readonly">
+          <span class="input-group-btn">
+            <button class="btn btn-info date-range-toggle" type="button"><i class="icon-calendar"></i></button>
+            <button class="btn btn-warning date-reset tooltips" type="button" id="btn_{$daterange.id}_reset" data-original-title="清除选择的日期" data-placement="right"><i class="icon-remove"></i></button>
+          </span>
+       </div>
+        <span class="help-block">{$daterange.tips}</span>
+    </div>
+ </div>
+
+<script>
+    $('#btn_{$daterange.id}_reset').click(function(){
+        $('#{$daterange.id}').val('');
+    });
+    
+    $('#div{$daterange.id}').daterangepicker({
+            opens: (App.isRTL() ? 'left' : 'right'),
+            buttonClasses: ['btn'],
+            applyClass: 'btn-success',
+            cancelClass: 'btn-default',
+            clearBtn: false,
+            format: 'YYYY-MM-DD',
+            separator: ' to ',
+            minDate: '2010-01-01',
+            maxDate: '',
+            showDropdowns: true,
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '关闭',
+                fromLabel: '起始',
+                toLabel: '结束',
+                customRangeLabel: '指定范围',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            }
+        },
+        function (start, end) {
+            $('#{$daterange.id}').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        }
+    );  
+</script>

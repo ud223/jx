@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-primary" type="button" onclick="CalcLastMonthCommission();"><i class="fa fa-calculator"></i>&nbsp;统计上月提成</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          <h3>{$DateInfo.Year}年{$DateInfo.Month}月 提成统计</h3>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th class="text-center">排名</th>
+              <th class="text-left">客户经理</th>
+              <th class="text-left">职位</th>
+              <th class="text-left">业绩</th>
+              <th class="text-left">提成金额</th>
+              <th class="text-center">发放状态</th>
+              <th class="text-center">备注</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="CommissionList">
+              <tr>
+                <td colspan="9" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="CommissionList" id="list">
+                <tr>
+                  <td class="text-center">{$i}</td>
+                  <td class="text-left">{$list.real_name}</td>
+                  <td class="text-left">{$list.group_name}</td>
+                  <td class="text-left"><i class="fa fa-cny"></i>&nbsp;{$list.achievements}</td>
+                  <td class="text-left"><i class="fa fa-cny"></i>&nbsp;{$list.rake_total}</td>
+                  <td class="text-center">{$list.status_style}</td>
+                  <td class="text-center">
+                    <empty name="list.remarks">--<else/>{$list.remarks}</empty>
+                  </td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-info" data-id="{$list.id}" onclick="ShowCommissionOrderList(this);"><i class="fa fa-eye"></i>&nbsp;明细</button>
+                    <button type="button" class="btn btn-primary" data-id="{$list.id}" onclick="ShowSendModal(this);"><i class="fa fa-send"></i>&nbsp;发放提成</button>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th class="text-center">排名</th>
+              <th class="text-left">客户经理</th>
+              <th class="text-left">职位</th>
+              <th class="text-left">业绩</th>
+              <th class="text-left">提成金额</th>
+              <th class="text-center">发放状态</th>
+              <th class="text-center">备注</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-primary" type="button" onclick="CalcLastMonthCommission();"><i class="fa fa-calculator"></i>&nbsp;统计上月提成</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+
+  <!--发放提成Modal Begin-->
+  <div class="modal inmodal fade" id="modal_send_ifr" data-backdrop="static" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">发放提成</h4>
+        </div>
+
+        <div class="modal-body form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-1">
+              <label>备注</label>
+              <input type="hidden" name="commission_id" id="commission_id" value=""/>
+              <textarea name="send_remark" id="send_remark" autocomplete="off" class="form-control" placeholder="备注" rows="3" style="resize: none;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" onclick="SendCommission();"><i class="fa fa-save"></i>&nbsp;保存</button>
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--发放提成Modal End-->
+
+  <!--佣金明细列表Modal Begin-->
+  <div class="modal inmodal fade" id="modal_order_list_ifr" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+          <h4 class="modal-title">佣金明细</h4>
+        </div>
+
+        <div class="modal-body" style="height: 400px; overflow-x: auto;">
+          <div class="row">
+            <div class="col-sm-3">
+              销售业绩：<i class="fa fa-cny"></i>&nbsp;<span id="span_achievements"></span>
+            </div>
+            <div class="col-sm-3">
+              佣金提成：<i class="fa fa-cny"></i>&nbsp;<span id="span_rake"></span>
+            </div>
+            <div class="col-sm-3">
+              下级返利：<i class="fa fa-cny"></i>&nbsp;<span id="span_member_rake"></span>
+            </div>
+            <div class="col-sm-3">
+              获得佣金：<i class="fa fa-cny"></i>&nbsp;<span id="span_total_rake"></span>
+            </div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>订单编号</th>
+              <th>产品信息</th>
+              <th>订单金额</th>
+              <th>提成比例</th>
+              <th>提成金额</th>
+              <th>客户经理</th>
+            </tr>
+            </thead>
+
+            <tbody id="order_list_ifr">
+            <tr>
+              <td colspan="6" class="text-center">暂无数据</td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th>订单编号</th>
+              <th>产品信息</th>
+              <th>订单金额</th>
+              <th>提成比例</th>
+              <th>提成金额</th>
+              <th>客户经理</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--佣金明细列表Modal End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/CommissionDateList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+  
+  for (var selector in config) $(selector).chosen(config[selector]);
+
+  //region 计算上月提成数据
+  function CalcLastMonthCommission() {
+    BlockWindow_ExecOp('正在计算上月佣金数据', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCalcLastMonthCommission",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        CalcLastMonthCommissionResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function CalcLastMonthCommissionResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 计算上月提成数据
+
+  //region 刷新缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新佣金缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetCommissionCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新缓存
+
+  //region 发放提成
+  function ShowSendModal(obj) {
+    var nCommissionID = $(obj).attr("data-id");
+
+    $('#commission_id').val(nCommissionID);
+    $('#modal_send_ifr').modal();
+  }
+
+  function HideSendModal() {
+    $('#modal_send_ifr').modal('hide');
+  }
+
+  function SendCommission() {
+    var nCommissionID = $('#commission_id').val();
+    var sRemark = $('#send_remark').val();
+
+    HideSendModal();
+    BlockWindow_ExecOp('正在刷新佣金缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxSendCommission",
+      dataType:"json",
+      timeout: 6000,
+      data: {"commission_id": nCommissionID, "remark": sRemark},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        SendCommissionResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function SendCommissionResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 发放提成
+
+  //region 查看明细
+  function ShowCommissionOrderList(obj) {
+    var nCommissionID = $(obj).attr("data-id");
+
+    if(IsN(nCommissionID)){
+      AlertError("佣金数据错误");
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在佣金明细', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxCommissionOrderList",
+      dataType:"json",
+      timeout: 6000,
+      data: {"commission_id": nCommissionID},
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        ShowCommissionOrderListResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function ShowCommissionOrderListResponse(objJson) {
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    var nAchievements = objJson.data.achievements;
+    var nRake = objJson.data.rake;
+    var nMemberRake = objJson.data.member_rake;
+    var nTotalRake = objJson.data.total_rake;
+    var OrderList = objJson.data.order_list;
+    var nLen = OrderList.length;
+    var Dom = [];
+    var Info = null;
+    
+    for(var i=0; i<nLen; i++){
+      Info = OrderList[i];
+      
+      Dom.push('<tr>');
+      Dom.push('<td>'+ Info.order_sn +'</td>');
+      Dom.push('<td>'+ Info.product_type_name + ' - ' + Info.product_name +'</td>');
+      Dom.push('<td><i class="fa fa-cny"></i>&nbsp;'+ Info.year_premium_amount +'</td>');
+      Dom.push('<td>首年：'+ Info.first_rate +'%<br>次年：'+ Info.next_rate +'%</td>');
+      Dom.push('<td>首年：<i class="fa fa-cny"></i>&nbsp;'+ Info.first_amount +'<br>次年：<i class="fa fa-cny"></i>&nbsp;'+ Info.next_amount +'</td>');
+      Dom.push('<td>'+ Info.user_name +'</td>');
+      Dom.push('</tr>');
+    }
+
+    $('#span_achievements').text(nAchievements);
+    $('#span_rake').text(nRake);
+    $('#span_member_rake').text(nMemberRake);
+    $('#span_total_rake').text(nTotalRake);
+    $('#order_list_ifr').html(Dom.join(''));
+
+    ShowOrderListModal();
+  }
+
+  function ShowOrderListModal() {
+    $('#modal_order_list_ifr').modal();
+  }
+
+  function HideOrderListModal() {
+    $('#modal_order_list_ifr').modal("hide");
+  }
+  //endregion 查看明细
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<extend name="Base/login"/>
+<block name="body">
+    <div class="row">
+        <div class="col-xs-3">
+        </div>
+        <div class="col-xs-6">
+            <div class="loginboardct">
+                <div class="wp silverbg">
+
+                    <div class="t1">
+                        <a href="index.html"><img src="/Public/common/js/img/logo2.png" /></a>
+                    </div>
+                    <div>
+                        <div class="tt">登录E客电动</div>
+                        <div class="r">
+                            <input id="phone" class="xtxt" type="text" placeholder="手机号码" />
+                        </div>
+                        <div class="r">
+                            <input id="password" class="xtxt" type="password" placeholder="密码" />
+                        </div>
+                        <div class="r">
+                            <button class="btn btn-primary xbtn">登录</button>
+                        </div>
+                        <div>
+                            <button onclick="location.href='/index/register'" class="btn btn-default xbtn">还没有帐号？现在注册</button>
+                        </div>
+                        <div class="fpwd">
+                            <a href="/index/find_password">忘记密码？立即找回</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            $('.btn-primary').click(function(){
+
+                login();
+            });
+        });
+
+        function login() {
+            var phone = $('#phone').val();
+            var password = $('#password').val();
+
+            var data = { 'phone': phone, 'password': password }
+
+            fit.ajax({
+                url:'/user/login',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                    console.log(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        localStorage.setItem('user_id', result.data);
+
+                        location.href = '/index/user_order?access='+ result.data;
+                    }
+                }
+            });
+        }
+    </script>
+</block>

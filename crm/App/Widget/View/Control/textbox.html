@@ -1,0 +1,17 @@
+<?php
+if($textbox["extend"]["readonly"] == "true"){
+    $sRead = 'disabled="disabled"';
+}else{
+    $sRead='';
+}
+$JsEvent = FmtJsEvent($textbox["event"], $textbox["eventfun"]);
+?>
+<div class="form-group {$textbox.css}" id="{$textbox.id}Tip">
+    <label  class="col-md-{$textbox.title_width} control-label" style="text-align: {$textbox.title_align}; line-height: 30px;">
+        {$textbox.title}<eq name="textbox.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-{$textbox.input_width}" id="{$textbox.id}_item">
+        <input id="{$textbox.id}" name="{$textbox.name}" type="{$textbox.extend.type}" class="form-control" {$JsEvent} value="{$textbox.value}" {$sRead}>
+        <span class="help-block">{$textbox.tips}</span>
+    </div>
+ </div>

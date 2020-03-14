@@ -1,0 +1,116 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <?php
+        $index = 0;
+        $imgs = '';
+
+        foreach ($data['list_1'] as $itm) {
+            if ($index > 0) {
+                $imgs = $imgs . ',';
+            }
+
+            $imgs = $imgs . "{url: '". $itm['url'] ."'}";
+
+            $index++;
+        }
+    ?>
+    <div class="pad-10">
+        <script type="text/javascript">
+            // 此处是php代码渲染输出而成，一次性把该导师所有的图片路径都加载至此。
+            var imgs_json = [<?php echo $imgs?>];
+        </script>
+        <!--此段为滑动多图的html部分，写死在这里-->
+        <div id="cd_mentor_img_slider" class="swipe">
+            <div class="swipe-wrap">
+                <!--<div class="figure"></div>-->
+            </div>
+            <!-- 放置索引标签的地方 -->
+            <div class="gl">
+                <!--<div class="pgitm"></div>-->
+            </div>
+        </div>
+    </div>
+
+    <div class="horirow" style="margin-top:0;">
+        <div class="horirow_img" style="background-image: url(<?php echo $data['list_2'][0]['url'] ?>);"></div>
+        <?php echo $data['list_2'][0]['content'] ?>
+    </div>
+
+    <div class="catett">
+        <div class="t1">周边配件</div>
+        <div class="t2">Accessories</div>
+    </div>
+    <div class="pad-10 ntp">
+        <div class="cd_topswitduobarcontent selected" id="xtzaixianyiyuan">
+            <div class="horizontallist hospitals">
+                <volist name="data.list" id="itm">
+                    <div class="itm tapquick" url="/mobile/product?id={$itm.id}">
+                        <div class="inner">
+                            <div class="imgr" style="background-image:url({$itm['show_photo'][0]['url']})"></div>
+                            <div class="txt">
+                                <div class="cdismt1">{$itm.item_name}</div>
+                                <div class="cdismt4">
+                                    <span class="pric">￥{$itm.price}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </volist>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $('document').ready(function() {
+            // 初始化轮动广告部分（Start）
+            if(imgs_json.length) {
+                // 根据imgs_json的长度和内容循环加载图片
+                $.each(imgs_json, function() {
+                    var new_img = $('<div>').addClass('figure');
+                    new_img.css('background-image', 'url(' + this.url + ')');
+                    /*
+                     * 9月26日更新：
+                     * 新增了可链接的情况，插入一个a标签
+                     */
+                    if(this.link) {
+                        var new_link = $('<a>').addClass('sw-inner-link');
+                        new_link.attr('href', this.link);
+                        new_img.append(new_link);
+                    }
+                    $('#cd_mentor_img_slider .swipe-wrap').append(new_img);
+                });
+                // 初始化swipe
+                var slider = Swipe(document.getElementById('cd_mentor_img_slider'), {
+                    startSlide: 0,
+                    speed: 400,
+                    auto: false,
+                    continuous: false,
+                    disableScroll: false,
+                    stopPropagation: false,
+                    callback: function(index, elem) {},
+                    transitionEnd: function(index, elem) {
+                        $('.gl .pgitm.selected').removeClass('selected');
+                        $('.gl .pgitm[index="' + index + '"]').addClass('selected');
+                    }
+                });
+                // 初始化pager
+                var n = slider.getNumSlides();
+                for(var i = 0; i < n; i++) {
+                    var new_pager = $('<div>').addClass('pgitm').attr('index', i);
+                    if(i === 0) {
+                        new_pager.addClass('selected');
+                    }
+                    $('.swipe .gl').append(new_pager);
+                }
+            }
+            // 设置广告栏比例：
+            $('.swipe-wrap > .figure').height(($('.swipe').width() / 16) * 8 + 'px');
+            // 初始化轮动广告部分（End）
+
+        });
+    </script>
+</block>

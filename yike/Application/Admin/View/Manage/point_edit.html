@@ -1,0 +1,231 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">服务网点编辑</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">网点名称</span>
+                        <input type="text" class="form-control" placeholder="请输入网点名称..." name="point_text_field" id="point_text_field" value="{$data['item'].point_text}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">省</span>
+                        <select class="form-control" name="province_field" id="province_field" val="{$data['item'].province}">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">市</span>
+                        <select class="form-control" name="city_field" id="city_field" val="{$data['item'].city}">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">区</span>
+                        <select class="form-control" name="region_field" id="region_field" val="{$data['item'].region}">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">详细地址</span>
+                        <input type="text" class="form-control" placeholder="请输入详细地址..." name="address_field" id="address_field" value="{$data['item'].address}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">联系人</span>
+                        <input type="text" class="form-control" placeholder="请输入联系人..." name="name_field" id="name_field" value="{$data['item'].name}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">电话</span>
+                        <input type="text" class="form-control" placeholder="请输入电话..." name="phone_field" id="phone_field" value="{$data['item'].phone}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">经度</span>
+                        <input type="text" class="form-control" placeholder="请输入经度..." name="long_field" id="long_field" value="{$data['item'].long}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">纬度</span>
+                        <input type="text" class="form-control" placeholder="请输入纬度..." name="lat_field" id="lat_field" value="{$data['item'].lat}" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="point_id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/point_list';
+            });
+
+            var province = $('#province_field').attr('val');
+            var city = $('#city_field').attr('val');
+            var region = $('#region_field').attr('val');
+
+            if (!province)
+                province = 0;
+
+            if (!city)
+                city = 0;
+
+            if (!region)
+                region = 0;
+
+            initProvince(province);
+            initCity(province, city);
+            initRegion(province, city, region);
+        });
+        
+        function initProvince(province) {
+            var sel_province = $("#province_field");
+
+            sel_province.empty();
+
+            $("<option value='0'>选择省份...</option>").appendTo(sel_province);
+
+            $.getJSON("/Public/common/js/ChineseCities.json", function (json) {
+                $.each(json, function () {
+                    var province_node;
+
+                    if (this.name == province) {
+                        province_node= $("<option value='" + this.name + "' selected='selected'>" + this.name + "</option>")
+                    }
+                    else {
+                        province_node = $("<option value='" + this.name + "'>" + this.name + "</option>")
+                    }
+
+                    $(province_node).appendTo(sel_province);
+                })
+            });
+
+            $(sel_province).change(function() {
+                initCity($(this).val(), 0);
+            })
+        }
+
+        function initCity(province, city) {
+            var sel_city = $("#city_field");
+
+            sel_city.empty();
+
+            $("<option value='0'>选择城市...</option>").appendTo(sel_city);
+
+            initRegion(0, 0);
+
+            if (province == 0)
+                return;
+
+            $.getJSON("/Public/common/js/ChineseCities.json", function (json) {
+                $.each(json, function () {
+                    if (this.name == province) {
+                        $.each(this.city, function () {
+                            var city_node;
+
+                            if (this.name == city) {
+                                city_node = $("<option value='" + this.name + "' selected='selected'>" + this.name + "</option>")
+                            }
+                            else {
+                                city_node= $("<option value='" + this.name + "'>" + this.name + "</option>")
+                            }
+
+                            $(city_node).appendTo(sel_city);
+                        })
+                    }
+                })
+            });
+
+            $(sel_city).change(function() {
+                initRegion(province, $(this).val(), 0);
+            })
+        }
+
+        function initRegion(province, city, region) {
+            var sel_region = $("#region_field");
+
+            sel_region.empty();
+
+            $("<option value='0'>选择行政区...</option>").appendTo(sel_region);
+
+            if (city == 0)
+                return;
+
+            $.getJSON("/Public/common/js/ChineseCities.json", function (json) {
+                $.each(json, function () {
+                    if (this.name == province) {
+                        $.each(this.city, function () {
+                            if (this.name == city) {
+                                $.each(this.area, function () {
+                                    var region_node;
+
+                                    if (this == region) {
+                                        region_node = $("<option value='" + this + "' selected='selected'>" + this + "</option>")
+                                    }
+                                    else {
+                                        region_node= $("<option value='" + this + "'>" + this + "</option>")
+                                    }
+
+                                    $(region_node).appendTo(sel_region);
+                                })
+                            }
+                        })
+                    }
+                })
+            });
+        }
+
+        function saveItem() {
+            var id = $('#point_id').val();
+            var point_text = $('#point_text_field').val();
+            var province = $('#province_field').val();
+            var city = $('#city_field').val();
+            var region = $('#region_field').val();
+            var address = $('#address_field').val();
+            var name = $('#name_field').val();
+            var phone = $('#phone_field').val();
+            var long = $('#long_field').val();
+            var lat = $('#lat_field').val();
+
+            var data = { 'id': id, 'point_text':point_text, 'province':province, 'city': city, 'region':region, 'address':address, 'name':name, 'phone':phone, 'long':long, 'lat':lat };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+
+            if (confirm('是否保存该服务站点?')) {
+                fit.ajax({
+                    url:'/manage/point_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.href = '/manage/point_edit?id=' + result.data;
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {:W('Page/pageMeta')}
+
+  {:W('Page/pageTitle')}
+
+  {:W('Page/pageHeadInclude')}
+  
+</head>
+
+<body {:W('Page/bodyCss')}>
+
+<div class="wrapper wrapper-content animated fadeIn">
+  <!-- 搜索 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>搜索预约</h5>
+        </div>
+
+        <div class="ibox-content">
+          <form class="form-horizontal" id="searchForm" action="__URL__/SignatoryOrderList" method="get">
+
+            <div class="row">
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">查询条件</label>
+                  <div class="col-sm-5">
+                    <select class="chosen-select" name="search_case" id="search_case" autocomplete="off" style="width: 100%;" data-placeholder="全部">
+                      <option value="">不指定条件</option>
+                      <option value="order_sn" <eq name="search_case" value="id">selected</eq>>预约编号</option>
+                      <option value="produc" <eq name="search_case" value="real_name">selected</eq>>产品名称</option>
+                      <option value="customer" <eq name="search_case" value="phone">selected</eq> >客户名称</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-5">
+                    <input type="text" name="search_key" class="form-control" placeholder="查询关键字" value="{$search_key}">
+                    <span class="help-block m-b-none"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <?php if(IsArray($SellerCaptainOption) || IsArray($SellerMemberOption)){?>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">销售人员</label>
+
+                  <notempty name="SellerCaptainOption">
+                    <div class="col-sm-5">
+                      <select class="chosen-select" name="search_seller_captain" id="search_seller_captain" autocomplete="off" style="width: 100%;" data-placeholder="全部团队长">
+                        <option value="" <empty name='search_seller_captain'>selected</empty>>全部团队长</option>
+                        <volist name="SellerManagerOption" id="list">
+                          <option value="{$list.val}" <eq name="search_seller_captain" value="$list.val">selected</eq> >{$list.key}</option>
+                        </volist>
+                      </select>
+                    </div>
+                  </notempty>
+
+                  <notempty name="SellerMemberOption">
+                    <div class="col-sm-5">
+                      <select class="chosen-select" name="search_seller_member" id="search_seller_member" autocomplete="off" style="width: 100%;" data-placeholder="全部客户经理">
+                        <option value="" <empty name='search_seller_member'>selected</empty>>全部客户经理</option>
+                        <volist name="SellerMemberOption" id="list">
+                          <option value="{$list.val}" <eq name="search_seller_member" value="$list.val">selected</eq> >{$list.key}</option>
+                        </volist>
+                      </select>
+                    </div>
+                  </notempty>
+                </div>
+                <?php }?>
+              </div>
+                  
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="hr-line-dashed"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
+
+                    <button class="btn btn-white" type="button" onclick="BackIndexPage();"><i class="fa fa-refresh"></i>&nbsp;重置表单</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--搜索 End-->
+  
+  <!--主体内容 Begin-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+
+        <div class="ibox-content">
+          {$Page}
+
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th class="text-left">预约编号</th>
+              <th class="text-left">产品</th>
+              <th class="text-left">客户姓名</th>
+              <th class="text-left">发起人</th>
+              <th>消费日期</th>
+              <th class="text-center">当前状态</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <empty name="OrderList">
+              <tr>
+                <td colspan="7" class="text-center">暂无数据</td>
+              </tr>
+              <else />
+              <volist name="OrderList" id="list">
+                <tr>
+                  <td class="text-left">{$list.order_sn}</td>
+                  <td class="text-left">{$list.product_name}</td>
+                  <td class="text-left">{$list.customer_name}</td>
+                  <td class="text-left">{$list.seller_manager_name}</td>
+                  <td>{$list.pay_time}</td>
+                  <td class="text-center">
+                    <p class="form-control-static">{$list.status_desc}</p>
+                  </td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <a href="__URL__/ReturnVisitOrderInfo/order_sn/{$list.order_sn}" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;回访设置</a>
+                    </div>
+                  </td>
+                </tr>
+              </volist>
+            </empty>
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th class="text-left">预约编号</th>
+              <th class="text-left">产品</th>
+              <th class="text-left">客户姓名</th>
+              <th class="text-left">发起人</th>
+              <th>消费日期</th>
+              <th class="text-center">当前状态</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+
+          {$Page}
+        </div>
+
+        <div class="ibox-content">
+          <button class="btn btn-success" type="button" onclick="f5();"><i class="fa fa-refresh"></i>&nbsp;刷新页面</button>
+
+          <button class="btn btn-info" type="button" onclick="RefreshCache();"><i class="fa fa-refresh"></i>&nbsp;刷新缓存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--主体内容 End-->
+</div>
+
+{:W('Page/pageFootInclude')}
+
+<script>
+  var ReturnUrl = "__URL__/ReturnVisitOrderList";
+  
+  var config = {
+    ".chosen-select": {},
+    ".chosen-select-deselect": {
+      allow_single_deselect: !0
+    },
+    ".chosen-select-no-single": {
+      disable_search_threshold: 10
+    },
+    ".chosen-select-no-results": {
+      no_results_text: "Oops, nothing found!"
+    },
+    ".chosen-select-width": {
+      width: "95%"
+    }
+  };
+  
+  for (var selector in config) $(selector).chosen(config[selector]);
+
+  //region 刷新缓存
+  function RefreshCache(){
+    BlockWindow_ExecOp('正在刷新预约缓存', 140);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/ResetOrderCache",
+      dataType:"json",
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        RefreshCacheResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  //刷新缓存的回调
+  function RefreshCacheResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error == 1){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    f5();
+  }
+  //endregion 刷新缓存
+
+  function BackIndexPage(){
+    window.location.href = ReturnUrl;
+  }
+</script>
+</body>
+
+</html>

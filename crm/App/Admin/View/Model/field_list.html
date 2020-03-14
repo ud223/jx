@@ -1,0 +1,212 @@
+<include file="Public:page_header" />
+         
+<!-- BEGIN 主体区域-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>{$pagetitle}</div>
+            </div>        
+
+            <div class="portlet-body">
+                <?php
+                if(!empty($BtnCustom)){
+                ?>
+                <div class="table-toolbar">
+                    <div class="btn-group">
+                        <volist name="BtnCustom" id="btn">
+                            <a href="{$btn.href}" class="btn {$btn.css}" <notempty name="btn.event">onclick="{$btn.event}"</notempty>><i class="{$btn.icon}"></i> {$btn.title}</a>
+                        </volist>
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
+
+                <table class="table table-striped table-bordered table-hover table_vertical" id="table_menu_list">
+                    <thead>
+                        <tr style=" border-bottom: 1px solid #e6e6e6;">
+                            <th style="width:80px; text-align: center;">排序</th>
+
+                            <volist name="listdata.field" id="field">
+                            <th {$field.css}>{$field.val}</th>
+                            </volist>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php
+                        $nCount = sizeof($listdata["data"]);
+
+                        for($i=0; $i<$nCount; $i++){
+                            $NewsInfo = $listdata["data"][$i];
+                        ?>
+                        <tr class="odd gradeX">
+                            <td style="width:80px; text-align: center;"><input name="input_order" id="order_{$NewsInfo.fieldid}" class="form-control" data-id="{$NewsInfo.fieldid}" value="{$NewsInfo.order}" type="text" maxlength="4" style="text-align: center;" /></td>
+                        <?php
+                        $nFieldCount = sizeof($listdata["field"]);
+
+                        for($k=0; $k<$nFieldCount; $k++){
+                            $FieldInfo = $listdata["field"][$k];
+                            $sFieldValue = $NewsInfo[$FieldInfo["key"]];
+
+                            if($FieldInfo["type"] == "date"){
+                                $sFieldValue = date('Y-m-d', $sFieldValue);
+                            }
+
+                            echo '<td '. $FieldInfo["css"] .' id="'. $FieldInfo["key"] .'_'. $NewsInfo['fieldid'] .'">' . $sFieldValue . '</td>';
+                        }
+                        ?>
+                            <td style="width:103px;">
+                                <div class="btn-group">
+                                    <a class="btn btn-default dropdown-toggle" href="#" data-toggle="dropdown">
+                                        <i class="icon-cogs"></i> 操作
+                                        <i class="icon-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="{$PageListEditUrl}/selectid/{$NewsInfo.fieldid}"><i class="icon-edit"></i> 编辑</a></li>
+                                        <li>
+                                            <eq name="NewsInfo.status" value="1">
+                                                <a href="javascript:void(0);" id="status_{$NewsInfo.fieldid}" data-status="{$NewsInfo.status}" onclick="SetFieldStatus({$NewsInfo.fieldid});"><i class="icon-ban-circle"></i> 禁用</a>
+                                            <else/>
+                                                <a href="javascript:void(0);" id="status_{$NewsInfo.fieldid}" data-status="{$NewsInfo.status}" onclick="SetFieldStatus({$NewsInfo.fieldid});"><i class="icon-ok" id="status_sign_{$NewsInfo.fieldid}"></i> 启用</a>
+                                            </eq>
+                                        </li>
+                                        <li><a href="javascript:void(0);" onclick="btten.DeleteData({$NewsInfo.fieldid}, '{$PageListDeleteUrl}')"><i class="icon-trash"></i> 删除</a></li>
+                                    </ul>
+                                 </div>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END 主体区域-->
+
+<script>
+ function SyncField(_modelid){
+     var oJson = {"modelid" : _modelid, "act" : "sync"};
+
+     $.ajax({
+         type: "POST",
+         url:  _MODULE_ + '/Model/field_list',
+         dataType: "json",
+         data: oJson,
+         timeout : 100000,
+         cache: false,
+         async: false,
+         success: function(result){
+             if(btten.IsN(result)){
+                 btten.Error("没有获取到服务器返回消息！");
+                 return;
+             }
+
+             if(!result.status){
+                 btten.Error(result.msg);
+             }else{
+                 btten.F5();
+             }
+         },
+         error: function (xhr, ajaxOptions, thrownError) {
+             btten.Error("无法加载请求的内容！");
+         }
+     });
+ }
+
+ function SetOrder(){
+     var arrJson = [];
+
+     $("input[name=input_order]").each(function () {
+         var nOrder = $(this).val();
+         var nDataID = $(this).attr('data-id');
+
+         if(btten.IsN(nOrder)){
+             nOrder = 0;
+         }else{
+             if(isNaN(nOrder)){
+                 nOrder = 0;
+             }
+         }
+
+         arrJson.push('{"fieldid":'+ nDataID +',"order":'+ nOrder +'}');
+     });
+
+     var oJson = {"data":"["+ arrJson.join(',') +"]", "act":"order"};
+
+     $.ajax({
+         type: "POST",
+         url:  _MODULE_ + '/Model/field_list',
+         dataType: "json",
+         data: oJson,
+         timeout : 100000,
+         cache: false,
+         async: false,
+         success: function(result){
+             if(btten.IsN(result)){
+                 btten.Error("没有获取到服务器返回消息！");
+                 return;
+             }
+
+             if(!result.status){
+                 btten.Error(result.msg);
+             }else{
+                 btten.F5();
+             }
+         },
+         error: function (xhr, ajaxOptions, thrownError) {
+             btten.Error("无法加载请求的内容！");
+         }
+     });
+ }
+
+ function SetFieldStatus(_dataid){
+     var nStatus = $('#status_' + _dataid).attr('data-status');
+     var oJson = {"dataid" : _dataid, "status" : nStatus, "act" : "status"};
+
+     $.ajax({
+         type: "POST",
+         url:  _MODULE_ + '/Model/field_list',
+         dataType: "json",
+         data: oJson,
+         timeout : 100000,
+         cache: false,
+         async: false,
+         success: function(result){
+             if(btten.IsN(result)){
+                 btten.Error("没有获取到服务器返回消息！");
+                 return;
+             }
+
+             if(!result.status){
+                 btten.Error(result.msg);
+             }else{
+                 var newStatus = Math.abs((nStatus-1));  //新的状态值，当前状态-1 取绝对值
+                 $('#status_' + _dataid).attr('data-status',newStatus);  //设置新状态值
+
+                 if(newStatus == 0){
+                     //改变右侧列表行按钮的样式
+                     $('#status_' + _dataid).html('<i class="icon-ok"></i> 启用');
+                     //改变状态字段显示的内容
+                     $('#status_sign_' + _dataid + " span").removeClass('label-success').addClass('label-danger').html('<i class="icon-ban-circle"></i>');
+                 }else{
+                     //改变右侧列表行按钮的样式
+                     $('#status_' + _dataid).html('<i class="icon-ban-circle"></i> 禁用');
+                     //改变状态字段显示的内容
+                     $('#status_sign_' + _dataid + " span").removeClass('label-danger').addClass('label-success').html('<i class="icon-ok"></i>');
+                 }
+             }
+         },
+         error: function (xhr, ajaxOptions, thrownError) {
+             btten.Error("无法加载请求的内容！");
+         }
+     });
+ }
+</script>
+<include file="Public:page_footer" />

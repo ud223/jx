@@ -1,0 +1,114 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">版块编辑</h3>
+            </div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">版块名称</span>
+                        <input type="text" class="form-control" placeholder="请输入版块名称..." name="name_field" id="name_field" value="{$data['item'].name}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否热门</span>
+                        <select class="form-control" name="hot_field" id="hot_field">
+                            <?php if ($data['item']['hot'] == '0') :?>
+                            <option value="1">是</option>
+                            <option value="0" selected="selected">否</option>
+                            <?php else :?>
+                            <option value="1" selected="selected">是</option>
+                            <option value="0">否</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">序号</span>
+                        <select class="form-control" name="sort_field" id="sort_field">
+                            <?php for ($i = 1; $i < 51; $i++): ?>
+                                <?php if ($data['item']['sort'] == $i) :?>
+                                    <option value="<?php echo $i ?>" selected="selected"><?php echo $i ?></option>
+                                <?php else :?>
+                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否启用</span>
+                        <select class="form-control" name="enable_field" id="enable_field">
+                            <?php if ($data['item']['enable'] == '0') :?>
+                                <option value="1">启用</option>
+                                <option value="0" selected="selected">不启用</option>
+                            <?php else :?>
+                                <option value="1" selected="selected">启用</option>
+                                <option value="0">不启用</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="bbs_section_id" value="{$data['item'].Id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/bbs_section';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#bbs_section_id').val();
+            var name = $('#name_field').val();
+            var hot = $('#hot_field').val();
+            var sort = $('#sort_field').val();
+            var enable = $('#enable_field').val();
+
+            var data = {
+                'id': id,
+                'name': name,
+                'hot': hot,
+                'sort': sort,
+                'enable': enable
+            };
+
+            fit.ajax({
+                url:'/manage/save_bbs_section',
+                data: data,
+                success:function(result){
+                    alert(result.msg);
+
+                    if (!id) {
+                        location.href = '/manage/bbs_section_edit?id='+ result.data;
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+</block>

@@ -1,0 +1,1167 @@
+<include file="Public:page_header" />
+         
+<!-- BEGIN 主体区域-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>{$pagetitle}</div>
+                <div class="tools">
+                    <a href="" class="collapse"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <ul  class="nav nav-pills">
+                    <li class="active"><a href="#tab_public" data-toggle="tab">公用配置</a></li>
+                    <li><a href="#tab_list" data-toggle="tab">列表页配置</a></li>
+                    <li class=""><a href="#tab_add" data-toggle="tab">添加页配置</a></li>
+                    <li class=""><a href="#tab_edit" data-toggle="tab">修改页配置</a></li>
+                    <li class=""><a href="#tab_search" data-toggle="tab">搜索配置</a></li>
+                 </ul>
+                <form action="#" class="form-horizontal form-bordered" style="border-top: 1px solid #EFEFEF;">
+                    <div  class="tab-content">
+                        <!--公用配置 Begin-->
+                        <div class="tab-pane fade active in form" id="tab_public">
+                            <input id="fieldid" name="fieldid" type="hidden" value="{$datainfo.fieldid}">
+                            <input id="mdlid" name="mdlid" type="hidden" value="{$datainfo.mdlid}">
+
+                            <div class="form-group " id="tablenameTip">
+                                <label  class="col-md-3 control-label" style="text-align: right;"> 所属表 </label>
+                                <div class="col-md-9" id="tablename_item">
+                                    <input id="tablename" name="tablename" type="text" class="form-control"  placeholder="" value="{$datainfo.tablename}" disabled>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group " id="fieldnameTip">
+                                <label  class="col-md-3 control-label" style="text-align: right;"> 字段名 </label>
+                                <div class="col-md-9" id="fieldname_item">
+                                    <input id="fieldname" name="fieldname" type="text" class="form-control"  placeholder="" value="{$datainfo.fieldname}" disabled>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="fieldtitleTip">
+                                <label  class="col-md-3 control-label" style="text-align: right;"> 字段标题 </label>
+                                <div class="col-md-9" id="fieldtitle_item">
+                                    <input id="fieldtitle" name="fieldtitle" type="text" class="form-control"  placeholder="" value="{$datainfo.fieldtitle}">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group " id="list_islistTip">
+                                <label  class="col-md-3 control-label"> 列表页字段 </label>
+                                <div class="col-md-9" id="list_islist_item">
+                                    <div class="radio-list"> 
+                                        <?php 
+                                        if(empty($datainfo["islist"])){
+                                            $datainfo["islist"] = "false";
+                                        }
+                                        ?>
+                                        <label class="radio-inline"><input type="radio" name="list_islist" id="list_islist_0" value="false" <eq name="datainfo.islist" value="false">checked</eq>>否 </label>
+                                        <label class="radio-inline"><input type="radio" name="list_islist" id="list_islist_1" value="true" <eq name="datainfo.islist" value="true"> checked</eq>>是 </label>
+                                    </div>
+                                    <span class="help-block">是否作为列表页字段显示</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group " id="add_isaddTip">
+                                <label  class="col-md-3 control-label"> 添加字段 </label>
+                                <div class="col-md-9" id="add_isadd_item">
+                                    <div class="radio-list">
+                                        <?php 
+                                        if(empty($datainfo["isadd"])){
+                                            $datainfo["isadd"] = "false";
+                                        }
+                                        ?>
+                                        <label class="radio-inline"><input type="radio" name="add_isadd" id="add_isadd_0" value="false" <eq name="datainfo.isadd" value="false">checked</eq>>否 </label>
+                                        <label class="radio-inline"><input type="radio" name="add_isadd" id="add_isadd_1" value="true" <eq name="datainfo.isadd" value="true"> checked</eq>>是 </label>
+                                    </div>
+                                    <span class="help-block">是否作为数据添加页面的输入字段显示。</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group " id="edit_iseditTip">
+                                <label  class="col-md-3 control-label"> 修改字段 </label>
+                                <div class="col-md-9" id="edit_isedit_item">
+                                    <div class="radio-list">
+                                        <?php 
+                                        if(empty($datainfo["isedit"])){
+                                            $datainfo["isedit"] = "false";
+                                        }
+                                        ?>
+                                        <label class="radio-inline"><input type="radio" name="edit_isedit" id="edit_isedit_0" value="false" <eq name="datainfo.isedit" value="false">checked</eq>>否 </label>
+                                        <label class="radio-inline"><input type="radio" name="edit_isedit" id="edit_isedit_1" value="true" <eq name="datainfo.isedit" value="true"> checked</eq>>是 </label>
+                                    </div>
+                                    <span class="help-block">是否作为数据修改页面的输入字段显示。启用后，如果不进行配置，会使用添加页配置。</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group last" id="search_issearchTip">
+                                <label  class="col-md-3 control-label"> 搜索字段 </label>
+                                <div class="col-md-9" id="search_issearch_item">
+                                    <div class="radio-list">
+                                        <?php 
+                                        if(empty($datainfo["issearch"])){
+                                            $datainfo["issearch"] = "false";
+                                        }
+                                        ?>
+                                        <label class="radio-inline"><input type="radio" name="search_issearch" id="search_issearch_0" value="false" <eq name="datainfo.issearch" value="false"> checked</eq>>否 </label>
+                                        <label class="radio-inline"><input type="radio" name="search_issearch" id="search_issearch_1" value="true" <eq name="datainfo.issearch" value="true"> checked</eq>>是 </label>
+                                    </div>
+                                    <span class="help-block">设置为搜索项时，在列表页的搜索功能项</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--公用配置 End-->
+
+                        <!--列表配置 Begin-->
+                        <div class="tab-pane fade form" id="tab_list">
+                            <div class="form-body">
+                                <div class="form-group " id="list_isparamTip">
+                                    <label  class="col-md-3 control-label"> 参数字段 </label>
+                                    <div class="col-md-9" id="list_isparam_item">
+                                        <div class="radio-list"> 
+                                            <?php 
+                                            if(empty($datainfo["listconfig"]["isparam"])){
+                                                $datainfo["listconfig"]["isparam"] = "false";
+                                            }
+                                            ?>
+                                            <label class="radio-inline"><input type="radio" name="list_isparam" id="list_isparam_0" value="false" <eq name="datainfo.listconfig.isparam" value="false">checked</eq>>否 </label>
+                                            <label class="radio-inline"><input type="radio" name="list_isparam" id="list_isparam_1" value="true" <eq name="datainfo.listconfig.isparam" value="true"> checked</eq>>是 </label>
+                                        </div>
+                                        <span class="help-block">是否作为列表页操作的数据ID</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" id="list_ishideTip">
+                                    <label  class="col-md-3 control-label"> 隐藏列 </label>
+                                    <div class="col-md-9" id="list_ishide_item">
+                                        <select name="list_ishide" id="list_ishide" class="sidebar-option form-control input-large">
+                                            <option value="false" <eq name="datainfo.listconfig.ishide" value="false"> selected="selected"</eq>>否</option>
+                                            <option value="true" <eq name="datainfo.listconfig.ishide" value="true"> selected="selected"</eq>>是</option>
+                                        </select>
+                                        <span class="help-block">通常作为参数使用，例如数据ID。</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="list_styleTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> Style代码 </label>
+                                    <div class="col-md-9" id="list_style_item">
+                                        <input id="list_style" name="list_style" type="text" class="form-control"  placeholder="" value="{$datainfo.listconfig.style}">
+                                        <span class="help-block">附加的style样式代码，多个样式用 ; 号隔开</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group last" id="list_cssTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> CSS类名 </label>
+                                    <div class="col-md-9" id="list_css_item">
+                                        <input id="list_css" name="list_css" type="text" class="form-control"  placeholder="" value="{$datainfo.listconfig.css}">
+                                        <span class="help-block">附加的css，多个css类，用空格隔开</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--列表配置 End-->
+
+                        <!--添加配置 Begin-->
+                        <div class="tab-pane fade form" id="tab_add">
+                            <div class="form-body">
+                                <div class="form-group  " id="add_controlTip">
+                                    <label  class="col-md-3 control-label"> 使用控件 </label>
+                                    <div class="col-md-9" id="add_control_item">
+                                        <select  class="sidebar-option form-control input-large" name="add_control" id="add_control">
+                                            <option value="">选择控件</option>
+                                            <option value="hidden" <eq name="datainfo.addconfig.control" value="hidden"> selected="selected"</eq>>隐藏文本框</option>
+                                            <option value="textbox" <eq name="datainfo.addconfig.control" value="textbox"> selected="selected"</eq>>单行文本框</option>
+                                            <option value="textarea" <eq name="datainfo.addconfig.control" value="textarea"> selected="selected"</eq>>多行文本框</option>
+                                            <option value="radio" <eq name="datainfo.addconfig.control" value="radio"> selected="selected"</eq>>单选按钮</option>
+                                            <option value="checkbox" <eq name="datainfo.addconfig.control" value="checkbox"> selected="selected"</eq>>复选框</option>
+                                            <option value="dropdownlist" <eq name="datainfo.addconfig.control" value="dropdownlist"> selected="selected"</eq>>下拉框</option>
+                                            <option value="app_category" <eq name="datainfo.addconfig.control" value="app_category"> selected="selected"</eq>>下拉框--应用栏目分类</option>
+                                            <option value="system_category" <eq name="datainfo.addconfig.control" value="system_category"> selected="selected"</eq>>下拉框--系统栏目分类</option>
+                                            <option value="daterange" <eq name="datainfo.addconfig.control" value="daterange"> selected="selected"</eq>>日期范围</option>
+                                            <option value="dateselect" <eq name="datainfo.addconfig.control" value="dateselect"> selected="selected"</eq>>日期选择</option>
+                                            <option value="kindeditor" <eq name="datainfo.addconfig.control" value="kindeditor"> selected="selected"</eq>>kindeditor文本编辑器</option>
+                                            <option value="upload_file" <eq name="datainfo.addconfig.control" value="upload_file"> selected="selected"</eq>>文件上传</option>
+                                            <option value="upload_image" <eq name="datainfo.addconfig.control" value="upload_image"> selected="selected"</eq>>图片上传</option>
+                                            <option value="upload_image_cut" <eq name="datainfo.addconfig.control" value="upload_image_cut"> selected="selected"</eq>>图片上传（裁剪）</option>
+                                            <option value="select_back" <eq name="datainfo.addconfig.control" value="select_back"> selected="selected"</eq>>查找带回</option>
+                                            <option value="ganged" <eq name="datainfo.addconfig.control" value="ganged"> selected="selected"</eq>>联动选择</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div id="add_option_expand" style="display: none;"></div>
+
+                                <div class="form-group " id="add_tipsTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 默认提示文字 </label>
+                                    <div class="col-md-9" id="add_tips_item">
+                                        <input id="add_tips" name="add_tips" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.tips}">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_valueTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 默认值 </label>
+                                    <div class="col-md-9" id="add_value_item">
+                                        <input id="add_value" name="add_value" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.value}">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_cssTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> CSS类名 </label>
+                                    <div class="col-md-9" id="add_css_item">
+                                        <input id="add_css" name="add_css" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.css}">
+                                        <span class="help-block">附加的css，多个css类，用空格隔开</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_styleTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> Style代码 </label>
+                                    <div class="col-md-9" id="add_style_item">
+                                        <input id="add_style" name="add_style" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.style}">
+                                        <span class="help-block">附加的style样式代码，多个样式用 ; 号隔开</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_eventTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> JS事件 </label>
+                                    <div class="col-md-9" id="add_event_item">
+                                        <input id="add_event" name="add_event" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.event}">
+                                        <span class="help-block">js事件，多个事件名称用 | 分隔。例如：onclick|onmouseover;</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_eventfunTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> JS调用函数 </label>
+                                    <div class="col-md-9" id="add_eventfun_item">
+                                        <input id="add_eventfun" name="add_eventfun" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.eventfun}">
+                                        <span class="help-block">js事件的调用函数，对应多个事件的函数用 | 分隔。例如：Function_1('test');Function_2('test');|Function_3('test');</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_isrequiredTip">
+                                    <label  class="col-md-3 control-label"> 必填项 </label>
+                                    <div class="col-md-9" id="add_isrequired_item">
+                                        <div class="radio-list">
+                                            <?php 
+                                            if(empty($datainfo["addconfig"]["required"])){
+                                                $datainfo["addconfig"]["required"] = "false";
+                                            }
+                                            ?>
+                                            <label class="radio-inline"><input type="radio" name="add_isrequired" id="add_isrequired_0" value="false" <eq name="datainfo.addconfig.required" value="false"> checked</eq>>否 </label>
+                                            <label class="radio-inline"><input type="radio" name="add_isrequired" id="add_isrequired_1" value="true" <eq name="datainfo.addconfig.required" value="true"> checked</eq>>是 </label>
+                                        </div>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_regexpTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 验证规则 </label>
+                                    <div class="col-md-3" id="add_regexp_item">
+                                        <input id="add_regexp" name="add_regexp" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.regexp}">
+                                    </div>
+                                    <div class="col-md-6" id="add_regexp_item">
+                                        <select  class="sidebar-option form-control input-large" name="add_regexp_rule" id="add_regexp_rule" style="margin-bottom: 5px;">
+                                            <option value="">自定义正则</option>
+                                            <option value="num" <eq name="datainfo.addconfig.regexp" value="num"> selected="selected"</eq>>数字</option>
+                                            <option value="num1" <eq name="datainfo.addconfig.regexp" value="num1"> selected="selected"</eq>>正数（正整数 + 0）</option>
+                                            <option value="intege" <eq name="datainfo.addconfig.regexp" value="intege"> selected="selected"</eq>>整数</option>
+                                            <option value="intege1" <eq name="datainfo.addconfig.regexp" value="intege1"> selected="selected"</eq>>正整数</option>
+                                            <option value="letter" <eq name="datainfo.addconfig.regexp" value="letter"> selected="selected"</eq>>字母</option>
+                                            <option value="username" <eq name="datainfo.addconfig.regexp" value="username"> selected="selected"</eq>>用户名</option>
+                                            <option value="email" <eq name="datainfo.addconfig.regexp" value="email"> selected="selected"</eq>>E-Mail</option>
+                                            <option value="qq" <eq name="datainfo.addconfig.regexp" value="qq"> selected="selected"</eq>>QQ</option>
+                                            <option value="url" <eq name="datainfo.addconfig.regexp" value="url"> selected="selected"</eq>>超级链接</option>
+                                            <option value="mobile" <eq name="datainfo.addconfig.regexp" value="mobile"> selected="selected"</eq>>手机号码</option>
+                                            <option value="tel" <eq name="datainfo.addconfig.regexp" value="tel"> selected="selected"</eq>>电话号码</option>
+                                            <option value="zipcode" <eq name="datainfo.addconfig.regexp" value="zipcode"> selected="selected"</eq>>邮政编码</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_errortipsTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 错误提示 </label>
+                                    <div class="col-md-9" id="add_errortips_item">
+                                        <input id="add_errortips" name="add_errortips" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.errortips}">
+                                        <span class="help-block">正则验证的错误提示</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="add_minlenTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 最小长度 </label>
+                                    <div class="col-md-9" id="add_minlen_item">
+                                        <input id="add_minlen" name="add_minlen" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.minlen}">
+                                        <span class="help-block">输入字符的数的最小长度</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group last" id="add_maxlenTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 最大长度 </label>
+                                    <div class="col-md-9" id="add_maxlen_item">
+                                        <input id="add_maxlen" name="add_maxlen" type="text" class="form-control"  placeholder="" value="{$datainfo.addconfig.maxlen}">
+                                        <span class="help-block">输入字符的数的最大长度</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--添加配置 End-->
+                        
+                        <!--修改配置 Begin-->
+                        <div class="tab-pane fade form" id="tab_edit">
+                            <div class="form-body">
+                                <div class="form-group" id="edit_controlTip">
+                                    <label  class="col-md-3 control-label"> 使用控件 </label>
+                                    <div class="col-md-9" id="edit_control_item">
+                                        <select  class="sidebar-option form-control input-large" name="edit_control" id="edit_control">
+                                            <option value="">选择控件</option>
+                                            <option value="hidden" <eq name="datainfo.editconfig.control" value="hidden"> selected="selected"</eq>>隐藏文本框</option>
+                                            <option value="textbox" <eq name="datainfo.editconfig.control" value="textbox"> selected="selected"</eq>>单行文本框</option>
+                                            <option value="textarea" <eq name="datainfo.editconfig.control" value="textarea"> selected="selected"</eq>>多行文本框</option>
+                                            <option value="radio" <eq name="datainfo.editconfig.control" value="radio"> selected="selected"</eq>>单选按钮</option>
+                                            <option value="checkbox" <eq name="datainfo.editconfig.control" value="checkbox"> selected="selected"</eq>>复选框</option>
+                                            <option value="dropdownlist" <eq name="datainfo.editconfig.control" value="dropdownlist"> selected="selected"</eq>>下拉框</option>
+                                            <option value="app_category" <eq name="datainfo.editconfig.control" value="app_category"> selected="selected"</eq>>下拉框--应用栏目分类</option>
+                                            <option value="system_category" <eq name="datainfo.editconfig.control" value="system_category"> selected="selected"</eq>>下拉框--系统栏目分类</option>
+                                            <option value="daterange" <eq name="datainfo.editconfig.control" value="daterange"> selected="selected"</eq>>日期范围</option>
+                                            <option value="dateselect" <eq name="datainfo.editconfig.control" value="dateselect"> selected="selected"</eq>>日期选择</option>
+                                            <option value="kindeditor" <eq name="datainfo.editconfig.control" value="kindeditor"> selected="selected"</eq>>kindeditor文本编辑器</option>
+                                            <option value="upload_file" <eq name="datainfo.editconfig.control" value="upload_file"> selected="selected"</eq>>文件上传</option>
+                                            <option value="upload_image" <eq name="datainfo.editconfig.control" value="upload_image"> selected="selected"</eq>>图片上传</option>
+                                            <option value="upload_image_cut" <eq name="datainfo.addconfig.control" value="upload_image_cut"> selected="selected"</eq>>图片上传（裁剪）</option>
+                                            <option value="select_back" <eq name="datainfo.editconfig.control" value="select_back"> selected="selected"</eq>>查找带回</option>
+                                            <option value="ganged" <eq name="datainfo.editconfig.control" value="ganged"> selected="selected"</eq>>联动选择</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div id="edit_option_expand" style="display: none;"></div>
+
+                                <div class="form-group " id="edit_tipsTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 默认提示文字 </label>
+                                    <div class="col-md-9" id="edit_tips_item">
+                                        <input id="edit_tips" name="edit_tips" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.tips}">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_valueTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 默认值 </label>
+                                    <div class="col-md-9" id="edit_value_item">
+                                        <input id="edit_value" name="edit_value" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.value}">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_cssTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> CSS类名 </label>
+                                    <div class="col-md-9" id="edit_css_item">
+                                        <input id="edit_css" name="edit_css" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.css}">
+                                        <span class="help-block">附加的css，多个css类，用空格隔开</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_styleTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> Style代码 </label>
+                                    <div class="col-md-9" id="edit_style_item">
+                                        <input id="edit_style" name="edit_style" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.style}">
+                                        <span class="help-block">附加的style样式代码，多个样式用 ; 号隔开</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_eventTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> JS事件 </label>
+                                    <div class="col-md-9" id="edit_event_item">
+                                        <input id="edit_event" name="edit_event" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.event}">
+                                        <span class="help-block">js事件。例如：onclick;</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_eventfunTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> JS调用函数 </label>
+                                    <div class="col-md-9" id="edit_eventfun_item">
+                                        <input id="edit_eventfun" name="edit_eventfun" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.eventfun}">
+                                        <span class="help-block">js事件的调用函数。例如：alert('test');</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_isrequiredTip">
+                                    <label  class="col-md-3 control-label"> 必填项 </label>
+                                    <div class="col-md-9" id="edit_isrequired_item">
+                                        <div class="radio-list">
+                                            <?php 
+                                            if(empty($datainfo["editconfig"]["required"])){
+                                                $datainfo["editconfig"]["required"] = "false";
+                                            }
+                                            ?>
+                                            <label class="radio-inline"><input type="radio" name="edit_isrequired" id="edit_isrequired_0" value="false" <eq name="datainfo.editconfig.required" value="false"> checked</eq>>否 </label>
+                                            <label class="radio-inline"><input type="radio" name="edit_isrequired" id="edit_isrequired_1" value="true" <eq name="datainfo.editconfig.required" value="true"> checked</eq>>是 </label>
+                                        </div>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_regexpTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 验证规则 </label>
+                                    <div class="col-md-3" id="edit_regexp_item">
+                                        <input id="edit_regexp" name="edit_regexp" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.regexp}">
+                                    </div>
+                                    <div class="col-md-6" id="edit_regexp_item">
+                                        <select  class="sidebar-option form-control input-large" name="edit_regexp_rule" id="edit_regexp_rule" style="margin-bottom: 5px;">
+                                            <option value="">自定义正则</option>
+                                            <option value="num" <eq name="datainfo.editconfig.regexp" value="num"> selected="selected"</eq>>数字</option>
+                                            <option value="num1" <eq name="datainfo.editconfig.regexp" value="num1"> selected="selected"</eq>>正数（正整数 + 0）</option>
+                                            <option value="intege" <eq name="datainfo.editconfig.regexp" value="intege"> selected="selected"</eq>>整数</option>
+                                            <option value="intege1" <eq name="datainfo.editconfig.regexp" value="intege1"> selected="selected"</eq>>正整数</option>
+                                            <option value="letter" <eq name="datainfo.editconfig.regexp" value="letter"> selected="selected"</eq>>字母</option>
+                                            <option value="username" <eq name="datainfo.editconfig.regexp" value="username"> selected="selected"</eq>>用户名</option>
+                                            <option value="email" <eq name="datainfo.editconfig.regexp" value="email"> selected="selected"</eq>>E-Mail</option>
+                                            <option value="qq" <eq name="datainfo.editconfig.regexp" value="qq"> selected="selected"</eq>>QQ</option>
+                                            <option value="url" <eq name="datainfo.editconfig.regexp" value="url"> selected="selected"</eq>>超级链接</option>
+                                            <option value="mobile" <eq name="datainfo.editconfig.regexp" value="mobile"> selected="selected"</eq>>手机号码</option>
+                                            <option value="tel" <eq name="datainfo.editconfig.regexp" value="tel"> selected="selected"</eq>>电话号码</option>
+                                            <option value="zipcode" <eq name="datainfo.editconfig.regexp" value="zipcode"> selected="selected"</eq>>邮政编码</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_errortipsTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 错误提示 </label>
+                                    <div class="col-md-9" id="edit_errortips_item">
+                                        <input id="edit_errortips" name="edit_errortips" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.errortips}">
+                                        <span class="help-block">正则验证的错误提示</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="edit_minlenTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 最小长度 </label>
+                                    <div class="col-md-9" id="edit_minlen_item">
+                                        <input id="edit_minlen" name="edit_minlen" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.minlen}">
+                                        <span class="help-block">输入字符的数的最小长度</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group last" id="edit_maxlenTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 最大长度 </label>
+                                    <div class="col-md-9" id="edit_maxlen_item">
+                                        <input id="edit_maxlen" name="edit_maxlen" type="text" class="form-control"  placeholder="" value="{$datainfo.editconfig.maxlen}">
+                                        <span class="help-block">输入字符的数的最大长度</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--修改配置 End-->
+
+                        <!--搜索配置 Begin-->
+                        <div class="tab-pane fade form" id="tab_search">
+                            <div class="form-body">
+                                <div class="form-group " id="search_compareTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 比较运算符 </label>
+                                    <div class="col-md-9" id="search_compare_item">
+                                        <select name="search_compare" id="search_compare" class="sidebar-option form-control input-large">
+                                            <option value="">请选择</option>
+                                            <option value="eq" <eq name="datainfo.searchconfig.compare" value="eq"> selected="selected"</eq>>等于</option>
+                                            <option value="neq" <eq name="datainfo.searchconfig.compare" value="neq "> selected="selected"</eq>>不等于</option>
+                                            <option value="gt" <eq name="datainfo.searchconfig.compare" value="gt"> selected="selected"</eq>>大于</option>
+                                            <option value="egt" <eq name="datainfo.searchconfig.compare" value="egt"> selected="selected"</eq>>大于等于</option>
+                                            <option value="lt" <eq name="datainfo.searchconfig.compare" value="lt"> selected="selected"</eq>>小于</option>
+                                            <option value="elt" <eq name="datainfo.searchconfig.compare" value="elt"> selected="selected"</eq>>小于等于</option>
+                                            <option value="like" <eq name="datainfo.searchconfig.compare" value="like"> selected="selected"</eq>>模糊查询</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group  " id="search_controlTip">
+                                    <label  class="col-md-3 control-label"> 使用控件 </label>
+                                    <div class="col-md-9" id="search_control_item">
+                                        <select  class="sidebar-option form-control input-large" name="search_control" id="search_control">
+                                            <option value="">选择控件</option>
+                                            <option value="hidden" <eq name="datainfo.searchconfig.control" value="hidden"> selected="selected"</eq>>隐藏文本框</option>
+                                            <option value="textbox" <eq name="datainfo.searchconfig.control" value="textbox"> selected="selected"</eq>>单行文本框</option>
+                                            <option value="radio" <eq name="datainfo.searchconfig.control" value="radio"> selected="selected"</eq>>单选按钮</option>
+                                            <option value="checkbox" <eq name="datainfo.searchconfig.control" value="checkbox"> selected="selected"</eq>>复选框</option>
+                                            <option value="dropdownlist" <eq name="datainfo.searchconfig.control" value="dropdownlist"> selected="selected"</eq>>下拉框</option>
+                                            <option value="app_category" <eq name="datainfo.searchconfig.control" value="app_category"> selected="selected"</eq>>下拉框--应用栏目分类</option>
+                                            <option value="system_category" <eq name="datainfo.searchconfig.control" value="system_category"> selected="selected"</eq>>下拉框--系统栏目分类</option>
+                                            <option value="dateselect" <eq name="datainfo.searchconfig.control" value="dateselect"> selected="selected"</eq>>日期选择</option>
+                                            <option value="daterange" <eq name="datainfo.searchconfig.control" value="daterange"> selected="selected"</eq>>日期范围</option>
+                                            <option value="ganged" <eq name="datainfo.searchconfig.control" value="ganged"> selected="selected"</eq>>联动选择</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div id="search_option_expand" style="display: none;"></div>
+
+                                <div class="form-group " id="search_tipsTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 默认提示文字 </label>
+                                    <div class="col-md-9" id="search_tips_item">
+                                        <input id="search_tips" name="search_tips" type="text" class="form-control"  placeholder="" value="{$datainfo.searchconfig.tips}">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="search_valueTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> 默认值 </label>
+                                    <div class="col-md-9" id="search_value_item">
+                                        <input id="search_value" name="search_value" type="text" class="form-control"  placeholder="" value="{$datainfo.searchconfig.value}">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group " id="search_cssTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> CSS类名 </label>
+                                    <div class="col-md-9" id="search_css_item">
+                                        <input id="search_css" name="search_css" type="text" class="form-control"  placeholder="" value="{$datainfo.searchconfig.css}">
+                                        <span class="help-block">附加的css，多个css类，用空格隔开</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group last" id="search_styleTip">
+                                    <label  class="col-md-3 control-label" style="text-align: right;"> Style代码 </label>
+                                    <div class="col-md-9" id="search_style_item">
+                                        <input id="search_style" name="search_style" type="text" class="form-control"  placeholder="" value="{$datainfo.searchconfig.style}">
+                                        <span class="help-block">附加的style样式代码，多个样式用 ; 号隔开</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--搜索配置 End-->
+                    </div>
+
+                    <div class="form-actions fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button type="button" id="btnSave" data-url="" style="margin-right: 5px;" class="btn btn-info" onclick="checkdata();"> <i class="icon-ok"></i>&nbsp;保存 </button>
+                                    <button type="button" id="" data-url="javascript:void(0);" style="margin-right: 5px;" class="btn btn-default" onclick="history.go(-1);"> 取消 </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END 主体区域-->
+
+<script>
+ $(document).ready(function(){
+     var nAddSelectControl = $('#add_control').val();
+     AddExpandConfig(nAddSelectControl);
+     
+     var nEditSelectControl = $('#edit_control').val();
+     EditExpandConfig(nEditSelectControl);
+
+     var nSearchSelectControl = $('#search_control').val();
+     SearchExpandConfig(nSearchSelectControl);
+ });
+
+ $('#add_control').change(function(){
+     AddExpandConfig($(this).val());
+ });
+ 
+ $('#edit_control').change(function(){
+     EditExpandConfig($(this).val());
+ });
+
+ $('#search_control').change(function(){
+     SearchExpandConfig($(this).val());
+ });
+
+ $('#add_regexp_rule').change(function(){
+     var sRegexp = $(this).val();
+
+     $('#add_regexp').val(sRegexp);
+ });
+ 
+  $('#edit_regexp_rule').change(function(){
+     var sRegexp = $(this).val();
+
+     $('#edit_regexp').val(sRegexp);
+ });
+
+ function AddExpandConfig(){
+     var _cnttype = arguments[0] ? arguments[0] : '';
+     var sCaseType = _cnttype;
+
+     var OptionHtml = [];
+
+     if(_cnttype == 'radio' || _cnttype == 'checkbox' || _cnttype == 'dropdownlist'){
+         _cnttype = 'option';
+     }
+     <?php $datainfo["addconfig"]["extend"]["prefix"]="add_"; ?>
+
+     switch(_cnttype){
+         case 'textbox' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/textbox', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+
+         case 'textarea' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/textarea', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+
+         case 'option' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/option', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+
+         case 'kindeditor' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/kindeditor', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+
+         case 'upload_image' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/upload_image', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+             
+         case 'upload_image_cut' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/upload_image_cut', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+
+         case 'upload_file' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/upload_file', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+             
+        case 'select_back' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/select_back', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+             
+        case 'ganged' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/ganged', array($datainfo["addconfig"]["extend"]));?>');
+             break;
+     }
+
+     var sHtml = OptionHtml.join('');
+
+     if(btten.IsN(sHtml)){
+         $('#add_option_expand').html('').hide();
+     }else{
+         $('#add_option_expand').html(sHtml).show();
+     }
+ }
+ 
+ function EditExpandConfig(){
+     var _cnttype = arguments[0] ? arguments[0] : '';
+     var sCaseType = _cnttype;
+
+     var OptionHtml = [];
+
+     if(_cnttype == 'radio' || _cnttype == 'checkbox' || _cnttype == 'dropdownlist'){
+         _cnttype = 'option';
+     }
+     <?php $datainfo["editconfig"]["extend"]["prefix"]="edit_"; ?>
+
+     switch(_cnttype){
+         case 'textbox' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/textbox', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+
+         case 'textarea' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/textarea', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+
+         case 'option' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/option', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+
+         case 'kindeditor' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/kindeditor', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+
+         case 'upload_image' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/upload_image', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+             
+        case 'upload_image_cut' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/upload_image_cut', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+
+         case 'upload_file' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/upload_file', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+             
+        case 'select_back' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/select_back', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+             
+        case 'ganged' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/ganged', array($datainfo["editconfig"]["extend"]));?>');
+             break;
+     }
+
+     var sHtml = OptionHtml.join('');
+
+     if(btten.IsN(sHtml)){
+         $('#edit_option_expand').html('').hide();
+     }else{
+         $('#edit_option_expand').html(sHtml).show();
+     }
+ }
+
+ function SearchExpandConfig(){
+     var _cnttype = arguments[0] ? arguments[0] : '';
+     var sCaseType = _cnttype;
+
+     var OptionHtml = [];
+
+     if(_cnttype == 'radio' || _cnttype == 'checkbox' || _cnttype == 'dropdownlist'){
+         _cnttype = 'option';
+     }
+     <?php $datainfo["searchconfig"]["extend"]["prefix"]="search_"; ?>
+
+     switch(_cnttype){
+         case 'textbox' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/textbox', array($datainfo["searchconfig"]["extend"]));?>');
+             break;
+
+         case 'textarea' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/textarea', array($datainfo["searchconfig"]["extend"]));?>');
+             break;
+
+         case 'option' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/option', array($datainfo["searchconfig"]["extend"]));?>');
+             break;
+             
+        case 'select_back' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/select_back', array($datainfo["searchconfig"]["extend"]));?>');
+             break;
+             
+        case 'ganged' :
+             OptionHtml.push('<?php R('Widget/ControlSetting/ganged', array($datainfo["searchconfig"]["extend"]));?>');
+             break;
+     }
+
+     var sHtml = OptionHtml.join('');
+
+     if(btten.IsN(sHtml)){
+         $('#search_option_expand').html('').hide();
+     }else{
+         $('#search_option_expand').html(sHtml).show();
+     }
+ }
+
+ function checkdata(){
+    //数据赋值 Begin
+    //公共字段
+    var nFieldID = $('#fieldid').val();
+    var nMdlID = $('#mdlid').val();
+    var sFieldTitle = $('#fieldtitle').val();
+    var List_IsList = $("input[name='list_islist']:checked").val();
+    var Add_IsAdd = $("input[name='add_isadd']:checked").val();
+    var Edit_IsEdit = $("input[name='edit_isedit']:checked").val();
+    var Search_IsSearch = $("input[name='search_issearch']:checked").val();
+
+    //列表配置
+    var List_IsParam = $("input[name='list_isparam']:checked").val();
+    var List_sIsHide = $('#list_ishide').val();
+    var List_sStyle = $('#list_style').val();
+    var List_sCss = $('#list_css').val();
+
+    //添加配置
+    var Add_sControl = $('#add_control').val();
+    var Add_sTips = $('#add_tips').val();
+    var Add_sDefaultValue = $('#add_value').val();
+    var Add_sCss = $('#add_css').val();
+    var Add_sStyle = $('#add_style').val();
+    var Add_sEvent = $('#add_event').val();
+    var Add_sEventFun = $('#add_eventfun').val();
+    var Add_IsRequired = $("input[name='add_isrequired']:checked").val();
+    var Add_sRegexp = $("#add_regexp").val();
+    var Add_sErrorTips = $("#add_errortips").val();
+    var Add_nMinLen = $("#add_minlen").val();
+    var Add_nMaxLen = $("#add_maxlen").val();
+
+    //修改配置
+    var Edit_sControl = $('#edit_control').val();
+    var Edit_sTips = $('#edit_tips').val();
+    var Edit_sDefaultValue = $('#edit_value').val();
+    var Edit_sCss = $('#edit_css').val();
+    var Edit_sStyle = $('#edit_style').val();
+    var Edit_sEvent = $('#edit_event').val();
+    var Edit_sEventFun = $('#edit_eventfun').val();
+    var Edit_IsRequired = $("input[name='edit_isrequired']:checked").val();
+    var Edit_sRegexp = $("#edit_regexp").val();
+    var Edit_sErrorTips = $("#edit_errortips").val();
+    var Edit_nMinLen = $("#edit_minlen").val();
+    var Edit_nMaxLen = $("#edit_maxlen").val();
+
+    //搜索配置
+    var Search_Compare = $('#search_compare').val();
+    var Search_sControl = $('#search_control').val();
+    var Search_sTips = $('#search_tips').val();
+    var Search_sDefaultValue = $('#search_value').val();
+    var Search_sCss = $('#Search_css').val();
+    var Search_sStyle = $('#Search_style').val();
+    //数据赋值 End
+
+    //创建Json字符串 Begin
+    //公共字段Json
+    var arrPublicJson = [];
+    arrPublicJson.push('"fieldid":"'+ nFieldID +'"');
+    arrPublicJson.push('"mdlid":"'+ nMdlID +'"');
+
+    if(!btten.IsN(sFieldTitle)){
+        arrPublicJson.push('"fieldtitle":"'+ sFieldTitle +'"');
+    }else{
+        arrPublicJson.push('"fieldtitle":""');
+    }
+
+    if(!btten.IsN(List_IsList)){
+        arrPublicJson.push('"islist":"'+ List_IsList +'"');
+    }else{
+        arrPublicJson.push('"islist":"false"');
+    }
+
+    if(!btten.IsN(Add_IsAdd)){
+        arrPublicJson.push('"isadd":"'+ Add_IsAdd +'"');
+    }else{
+        arrPublicJson.push('"isadd":"false"');
+    }
+
+    if(!btten.IsN(Edit_IsEdit)){
+        arrPublicJson.push('"isedit":"'+ Edit_IsEdit +'"');
+    }else{
+        arrPublicJson.push('"isedit":"false"');
+    }
+
+    if(!btten.IsN(Search_IsSearch)){
+        arrPublicJson.push('"issearch":"'+ Search_IsSearch +'"');
+    }else{
+        arrPublicJson.push('"issearch":"false"');
+    }
+
+    //列表字段Json
+    var arrListJson = [];
+
+    if(!btten.IsN(List_IsParam)){
+        arrListJson.push('"isparam":"'+ List_IsParam +'"');
+    }else{
+        arrListJson.push('"isparam":"false"');
+    }
+    
+    if(!btten.IsN(List_sIsHide)){
+        arrListJson.push('"ishide":"'+ List_sIsHide +'"');
+    }else{
+        arrListJson.push('"ishide":""');
+    }
+
+    if(!btten.IsN(List_sStyle)){
+        arrListJson.push('"style":"'+ List_sStyle +'"');
+    }else{
+        arrListJson.push('"style":""');
+    }
+
+    if(!btten.IsN(List_sCss)){
+        arrListJson.push('"css":"'+ List_sCss +'"');
+    }else{
+        arrListJson.push('"css":""');
+    }
+
+    //添加字段Json
+    var arrAddJson = [];
+
+    if(!btten.IsN(Add_sControl)){
+        arrAddJson.push('"control":"'+ Add_sControl +'"');
+    }else{
+        arrAddJson.push('"control":""');
+    }
+
+    if(!btten.IsN(Add_sTips)){
+        arrAddJson.push('"tips":"'+ Add_sTips +'"');
+    }else{
+        arrAddJson.push('"tips":""');
+    }
+
+    if(!btten.IsN(Add_sDefaultValue)){
+        arrAddJson.push('"value":"'+ Add_sDefaultValue +'"');
+    }else{
+        arrAddJson.push('"value":""');
+    }
+
+    if(!btten.IsN(Add_sCss)){
+        arrAddJson.push('"css":"'+ Add_sCss +'"');
+    }else{
+        arrAddJson.push('"css":""');
+    }
+
+    if(!btten.IsN(Add_sStyle)){
+        arrAddJson.push('"style":"'+ Add_sStyle +'"');
+    }else{
+        arrAddJson.push('"style":""');
+    }
+
+    if(!btten.IsN(Add_sEvent)){
+        arrAddJson.push('"event":"'+ Add_sEvent +'"');
+    }else{
+        arrAddJson.push('"event":""');
+    }
+
+    if(!btten.IsN(Add_sEventFun)){
+        arrAddJson.push('"eventfun":"'+ Add_sEventFun +'"');
+    }else{
+        arrAddJson.push('"eventfun":""');
+    }
+
+    if(!btten.IsN(Add_IsRequired)){
+        arrAddJson.push('"required":"'+ Add_IsRequired +'"');
+    }else{
+        arrAddJson.push('"required":"false"');
+    }
+
+    if(!btten.IsN(Add_sRegexp)){
+        arrAddJson.push('"regexp":"'+ Add_sRegexp +'"');
+    }else{
+        arrAddJson.push('"regexp":""');
+    }
+
+    if(!btten.IsN(Add_sErrorTips)){
+        arrAddJson.push('"errortips":"'+ Add_sErrorTips +'"');
+    }else{
+        arrAddJson.push('"errortips":""');
+    }
+
+    if(!btten.IsN(Add_nMinLen)){
+        arrAddJson.push('"minlen":"'+ Add_nMinLen +'"');
+    }else{
+        arrAddJson.push('"minlen":""');
+    }
+
+    if(!btten.IsN(Add_nMaxLen)){
+        arrAddJson.push('"maxlen":"'+ Add_nMaxLen +'"');
+    }else{
+        arrAddJson.push('"maxlen":""');
+    }
+
+    var jsonAddExpand = getExpand('add_');
+
+    if(!btten.IsN(jsonAddExpand)){
+        arrAddJson.push('"extend":{'+ jsonAddExpand +'}');
+    }else{
+        arrAddJson.push('"extend":""');
+    }
+
+    //修改字段Json
+    var arrEditJson = [];
+
+    if(!btten.IsN(Edit_sControl)){
+        arrEditJson.push('"control":"'+ Edit_sControl +'"');
+    }else{
+        arrEditJson.push('"control":""');
+    }
+
+    if(!btten.IsN(Edit_sTips)){
+        arrEditJson.push('"tips":"'+ Edit_sTips +'"');
+    }else{
+        arrEditJson.push('"tips":""');
+    }
+
+    if(!btten.IsN(Edit_sDefaultValue)){
+        arrEditJson.push('"value":"'+ Edit_sDefaultValue +'"');
+    }else{
+        arrEditJson.push('"value":""');
+    }
+
+    if(!btten.IsN(Edit_sCss)){
+        arrEditJson.push('"css":"'+ Edit_sCss +'"');
+    }else{
+        arrEditJson.push('"css":""');
+    }
+
+    if(!btten.IsN(Edit_sStyle)){
+        arrEditJson.push('"style":"'+ Edit_sStyle +'"');
+    }else{
+        arrEditJson.push('"style":""');
+    }
+
+    if(!btten.IsN(Edit_sEvent)){
+        arrEditJson.push('"event":"'+ Edit_sEvent +'"');
+    }else{
+        arrEditJson.push('"event":""');
+    }
+
+    if(!btten.IsN(Edit_sEventFun)){
+        arrEditJson.push('"eventfun":"'+ Edit_sEventFun +'"');
+    }else{
+        arrEditJson.push('"eventfun":""');
+    }
+
+    if(!btten.IsN(Edit_IsRequired)){
+        arrEditJson.push('"required":"'+ Edit_IsRequired +'"');
+    }else{
+        arrEditJson.push('"required":"false"');
+    }
+
+    if(!btten.IsN(Edit_sRegexp)){
+        arrEditJson.push('"regexp":"'+ Edit_sRegexp +'"');
+    }else{
+        arrEditJson.push('"regexp":""');
+    }
+
+    if(!btten.IsN(Edit_sErrorTips)){
+        arrEditJson.push('"errortips":"'+ Edit_sErrorTips +'"');
+    }else{
+        arrEditJson.push('"errortips":""');
+    }
+
+    if(!btten.IsN(Edit_nMinLen)){
+        arrEditJson.push('"minlen":"'+ Edit_nMinLen +'"');
+    }else{
+        arrEditJson.push('"minlen":""');
+    }
+
+    if(!btten.IsN(Edit_nMaxLen)){
+        arrEditJson.push('"maxlen":"'+ Edit_nMaxLen +'"');
+    }else{
+        arrEditJson.push('"maxlen":""');
+    }
+
+    var jsonEditExpand = getExpand('edit_');
+
+    if(!btten.IsN(jsonEditExpand)){
+        arrEditJson.push('"extend":{'+ jsonEditExpand +'}');
+    }else{
+        arrEditJson.push('"extend":""');
+    }
+
+    //搜索字段Json
+    var arrSearchJson = [];
+
+    if(!btten.IsN(Search_Compare)){
+        arrSearchJson.push('"compare":"'+ Search_Compare +'"');
+    }else{
+        arrSearchJson.push('"compare":""');
+    }
+
+    if(!btten.IsN(Search_sControl)){
+        arrSearchJson.push('"control":"'+ Search_sControl +'"');
+    }else{
+        arrSearchJson.push('"control":""');
+    }
+
+    if(!btten.IsN(Search_sTips)){
+        arrSearchJson.push('"tips":"'+ Search_sTips +'"');
+    }else{
+        arrSearchJson.push('"tips":""');
+    }
+
+    if(!btten.IsN(Search_sDefaultValue)){
+        arrSearchJson.push('"value":"'+ Search_sDefaultValue +'"');
+    }else{
+        arrSearchJson.push('"value":""');
+    }
+
+    if(!btten.IsN(Search_sCss)){
+        arrSearchJson.push('"css":"'+ Search_sCss +'"');
+    }else{
+        arrSearchJson.push('"css":""');
+    }
+
+    if(!btten.IsN(Search_sStyle)){
+        arrSearchJson.push('"style":"'+ Search_sStyle +'"');
+    }else{
+        arrSearchJson.push('"style":""');
+    }
+
+    var jsonSearchExpand = getExpand('search_');
+
+    if(!btten.IsN(jsonSearchExpand)){
+        arrSearchJson.push('"extend":{'+ jsonSearchExpand +'}');
+    }else{
+        arrSearchJson.push('"extend":""');
+    }
+
+    //生成Json对象字符串
+    var sPublicJson = arrPublicJson.join(',');
+    var sListJson = arrListJson.join(',');
+    var sAddJson = arrAddJson.join(',');
+    var sEditJson = arrEditJson.join(',');
+    var sSearchJson = arrSearchJson.join(',');
+    
+    if(btten.IsN(Edit_sControl)){
+        sEditJson = sAddJson;
+    }
+
+    var jsonParam = {"public" : "{"+ sPublicJson +"}", "list" : "{"+ sListJson +"}", "add" : "{"+ sAddJson +"}", "edit" : "{"+ sEditJson +"}", "search" : "{"+ sSearchJson +"}"};
+    //创建Json字符串 End
+
+//    alert('{"public" : {'+ sPublicJson +'}, "list" : {'+ sListJson +'}, "add" : {'+ sAddJson +'}, "edit" : {'+ sEditJson +'}, "search" : {'+ sSearchJson +'}}');
+//    return;
+    SendConfig(jsonParam);
+ }
+
+ //格式化扩展配置
+ function getExpand(_name){
+     var arrExpand = [];
+
+     $("input[name='"+ _name +"setting']").each(function () {
+         var sValue = $(this).val();
+         var sKey = $(this).attr('data-type');
+
+         if(!btten.IsN(sValue)){
+             arrExpand.push('"'+ sKey +'":"'+ sValue +'"');
+         }else{
+             arrExpand.push('"'+ sKey +'":""');
+         }
+     });
+
+     $("select[name='"+ _name +"setting']").each(function(){
+         var sValue = $(this).val();
+         var sKey = $(this).attr('data-type');
+
+         if(!btten.IsN(sValue)){
+             arrExpand.push('"'+ sKey +'":"'+ sValue +'"');
+         }else{
+             arrExpand.push('"'+ sKey +'":""');
+         }
+     });
+
+     $("textarea[name='"+ _name +"setting']").each(function(){
+         var sValue = $(this).val();
+         var sKey = $(this).attr('data-type');
+
+         if(!btten.IsN(sValue)){
+             arrExpand.push('"'+ sKey +'":"'+ sValue +'"');
+         }else{
+             arrExpand.push('"'+ sKey +'":""');
+         }
+     });
+
+     return arrExpand.join(',');
+ }
+
+ //提交配置
+ function SendConfig(_json){
+     $.ajax({
+         type: "POST",
+         url:  _MODULE_ + '/Model/field_edit',
+         dataType: "json",
+         data: _json,
+         timeout : 100000,
+         cache: false,
+         async: false,
+         success: function(result){
+             if(btten.IsN(result)){
+                 btten.Error("没有获取到服务器返回消息！");
+                 return;
+             }
+
+             if(!result.status){
+                 btten.Error(result.info);
+             }else{
+                 //btten.F5();
+                 //alert('添加成功！');
+                 window.location.href = "{$PostBackUrl}/mdlid/" + $('#mdlid').val(); 
+             }
+         },
+         error: function (xhr, ajaxOptions, thrownError) {
+             btten.Error("无法加载请求的内容！");
+         }
+     });
+ }
+</script>
+<include file="Public:page_footer" />

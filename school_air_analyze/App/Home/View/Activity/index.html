@@ -1,0 +1,744 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>活动内容</title>
+    <!-- Unresponsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link rel="shortcut icon" href="__IMG__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__CSS__/global.css" />
+    <script src="__JS__/jquery.js"></script>
+    <script src="__JS__/bootstrap.min.js"></script>
+    <script src="__JS__/global.js"></script>
+    <script src="__JS__/plugin.js"></script>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+</head>
+
+<body>
+<style>
+    .list .lis{
+        width: 100%;
+        height: 60px;
+        background-color: #fff;
+
+        padding: 0 15px;
+        border-bottom: 1px solid #ccc;
+        overflow: hidden;
+    }
+    .list .headerss{
+        line-height: 60px;
+        font-size: 16px;
+        color: #1E92A8;
+        padding-left: 30px;
+        position: relative;
+    }
+
+
+
+    .list .headerss span{
+        display: block;
+        width: 170px;
+        font-size: 13px;
+        height: 59px;
+        line-height: 78px;
+        position: relative;
+        text-align: center;
+        border-bottom: 1px solid #1E92A8;
+
+    }
+    .ddd{
+        width: 27px;
+        height: 25px;
+        position: absolute;
+        top: 18px;
+        left: 124px;
+    }
+    .list .headerss .eee{
+        width: 22px;
+        height: 22px;
+
+        position: absolute;
+        top: 29px;
+        right: 10% !important;
+    }
+    .usertt{
+        float: left;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-top: 10px;
+
+    }
+    .lefts{
+        width:40%;
+        margin:10px 15px  ;
+        float: left;
+    }
+    .lefts p{
+        margin-top: 5px;
+        color: #939393;
+        font-size: 13px !important;
+    }
+    .rights{
+        width:25%;
+        float: right;
+        margin:15px 3px !important ;
+        color: #939393;
+        font-size: 13px;
+    }
+    .rights p{
+        margin: 5px -5px 0 25px;
+
+    }
+    .liss{
+        width: 100%;
+        overflow: hidden;
+        display:none;
+    }
+</style>
+<div class="myat_form_wp">
+    <div class="myat_optitle01">
+        {$item['title']}
+    </div>
+    <div>
+        <table class="act_det_tbl mb15">
+            <tbody>
+            <tr>
+                <td class="clock">
+                    <img class="ico" src="__IMG__/act_clock.png" />
+                    <span>{$item['time']}</span>
+                </td>
+                <td class="scores cost">
+                    <img class="ico" src="__IMG__/act_scores_earn.png" />
+                    <span>{$item['integral_state']['name']} {$item['integral']}</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="apply">
+                    <img class="ico" src="__IMG__/act_apply.png" />
+                    <span>报名人数 <span id="person_num">{$item['participate_number']}</span>/{$item['limit_number']}</span>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<div class="myat_article_body">
+    <div class="timg multi">
+        <img src="{$item['img_photo']['img']}" alt="" />
+    </div>
+    <!--封面图片（END）-->
+    <div class="text_content nopadding">
+        {$item['introduce']}
+
+    </div>
+
+</div>
+<div class="list">
+    <div class="headerss">
+				<span>已报名人员
+                    <!-- <img class='ddd' src="img/ddd.jpg" alt=""> -->
+					 </span>
+        <img class="eee" src="__IMG__/angle_right.png" alt="">
+    </div>
+
+    <div class="liss">
+        <volist name="ren_data" id="renyuan">
+            <div class="lis">
+                <img class='usertt' src="{$renyuan.img.img}" alt="">
+                <div class="lefts">
+                    <span>{$renyuan.name}</span>
+                    <p>{$renyuan.time}</p>
+                </div>
+                <div class="rights">
+								<span>
+									报名成功
+								</span>
+                    <p>No.{$renyuan.int}</p>
+                </div>
+            </div>
+        </volist>
+        <!--<div class="lis">-->
+        <!--<img class='usertt' src="img/img_sample/usr02.jpg" alt="">-->
+        <!--<div class="lefts">-->
+        <!--<span>梨花</span>-->
+        <!--<p>2019-07-11 10:40</p>-->
+        <!--</div>-->
+        <!--<div class="rights">-->
+        <!--<span>-->
+        <!--报名成功-->
+        <!--</span>-->
+        <!--&lt;!&ndash; <p>No.8</p> &ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="lis">-->
+        <!--<img class='usertt' src="img/img_sample/usr02.jpg" alt="">-->
+        <!--<div class="lefts">-->
+        <!--<span>梨花</span>-->
+        <!--<p>2019-07-11 10:40</p>-->
+        <!--</div>-->
+        <!--<div class="rights">-->
+        <!--<span>-->
+        <!--报名成功-->
+        <!--</span>-->
+        <!--&lt;!&ndash; <p>No.8</p> &ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="lis">-->
+        <!--<img class='usertt' src="img/img_sample/usr02.jpg" alt="">-->
+        <!--<div class="lefts">-->
+        <!--<span>梨花</span>-->
+        <!--<p>2019-07-11 10:40</p>-->
+        <!--</div>-->
+        <!--<div class="rights">-->
+        <!--<span>-->
+        <!--报名成功-->
+        <!--</span>-->
+        <!--&lt;!&ndash; <p>No.8</p> &ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+
+</div>
+<input name="user" id="user" value="{$item['user']}" type="hidden">
+<input name="personnel" id="personnel" value="{$item['personnel']}" type="hidden">
+<input name="participate_number" id="participate_number" value="{$item['participate_number']}" type="hidden">
+<input name="limit_number" id="limit_number" value="{$item['limit_number']}" type="hidden">
+<input name="active_state" id="active_state" value="{$item['active_state']}" type="hidden">
+<input name="deadline" id="deadlin" value="{$item['deadline']}" type="hidden">
+<input name="is_delete" id="is_delete" value="{$item['is_delete']}" type="hidden">
+<input name="date" id="date" value="{$item['date']}" type="hidden">
+<input name="state1" id="state1" value="{$item['state1']}" type="hidden">
+<input name="scene" id="scene" value="{$item['scene']}" type="hidden">
+
+<style>
+    .myat_submi_button {
+        background: #878787;
+        color: #fff;
+        padding: 12px 20px;
+        height: auto;
+        border-radius: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+    }
+    .myat_submi_button1 {
+        background: red;
+        color: #fff;
+        padding: 12px 20px;
+        height: auto;
+        border-radius: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+    }
+
+</style>
+
+<if condition="$item['date'] egt $item['deadline'] or $item['active_state'] eq '2' ">
+    <div class="myat_submi_button myat_activ_btbtn idti3">
+        报名已截止
+    </div>
+    <div class="myat_submit_button myat_activ_btbtn expiredqrcamera" onclick="qr()">
+        活动签到
+    </div>
+    <else />
+    <if condition="$item['state1'] eq '1'">
+        <div class="text_content nopadding" style="text-align: center" >
+            <button id="btn_cancel" class="myat_submi_button1 myat_activ_btbtn idti3" >取消报名</button>
+        </div>
+        <else />
+        <div class="myat_submit_button myat_activ_btbtn idti3" onclick='myclick()'>
+            参加报名
+        </div>
+    </if>
+
+</if>
+
+<style>
+
+    /*.boby_hidden{height:100%;overflow:hidden;}*/
+
+    .mys_popbg {
+        background: rgba(0, 0, 0, .2);
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 11;
+    }
+    .mys_popfrm {
+        width: 80%;
+        left: 50%;
+        margin-left: -40%;
+        top: 60px;
+        position: fixed;
+        z-index: 12;
+        background:#FFF;
+        box-shadow: 0 10px 50px rgba(0,0,0,.5);
+        border-radius:5px;
+    }
+    .mys_pop {
+        display: none;
+    }
+    .mys_popfrm .inn .tt {
+        font-weight: bold;
+        margin-bottom:15px;
+    }
+    .mys_popfrm .r {
+
+    }
+    .mys_popfrm .inn {
+        padding:30px 15px;
+    }
+    .mys_popfrm .inn .r input {
+        display: block;
+        width:100%;
+        box-sizing: border-box;
+        height:36px;
+        padding:0 15px;
+        margin-bottom: 10px;
+    }
+    .mys_popfrm .inn .r button {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding:10px;
+        border:none;
+        background:#43B6A3;
+        color:#FFF;
+        border-radius: 3px;
+        font-size: 16px;
+    }
+    .mys_popfrm .cls {
+        position: absolute;
+        right:15px;
+        top:5px;
+        color: #666;
+        font-size: 32px;
+        z-index:2;
+    }
+    .myat_activ_btbtn.expired {
+        background:#bbb;
+        width:70%;
+    }
+    .myat_activ_btbtn.expiredqrcamera {
+        width:30%;
+        left: auto;
+        right: 0;
+    }
+    .width {
+        width:80%;
+        height: 36px;
+    }
+    .divcss5-a{
+        margin:10px 0
+    }
+    .chk_sng_itm {
+        padding:10px;
+        margin-right:10px;
+        margin-bottom:10px;
+    }
+    .chk_sng_itm input {
+        margin-right:5px;
+    }
+
+</style>
+<div class="mys_popbg mys_pop">
+
+</div>
+<div class="mys_popfrm mys_pop "    id="form" >
+    <a href="javascript:void(0)" class="cls" onclick="on_submit()" >&times;</a>
+    <input name="id" id="id" value="{$item['id']}" type="hidden">
+    <input name="openid" id="openid" value="{$item['openid']}" type="hidden">
+
+    <div class="inn" >
+        <div class="tt">
+            请填写表单并提交
+        </div>
+
+        <volist name="activity_form" id="val">
+            <div class="r">
+                <input class ='input' type="{$val['type']['html']}" is_only="{$val['is_only']}" placeholder="{$val['title']}" name="{$val['code']}" id="{$val['code']}"<if condition = "$val['checked'] eq '1'"> checked='1'</if>  />
+            </div>
+        </volist>
+
+        <volist name="activity_form2" id="itm">
+            <if condition="$itm['type'] eq '3'" >
+                <div class = 'divcss5-a'>
+                    {$itm['title']}:  <select id="{$itm['code']}" is_only="{$itm['is_only']}" name="{$itm['code']}" class ='input width ' dofaut="{$itm['title']}" >
+                    <volist name="itm.data" id="data">
+                        <option value="{$data['id']}">{$data['name']}</option>
+                    </volist>
+                    </select>
+                </div>
+            </if>
+        </volist>
+
+        <div class="chk_sng_itm">
+            <volist name="activity_form2" id="itb">
+                <if condition="$itb['type'] eq '4'">
+                    <div class = 'divcss5-a'>
+                        {$itb['title']}:
+                        <volist name="itb.data" id="data">
+                            <input  id="{$itb['code']}_{$data['id']}"  is_only="{$itb['is_only']}" type="checkbox" name="{$itb['code']}" dofaut="{$itb['title']}"  value="{$data['name']}" onclick="checkboxOnclick(this) "> <label class="middle" for="language_{$itm.id}">{$data['name']}</label>
+                        </volist>
+                        <input type="hidden" id="{$itb['code']}"  placeholder="{$itb['title']}" class='input' <if condition = "$itb['checked'] eq '1'"> checked='1'</if>>
+                    </div>
+                </if>
+            </volist>
+        </div>
+        <div class="r">
+            <button type="button" id="btn_submit" >提交</button>  <!--onclick="on_submit()"-->
+        </div>
+
+    </div>
+</div>
+
+<div class="mys_popfrm mys_pop"  id="fail"  >
+    <a href="" class="cls" onclick="su_submit()" >&times;</a>
+    <div class="inn">
+        <div class="tt">
+            报名人数已满
+        </div>
+    </div>
+</div>
+
+<div class="mys_popfrm mys_pop"  id="personnell"  >
+    <a href="" class="cls" onclick="ss_submit()" >&times;</a>
+    <div class="inn">
+        <div class="tt">
+            已经报名
+        </div>
+    </div>
+</div>
+
+<div class="mys_popfrm mys_pop"  id="success"  >
+    <a href="" class="cls" onclick="ss_submit()" >&times;</a>
+    <div class="inn">
+        <div class="tt">
+            报名成功
+        </div>
+    </div>
+</div>
+
+<div class="mys_popfrm mys_pop"  id="lose"  >
+    <a href="" class="cls" onclick="lose()" >&times;</a>
+    <div class="inn">
+        <div class="tt">
+            您已失去报名资格
+        </div>
+    </div>
+</div>
+
+<div class="mys_popfrm mys_pop"  id="deadline"  >
+    <a href="" class="cls" onclick="sd_submit()" >&times;</a>
+    <div class="inn">
+        <div class="tt">
+            报名已截止
+        </div>
+    </div>
+</div>
+
+<div class="mys_popfrm mys_pop"  id="register"  >
+    <a href="" class="cls" onclick="sr_submit()" >&times;</a>
+    <div class="inn">
+        <div class="tt">
+            请注册用户
+        </div>
+        <div class="r">
+            <button  onclick="sx_submit()" >前往注册</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var wud = document.getElementById("is_delete").value;
+
+    if(wud == ''){
+        alert("活动已取消！");
+        wx.miniProgram.navigateTo({url: '/pages/activity/activity'});
+
+    }
+
+    function qr(){
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                wx.miniProgram.navigateTo({url: '/pages/me/scan/scan'});
+            }
+        });
+    }
+
+    // $("#ischange").change(function() {
+    //     alert("checked");
+    // });
+
+    $(document).ready(function () {
+        $('#btn_submit').click(function () {
+            get_photo();
+        })
+    });
+
+    function checkboxOnclick(checkbox){
+        var name = checkbox.name;
+        // var id = checkbox.id;
+
+        obj = document.getElementsByName(name);
+        check_val = [];
+
+        for(k in obj){
+            if(obj[k].checked)
+                check_val.push(obj[k].value);
+        }
+
+        $("#"+name+"").val(check_val);
+    }
+
+    // var is_send = 0;
+
+    function get_photo() {
+
+        var control = [];
+
+        var arr = [];
+
+        var i = 0;
+
+        var _result = true;
+
+        $("input[checked='1']").each(function(){
+            if ($.trim($(this).val()) == '') {
+                alert("抱歉！请填写"+ $(this).attr('placeholder') + "");
+
+                _result = false;
+
+                return;
+            }
+        });
+
+        if (!_result) {
+            return;
+        }
+
+
+        $('.input').each(function(){
+            arr[i] = $(this).attr("id");
+
+            i = i+1;
+        })
+
+        for(var i = 0; i < arr.length; i++){
+            var cd = arr[i];
+            var valuer = {}
+
+            valuer.valuer = $("#"+cd+"").val();
+            valuer.title = $("#"+cd+"").attr('placeholder');
+            valuer.is_only = $("#"+cd+"").attr('is_only');
+            valuer.dofaut = $("#"+cd+"").attr('dofaut');
+            valuer.code = cd;
+
+            control.push(valuer);
+        }
+
+        var information = JSON.stringify(control);
+        var id = $('#id').val();
+        var openid = $('#openid').val();
+        var data = {};
+
+        data .information = information;
+        data.id = id;
+        data.openid = openid;
+
+        console.log(JSON.stringify(data));
+
+        var scene = document.getElementById("scene").value;
+
+        fit.ajax({
+            url:'/Home/Activity/edit',
+            data:data,
+            success:function(result){
+                alert(result.msg);//发出信息
+
+                if (result.code == 200) {
+                    if(scene == 1){
+                        var rao = confirm("是否进入活动群二维码界面？");
+
+                        if (rao){
+                            var replace = "/home/activity/wx.html?id="+id+"&openid="+openid;
+                            window.location.replace(replace);
+                        }else{
+                            var replace = "/home/activity/index.html?id="+id+"&openid="+openid;
+                            window.location.replace(replace);
+                        }
+
+                    }else{
+                        var replace = "/home/activity/index.html?id="+id+"&openid="+openid;
+                        window.location.replace(replace);
+                    }
+
+                }
+                // else {
+                //     is_send = 0;
+                // }
+            }
+        });
+    }
+
+    function myclick(){
+        // $('body,html').addClass('boby_hidden');
+
+        var a = document.getElementById("participate_number").value;
+        var b = document.getElementById("limit_number").value;
+        var c = document.getElementById("personnel").value;
+        var d = document.getElementById("user").value;
+        var e = document.getElementById("deadlin").value;
+        var f = document.getElementById("date").value;
+        var g = document.getElementById("active_state").value;
+        var h = document.getElementById("state1").value;
+        var participate_number= parseInt(a);
+        var limit_number= parseInt(b);
+
+        //$('#person_num').html(xx/xx);
+        if(g == '2'){
+            document.getElementById("deadline").style.display = 'block';
+        }else{
+            if(f > e) {
+                document.getElementById("deadline").style.display = 'block';
+            }else{
+                if(d == ''){
+                    document.getElementById("register").style.display='block';
+                }
+                else{
+                    if(h == '2'){
+                        document.getElementById("lose").style.display='block';
+                    }else{
+                        if(c != ''){
+                            document.getElementById("personnell").style.display='block';
+                        }
+                        else{
+                            if(participate_number>=limit_number){
+                                document.getElementById("fail").style.display='block';
+                            }
+                            else {
+                                document.getElementById("form").style.display='block';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function lose(){
+        document.getElementById("lose").style.display="none";
+    }
+
+    function on_submit(){
+        // $('body,html').removeClass('boby_hidden');
+        document.getElementById("form").style.display="none";
+    }
+
+    function sd_submit(){
+        document.getElementById("deadline").style.display="none";
+    }
+
+    function su_submit(){
+        document.getElementById("fail").style.display="none";
+    }
+
+    function ss_submit(){
+        document.getElementById("personnell").style.display="none";
+    }
+
+    function sr_submit(){
+        document.getElementById("register").style.display="none";
+    }
+
+    function sx_submit(){
+        // var replace = "https://www.baidu.com/";
+        //
+        // window.location.replace(replace);
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                wx.miniProgram.navigateTo({url: '/pages/register/register'});
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+        $('#btn_cancel').click(function () {
+            var ansswer = confirm("您将失去该活动报名资格，确定取消报名？");
+
+            if (ansswer){
+                cancel();
+            }else{
+                return false;
+            }
+        })
+    });
+
+    function cancel(){
+        var id = $('#id').val();
+        var openid = $('#openid').val();
+        var data = {};
+
+        data.id = id;
+        data.openid = openid;
+
+        // console.log(data);
+        console.log(JSON.stringify(data));
+
+        fit.ajax({
+            url:'/Home/Activity/cancel',
+            data:data,
+            success:function(result){
+                alert(result.msg);//发出信息
+
+                if (result.code == 200) {
+                    // location.href = "/home/activity/index.html?id="+id+"&openid="+openid;
+                    var replace = "/home/activity/index.html?id="+id+"&openid="+openid;
+
+                    window.location.replace(replace);
+                }
+            }
+        });
+    }
+
+    var img=document.getElementsByClassName('eee')[0]
+    var liss=document.getElementsByClassName('liss')[0]
+    // var lisss=liss.children
+    console.log(liss)
+
+    img.onclick=function(){
+        // var open=false
+        if(open){
+            this.src="__IMG__/angle_left.png";
+            liss.style.display='block';
+            open=false;
+
+
+        }else if(open ==false){
+            this.src="__IMG__/angle_right.png";
+            liss.style.display='none';
+            open = true;
+        }
+    }
+
+</script>
+</body>
+
+</html>

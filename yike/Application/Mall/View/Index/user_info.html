@@ -1,0 +1,230 @@
+<extend name="Base/pc"/>
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="glaxkblock usr-lft">
+                    <div class="pad-20">
+                        <div style="background-image:url(/Public/common/js/img/eco_new.jpg);background-position: center center;background-repeat: no-repeat;background-size: cover;width:100%;height:200px;border-radius:2px;"></div>
+                    </div>
+                    <ul>
+                        <li><a id="li-my-order" href="javascript:void(0)">我的订单</a></li>
+                        <li><a id="li-my-address" href="javascript:void(0)">我的地址</a></li>
+                        <li><a id="li-my-pwd" href="javascript:void(0)">修改密码</a></li>
+                        <li class="selected"><a id="li-my-info" href="javascript:void(0)">资料设置</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-9">
+
+                <div class="glaxkblock" style="margin-bottom:30px;">
+                    <div class="main_tt">
+                        <span>修改资料</span>
+                    </div>
+                    <style>
+                        .glaxkblock td {
+                            vertical-align: middle;
+                        }
+
+                        .glaxkblock input[type='password'] {
+                            width: 50%;
+                            box-sizing: border-box;
+                        }
+
+                        .glaxkblock label {
+                            color: #f65177;
+                            margin-left: 40px;
+                            font-weight: normal;
+                        }
+
+                        .glaxkblock .subbtn {
+                            width: 50%;
+                            height: 36px;
+                        }
+                    </style>
+                    <div class="inner">
+                        <table class="chitmutb">
+                            <tr>
+                                <td>头像设置</td>
+                                <td>
+                                    <img id="img_url" style="width:150px;height:150px;"/>
+                                    <input id="file_upload" name="file_upload" class="addprodinnbtn new_add" type="file"
+                                           multiple="true">
+                                    <div id="queue" style="display: none"></div>
+                                    <span>建议图片大小150*150px</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>昵称</td>
+                                <td>
+                                    <input id="nick_name" type="text" value="" style="width:300px"/>
+                                    <label id="lbl_username" style="display: none;"></label>
+                                    <button class="btn btn-primary">提交</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+
+    <link href="/Public/common/uploadify/uploadify.css" rel="stylesheet" type="text/css"/>
+    <script src="/Public/common/uploadifive/jquery.uploadifive.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //User.validate();
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_order?access=' + user_id;
+            });
+
+            $('#li-my-address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_address?access=' + user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access=' + user_id;
+            });
+
+            $('.btn-primary').click(function () {
+                $('#lbl_username').hide();
+
+                saveUserInfo();
+            });
+
+            getUserInfo();
+
+            initUpload();
+        });
+
+        function getUserInfo() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = {'user_id': user_id}
+
+            fit.ajax({
+                url: '/user/get_userinfo',
+                data: data,
+                success: function (result) {
+//                    alert(JSON.stringify(result));
+
+                    if (result.code == 200) {
+                        loadUserInfo(result.data);
+                    }
+                }
+            });
+        }
+
+        function loadUserInfo(data) {
+            debugger;
+            if (data.length > 0) {
+                if (data[0].head_pic != null && data[0].head_pic != "") {
+                    $('#img_url').attr("src", data[0].head_pic);
+                }
+                else {
+                    $('#img_url').attr("src", '/Public/common/js/img/noavatar_middle.gif');
+                }
+
+                if (data[0].nick_name != null) {
+                    $('#nick_name').val(data[0].nick_name);
+                }
+            }
+        }
+
+        function add_file(file) {
+            if (file.code == 0) {
+                alert(file.msg);
+                return;
+            }
+
+            $('#img_url').attr("src", '/Public/uploads/'+ file.file_name);
+            $('#img_url').show();
+            alert('上传成功!');
+        }
+
+        //初始化上传控件
+        function initUpload() {
+            $('#file_upload').uploadifive({
+                'buttonText': '请选择上传文件',
+                'multi': false,
+                'auto': true,
+                'checkScript': '/Public/common/uploadifive/check-exists.php',
+                'formData': {
+                    'timestamp': '<?php echo $timestamp;?>',
+                    'token': '<?php echo md5('unique_salt' . $timestamp);?>'
+                },
+                'queueID': 'queue',
+                'uploadScript': '/Public/common/uploadifive/uploadifive.php',
+                'onUploadComplete': function (file, data) {
+                    add_file(JSON.parse(data));
+                }
+            });
+        }
+
+        function saveUserInfo() {
+            var user_id = localStorage.getItem('user_id');
+            var img = $('#img_url').attr("src");
+            var username = $('#nick_name').val();
+
+            if (username == '') {
+                $('#lbl_username').html('昵称不能为空');
+                $('#lbl_username').show();
+
+                return;
+            }
+
+            var data = {'user_id': user_id, 'nick_name': username, 'img': img}
+
+            fit.ajax({
+                url: '/user/save_userinfo',
+                data: data,
+                success: function (result) {
+//                alert(JSON.stringify(result));
+                    $.alertbox({
+                        msg: '<span class="orange">' + result.msg + '</span>'
+                    });
+
+                    if (result.code == 200) {
+//                        localStorage.setItem('user_id', result.data);
+                    }
+                }
+            });
+        }
+    </script>
+</block>

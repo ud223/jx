@@ -1,0 +1,427 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="glaxkblock usr-lft">
+                    <div class="pad-20">
+                        <div style="background-image:url(/Public/common/js/img/eco_new.jpg);background-position: center center;background-repeat: no-repeat;background-size: cover;width:100%;height:200px;border-radius:2px;"></div>
+                    </div>
+                    <ul>
+                        <li class="selected"><a id="li-my-order" href="javascript:void(0)">我的订单</a></li>
+                        <li><a id="li-my-address" href="javascript:void(0)">我的地址</a></li>
+                        <li><a id="li-my-pwd" href="javascript:void(0)">修改密码</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-9">
+
+                <div class="glaxkblock" style="margin-bottom:30px;">
+                    <div class="main_tt">
+                        <a id="to_my_order" href="javascript:void(0)">我的订单</a>
+                        <span class="spliter">/</span>
+                        <span>订单详细</span>
+                    </div>
+                    <div class="inner">
+                        <table class="chitmutb">
+                            <tr>
+                                <td>订单状态</td>
+                                <td>
+                                    <?php
+                                        switch($data['order']['state']) {
+                                            case '10': {
+                                                echo '待支付'; break;
+                                            }
+                                            case '20': {
+                                                echo '待发货';
+
+                                                break;
+                                            }
+                                            case '30': {
+                                                echo '已发货';
+                                                echo '<button id="btn_take" class="btn btn-info" style="float:right;">收货</button>';
+
+                                                break;
+                                            }
+                                            case '40': {
+                                                echo '待评价';
+                                                echo '<button class="btn btn-info" style="float:right;" data-toggle="modal" data-target="#commentBoard">前往评价</button>';
+
+                                                break;
+                                            }
+                                            case '80': {
+                                                echo '已关闭'; break;
+                                            }
+                                            case '100': {
+                                                echo '退款申请'; break;
+                                            }
+                                            case '100': {
+                                                echo '已退款'; break;
+                                            }
+                                        }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>下单时间</td>
+                                <td>{$data.order.create_at}</td>
+                            </tr>
+                            <tr>
+                                <td>订单号</td>
+                                <td>{$data.order.id}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="glaxkblock" style="margin-bottom:30px;">
+                    <div class="main_tt">
+                        <span>收货信息</span>
+                    </div>
+                    <div class="inner">
+                        <table class="chitmutb">
+                            <tr>
+                                <td>收件人姓名</td>
+                                <td>{$data.order.address.name}</td>
+                            </tr>
+                            <tr>
+                                <td>手机/电话</td>
+                                <td>{$data.order.address.phone}</td>
+                            </tr>
+                            <tr>
+                                <td>收件地址</td>
+                                <td>{$data.order.address.address}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <style>
+                    .wlhicmtwp .wlhicmt {
+                        margin-bottom:8px;
+                        font-size:12px;
+                        opacity: .5;
+                    }
+                    .wlhicmtwp .wlhicmt:last-child {
+                        color:#F60;
+                        opacity: 1;
+                    }
+                </style>
+
+                <?php if ($data['order']['exp_id']) :?>
+                    <div class="glaxkblock" style="margin-bottom:30px;">
+                        <div class="main_tt">
+                            <span>物流信息</span>
+                        </div>
+                        <div class="inner">
+                            <table class="chitmutb">
+                                <tr>
+                                    <td>发货方式</td>
+                                    <td>快递</td>
+                                </tr>
+                                <tr>
+                                    <td>物流公司</td>
+                                    <td>{$data.order.exp_text}</td>
+                                </tr>
+                                <tr>
+                                    <td>货运单号</td>
+                                    <td>{$data.order.exp_id}</td>
+                                </tr>
+                                <tr>
+                                    <td>物流跟踪</td>
+                                    <td class="wlhicmtwp">
+                                        <div class="wlhicmt"><a id="show_exp" href="http://www.kuaidi100.com/chaxun?com={$data.order.exp_code}&nu={$data.order.exp_id}" target="_blank">点击查看物流信息</a></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <table class="carttb" style="margin-bottom:30px;">
+                    <thead>
+                    <tr>
+                        <th class="col1">商品名称</th>
+                        <th></th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th style="text-align: right;">小计</th>
+                    </tr>
+                    </thead>
+                        <tbody>
+                            <?php foreach ($data['order']['details'] as $itm) :?>
+                                <tr>
+                                    <td>
+                                        <a href="/index/product?id=<?php echo $itm['item_id'] ?>" target="_blank" style="background-image: url(<?php echo $itm[product]['show_photo']['url'] ?>);" class="josmimg"></a>
+                                    </td>
+                                    <td>
+                                        <a href="/index/product?id=<?php echo $itm['item_id'] ?>" target="_blank" class="jostxt"><?php echo $itm[product]['item_name'] ?></a>
+                                    </td>
+                                    <td>
+                                        <div class="josprice">
+                                            ¥ <?php echo $itm[price] ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="josunit">
+                                            <?php echo $itm[num] ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="summeryprice">
+                                            ¥ <?php echo $itm[amount] ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            共 {$data.order.details[0].num} 件商品，已选择 {$data.order.details[0].num} 件商品总计：<span style="color:#03a9f4;font-weight:bold;">¥ {$data.order.amount}</span>，运费：<span style="color:#03a9f4;font-weight:bold;">￥56.00</span>
+                        </td>
+                        <td style="text-align:right;"></td>
+                        <?php if ($data['order']['state'] == '10') :?>
+                            <td colspan="1" style="text-align:right">
+                                应付金额：<span style="color:#03a9f4;font-weight:bold;">￥{$data.order.amount}</span>
+                            </td>
+                            <td style="text-align:right">
+                                <button id="to-pay" class="btn btn-primary" val="{$data.order.id}" style="width:90px;">现在结算</button>
+                            </td>
+                        <?php else :?>
+                            <td colspan="2" style="text-align:right">
+                                应付金额：<span style="color:#03a9f4;font-weight:bold;">￥{$data.order.amount}</span>
+                            </td>
+                        <?php endif; ?>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="commentBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">评价本次订单</h4>
+                </div>
+                <style>
+                    .starslanp .staritmd {
+                        font-size: 26px;
+                        cursor: pointer;
+                        margin-right: 5px;
+                        float: left;
+                        color: #ccc;
+                        transition: all .4s;
+                    }
+
+                    .starslwp {
+                        margin-bottom: 15px;
+                    }
+
+                    .starslanp .icon-iosstar {
+                        color: #03A9F4;
+                    }
+                </style>
+                <div class="modal-body" style="padding-bottom:0;">
+                    <div>
+                        <div class="starslwp">
+                            <div class="whtt">
+                                商品质量
+                            </div>
+                            <div class="starslanp">
+                                <span class="iconfont staritmd icon-iosstaroutline product" score="1"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline product" score="2"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline product" score="3"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline product" score="4"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline product" score="5"></span>
+                            </div>
+                        </div>
+                        <div class="starslwp">
+                            <div class="whtt">
+                                物流情况
+                            </div>
+                            <div class="starslanp">
+                                <span class="iconfont staritmd icon-iosstaroutline logistics" score="1"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline logistics" score="2"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline logistics" score="3"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline logistics" score="4"></span>
+                                <span class="iconfont staritmd icon-iosstaroutline logistics" score="5"></span>
+                            </div>
+                        </div>
+                        <input id="comment_text" maxlength="150" type="text" placeholder="意见和建议" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="to_comment" type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div ui-shopping-service="" class="shopping-service">-->
+                    <!--<ul class="shopping-info gray-box">-->
+                        <!--<li class="online-services">-->
+                            <!--<span class="online"></span>-->
+                            <!--<h5>在线客服</h5>-->
+                            <!--<h6>周一至周日 8:00-17:00</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="return-goods"></span>-->
+                            <!--<h5>7 天无理由退货</h5>-->
+                            <!--<h6>7 天无理由退货 请放心购买</h6>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<span class="delivery-goods"></span>-->
+                            <!--<h5 class="ng-binding">周边产品满 500 元免运费</h5>-->
+                            <!--<h6>全场使用德邦或顺丰快递</h6>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <input type="hidden" id="order_id" value="{$data.order.id}">
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            User.validate();
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_order?access='+ user_id;
+            });
+
+            $('#li-my-address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_address?access='+ user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('#to-pay').click(function() {
+                var user_id = localStorage.getItem('user_id');
+                var order_id = $(this).attr('val');
+                var url = '/index/checkout?id='+ order_id + '&access='+ user_id;
+                console.log(url);
+                location.href = url;
+            })
+
+            $('#btn_take').click(function () {
+                var order_id = $('#order_id').val();
+                var user_id = localStorage.getItem('user_id');
+
+                var data = { 'order_id': order_id, 'user_id': user_id }
+//            alert(JSON.stringify(data)); return;
+                fit.ajax({
+                    url:'/user/take_over',
+                    data:data,
+                    success:function(result){
+//                    alert(JSON.stringify(result));
+//                    console.log(JSON.stringify(result));
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>'
+                        });
+
+                        if (result.code == 200) {
+                            location.reload();
+                        }
+                    }
+                });
+            })
+
+            $('#to_my_order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                location.href = '/index/user_order?access='+ user_id;
+            })
+
+            $('#to_comment').click(function () {
+                comment();
+            })
+        });
+
+        function comment() {
+            var order_id = $('#order_id').val();
+            var user_id = localStorage.getItem('user_id');
+            var logistics_score = $('.logistics.icon-iosstar').length;
+            var product_score = $('.product.icon-iosstar').length;
+            var comment_text = $('#comment_text').val();
+
+            var data = { 'order_id': order_id, 'user_id': user_id, 'logistics_score': logistics_score, 'product_score':product_score, 'comment_text': comment_text }
+//            alert(JSON.stringify(data)); return;
+            fit.ajax({
+                url:'/user/comment',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+//                    console.log(JSON.stringify(result));
+                    $.alertbox({
+                        msg:'<span class="orange">'+ result.msg +'</span>'
+                    });
+
+                    if (result.code == 200) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+        function get_expInfo() {
+            var exp_code = '{$data.order.exp_code}';
+            var exp_id = '{$data.order.exp_id}';
+
+//            $.get("http://api.kuaidi100.com/api?id=7f0eb2df88c9b87a&com="+ exp_code +"&nu="+ exp_id +"&valicode=&show=0&muti=1&order=desc", function(result){
+//                alert(JSON.stringify(result));
+//            });
+
+            $.ajax({
+                type:'get',
+                dataType: 'json',
+                url: "http://api.kuaidi100.com/api?id=7f0eb2df88c9b87a&com="+ exp_code +"&nu="+ exp_id +"&valicode=&show=0&muti=1&order=desc",
+                success:function(result){
+                    alert(JSON.stringify(result));
+                }
+            });
+        }
+    </script>
+</block>

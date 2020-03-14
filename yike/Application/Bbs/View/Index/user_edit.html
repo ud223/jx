@@ -1,0 +1,122 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <style>
+        body {
+            background: #f4f4f4;
+            padding-top: 110px;
+        }
+    </style>
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="glaxkblock usr-lft">
+                    <div class="pad-20">
+                        <div style="background-image:url(/Public/common/js/img/eco_new.jpg);background-position: center center;background-repeat: no-repeat;background-size: cover;width:100%;height:200px;border-radius:2px;"></div>
+                    </div>
+                    <ul>
+                        <li class="selected"><a id="li-my-order" href="javascript:void(0)">我的订单</a></li>
+                        <li><a id="li-my-address" href="javascript:void(0)">我的地址</a></li>
+                        <li><a id="li-my-pwd" href="javascript:void(0)">修改密码</a></li>
+                        <li><a id="li-my-msg" href="javascript:void(0)">论坛通知</a></li>
+                        <li><a id="li-my-set" href="javascript:void(0)">资料设置</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th style="width: 10px">标题</th>
+                            <th style="width: 120px">发表时间</th>
+                            <th style="width: 120px">作者</th>
+                            <th style="width: 120px">评论数量</th>
+                        </tr>
+
+                        <volist name="data.list" id="itm">
+                            <tr>
+                                <td>{$itm.title}</td>
+                                <td>{$itm.creat_at}</td>
+                                <td>{$itm.author}</td>
+                                <td>{$itm.car_engine_no}</td>
+                            </tr>
+                        </volist>
+                    </table>
+                </div><!-- /.box-body -->
+            </div>
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div>
+    </div>
+</block>
+
+
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#li-my-order').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+                    return;
+                }
+
+                location.href = '/index/cart?access='+ user_id;
+            });
+
+            $('#li-my-address').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_address?access='+ user_id;
+            });
+
+            $('#li-my-pwd').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('#li-my-msg').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access='+ user_id;
+            });
+
+            $('#li-my-set').click(function () {
+                var user_id = localStorage.getItem('user_id');
+
+                if (!user_id) {
+                    location.href = '/index/login';
+
+                    return;
+                }
+
+                location.href = '/index/user_pwd?access='+ user_id;
+            });
+        });
+
+    </script>
+</block>

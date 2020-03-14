@@ -1,0 +1,99 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">失窃上报信息</h3>
+            </div>
+
+            <!--<div class="col-md-2" style="padding: 20px;z-index: 100">-->
+            <!--<a class="btn btn-block btn-primary add_btn" href="javascript:void(0)">添加车辆</a>-->
+            <!--</div>-->
+
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 300px">维修内容</th>
+                        <th style="width: 200px">网点名</th>
+                        <th style="width: 120px">上报人</th>
+                        <th style="width: 120px">上报人电话</th>
+                        <th style="width: 200px">时间</th>
+                        <th></th>
+                        <!--<th>删除</th>-- style="width: 100px">-->
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+
+                            <td>{$itm.repair}</td>
+                            <td>{$itm.point_name}</td>
+                            <td>{$itm.repair}</td>
+                            <td>{$itm.phone}</td>
+                            <td>{$itm.create_at}</td>
+                            <!--<td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">通知用户</a></td>-->
+                            <td>
+                                <!--<?php if ($itm['is_notify'] == '0') :?>-->
+                                <!--<a href="javascript:void(0)" class="itm-del" val="{$itm.id}">通知用户</a>-->
+                                <!--<?php else :?>-->
+                                <!--已经通知-->
+                                <!--<?php endif; ?>-->
+                            </td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+//            $('.itm-del').click(function() {
+//                var id = $(this).attr('val');
+//
+//                if (confirm('是否已通知失窃用户该条上报信息?')) {
+//                    fit.ajax({
+//                        url:'/manage/lose_send',
+//                        data:{
+//                            'id':id
+//                        },
+//                        success:function(result){
+//                            alert(result.msg);
+//
+//                            location.reload();
+//                        }
+//                    });
+//                }
+//            })
+
+            //编辑颜色
+//            $('.itm-edit').click(function() {
+//                var id = $(this).attr('val');
+//
+//                location.href = '/manage/cart_edit?id='+ id;
+//            });
+//
+//            $('.add_btn').click(function(){
+//                location.href = '/manage/cart_add';
+//            });
+        });
+    </script>
+</block>

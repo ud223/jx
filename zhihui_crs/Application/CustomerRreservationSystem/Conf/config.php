@@ -19,7 +19,23 @@ return array(
     'size' => 5242880,//文件大小，单位：字节
     'size_desc' => '5M',
     'type' => 'image/jpeg,image/png', //允许上传的mini type
-    'desc' => 'jpg,png', //运行上传的mini描述
+    'desc' => 'jpg、png', //运行上传的mini描述
+  ),
+
+  //产品附件图片上传的配置参数
+  'UPLOAD_PRODUCT_ATTACHMENT_IMAGE_CONFIG' => array(
+    'size' => 5242880,//文件大小，单位：字节
+    'size_desc' => '5M',
+    'type' => 'image/jpeg,image/png', //允许上传的mini type
+    'desc' => 'jpg、png', //运行上传的mini描述
+  ),
+
+  //产品附件图片上传的配置参数
+  'UPLOAD_PRODUCT_ATTACHMENT_FILE_CONFIG' => array(
+    'size' => 5242880,//文件大小，单位：字节
+    'size_desc' => '5M',
+    'type' => 'application/zip,application/x-rar,application/x-rar-compressed,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/x-mspowerpoint,application/powerpoint,application/mspowerpoint,application/vnd.ms-works,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation', //允许上传的mini type
+    'desc' => 'zip、rar、pdf、doc、docx、xls、xlsx、ppt、pptx', //运行上传的mini描述
   ),
 
   //用户证件照图片上传的配置参数
@@ -27,7 +43,7 @@ return array(
     'size' => 5242880,//文件大小，单位：字节
     'size_desc' => '5M',
     'type' => 'image/jpeg,image/png', //允许上传的mini type
-    'desc' => 'jpg,png', //运行上传的mini描述
+    'desc' => 'jpg、png', //运行上传的mini描述
   ),
   
   //用户证件照图片上传的配置参数
@@ -37,7 +53,7 @@ return array(
     //'type' => 'application/zip,application/x-rar,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/octet-stream,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document', //允许上传的mini type
     //'desc' => 'zip,rar,doc,docx,xlsx,xls', //运行上传的mini描述
     'type' => 'image/jpeg,image/png', //允许上传的mini type
-    'desc' => 'jpg,png', //运行上传的mini描述
+    'desc' => 'jpg、png', //运行上传的mini描述
   ),
   //endregion 图片上传配置
 );

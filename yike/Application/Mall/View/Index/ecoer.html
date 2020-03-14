@@ -1,0 +1,54 @@
+<extend name="Base/pc"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <style>
+        .cgjmt {
+            background-color: #555;
+        }
+
+        .cgjmt .imshg {
+            background: url(/Public/common/js/img/slide/492094568414.jpg) center center no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            transition: all 0.2s;
+        }
+
+        .blur {
+            filter: url(blur.svg#blur);
+            /* FireFox, Chrome, Opera */
+            -webkit-filter: blur(10px);
+            /* Chrome, Opera */
+            -moz-filter: blur(10px);
+            -ms-filter: blur(10px);
+            filter: blur(10px);
+            filter: progid: DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+            /* IE6~IE9 */
+        }
+    </style>
+    <div style="" class="cgjmt">
+        <div class="imshg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div style="padding:150px 0 80px 0;">
+                            <div style="font-size: 32px;font-weight: 100;color:rgba(0,0,0,.75);">
+                                <div>享受日光和微风还有她</div>
+                                <div>无需遥远，路程刚好</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        });
+    </script>
+</block>

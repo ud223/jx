@@ -1,0 +1,122 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">菜单编辑</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">菜单名称</span>
+                        <input type="text" class="form-control" placeholder="请输入菜单名称..." name="name_field" id="name_field" value="{$data['item'].name}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">URL</span>
+                        <input type="text" class="form-control" placeholder="请输入URL..." name="url_field" id="url_field" value="{$data['item'].url}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">父菜单</span>
+                        <select class="form-control" name="pid_field" id="pid_field">
+                            <option value="0">顶级菜单</option>
+                            <?php foreach ($data['pmenu'] as $p): ?>
+                                <?php if ($data['item']['pid'] == $p['id']) :?>
+                                    <option value="<?php echo $p['id'] ?>" selected="selected"><?php echo $p['name'] ?></option>
+                                <?php else :?>
+                                    <option value="<?php echo $p['id'] ?>"><?php echo $p['name'] ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">序号</span>
+                        <select class="form-control" name="sort_field" id="sort_field">
+                            <?php for ($i = 1; $i < 51; $i++): ?>
+                                <?php if ($data['item']['sort'] == $i) :?>
+                                    <option value="<?php echo $i ?>" selected="selected"><?php echo $i ?></option>
+                                <?php else :?>
+                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否启用</span>
+                        <select class="form-control" name="enable_field" id="enable_field">
+                            <?php if ($data['item']['enable'] == '0') :?>
+                                <option value="1">启用</option>
+                                <option value="0" selected="selected">不启用</option>
+                            <?php else :?>
+                                <option value="1" selected="selected">启用</option>
+                                <option value="0">不启用</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="menu_id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+                <span id="btn_return" class="am-modal-btn" >返回</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            $('#btn_return').click(function(){
+                location.href = '/manage/menu';
+            });
+        });
+
+        function saveItem() {
+            var id = $('#menu_id').val();
+            var name = $('#name_field').val();
+            var url = $('#url_field').val();
+            var pid = $('#pid_field').val();
+            var sort = $('#sort_field').val();
+            var enable = $('#enable_field').val();
+
+            var data = {
+                'id': id,
+                'name': name,
+                'url': url,
+                'pid': pid,
+                'sort': sort,
+                'enable': enable
+            };
+
+            fit.ajax({
+                url:'/manage/save_menu',
+                data: data,
+                success:function(result){
+                    alert(result.msg);
+
+                    if (!id) {
+                        location.href = '/manage/menu_edit?id='+ result.data;
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+</block>

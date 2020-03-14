@@ -11,6 +11,7 @@ namespace Org\ZhiHui;
 class Product {
   private $modProduct = null;
   private $modProductType = null;
+  private $modProductSnapshots = null;
 
   /**
    * todo:产品详细内容缩略图配置
@@ -22,10 +23,38 @@ class Product {
     "500" => array(500,500),
     "800" => array(800,800),
   );
+
+  /**
+   * todo: 支付方式
+   * @var array
+   */
+  public $_PaymentType = array(
+    "现金"
+  );
+
+  /**
+   * todo: 缴费方式
+   * @var array
+   */
+  public $_PayType = array(
+    "期缴",
+    "趸交",
+    "期缴/趸交",
+  );
+
+  /**
+   * todo: 附件类型
+   * @var array
+   */
+  public $_AttachmentType = array(
+    "image"=>"image",
+    "file"=>"file",
+  );
   
   function __construct() {
     $this->modProduct = M("product");
     $this->modProductType = M("product_type");
+    $this->modProductSnapshots = M("product_snapshots");
   }
   
   //region 缓存
@@ -128,6 +157,78 @@ class Product {
 
         $Info["type_name"] = $ProducTypeInfo["type_name"];
       }
+
+      //region 附件信息
+      if(IsNum($Info["attachment_id"], false, false)){
+        switch($Info["attachment_type"]){
+          case $this->_AttachmentType["image"]:
+            $clsPicture = new \Org\ZhiHui\Picture();
+
+            $FileInfo = $clsPicture->GetPictureDetails($Info["attachment_id"]);
+            $FileSizeKB = $FileInfo["pic_size"]/1024;
+            $FileSizeMB = $FileSizeKB/1024;
+
+            $FileInfo["full_file"] = FullImageUrl($FileInfo["file"]);
+            $FileInfo["icon"] = "";
+            break;
+            
+          case $this->_AttachmentType["file"]:
+            $clsFile = new \Org\ZhiHui\File();
+
+            $FileInfo = $clsFile->GetFileDetails($Info["attachment_id"]);
+            $FileSizeKB = $FileInfo["file_size"]/1024;
+            $FileSizeMB = $FileSizeKB/1024;
+
+            $FileInfo["full_file"] = FullImageUrl($FileInfo["file_path"]);
+
+            //region 获取文件图标
+            switch($FileInfo["file_ext"]){
+              case "docx":
+                $sIcon = "fa-file-word-o";
+                break;
+
+              case "doc":
+                $sIcon = "fa-file-word-o";
+                break;
+
+              case "xls":
+                $sIcon = "fa-file-excel-o";
+                break;
+
+              case "xlsx":
+                $sIcon = "fa-file-excel-o";
+                break;
+
+              case "rar":
+                $sIcon = "fa-file-zip-o";
+                break;
+
+              case "zip":
+                $sIcon = "fa-file-zip-o";
+                break;
+
+              case "pdf":
+                $sIcon = "fa-file-pdf-o";
+                break;
+
+              default:
+                $sIcon = "fa-file-o";
+                break;
+            }
+
+            $FileInfo["icon"] = $sIcon;
+            //endregion 获取文件图标
+            break;
+        }
+
+        $FileInfo["file_size_kb"] = round($FileSizeKB, 2);
+        $FileInfo["file_size_mb"] = round($FileSizeMB, 2);
+
+        $FileInfo["add_date"] = Time2FullDate($FileInfo["add_time"], "Y-m-d");
+
+        $Info["attachment"] = $FileInfo;
+      }
+      //endregion 附件信息
     }
 
     return $Info;
@@ -184,7 +285,154 @@ class Product {
     return $ProductDetails;
   }
   //endregion 产品缓存
-  //region 缓存
+
+  //region 产品快照缓存
+  /**
+   * 获取产品
+   * @param $_snapshots_id 产品快照ID
+   * @return mixed
+   */
+  public function GetProductSnapshotsDetails($_snapshots_id){
+    if(GetCacheOnOff()){
+      //使用缓存
+      $Info = $this->GetProductSnapshotsDetailsCache($_snapshots_id);
+
+      if(empty($Info)){
+        $Info = $this->GetProductSnapshotsDetailsDb($_snapshots_id);
+      }
+    }else{
+      $Info = $this->GetProductSnapshotsDetailsDb($_snapshots_id);
+    }
+
+    if(IsArray($Info)){
+      //region 附件信息
+      if(IsNum($Info["attachment_id"], false, false)){
+        switch($Info["attachment_type"]){
+          case $this->_AttachmentType["image"]:
+            $clsPicture = new \Org\ZhiHui\Picture();
+
+            $FileInfo = $clsPicture->GetPictureDetails($Info["attachment_id"]);
+            $FileSizeKB = $FileInfo["pic_size"]/1024;
+            $FileSizeMB = $FileSizeKB/1024;
+
+            $FileInfo["full_file"] = FullImageUrl($FileInfo["file"]);
+            $FileInfo["icon"] = "";
+            break;
+
+          case $this->_AttachmentType["file"]:
+            $clsFile = new \Org\ZhiHui\File();
+
+            $FileInfo = $clsFile->GetFileDetails($Info["attachment_id"]);
+            $FileSizeKB = $FileInfo["file_size"]/1024;
+            $FileSizeMB = $FileSizeKB/1024;
+
+            $FileInfo["full_file"] = FullImageUrl($FileInfo["file_path"]);
+
+            //region 获取文件图标
+            switch($FileInfo["file_ext"]){
+              case "docx":
+                $sIcon = "fa-file-word-o";
+                break;
+
+              case "doc":
+                $sIcon = "fa-file-word-o";
+                break;
+
+              case "xls":
+                $sIcon = "fa-file-excel-o";
+                break;
+
+              case "xlsx":
+                $sIcon = "fa-file-excel-o";
+                break;
+
+              case "rar":
+                $sIcon = "fa-file-zip-o";
+                break;
+
+              case "zip":
+                $sIcon = "fa-file-zip-o";
+                break;
+
+              case "pdf":
+                $sIcon = "fa-file-pdf-o";
+                break;
+
+              default:
+                $sIcon = "fa-file-o";
+                break;
+            }
+
+            $FileInfo["icon"] = $sIcon;
+            //endregion 获取文件图标
+            break;
+        }
+
+        $FileInfo["file_size_kb"] = round($FileSizeKB, 2);
+        $FileInfo["file_size_mb"] = round($FileSizeMB, 2);
+
+        $FileInfo["add_date"] = Time2FullDate($FileInfo["add_time"], "Y-m-d");
+
+        $Info["attachment"] = $FileInfo;
+      }
+      //endregion 附件信息
+    }
+
+    return $Info;
+  }
+
+  /**
+   * 设置产品数据缓存
+   * @param $_snapshots_id 产品快照ID
+   * @param array $_data 产品数据，默认值为NULL，传空参数时，表示删除缓存
+   * @return mixed
+   */
+  public function SetProductSnapshotsDetailsCache($_snapshots_id, $_data=NULL){
+    F($this->GetProductSnapshotsDetailsCacheKey($_snapshots_id), $_data);
+  }
+
+  /**
+   * 获取产品数据缓存
+   * @param $_snapshots_id 产品快照ID
+   * @return mixed
+   */
+  private function GetProductSnapshotsDetailsCache($_snapshots_id){
+    return F($this->GetProductSnapshotsDetailsCacheKey($_snapshots_id));
+  }
+
+  /**
+   * 获取产品快照缓存Key
+   * @param $_snapshots_id 产品快照ID
+   * @return mixed
+   */
+  private function GetProductSnapshotsDetailsCacheKey($_snapshots_id){
+    return "Product/Snapshots/{$_snapshots_id}";
+  }
+
+  /**
+   * todo:从数据库中获取产品数据
+   * @param $_snapshots_id 产品快照ID
+   *
+   * @return mixed
+   */
+  private function GetProductSnapshotsDetailsDb($_snapshots_id){
+    $ProductSnapshotsDetails = array();
+
+    if(!IsNum($_snapshots_id, false, false)){
+      return $ProductSnapshotsDetails;
+    }
+
+    $sWhere = "id={$_snapshots_id}";
+    $ProductSnapshotsDetails = $this->modProductSnapshots->where($sWhere)->find();
+
+    if(!empty($ProductSnapshotsDetails)){
+      $this->SetProductSnapshotsDetailsCache($_snapshots_id, $ProductSnapshotsDetails);
+    }
+
+    return $ProductSnapshotsDetails;
+  }
+  //endregion 产品快照缓存
+  //endregion 缓存
   
   //region 产品类别
   /**
@@ -219,26 +467,22 @@ class Product {
    */
   public function ProductOption($_field_key, $_field_val){
     $sField = "id";
-    $sWhere = "1=1";
+    $sWhere = "status=1";
     $sOrder = "id desc";
     
     if(!IsN($_field_key) && IsNum($_field_val, false, false)){
       switch($_field_key){
         case "broker_company_id":
-          $sWhere .= "broker_company_id={$_field_val}";
+          $sWhere .= " and broker_company_id={$_field_val}";
           break;
         
         case "type_id":
-          $sWhere .= "type_id={$_field_val}";
-          break;
-
-        case "type_id":
-          $sWhere .= "service_providers_id={$_field_val}";
+          $sWhere .= " and type_id={$_field_val}";
           break;
       }
     }
     
-    $ProductIdList = $this->modProductType->field($sField)->where($sWhere)->order($sOrder)->select();
+    $ProductIdList = $this->modProduct->field($sField)->where($sWhere)->order($sOrder)->select();
     $ProductOption = array();
 
     foreach($ProductIdList as $key=>$val){
@@ -251,6 +495,37 @@ class Product {
     }
 
     return $ProductOption;
+  }
+
+  /**
+   * todo: 增加产品销售数量
+   * @param int $_product_id
+   * @param int $_sell_number
+   *
+   * @return array
+   */
+  public function PlusProductSellNumber($_product_id, $_sell_number=1){
+    if(!IsNum($_product_id, false, false)){
+      return ReturnError(L("_PRODUCT_ID_ERROR_"));
+    }else{
+      $ProductInfo = $this->GetProductDetails($_product_id);
+
+      if(!IsArray($ProductInfo)){
+        return ReturnError(L("_PRODUCT_NOT_EXIST_"));
+      }
+    }
+    
+    if(!IsNum($_sell_number, false, false)){
+      $_sell_number = 1;
+    }
+
+    $Result = $this->modProduct->where('id='.$ProductInfo["id"])->setInc('sell_number',$_sell_number);
+    
+    if($Result === false){
+      return ReturnError(L("_SAVE_DATA_FAILURE_"));
+    }
+
+    return ReturnCorrect(L("_SAVE_DATA_SUCCEED_"));
   }
   //endregion 产品
 }

@@ -1,0 +1,113 @@
+<layout name="layout" />
+
+<div class="container baner">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="cst-space" style="padding-bottom: 40px;border-bottom: 1px solid #c9a16d;">
+                <div id="myCarousel" class="carousel slide">
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>   
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <volist name="flash" id="vo" key="k">                              
+                            <if condition="$k == 1 ">
+                              <div class="item active">
+                            <else />
+                              <div class="item">
+                            </if>                                                
+                                <a  href="{$vo.link}"><img src="{$vo.pic}" alt="First slide"></a>
+                             </div>
+                        </volist>                        
+                    </div>
+                    <!-- 轮播（Carousel）导航 -->
+                    <a class="carousel-control left" href="#myCarousel" data-slide="prev"><img id="place1" src="__PUBLIC__/Home/img/left.png"></a>
+                    <a class="carousel-control right" href="#myCarousel" data-slide="next"><img id="place2" src="__PUBLIC__/Home/img/right.png"></a> 
+                    <script type="text/javascript">
+                         $("#place1").mouseover(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/left2.jpg")
+                        })
+
+                         $("#place1").mouseout(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/left.png")
+                        }) 
+
+                         $("#place2").mouseover(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/right2.jpg")
+                        })
+
+                         $("#place2").mouseout(function(){
+                          $(this).attr("src","__PUBLIC__/Home/img/right.png")
+                        })                      
+                    </script>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="sp">
+        <h3 class="center-block"><img src="__IMG__/guangpu_15.jpg"></h3>
+        <div class="shipin" style="position:relative;">
+            <a href="{$mogulbigpic.url}">
+            <img class="img-responsive" src="{$mogulbigpic.logo}" >
+            <div class="icovido" style="position:absolute;top:45%;left:48%;z-index:1;"><img src="__IMG__/ico.png"></div>
+            </a>
+        </div>      
+        <div class="row" style="padding-top:30px;padding-bottom:20px;">
+            <volist name="mogulall" id="vo" key="k" offset="0" length='4'>
+            <div class="col-xs-6 col-sm-3 sppic1">
+                <a href="{:U('Mogul/detail?id='.$vo['aid'])}" class="sp-a">
+                    <div class="preview" style="background:url('{$vo.thumbnail}') no-repeat; background-size:cover;background-position:center center;"></div>
+                    <div class="icovido"><img src="__IMG__/ico.png"></div>
+                </a>
+                <a href="{:U('Mogul/detail?id='.$vo['aid'])}" >
+                    <h4 style=" font-size: 16px;line-height: 28px;color: #333333;text-align: center">{$vo.title}</h4>
+                </a>
+                <!-- <span>{$vo.description}</span> -->
+            </div>
+            </volist>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="sp" style=" padding-top:25px;">
+        <h3 class="center-block">作品</h3>
+        <div class="shipin" style="position:relative;">
+            <a href="{$zuopinbigpic.url}">
+            <img class="img-responsive" src="{$zuopinbigpic.logo}" >
+            <div class="icovido" style="position:absolute;top:45%;left:48%;z-index:1;"><img src="__IMG__/ico.png"></div>
+            </a>
+        </div>
+        <div class="row" style="padding-top:30px;padding-bottom:35px;">
+            <volist name="zuopzilei" id="vo" key="k">
+            <div class="col-xs-6 col-sm-3 sppic">
+                <a href="{:U('Work/index?zid='.$vo['id'])}" class="sp-a">
+                    <div class="preview" style="background:url('{$vo.pic}') no-repeat; background-size:cover;background-position:center center;"></div>
+                    <div class="icovido"><img src="__IMG__/ico.png"></div>
+                </a>
+                <p>{$vo.name}</p>
+                <span><!-- {$vo.seotitle} -->{$vo.title}</span>
+            </div>
+            </volist>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="partner">
+            <h3 class="center-block">合作资源</h3>
+            <ul>
+                <volist name="hezuoziyuan" id="vo" key="k">
+                    <li class="col-lg-2 col-xs-3"><a href="#"><img src="{$vo.thumbnail}"></a></li>
+                </volist>
+            </ul>
+        </div> 
+    </div>
+</div>

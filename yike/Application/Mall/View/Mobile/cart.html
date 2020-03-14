@@ -1,0 +1,226 @@
+<extend name="Base/mobile"/>
+<!--
+    cst-space：大型slide (START)
+-->
+<block name="body">
+    <!--没有数据时显示（互斥出现）-->
+    <div class="pad-20 emptybox">
+        <span class="iconfont icon-empty"></span>
+        <div class="txt">暂无商品</div>
+        <div>
+            <button class="confirmbtn tapquick" url="mall.html">随便逛逛</button>
+        </div>
+    </div>
+    <!--有数据时显示列表（互斥出现）-->
+    <style>
+        .ftlistbox .itm {
+            padding-bottom: 20px;
+        }
+
+        .ftlistbox .itm:active {
+            background: #FFF;
+        }
+    </style>
+    <div class="ftlistbox" style="display:none">
+
+    </div>
+    <div id="item-node" style="display:none">
+        <div class="itm">
+            <div class="imgd"></div>
+            <div class="t1">
+                <span class="text"></span>
+            </div>
+            <div class="t3s">
+                <div>数量：<span class="num"></span></div>
+                <div>单价：<span class="price"></span>元</div>
+                <div>小计：<span class="itm-amount"></span>元</div>
+            </div>
+            <div class="ophctcs">
+                <div class="add">+</div>
+                <div class="sub">-</div>
+            </div>
+            <span class="iconfont icon-delete"></span>
+        </div>
+    </div>
+    <a class="bottombackbtn" href="javascript:void(0);" onclick="window.history.back()">返回</a>
+    <a id="submit-cart" href="javascript:void(0)" class="confirmbtn green full fixed" style="display:none">现在结算</a>
+</block>
+<block name="script">
+    <script>
+        var access = '{$data.access}';
+
+        $(document).ready(function(){
+            if (!valLogin(access)) {
+                location.href = '/mobile/login'
+
+                return;
+            }
+
+            getCar();
+
+            $('#submit-cart').click(function () {
+                submitCar();
+            })
+        });
+
+        function getCar() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id };
+
+            fit.ajax({
+                url:'/user/get_shopping_car',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    loadCar(result.data);
+                }
+            });
+        }
+
+        function loadCar(data) {
+            var count = 0;
+            var amount = 0.00;
+
+            if (data.length > 0) {
+                $('.emptybox').hide();
+                $('.ftlistbox').show();
+                $('#submit-cart').show();
+            }
+
+            $.each(data, function () {
+                amount = parseFloat(amount) + (parseFloat(this.price) * parseFloat(this.num));
+                var item_id = this.item_id;
+                var cart_id = this.id;
+
+                var node = $('#item-node').find('.itm').clone();//'<tr><td><a href="/index/product?id='+ this.item_id +'" target="_blank" style="background-image: url('+ this.product.show_photo.url +');" class="josmimg"></a></td><td><a href="/index/product?id='+ this.item_id +'" target="_blank" class="jostxt">'+ this.product.item_name +'</a></td> <td><div class="josprice">¥ <span class="itm-price">'+ this.price +'</span></div></td><td><div class="josunit">'+ this.color +'</div></td><td><div class="josunit"><input type="tel" val="'+ this.id +'" class="itm-num" style="height:30px;width:60px;margin:0;padding:0 5px;text-align:center;border-radius:3px;" value="'+ this.num +'" /></div></td><td><div class="josprice">¥ <span class="itm-amount">'+ this.amount +'</span></div></td><td><div class="josopera"><span class="iconfont icon-10013" val="'+ this.id +'" onclick="delCar(this)"></span></div></td></tr>';
+
+                node.find('.imgd').css('background-image', 'url(' + this.product.show_photo.url + ')');
+
+                node.find('.imgd').click(function () {
+                    location.href = '/mobile/product?id=' + item_id;
+                });
+
+                node.find('.text').html(this.product.item_name);
+
+                node.find('.text').click(function () {
+                    location.href = '/mobile/product?id=' + item_id;
+                });
+
+                node.find('.price').html(this.price);
+                node.find('.num').html(this.num);
+                node.find('.itm-amount').html(this.amount);
+
+                node.find('.add').click(function () {
+                    var num = $('.num').html();
+
+                    num = parseInt(num) + 1;
+
+                    num_change(num, node, cart_id);
+                });
+
+                node.find('.sub').click(function () {
+                    var num = $('.num').html();
+
+                    num = parseInt(num) - 1;
+
+                    num_change(num, node, cart_id);
+                });
+
+                node.find('.icon-delete').click(function () {
+                    delCar(cart_id);
+                })
+
+                $('.ftlistbox').append(node);
+            });
+        }
+
+       function num_change(num, node, cart_id) {
+            if (!num || num < 1) {
+                $.alertbox({
+                    msg:'<span class="orange">数量不能小于1</span>'
+                });
+
+                return;
+            }
+
+            var price = node.find('.price').html();
+            var itm_amount = parseFloat(price) * parseFloat(num);
+
+            node.find('.itm-amount').html(parseFloat(itm_amount).toFixed(2));
+
+            node.find('.num').html(num);
+
+            changeNum(cart_id, num);
+        }
+
+        function delCar(car_id) {
+            $.confirm({
+                msg:"确认删除本项？",
+                confirmCallback:function () {
+                    var user_id = localStorage.getItem('user_id');
+
+                    var data = { 'user_id':user_id, 'car_id': car_id };
+
+                    fit.ajax({
+                        url:'/user/del_shopping_car',
+                        data:data,
+                        success:function(result){
+//                    alert(JSON.stringify(result));
+
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        }
+
+        function changeNum(car_id, num) {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id, 'car_id': car_id, 'num': num };
+//            alert(JSON.stringify(data))
+            fit.ajax({
+                url:'/user/change_car_num',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+//                    location.reload();
+                }
+            });
+        }
+
+        function submitCar() {
+            var user_id = localStorage.getItem('user_id');
+
+            var data = { 'user_id':user_id };
+
+            fit.ajax({
+                url:'/user/submit_shopping_car',
+                data:data,
+                success:function(result){
+//                    alert(JSON.stringify(result));
+
+                    if (result.code == 101) {
+                        location.href = '/mobile/login';
+
+                        return ;
+                    }
+
+                    if (result.code == 200) {
+                        var url = '/mobile/checkout?access='+ user_id +'&id='+ result.data;
+//                        console.log(url);
+                        location.href = url;
+                    }
+                    else {
+                        $.alertbox({
+                            msg:'<span class="orange">'+ result.msg +'</span>'
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</block>

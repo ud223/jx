@@ -25,24 +25,34 @@
 <body class="gray-bg">
 
 <div class="middle-box text-center loginscreen animated fadeInDown">
-  <div>
+  <div style="padding-bottom: 100px;">
     <div>
-      <h1 class="logo-name">{$EnAbbrName}</h1>
+      <h1 class="logo-name" style="font-size: 120px;">{$EnAbbrName}</h1>
     </div>
     
     <h3>{$SystemName}</h3>
 
     <form id="LoginForm" class="m-t" action="__URL__/DoLogin" method="post">
       <div class="tooltip-demo">
-        <div class="form-group text-left">
-          <select class="chosen-select" name="login_type" id="login_type" autocomplete="off" style="width: 100%;" data-placeholder="选择帐号类型" data-toggle="tooltip" data-placement="right" title="选择账号类型">
-            <option value="">选择帐号类型</option>
-            <option value="{$SellerManagerType}">销售经理</option>
-            <option value="{$BrokerCompanyType}">经纪公司</option>
-            <option value="{$AdminType}">管理员</option>
-          </select>
+        <div class="form-group text-center">
+          <!--<select class="chosen-select" name="login_type" id="login_type" autocomplete="off" style="width: 100%;" data-placeholder="选择帐号类型" data-toggle="tooltip" data-placement="right" title="选择账号类型">-->
+            <!--<option value="">选择帐号类型</option>-->
+            <!--<option value="{$SellerMemberType}">客户经理</option>-->
+            <!--<option value="{$SellerCaptainType}">团队长</option>-->
+            <!--<option value="{$BrokerCompanyType}">经纪公司</option>-->
+            <!--<option value="{$SpecialType}">保险公司</option>-->
+            <!--<option value="{$AdminType}">管理员</option>-->
+          <!--</select>-->
+          <div class="radio radio-inline radio-info">
+            <input type="radio" id="login_type_0" name="login_type" value="user" checked>
+            <label for="login_type_0"> 用户 </label>
+          </div>
+          <div class="radio radio-inline radio-info">
+            <input type="radio" id="login_type_1" name="login_type" value="admin">
+            <label for="login_type_1"> 管理员 </label>
+          </div>
         </div>
-        
+
         <div class="form-group text-left">
           <input type="text" class="form-control" id="login_name" name="login_name" placeholder="登陆账号" value="" data-toggle="tooltip" data-placement="right" title="登陆账号">
         </div>
@@ -99,23 +109,7 @@
 
   for (var selector in config) $(selector).chosen(config[selector]);
   
-  $.validator.setDefaults({
-    highlight: function(e) {
-      $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
-    },
-    success: function(e) {
-      e.closest(".form-group").removeClass("has-error").addClass("has-success")
-    },
-    errorElement: "span",
-    errorPlacement: function(e, r) {
-      e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
-    },
-    errorClass: "help-block m-b-none",
-    validClass: "help-block m-b-none"
-  });
-  
   $(document).ready(function() {
-    var e = "<i class='fa fa-times-circle'></i> ";
     $("#LoginForm").validate({
       rules: {
         login_name: {
@@ -132,12 +126,10 @@
         }
       },
       messages: {
-        login_name: e + "请输入登陆账号",
-        login_pwd: e + "请输入登陆密码",
-        login_type: e + "请选择帐号类型",
-        login_code: {
-          required: e + "请输入验证码"
-        }
+        login_name: "请输入登陆账号",
+        login_pwd: "请输入登陆密码",
+        login_type: "请选择帐号类型",
+        login_code: "请输入验证码"
       },
       focusInvalid: true,
       submitHandler: function(form) {

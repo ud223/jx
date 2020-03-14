@@ -1,0 +1,18 @@
+<div class="form-group {$select_back.css}" id="{$select_back.id}Tip">
+    <label  class="col-md-{$select_back.title_width} control-label" style="text-align: {$select_back.title_align}; line-height: 30px;">
+        {$select_back.title}<eq name="select_back.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-3" id="{$select_back.id}_item">
+        <input id="{$select_back.id}_title" name="{$select_back.name}_title" type="text" class="form-control" {$JsEvent} value="{$select_back.value}" disabled="disabled">
+        <input id="{$select_back.id}" name="{$select_back.name}" type="hidden" value="{$select_back.value}">
+        <span class="help-block">{$select_back.tips}</span>
+    </div>
+    <div class="col-md-3" id="{$select_back.id}_item">
+        <a class=" btn btn-primary" href="__MODULE__/{$select_back.extend.url}/cntid/{$select_back.id}" data-target="#ajax" data-toggle="modal">选择</a>
+        <span class="help-block">{$select_back.tips}</span>
+    </div>
+</div>
+
+<div class="modal fade" id="ajax" tabindex="-1" role="basic" aria-hidden="true">
+    <img src="__PUBLIC__/res/admin/assets/img/ajax-modal-loading.gif" alt="" class="loading">
+</div>

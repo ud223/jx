@@ -1,0 +1,162 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">BMS固件版本管理</h3>
+            </div>
+            <div class="am-modal-hd">{$title.text}</div>
+            <div class="am-modal-bd">
+                <div style="width: 60%;margin: auto;">
+                    <div class="input-group">
+                        <span class="input-group-addon">版本</span>
+                        <input type="text" class="form-control" placeholder="请输入版本号..." name="version_code" id="version_code" value="{$data['item'].version_code}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">版本名称</span>
+                        <input type="text" class="form-control" placeholder="请输入版本名称..." name="newVersionName" id="newVersionName" value="{$data['item'].newVersionName}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">文件大小</span>
+                        <input type="text" class="form-control" readonly="readonly" name="version_size" id="version_size" value="{$data['item'].version_size}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">MD5校验码</span>
+                        <input type="text" class="form-control"  name="file_app_md5" id="file_app_md5" readonly="readonly" value="{$data['item'].file_md5}" maxlength="50">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">是否强制升级</span>
+                        <select class="form-control" name="is_must_update" id="is_must_update">
+                            <?php if ($data['item']['is_must_update'] == '1') :?>
+                            <option value="1" selected="selected">强制升级</option>
+                            <option value="2">不强制升级</option>
+                            <?php else :?>
+                            <option value="1">强制升级</option>
+                            <option value="2" selected="selected">不强制升级</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">上传文件</span>
+                        <input type="text" class="form-control" readonly name="new_version_url" id="new_version_url" value="{$data['item'].new_version_url}" >
+                        <div id="queue" style="display: none"></div>
+                        <input id="file_upload" name="file_upload" class="addprodinnbtn new_add" type="file" multiple="true">
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <input type="hidden" id="id" value="{$data['item'].id}">
+                <span id="btn_save" class="am-modal-btn">提交</span>
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+<!--web upload-->
+<link rel="stylesheet" type="text/css" href="/Public/common/uploadifive/uploadifive.css">
+<block name="script">
+    <script src="/Public/common/uploadifive/jquery.uploadifive.min.js" type="text/javascript" ></script>
+    <script>
+        $(function(){
+            $('#btn_save').click(function() {
+                saveItem();
+            })
+
+            init();
+        });
+
+        function init() {
+            initUpload();
+        }
+
+        function add_file(file) {
+            if (file.code == 0) {
+                alert(file.msg);
+
+                return;
+            }
+
+            $('#new_version_url').val(file.file_name);
+            $('#version_size').val(file.size);
+            $('#file_app_md5').val(file.md5);
+        }
+
+        //初始化上传控件
+        function initUpload() {
+            $('#file_upload').uploadifive({
+                'buttonText'       : '请选择上传文件',
+                'multi'            : false,
+                'auto'             : true,
+                'checkScript'      : '/Public/common/uploadifive/check-exists.php',
+                'formData'         : {
+                    'timestamp' : '<?php echo $timestamp;?>',
+                    'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+                },
+                'queueID'          : 'queue',
+                'uploadScript'     : '/Public/common/uploadifive/uploadifive.php',
+                'onUploadComplete' : function(file, data) {
+                    add_file(JSON.parse(data));
+                }
+            });
+        }
+
+        function saveItem() {
+            var version = {};
+
+            version.id = $('#id').val();
+            version.version_code = $('#version_code').val();
+            version.version_size = $('#version_size').val();
+            version.is_must_update = $('#is_must_update').val();
+            version.file_md5 = $('#file_app_md5').val();
+            version.newVersionName = $('#newVersionName').val();
+            version.new_version_url = $('#new_version_url').val();
+
+            if (!version.version_code) {
+                alert('版本号不能为空!');
+
+                return;
+            }
+
+            if (!version.version_size) {
+                alert('版本大小不能为空!');
+
+                return;
+            }
+
+            if (!version.new_version_url) {
+                alert('请先上传文件!');
+
+                return;
+            }
+
+            var data = {'version':version };
+
+//            alert(JSON.stringify(data));
+//            return;
+
+            if (confirm('是否保存版本编辑?')) {
+                fit.ajax({
+                    url:'/manage/version_save',
+                    data:data,
+                    success:function(result){
+//                        alert(JSON.stringify(result));
+                        alert(result.msg);
+
+                        if (result.code == 200) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</block>

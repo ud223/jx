@@ -1,0 +1,88 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">运营商管理</h3>
+            </div>
+
+            <!--           <div style="padding:20px 20px 10px 20px;"></div>-->
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-md-2" style="padding: 20px;">
+                    <a class="btn add_bbs_section_btn btn-primary" href="/manage/operator_edit?id=0">添加运营商</a>
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 500px">运营商名称</th>
+                        <th style="width: 500px">帐号</th>
+                        <th style="width: 100px">是否启用</th>
+                        <th style="width: 100px">操作</th>
+                        <th>删除</th>
+                    </tr>
+
+                    <volist name="data.operator" id="itm">
+                        <tr>
+                            <td class="menu-id">{$itm.id}</td>
+                            <td class="menu-name">{$itm.name}</td>
+                            <td class="menu-name">{$itm.user_name}</td>
+                            <td class="menu-enable">
+                                <?php if ($itm['enable'] == '1') :?>
+                                启用
+                                <?php else :?>
+                                不启用
+                                <?php endif; ?></td>
+                            <td><a href="javascript:void(0)" class="itm-edit" val="{$itm.id}">编辑</a></td>
+                            <td><a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group{
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.itm-del').click(function() {
+                var id = $(this).attr('val');
+
+                if (confirm('是否删除该运营商?')) {
+                    fit.ajax({
+                        url:'/manage/operator_del',
+                        data:{
+                            'id':id
+                        },
+                        success:function(result){
+                            alert(result.msg);
+
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+            //保存菜单
+            $('.itm-edit').click(function() {
+                var id = $(this).attr('val');
+
+                location.href = '/manage/operator_edit?id='+ id;
+            })
+        });
+    </script>
+</block>

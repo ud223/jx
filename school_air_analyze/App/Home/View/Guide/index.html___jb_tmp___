@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>办事指南详情</title>
+    <!-- Unresponsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link rel="shortcut icon" href="__IMG__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__CSS__/global.css" />
+
+</head>
+
+<body>
+
+<div class="myat_optitle01 p20">
+    {$item['name']}
+</div>
+<div class="myat_article_body">
+    <div class="text_content nopadding">
+       {$item['introduce']}
+    </div>
+</div>
+
+<div class="myat_gmd_tblks">
+    <div class="myat_gmd_tblk">
+        <div class="tt">相关文档下载</div>
+        <div class="itms">
+            <div class="itm lnk doc">
+                <img src="__IMG__/clips_sm.png" class="coimg"/>
+                <a href="{$item['file_1_photo'][src]}" >{$item['file_1_photo'][file_name]}</a>
+            </div>
+            <div class="itm lnk doc">
+                <img src="__IMG__/clips_sm.png" class="coimg"/>
+                <a href="{$item['file_2_photo'][src]}" >{$item['file_2_photo'][file_name]}</a>
+            </div>
+        </div>
+    </div>
+    <div class="myat_gmd_tblk">
+        <div class="tt">联系方式</div>
+        <div class="htxts">
+            <div class="htxt">{$item['phone']}</div>
+            <div class="htxt">{$item['workshift']}</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

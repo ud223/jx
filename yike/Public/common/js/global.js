@@ -543,21 +543,24 @@ function shareLayer() {
     $('.shrcover').show();
 }
 
-function waiting() {
+$.waiting = function(msg) {
     var wrapperId = "ft_waitinglayer";
     var str = '<div id="' + wrapperId + '" style="z-index:299;display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(255,255,255,.75);"><div class="sk-circle">';
-    for (var i = 1; i <= 12; i++) {
+    for(var i = 1; i <= 12; i++) {
         str += '<div class="sk-circle' + i + ' sk-child"></div>';
     }
     str += "</div></div>";
     var obj = $(str);
-    if (!$('#' + wrapperId).length) {
+    if(!$('#' + wrapperId).length) {
         $('body').append(obj);
     }
     $('#' + wrapperId).fadeIn(200);
+    if(msg) {
+        $('#' + wrapperId).append("<div style='width:100%;text-align:center;top:50%;margin-top:35px;'>" + msg + "</div>");
+    }
 }
 
-function endWaiting() {
+$.endWaiting = function () {
     var wrapperId = "ft_waitinglayer";
     $('#' + wrapperId).fadeOut(200);
 }

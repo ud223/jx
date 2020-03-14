@@ -43,20 +43,42 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 经纪公司
+                <span class="label label-info">必填</span> 团队长
               </label>
-              <div class="col-sm-4">
-                <eq name="AccountType" value="$AdminAccount">
-                  <select class="chosen-select" name="broker_company" id="broker_company" data-placeholder="请选择经纪公司" style="width: 100% !important;">
-                    <option value="">请选择经纪公司</option>
-                    <volist name="BrokerCompanyOption" id="list">
-                      <option value="{$list.val}" <eq name="list.val" value="$CustomerInfo.broker_company_id">selected</eq> >{$list.key}</option>
+              <div class="col-sm-7">
+                <if condition="($AccountType eq $AdminAccount) OR ($AccountType eq $BrokerCompanyAccountType)">
+                  <select class="chosen-select" name="seller_captain_id" id="seller_captain_id" data-placeholder="请选择团队长" style="width: 100% !important;" onchange="SetSellerMemberOption(this);">
+                    <option value="">请选择团队长</option>
+                    <volist name="SellerCaptainOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$CustomerInfo.seller_captain_id">selected</eq> >{$list.key}</option>
                     </volist>
                   </select>
                 <else/>
-                  <p class="form-control-static">{$BrokerCompanyInfo.broker_company_name}</p>
-                  <input type="hidden" name="broker_company" id="broker_company" value="{$AccountInfo.broker_company_id}" />
-                </eq>
+                  <p class="form-control-static">{$SellerCaptainInfo.real_name}</p>
+                  <input type="hidden" name="seller_captain_id" id="seller_captain_id" value="{$SellerCaptainInfo.id}" />
+                </if>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">
+                <span class="label label-info">必填</span> 客户经理
+              </label>
+
+              <div class="col-sm-7">
+                <if condition="($AccountType eq $AdminAccount) OR ($AccountType eq $BrokerCompanyAccountType) OR ($AccountType eq $SellerCaptainAccountType) ">
+                  <select class="chosen-select" name="seller_member_id" id="seller_member_id" data-placeholder="请选择客户经理" style="width: 100% !important;">
+                    <option value="">请选择客户经理</option>
+                    <volist name="SellerMemberOption" id="list">
+                      <option value="{$list.val}" <eq name="list.val" value="$CustomerInfo.seller_member_id">selected</eq> >{$list.key}</option>
+                    </volist>
+                  </select>
+                <else/>
+                  <p class="form-control-static">{$SellerMemberInfo.real_name}</p>
+                  <input type="hidden" name="seller_member_id" id="seller_member_id" value="{$SellerMemberInfo.id}" />
+                </if>
               </div>
             </div>
 
@@ -75,10 +97,14 @@
 
             <div class="form-group">
               <label class="col-sm-3 control-label">
-                <span class="label label-info">必填</span> 国籍
+                <span class="label label-info">必填</span> 国家/地区
               </label>
               <div class="col-sm-7">
-                <input type="text" autocomplete="off" name="nationality" id="nationality" class="form-control" placeholder="国籍" value="{$CustomerInfo.nationality}">
+                <select class="chosen-select" name="nationality" id="nationality" data-placeholder="" style="width: 100% !important;">
+                  <volist name="NationalityOption" id="list">
+                    <option value="{$list}" <eq name="list" value="$CustomerInfo.nationality">selected</eq> >{$list}</option>
+                  </volist>
+                </select>
               </div>
             </div>
 
@@ -91,13 +117,14 @@
               <div class="col-sm-7">
                 <volist name="GenderOption" id="list">
                   <div class="radio radio-inline radio-info">
-                    <input type="radio" id="gender_{$list.val}" name="gender" value="{$list.key}" <eq name="CustomerInfo.gender" value="$list.key">checked="checked"</eq> >
+                    <input type="radio" id="gender_{$list.val}" name="gender" value="{$list.key}" <empty name="CustomerInfo"><eq name="list.key" value="男">checked</eq><else/><eq name="CustomerInfo.gender" value="$list.key">checked</eq></empty> >
                     <label for="gender_{$list.val}"> {$list.key} </label>
                   </div>
                 </volist>
               </div>
             </div>
 
+            <!--
             <div class="hr-line-dashed"></div>
 
             <div class="form-group">
@@ -134,7 +161,8 @@
                 <input type="hidden" name="idcard_img_id" id="idcard_img_id" value="{$CustomerInfo.idcard_img_a.id}" />
               </div>
             </div>
-            
+            -->
+
             <div class="hr-line-dashed"></div>
 
             <div class="form-group">
@@ -146,6 +174,7 @@
               </div>
             </div>
 
+            <!--
             <div class="hr-line-dashed"></div>
 
             <div class="form-group">
@@ -210,6 +239,7 @@
                 <input type="text" autocomplete="off" name="wechat" id="wechat" class="form-control" placeholder="请输入微信" value="{$CustomerInfo.wechat}">
               </div>
             </div>
+            -->
 
             <div class="hr-line-dashed"></div>
 
@@ -226,7 +256,6 @@
       </div>
     </div>
   </div>
-
   <!--主体内容 End-->
 </div>
 
@@ -288,37 +317,37 @@
 //          required : true,
 //          range:[1,2]
 //        },
-        topic: {
-          required: "#gender:checked",
-          range:[1,2]
-        },
-        idcard_type : {
-          required : true
-        },
-        idcard_no : {
-          required : true
-        },
+//        topic: {
+//          required: "#gender:checked",
+//          range:[1,2]
+//        },
+//        idcard_type : {
+//          required : true
+//        },
+//        idcard_no : {
+//          required : true
+//        },
         birthday : {
           required : true
         },
-        province_id : {
-          required : true,
-          min:1,
-          number:true
-        },
-        city_id : {
-          required : true,
-          min:1,
-          number:true
-        },
-        district_id : {
-          required : true,
-          min:1,
-          number:true
-        },
-        address : {
-          required : true
-        }
+//        province_id : {
+//          required : true,
+//          min:1,
+//          number:true
+//        },
+//        city_id : {
+//          required : true,
+//          min:1,
+//          number:true
+//        },
+//        district_id : {
+//          required : true,
+//          min:1,
+//          number:true
+//        },
+//        address : {
+//          required : true
+//        }
       },
       messages: {
         broker_company : {
@@ -332,25 +361,25 @@
 //          required : "请选择性别",
 //          range : "性别选择错误"
 //        },
-        idcard_type : "请选择证件类型",
-        idcard_no : "请输入证件号",
-        birthday : "请选择出生日期",
-        province_id : {
-          required : "请选择省份",
-          min : "省份不存在",
-          number : "省份不存在",
-        },
-        city_id : {
-          required : "请选择城市",
-          min : "城市不存在",
-          number : "城市不存在",
-        },
-        district_id : {
-          required : "请选择区县",
-          min : "区县不存在",
-          number : "区县不存在",
-        },
-        address : "请输入详细地址"
+//        idcard_type : "请选择证件类型",
+//        idcard_no : "请输入证件号",
+//        birthday : "请选择出生日期",
+//        province_id : {
+//          required : "请选择省份",
+//          min : "省份不存在",
+//          number : "省份不存在",
+//        },
+//        city_id : {
+//          required : "请选择城市",
+//          min : "城市不存在",
+//          number : "城市不存在",
+//        },
+//        district_id : {
+//          required : "请选择区县",
+//          min : "区县不存在",
+//          number : "区县不存在",
+//        },
+//        address : "请输入详细地址"
       },
       focusInvalid: true,
       submitHandler: function(form) {
@@ -372,7 +401,7 @@
   
   //region 提交表单
   function SubmitBefore(){
-    BlockWindow_ExecOp('正在保存销售经理数据', 140);
+    BlockWindow_ExecOp('正在保存客户数据', 140);
   }
 
   function SubmitResponse(responseText){
@@ -475,7 +504,65 @@
     }
   }
   //endregion 区域选择
-  
+
+  //region 设置客户经理option
+  function SetSellerMemberOption(obj) {
+    var nSellerCaptainID = $(obj).val();
+
+    if(IsN(nSellerCaptainID)){
+      return false;
+    }
+
+    BlockWindow_ExecOp('正在获取客户经理数据', 180);
+
+    $.ajax({
+      type: "POST",
+      url: "__URL__/AjaxGetSellerMemberOption",
+      dataType:"json",
+      data: {"seller_captain_id": nSellerCaptainID},
+      timeout: 6000,
+      beforeSend : function (XMLHttpRequest) {
+        XMLHttpRequest.setRequestHeader("request_type","ajax");
+      },
+      success: function(data){
+        SetSellerMemberOptionResponse(data);
+      },
+      error: function(request, status, error){
+        Un_BlockWindow_ExecOp();
+        AlertError("请求服务器时发生错误");
+      }
+    });
+  }
+
+  function SetSellerMemberOptionResponse(objJson){
+    Un_BlockWindow_ExecOp();
+
+    if(objJson.error != 0){
+      AlertError(objJson.info);
+      return false;
+    }
+
+    if(IsN(objJson.data)){
+      return false;
+    }
+
+    var Dom = [];
+    var MemberList = objJson.data;
+    var nLen = MemberList.length;
+    var Info = null;
+
+    Dom.push('<option value="">--</option>');
+
+    for(var i=0; i<nLen; i++){
+      Info = MemberList[i];
+
+      Dom.push('<option value="'+Info.val+'">'+Info.key+'</option>');
+    }
+
+    $('#seller_member_id').html(Dom.join('')).trigger("chosen:updated");
+  }
+  //endregion 设置客户经理option
+
   function BackIndexPage(){
     window.location.href = ReturnUrl;
   }

@@ -1,0 +1,78 @@
+<div class="form-group {$ganged.css}" id="{$ganged.id}Tip">
+    <label  class="col-md-{$ganged.title_width} control-label" style="text-align: {$ganged.title_align}; line-height: 30px;">
+        {$ganged.title}<eq name="ganged.required" value="true"><span class="required">*</span></eq>
+    </label>
+    <div class="col-md-3" id="{$ganged.id}_item">
+        <select  class="sidebar-option form-control input-large" name="{$ganged.name}" id="{$ganged.id}">
+            <option value="">请选择</option>
+        </select>
+        <span class="help-block">{$ganged.tips}</span>
+    </div>
+ </div>
+<script>
+<?php
+$arrLinkField = explode(",", $ganged["extend"]["child"])
+?>
+
+var {$ganged.id}_Json = {$DataSource};
+
+$('#{$ganged.id}').ready(function(){
+    var arrList = {$ganged.id}_Json;
+    var nCount = arrList.length;
+    var info = null;
+    var arrOption = [];
+    var sSelected = '';
+
+    for(var i=0; i<nCount; i++){
+        info = arrList[i];
+        
+        arrOption.push('<option value="'+ info.val +'">'+ info.key +'</option>');
+    }
+    
+    <?php
+    if(!empty($arrLinkField)){
+        if(!empty($arrLinkField[0])){
+    ?>
+            $('#{$ganged.id}').append(arrOption.join('')).val('{$ganged.value}').change();
+    <?php
+        }else{
+    ?>
+            $('#{$ganged.id}').append(arrOption.join('')).val('{$ganged.value}');
+    <?php
+        }
+    }
+    ?> 
+});
+
+<?php
+if(!empty($arrLinkField)){
+    if(!empty($arrLinkField[0])){
+?>
+$('#{$ganged.id}').change(function(){
+    var arrList = {$ganged.prefix}{$arrLinkField[0]}_Json;
+    var nCount = arrList.length;
+    var info = null;
+    var arrOption = [];
+    var parentid = $('#{$ganged.id}').val();
+
+    for(var i=0; i<nCount; i++){
+        info = arrList[i];
+        
+        if(info.parentid == parentid){
+            arrOption.push('<option value="'+ info.val +'">'+ info.key +'</option>');
+        }
+    }
+    
+    $sOption = arrOption.join('');
+    
+    if(btten.IsN($sOption)){
+        $sOption = '<option value="">--</option>';
+    }
+    
+    $('#{$ganged.prefix}{$arrLinkField[0]}').html($sOption).change();
+});
+<?php
+    }
+}
+?>
+</script>

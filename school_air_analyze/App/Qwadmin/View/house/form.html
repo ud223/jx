@@ -1,0 +1,195 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" action="{:U('update')}" method="post">
+                            <input type="hidden" name="id" value="{$item.id}" id="id"/>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 房子名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name" id="name" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.name}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 房子类型 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="type" id="type" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.type}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 房子尺寸</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="size" id="size" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.size}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                           <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    层数： </label>
+                                <div class="col-sm-9">
+                                    <select id="layer_name" name="layer_name" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($layer as $itm) :?>
+                                        <?php if ($itm['id'] == $item['layer_id']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['layer_name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['layer_name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    房间： </label>
+                                <div class="col-sm-9">
+                                    <select id="room_id" name="room_id" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($room as $itm) :?>
+                                        <?php if ($itm['id'] == $item['room_id']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['room_name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['room_name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    浴室： </label>
+                                <div class="col-sm-9">
+                                    <select id="sroom_id" name="sroom_id" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($sroom as $itm) :?>
+                                        <?php if ($itm['id'] == $item['sroom_id']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['sroom_name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['sroom_name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-0">
+                                    车库： </label>
+                                <div class="col-sm-9">
+                                    <select id="garage_id" name="garage_id" class="col-xs-4 col-sm-4">
+                                        <?php foreach ($garage as $itm) :?>
+                                        <?php if ($itm['id'] == $item['garage_id']) :?>
+                                        <option value="<?php echo $itm['id'] ?>" selected><?php echo $itm['garage_name'] ?></option>
+                                        <?php else :?>
+                                        <option value="<?php echo $itm['id'] ?>"><?php echo $itm['garage_name'] ?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 房价： </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="money" id="money" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.money}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"></span>
+											</span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 中介商： </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="broker" id="broker" class="rcol-xs-10 col-sm-5"
+                                           value="{$item.broker}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"></span>
+											</span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 房子理由： </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="reason" id="reasons" class="rcol-xs-10 col-sm-5" value="{$item.reason}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <span class="middle"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="form-field-4">
+                                    图片 </label>
+                                <div class="col-sm-9">
+                                    <div class="col-xs-10 col-sm-5">
+                                        {:UpImage("list",100,100,$article['list'])}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                <span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。<br/>（需要就上传，可不传，视频画面图片900*500px，新闻页面460*230px，新闻详情页 建议宽度700px,人物团队 320*180px，合作资源285*86px）<br/>关于我们-公司简介图片 ，建议650*300px（这里的图片属于自行添加编辑的，如果要如图效果是650*300px；后期如果要更换图片，可自行控制图片大小）</span>
+                            </span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="col-md-offset-2 col-md-9">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="icon-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div><!-- /.main-content -->
+<include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+</body>
+</html>
+

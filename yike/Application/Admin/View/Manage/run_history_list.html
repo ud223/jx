@@ -1,0 +1,90 @@
+<extend name="Base/common"/>
+<link rel="stylesheet" href="__PUBLIC__/common/js/css/bbs.css"/>
+
+<block name="body">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">历史行程管理</h3>
+            </div>
+
+            <div class="col-md-5" style="padding: 20px;z-index: 100">
+                <span>car_sn号</span>
+                <input type="text" id="car_sn" name="car_sn"/>
+                <a class="btn btn-primary add_btn" href="javascript:void(0)">查询</a>
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 10px">id</th>
+                        <th style="width: 250px">carid</th>
+                        <th style="width: 150px">开始时间</th>
+                        <th style="width: 150px">结束时间</th>
+                        <th style="width: 100px">操作</th>
+                    </tr>
+
+                    <volist name="data.list" id="itm">
+                        <tr>
+                            <td>{$itm.id}</td>
+                            <td>{$itm.car_id}</td>
+                            <td>{$itm.start_date}</td>
+                            <td>{$itm.end_date}</td>
+                            <td>
+                                <a href="javascript:void(0)" class="itm-del" val="{$itm.id}">删除</a></td>
+                        </tr>
+                    </volist>
+                </table>
+                <div class="pages" style="margin-top:20px">
+                    {$page}
+                </div>
+            </div><!-- /.box-body -->
+
+            <div class="box-footer clearfix ">
+
+            </div>
+        </div><!-- /.box -->
+    </div>
+</block>
+
+<block name="style">
+    <style>
+        .input-group {
+            margin-top: 20px;
+        }
+    </style>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+
+            $('.itm-del').click(function () {
+                var id = $(this).attr('val');
+
+                var data = {'id': id};
+
+                if (confirm('是否删除?')) {
+                    fit.ajax({
+                        url: '/manage/run_hhistory_del',
+                        data: data,
+                        success: function (result) {
+                            alert(result.msg);
+
+                            if (result.code == 200) {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('.add_btn').click(function () {
+                location.href = '/manage/run_history_list?car_sn=' + $('#car_sn').val();
+            });
+        })
+        ;
+    </script>
+</block>

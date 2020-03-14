@@ -28,4 +28,24 @@ class PageWidget extends \CustomerRreservationSystem\Controller\CommonController
   public function bodyCss(){
     $this->display('Widget:body_css');
   }
+  
+  //region Wap
+  //页面头部包含的文件
+  public function wapPageHeadInclude(){
+    $this->display('Widget:wap_page_head_include');
+  }
+  
+  //页面底部包含的文件
+  public function wapPageFootInclude(){
+    $this->display('Widget:wap_page_foot_include');
+  }
+  
+  public function wapPageMeta(){
+    $this->display('Widget:wap_page_meta');
+  }
+  
+  public function wapPageTitle(){
+    $this->display('Widget:wap_page_title');
+  }
+  //endregion Wap
 }
