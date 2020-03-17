@@ -56,7 +56,7 @@ class SchoolController extends ComController {
         
         $this->assign('list', $list);
         $this->assign('page', $page);
-
+        
         $this->display();
     }
 
