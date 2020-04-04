@@ -547,15 +547,13 @@
 <script src="/Public/qwadmin/js/date-time/bootstrap-datepicker.js"></script>
 <!-- <script src="/Public/qwadmin/js/function.js"></script> -->
 ,<script src="/Public/Common/js/area.js"></script>
-<script src="/Public/Common/js/myDistpicker.js?v1.000002"></script>
+<script src="/Public/Common/js/myDistpicker.js?v1.000006"></script>
 
 <script type="text/javascript">
     jQuery(function ($) {
         MyDistpicker.init('province_id', 'city_id', 'region_id', area);
 
-        MyDistpicker.load();
-
-        MyDistpicker.setVal('湖北省', 0);
+        MyDistpicker.province_load('湖北省');        
     });
 </script>
 </body>

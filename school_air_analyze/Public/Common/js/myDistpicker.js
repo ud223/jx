@@ -23,6 +23,10 @@ MyDistpicker = {
         $('#'+ this.province_id).change(function() {
             that.change(this, 0);
         });
+
+        $('#'+ this.city_id).change(function() {
+            that.change(this, 1);
+        });
     },  
 
     change: function(sel, level) {
@@ -31,27 +35,24 @@ MyDistpicker = {
 
         var value = it.val();
 
+        console.log(it.find("option:selected").attr('data_list'));
+
+        var data_list = JSON.parse(it.find("option:selected").attr('data_list'));
+
         switch (level) {
             case 0:{
-                
+                this.city_load(false, data_list);
 
                 break;
             }
             case 1:{
+                console.log(data_list);
+
+                this.region_load(false, data_list);
 
                 break;
             }
         }
-    },
-
-    load: function() {
-        var options = '';
-
-        $.each(this.data, function() {
-            options += "<option value='"+ this.name +"'>"+ this.name +"</option>";
-        });
-
-        $("#"+ this.province_id).append(options);
     },
 
     setVal: function(value, level) {
@@ -63,30 +64,83 @@ MyDistpicker = {
     province_load: function(value) {
         var that = this;
 
+        this.provice_clear();
+
+        var options = '';
+        var sel_item = false;
+        var provice_sel = $("#"+ this.province_id);
+
+        sel_item = that.data[0];
+
         $.each(that.data, function() {
-            if (this.name == value) {
-                var city_sel = $('#'+ that.city_id);
+            options += "<option value='"+ this.name +"' data_list='"+ JSON.stringify(this.city) +"'>"+ this.name +"</option>";
 
-                city_sel.html('');
-
-                var options = '';
-
-                $.each(this.city, function() {
-                    options += "<option value='"+ this.name +"'>"+ this.name +"</option>";
-                });
-        
-                city_sel.append(options);
-                
-                return;
+            if (value && value == this.name) {
+                sel_item = this;
             }
         })
+
+        provice_sel.append(options);
+
+        if (value) {
+            provice_sel.val(value);
+        }
+
+        this.city_load(false, sel_item.city);
     },
 
-    city_load: function(value) {
+    city_load: function(value, data_list) {
+        this.city_clear();
 
+        var options = '';
+        var sel_item = false;
+        var city_sel = $("#"+ this.city_id);
+
+        sel_item = data_list[0];
+
+        $.each(data_list, function() {
+            options += "<option value='"+ this.name +"' data_list='"+ JSON.stringify(this.area) +"'>"+ this.name +"</option>";
+
+            if (value && value == this.name) {
+                sel_item = this;
+            }
+        });
+
+        city_sel.append(options);
+
+        if (value) {
+            city_sel.val(value);
+        }
+
+        this.region_load(false, sel_item.area);
     },
 
-    region_load: function(value) {
+    region_load: function(value, data_list) {
+        this.region_clear();
 
+        var options = '';
+        var region_sel = $("#"+ this.region_id);
+
+        $.each(data_list, function() {
+            options += "<option value='"+ this +"'>"+ this +"</option>";
+        });
+
+        region_sel.append(options);
+
+        if (value) {
+            region_sel.val(value);
+        }
+    },
+
+    provice_clear: function() {
+        $('#'+ this.province_id).html('');
+    },
+
+    city_clear: function() {
+        $('#'+ this.city_id).html('');
+    },
+
+    region_clear: function() {
+        $('#'+ this.region_id).html('');
     }
 }

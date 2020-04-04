@@ -503,6 +503,7 @@ function M($name='', $tablePrefix='',$connection='') {
     }else{
         $class      =   'Think\\Model';
     }
+
     $guid           =   (is_array($connection)?implode('',$connection):$connection).$tablePrefix . $name . '_' . $class;
     if (!isset($_model[$guid]))
         $_model[$guid] = new $class($name,$tablePrefix,$connection);

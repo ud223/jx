@@ -36,9 +36,9 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="space-4"></div>  style="display: none;" -->
+                            <div class="space-4"></div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="display: none;">
                                 <label class="col-sm-1 control-label no-padding-right" for="form-field-0">省份</label>
                                 <input type="hidden" id="province_name" name="province_name">
                                 <div class="col-sm-9">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
 
-                            <div class="space-4"></div>
+                            <!-- <div class="space-4"></div> -->
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right" for="form-field-0">城市</label>
@@ -66,6 +66,34 @@
                                 <div class="col-sm-9">
                                     <select id="region_id" name="region_id" class="multiselect">
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="id-date-picker-1">账号</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <div class="input-group col-xs-5">
+                                        <input class="form-control" id="uid" name="uid" value="<if condition="$item['uid'] neq '' ">{$item['uid']}</if>"type="text" />
+                                        <span class="help-inline col-xs-12 col-sm-7">
+                                            <span class="middle"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="id-date-picker-1">密码</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <div class="input-group col-xs-5">
+                                        <input class="form-control" id="pwd" name="pwd" value="<if condition="$item['pwd'] neq '' ">{$item['pwd']}</if>"type="text" />
+                                        <span class="help-inline col-xs-12 col-sm-7">
+                                            <span class="middle"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -119,15 +147,13 @@
 <script src="__PUBLIC__/qwadmin/js/date-time/bootstrap-datepicker.js"></script>
 <!-- <script src="__PUBLIC__/qwadmin/js/function.js"></script> -->
 ,<script src="/Public/Common/js/area.js"></script>
-<script src="/Public/Common/js/myDistpicker.js?v1.000002"></script>
+<script src="/Public/Common/js/myDistpicker.js?v1.000006"></script>
 
 <script type="text/javascript">
     jQuery(function ($) {
         MyDistpicker.init('province_id', 'city_id', 'region_id', area);
 
-        MyDistpicker.load();
-
-        MyDistpicker.setVal('湖北省', 0);
+        MyDistpicker.province_load('湖北省');     
     });
 </script>
 </body>

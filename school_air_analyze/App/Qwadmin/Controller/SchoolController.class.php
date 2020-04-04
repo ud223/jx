@@ -79,7 +79,7 @@ class SchoolController extends ComController {
                 $uids = implode(',', $uids);
             }
         }
-
+        
         $school_db = M('school');
 
         $map['uid'] = array('in', $uids);
@@ -133,10 +133,11 @@ class SchoolController extends ComController {
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 
         $data['name'] = $name;
-        $data['city_code'] = isset($_POST['city_code']) ? trim($_POST['city_code']) : '';
+        $data['province_name'] = isset($_POST['province_name']) ? trim($_POST['province_name']) : '';
         $data['city_name'] = isset($_POST['city_name']) ? trim($_POST['city_name']) : '';
-        $data['region_code'] = isset($_POST['region_code']) ? trim($_POST['region_code']) : '';
-        $data['region_name'] = isset($_POST['region_name']) ? trim($_POST['region_name']) : '';
+        $data['region_name'] = isset($_POST['region_code']) ? trim($_POST['region_name']) : '';
+        $data['uid'] = isset($_POST['uid']) ? trim($_POST['uid']) : '';
+        $data['pwd'] = isset($_POST['pwd']) ? trim($_POST['pwd']) : '';
         $data['status'] = isset($_POST['status']) ? intval($_POST['status']) : '1';
 
         $school_db = M('school');
